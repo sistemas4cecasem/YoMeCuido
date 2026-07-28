@@ -62,7 +62,7 @@ class _LessonScreenState extends State<LessonScreen> {
     if (isLastPage) {
       Navigator.of(
         context,
-      ).pushNamed(AppRoutes.quizPlaceholder, arguments: widget.category);
+      ).pushNamed(AppRoutes.quiz, arguments: widget.category);
       return;
     }
 

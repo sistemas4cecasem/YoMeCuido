@@ -5,7 +5,7 @@ import '../data/repositories/content_repository.dart';
 import '../features/categories/categories_screen.dart';
 import '../features/category_detail/category_detail_screen.dart';
 import '../features/lesson/lesson_screen.dart';
-import '../features/quiz/quiz_placeholder_screen.dart';
+import '../features/quiz/quiz_screen.dart';
 import '../features/splash/welcome_screen.dart';
 import '../shared/widgets/app_scaffold.dart';
 import 'app_strings.dart';
@@ -15,7 +15,7 @@ abstract final class AppRoutes {
   static const categories = '/categories';
   static const categoryDetail = '/category-detail';
   static const lesson = '/lesson';
-  static const quizPlaceholder = '/quiz-placeholder';
+  static const quiz = '/quiz';
 }
 
 class AppRouter {
@@ -40,8 +40,9 @@ class AppRouter {
             category: settings.arguments! as Category,
             contentRepository: _contentRepository,
           ),
-          AppRoutes.quizPlaceholder => QuizPlaceholderScreen(
+          AppRoutes.quiz => QuizScreen(
             category: settings.arguments! as Category,
+            contentRepository: _contentRepository,
           ),
           _ => const _UnknownRoute(),
         };

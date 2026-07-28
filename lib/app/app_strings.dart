@@ -16,7 +16,23 @@ abstract final class AppStrings {
   static const previous = 'Anterior';
   static const next = 'Siguiente';
   static const startActivities = 'Iniciar actividades';
-  static const quizPlaceholderTitle = 'Actividades';
-  static const quizPlaceholderBody =
-      'Placeholder temporal del cuestionario. La lógica definitiva de respuestas se implementará en una etapa posterior.';
+  static const quizTitle = 'Actividades';
+  static const submitAnswer = 'Responder';
+  static const nextActivity = 'Siguiente actividad';
+  static const seeResult = 'Ver resultado';
+  static const correct = 'Correcto';
+  static const reviewAnswer = 'Revisemos esta respuesta';
+  static const expectedAnswer = 'Respuesta esperada';
+  static const fillBlankHint = 'Escribe una palabra';
+  static const exitLessonTitle = '¿Salir de la lección?';
+  static const exitLessonBody = 'El progreso de este intento se perderá.';
+  static const keepLearning = 'Continuar aprendiendo';
+  static const exit = 'Salir';
+  static const lessonCompleted = 'Lección completada';
+  static const repeatLesson = 'Repetir lección';
+  static const backToCategories = 'Volver a categorías';
+  static const remindersTitle = 'Recuerda';
+  static const reminderAccounts = 'Protege tus cuentas y revisa accesos.';
+  static const reminderEvidence = 'Guarda evidencia ante amenazas o acoso.';
+  static const reminderSupport = 'Busca apoyo y prioriza tu seguridad.';
 }

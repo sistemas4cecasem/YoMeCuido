@@ -174,9 +174,7 @@ void main() {
     expect(find.text(AppStrings.next), findsNothing);
   });
 
-  testWidgets('el último botón abre el placeholder del cuestionario', (
-    tester,
-  ) async {
+  testWidgets('el último botón abre el cuestionario', (tester) async {
     await openDetail(tester);
 
     await tester.tap(find.text(AppStrings.startLesson));
@@ -190,14 +188,20 @@ void main() {
     await tester.tap(find.text(AppStrings.startActivities));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.quizPlaceholderTitle), findsOneWidget);
-    expect(find.text(AppStrings.quizPlaceholderBody), findsOneWidget);
+    expect(repository.loadQuizQuestionsCalls, 1);
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+    expect(find.text('Actividad 1 de 12'), findsOneWidget);
+    expect(
+      find.text('¿Cuál es un ejemplo de violencia digital?'),
+      findsOneWidget,
+    );
   });
 }
 
 class _FakeContentRepository implements ContentRepository {
   int loadCategoriesCalls = 0;
   int loadLessonPagesCalls = 0;
+  int loadQuizQuestionsCalls = 0;
 
   final categories = const <Category>[
     Category(
@@ -336,6 +340,8 @@ class _FakeContentRepository implements ContentRepository {
     ),
   ];
 
+  final quizQuestions = _buildQuizQuestions();
+
   @override
   Future<List<Category>> loadCategories() async {
     loadCategoriesCalls += 1;
@@ -349,7 +355,64 @@ class _FakeContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) {
-    throw UnimplementedError();
+  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
+    loadQuizQuestionsCalls += 1;
+    return quizQuestions;
   }
+}
+
+List<QuizQuestion> _buildQuizQuestions() {
+  return <QuizQuestion>[
+    const QuizQuestion(
+      id: 'activity_1',
+      type: QuestionType.multipleChoice,
+      statement: '¿Cuál es un ejemplo de violencia digital?',
+      options: <QuizOption>[
+        QuizOption(
+          id: 'control_passwords_threaten_messages',
+          text: 'Controlar contraseñas y amenazar por mensajes.',
+        ),
+        QuizOption(
+          id: 'update_application',
+          text: 'Actualizar una aplicación.',
+        ),
+      ],
+      correctAnswer: 'control_passwords_threaten_messages',
+      acceptedAnswers: <String>['control_passwords_threaten_messages'],
+      feedback:
+          'El control, la vigilancia y las amenazas mediante tecnología son '
+          'formas de violencia.',
+      capacity: 'reconocer',
+      difficulty: 'básica',
+    ),
+    const QuizQuestion(
+      id: 'activity_2',
+      type: QuestionType.fillBlank,
+      statement: 'Las capturas pueden servir como ______.',
+      options: <QuizOption>[],
+      correctAnswer: 'evidencia',
+      acceptedAnswers: <String>['evidencia'],
+      feedback: 'Conviene almacenar las pruebas de manera segura.',
+      capacity: 'responder',
+      difficulty: 'básica',
+    ),
+    for (var index = 3; index <= 12; index += 1)
+      QuizQuestion(
+        id: 'activity_$index',
+        type: QuestionType.multipleChoice,
+        statement: 'Actividad de práctica $index',
+        options: <QuizOption>[
+          QuizOption(id: 'safe_action_$index', text: 'Acción segura $index.'),
+          QuizOption(
+            id: 'unsafe_action_$index',
+            text: 'Acción insegura $index.',
+          ),
+        ],
+        correctAnswer: 'safe_action_$index',
+        acceptedAnswers: <String>['safe_action_$index'],
+        feedback: 'Esta acción ayuda a proteger y buscar apoyo.',
+        capacity: 'responder',
+        difficulty: 'básica',
+      ),
+  ];
 }

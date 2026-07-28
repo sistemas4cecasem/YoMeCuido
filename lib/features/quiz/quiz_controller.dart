@@ -42,6 +42,16 @@ class QuizController extends ChangeNotifier {
 
   List<QuizOption> get currentOptions => _currentQuestion.options;
 
+  String get currentCorrectAnswerText {
+    if (_currentQuestion.type == QuestionType.fillBlank) {
+      return _currentQuestion.correctAnswer;
+    }
+
+    return _currentQuestion.options
+        .firstWhere((option) => option.id == _currentQuestion.correctAnswer)
+        .text;
+  }
+
   String? get selectedOptionId => _selectedOptionId;
 
   String get writtenAnswer => _writtenAnswer;
