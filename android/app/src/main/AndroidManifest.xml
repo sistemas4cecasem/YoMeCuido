@@ -8,7 +8,7 @@
         tools:node="remove" />
 
     <application
-        android:label="demo_yomecuido"
+        android:label="YoMeCuido"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

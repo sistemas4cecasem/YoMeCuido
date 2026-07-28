@@ -20,6 +20,11 @@ class WelcomeScreen extends StatelessWidget {
     return AppScaffold(
       child: LayoutBuilder(
         builder: (context, constraints) {
+          final logoCardWidth = constraints.maxWidth < 360
+              ? constraints.maxWidth
+              : 360.0;
+          final logoHeight = constraints.maxWidth < 360 ? 228.0 : 252.0;
+
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -31,32 +36,19 @@ class WelcomeScreen extends StatelessWidget {
                     child: Semantics(
                       image: true,
                       label: AppStrings.appName,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(AppRadii.card),
-                          border: Border.all(color: palette.border),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.md),
-                          child: Image.asset(
-                            logoAssetPath,
-                            key: const Key('welcome_logo'),
-                            height: 132,
-                            width: 180,
-                            fit: BoxFit.contain,
-                          ),
+                      child: SizedBox(
+                        width: logoCardWidth,
+                        child: Image.asset(
+                          logoAssetPath,
+                          key: const Key('welcome_logo'),
+                          height: logoHeight,
+                          width: double.infinity,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  Text(
-                    AppStrings.appName,
-                    textAlign: TextAlign.center,
-                    style: textTheme.displaySmall,
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
                   Text(
                     AppStrings.appTagline,
                     textAlign: TextAlign.center,
