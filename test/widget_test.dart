@@ -5,6 +5,7 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/features/splash/welcome_screen.dart';
+import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -18,6 +19,66 @@ void main() {
   Future<void> pumpApp(WidgetTester tester) async {
     await tester.pumpWidget(YoMeCuidoApp(contentRepository: repository));
     await tester.pumpAndSettle();
+  }
+
+  Future<void> openQuiz(WidgetTester tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text(AppStrings.start));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Relaciones y violencia digital'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> answerActivity(
+    WidgetTester tester,
+    int activity, {
+    required bool correctly,
+  }) async {
+    if (activity == 2) {
+      await tester.enterText(
+        find.byType(TextField),
+        correctly ? ' evidencia ' : 'otra',
+      );
+    } else {
+      await tester.tap(
+        correctly
+            ? find.byType(AnswerOptionTile).first
+            : find.byType(AnswerOptionTile).last,
+      );
+    }
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.submitAnswer));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> completeActivities(
+    WidgetTester tester, {
+    required int correctAnswers,
+  }) async {
+    for (var activity = 1; activity <= 12; activity += 1) {
+      await answerActivity(
+        tester,
+        activity,
+        correctly: activity <= correctAnswers,
+      );
+
+      await tester.tap(
+        find.text(
+          activity == 12 ? AppStrings.seeResult : AppStrings.nextActivity,
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
   }
 
   Future<void> openCategories(WidgetTester tester) async {
@@ -196,6 +257,83 @@ void main() {
       findsOneWidget,
     );
   });
+  testWidgets('repetir lecci\u00f3n vuelve a la primera c\u00e1psula', (
+    tester,
+  ) async {
+    await openQuiz(tester);
+    await completeActivities(tester, correctAnswers: 12);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text('12 de 12'), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.repeatLesson));
+    await tester.pumpAndSettle();
+
+    expect(find.text('1 de 4'), findsOneWidget);
+    expect(
+      find.text('\u00bfQu\u00e9 es la violencia digital?'),
+      findsOneWidget,
+    );
+    expect(find.text(AppStrings.lessonCompleted), findsNothing);
+    expect(find.text(AppStrings.quizTitle), findsNothing);
+  });
+
+  testWidgets('repetir lecci\u00f3n reinicia el puntaje', (tester) async {
+    await openQuiz(tester);
+    await completeActivities(tester, correctAnswers: 12);
+
+    await tester.tap(find.text(AppStrings.repeatLesson));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+
+    await completeActivities(tester, correctAnswers: 0);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text('0 de 12'), findsOneWidget);
+    expect(find.text('0%'), findsOneWidget);
+    expect(
+      find.text(
+        'Has completado la lecci\u00f3n. Puedes repetirla y revisar nuevamente las recomendaciones.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets(
+    'volver a categor\u00edas limpia el flujo y conserva la pila correcta',
+    (tester) async {
+      await openQuiz(tester);
+      await completeActivities(tester, correctAnswers: 8);
+
+      expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+      expect(
+        find.text(
+          'Buen trabajo. Sigue practicando para fortalecer tus decisiones de autocuidado.',
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text(AppStrings.backToCategories));
+      await tester.pumpAndSettle();
+
+      expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
+      expect(find.text(AppStrings.lessonCompleted), findsNothing);
+      expect(find.text(AppStrings.startLesson), findsNothing);
+
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+
+      expect(find.text(AppStrings.appTagline), findsOneWidget);
+      expect(find.text(AppStrings.categoriesTitle), findsNothing);
+    },
+  );
 }
 
 class _FakeContentRepository implements ContentRepository {

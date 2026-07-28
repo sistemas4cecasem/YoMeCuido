@@ -1,4 +1,5 @@
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/models/quiz_result.dart';
 import 'package:demo_yomecuido/features/quiz/quiz_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -152,6 +153,42 @@ void main() {
 
       expect(controller.quizResult.correctAnswers, 6);
       expect(controller.quizResult.percentage, 50);
+    });
+
+    test('generates the high score closing message', () {
+      final result = QuizResult.fromScore(
+        correctAnswers: 10,
+        totalQuestions: 12,
+      );
+
+      expect(
+        result.closingMessage,
+        'Muy bien. Reconoces varias se\u00f1ales de riesgo y acciones de protecci\u00f3n.',
+      );
+    });
+
+    test('generates the medium score closing message', () {
+      final result = QuizResult.fromScore(
+        correctAnswers: 7,
+        totalQuestions: 12,
+      );
+
+      expect(
+        result.closingMessage,
+        'Buen trabajo. Sigue practicando para fortalecer tus decisiones de autocuidado.',
+      );
+    });
+
+    test('generates the low score closing message', () {
+      final result = QuizResult.fromScore(
+        correctAnswers: 6,
+        totalQuestions: 12,
+      );
+
+      expect(
+        result.closingMessage,
+        'Has completado la lecci\u00f3n. Puedes repetirla y revisar nuevamente las recomendaciones.',
+      );
     });
   });
 }

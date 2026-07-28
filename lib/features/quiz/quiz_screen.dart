@@ -72,7 +72,10 @@ class _QuizScreenState extends State<QuizScreen> {
             return _QuizLoadError(onRetry: _retry);
           }
 
-          return _QuizFlow(questions: snapshot.data!);
+          return _QuizFlow(
+            category: widget.category,
+            questions: snapshot.data!,
+          );
         },
       ),
     );
@@ -80,8 +83,9 @@ class _QuizScreenState extends State<QuizScreen> {
 }
 
 class _QuizFlow extends StatefulWidget {
-  const _QuizFlow({required this.questions});
+  const _QuizFlow({required this.category, required this.questions});
 
+  final Category category;
   final List<QuizQuestion> questions;
 
   @override
@@ -167,14 +171,41 @@ class _QuizFlowState extends State<_QuizFlow> {
   void _repeatLesson() {
     _answerTextController.clear();
     setState(() {
+      _allowPop = true;
       _showResult = false;
     });
     _controller.reset();
+    // Repeating starts at theory because AGENTS.md defines the lesson as
+    // capsules plus activities, and the result invites reviewing again.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRoutes.lesson,
+        arguments: widget.category,
+        (route) {
+          return route.settings.name == AppRoutes.categoryDetail ||
+              route.isFirst;
+        },
+      );
+    });
   }
 
   void _backToCategories() {
-    Navigator.of(context).popUntil((route) {
-      return route.settings.name == AppRoutes.categories || route.isFirst;
+    _answerTextController.clear();
+    setState(() {
+      _allowPop = true;
+      _showResult = false;
+    });
+    _controller.reset();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).popUntil((route) {
+        return route.settings.name == AppRoutes.categories || route.isFirst;
+      });
     });
   }
 

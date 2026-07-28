@@ -24,14 +24,9 @@ class ResultSummaryCard extends StatelessWidget {
             Icon(Icons.verified_outlined, color: palette.purple, size: 36),
             const SizedBox(height: AppSpacing.md),
             Text(AppStrings.lessonCompleted, style: textTheme.headlineMedium),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              '${result.correctAnswers} de ${result.totalQuestions} respuestas correctas',
-              style: textTheme.titleSmall,
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text('${result.percentage}%', style: textTheme.headlineSmall),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.lg),
+            Center(child: _ScoreProgress(result: result)),
+            const SizedBox(height: AppSpacing.lg),
             Text(result.closingMessage, style: textTheme.bodyLarge),
             const SizedBox(height: AppSpacing.lg),
             Text(AppStrings.remindersTitle, style: textTheme.titleSmall),
@@ -39,6 +34,62 @@ class ResultSummaryCard extends StatelessWidget {
             const _Reminder(text: AppStrings.reminderAccounts),
             const _Reminder(text: AppStrings.reminderEvidence),
             const _Reminder(text: AppStrings.reminderSupport),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ScoreProgress extends StatelessWidget {
+  const _ScoreProgress({required this.result});
+
+  final QuizResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final textTheme = Theme.of(context).textTheme;
+    final progress = result.correctAnswers / result.totalQuestions;
+
+    return Semantics(
+      label:
+          '${result.correctAnswers} de ${result.totalQuestions} respuestas correctas. '
+          '${result.percentage} por ciento.',
+      child: SizedBox(
+        width: 164,
+        height: 164,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox.expand(
+              child: CircularProgressIndicator(
+                value: progress,
+                strokeWidth: 12,
+                strokeCap: StrokeCap.round,
+                backgroundColor: palette.border,
+                color: palette.purple,
+              ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('${result.percentage}%', style: textTheme.headlineMedium),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  '${result.correctAnswers} de ${result.totalQuestions}',
+                  style: textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.xxs),
+                Text(
+                  'respuestas correctas',
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: palette.textMuted,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

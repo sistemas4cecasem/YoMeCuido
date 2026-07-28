@@ -200,7 +200,9 @@ void main() {
     }
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('12 de 12 respuestas correctas'), findsOneWidget);
+    expect(find.text('12 de 12'), findsOneWidget);
+    expect(find.text('100%'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
     expect(find.text(AppStrings.backToCategories), findsOneWidget);
   });
