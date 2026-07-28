@@ -72,10 +72,16 @@ abstract final class AppTheme {
         style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(AppSizing.primaryButtonHeight),
           padding: AppInsets.button,
-          foregroundColor: palette.purple,
+          foregroundColor: brightness == Brightness.light
+              ? palette.purple
+              : palette.textPrimary,
           disabledForegroundColor: palette.textMuted,
           textStyle: textTheme.labelLarge,
-          side: BorderSide(color: palette.border),
+          side: BorderSide(
+            color: brightness == Brightness.light
+                ? palette.border
+                : palette.purple,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppRadii.button),
           ),

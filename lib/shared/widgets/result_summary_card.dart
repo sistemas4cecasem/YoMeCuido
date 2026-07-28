@@ -51,48 +51,79 @@ class _ScoreProgress extends StatelessWidget {
     final palette = context.palette;
     final textTheme = Theme.of(context).textTheme;
     final progress = result.correctAnswers / result.totalQuestions;
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final usesLargeText = textScale > 1.3;
 
     return Semantics(
       label:
           '${result.correctAnswers} de ${result.totalQuestions} respuestas correctas. '
           '${result.percentage} por ciento.',
-      child: SizedBox(
-        width: 164,
-        height: 164,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox.expand(
-              child: CircularProgressIndicator(
-                value: progress,
-                strokeWidth: 12,
-                strokeCap: StrokeCap.round,
-                backgroundColor: palette.border,
-                color: palette.purple,
-              ),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
+      child: usesLargeText
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('${result.percentage}%', style: textTheme.headlineMedium),
-                const SizedBox(height: AppSpacing.xxs),
                 Text(
-                  '${result.correctAnswers} de ${result.totalQuestions}',
-                  style: textTheme.titleSmall,
+                  '${result.percentage}%',
+                  textAlign: TextAlign.center,
+                  style: textTheme.headlineMedium,
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
+                  '${result.correctAnswers} de ${result.totalQuestions} '
                   'respuestas correctas',
                   textAlign: TextAlign.center,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: palette.textMuted,
-                  ),
+                  style: textTheme.titleSmall,
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 8,
+                  borderRadius: BorderRadius.circular(999),
+                  backgroundColor: palette.border,
+                  color: palette.purple,
                 ),
               ],
+            )
+          : SizedBox(
+              width: 164,
+              height: 164,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox.expand(
+                    child: CircularProgressIndicator(
+                      value: progress,
+                      strokeWidth: 12,
+                      strokeCap: StrokeCap.round,
+                      backgroundColor: palette.border,
+                      color: palette.purple,
+                    ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${result.percentage}%',
+                        style: textTheme.headlineMedium,
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        '${result.correctAnswers} de ${result.totalQuestions}',
+                        style: textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: AppSpacing.xxs),
+                      Text(
+                        'respuestas correctas',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: palette.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

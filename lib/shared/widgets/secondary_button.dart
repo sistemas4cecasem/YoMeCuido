@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_spacing.dart';
+
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
     required this.label,
@@ -16,18 +18,39 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final button = icon == null
-        ? OutlinedButton(onPressed: onPressed, child: Text(label))
-        : OutlinedButton.icon(
-            onPressed: onPressed,
-            icon: Icon(icon),
-            label: Text(label),
-          );
+    final button = OutlinedButton(
+      onPressed: onPressed,
+      child: _ButtonContent(label: label, icon: icon),
+    );
 
     return Semantics(
       button: true,
       label: semanticsLabel ?? label,
-      child: button,
+      child: SizedBox(width: double.infinity, child: button),
+    );
+  }
+}
+
+class _ButtonContent extends StatelessWidget {
+  const _ButtonContent({required this.label, required this.icon});
+
+  final String label;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    if (icon == null) {
+      return Text(label, textAlign: TextAlign.center);
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon),
+        const SizedBox(width: AppSpacing.xs),
+        Flexible(child: Text(label, textAlign: TextAlign.center)),
+      ],
     );
   }
 }

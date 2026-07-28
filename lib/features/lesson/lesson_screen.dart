@@ -112,33 +112,72 @@ class _LessonScreenState extends State<LessonScreen> {
                 child: SingleChildScrollView(child: _TheoryCard(page: page)),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Row(
-                children: [
-                  Expanded(
-                    child: SecondaryButton(
-                      label: AppStrings.previous,
-                      icon: Icons.arrow_back_outlined,
-                      onPressed: isFirstPage ? null : _goBack,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: PrimaryButton(
-                      label: isLastPage
-                          ? AppStrings.startActivities
-                          : AppStrings.next,
-                      icon: isLastPage
-                          ? Icons.play_arrow_outlined
-                          : Icons.arrow_forward_outlined,
-                      onPressed: () => _goForward(pages),
-                    ),
-                  ),
-                ],
+              _LessonActions(
+                isFirstPage: isFirstPage,
+                isLastPage: isLastPage,
+                onPrevious: _goBack,
+                onNext: () => _goForward(pages),
               ),
             ],
           );
         },
       ),
+    );
+  }
+}
+
+class _LessonActions extends StatelessWidget {
+  const _LessonActions({
+    required this.isFirstPage,
+    required this.isLastPage,
+    required this.onPrevious,
+    required this.onNext,
+  });
+
+  final bool isFirstPage;
+  final bool isLastPage;
+  final VoidCallback onPrevious;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final shouldStack = constraints.maxWidth < 360 || textScale > 1.2;
+        final previousButton = SecondaryButton(
+          label: AppStrings.previous,
+          icon: Icons.arrow_back_outlined,
+          onPressed: isFirstPage ? null : onPrevious,
+        );
+        final nextButton = PrimaryButton(
+          label: isLastPage ? AppStrings.startActivities : AppStrings.next,
+          icon: isLastPage
+              ? Icons.play_arrow_outlined
+              : Icons.arrow_forward_outlined,
+          onPressed: onNext,
+        );
+
+        if (shouldStack) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              previousButton,
+              const SizedBox(height: AppSpacing.sm),
+              nextButton,
+            ],
+          );
+        }
+
+        return Row(
+          children: [
+            Expanded(child: previousButton),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(child: nextButton),
+          ],
+        );
+      },
     );
   }
 }

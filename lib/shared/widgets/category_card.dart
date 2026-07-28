@@ -70,12 +70,15 @@ class CategoryCard extends StatelessWidget {
                 ),
                 if (!enabled) ...[
                   const SizedBox(width: AppSpacing.sm),
-                  Semantics(
-                    label: AppStrings.comingSoon,
-                    child: Icon(
-                      Icons.lock_outline,
-                      color: palette.textMuted,
-                      size: 22,
+                  Tooltip(
+                    message: AppStrings.comingSoon,
+                    child: Semantics(
+                      label: AppStrings.comingSoon,
+                      child: Icon(
+                        Icons.lock_outline,
+                        color: palette.textMuted,
+                        size: 22,
+                      ),
                     ),
                   ),
                 ],
@@ -105,11 +108,12 @@ class _ComingSoonPill extends StatelessWidget {
           horizontal: AppSpacing.xs,
           vertical: AppSpacing.xxs,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: AppSpacing.xxs,
+          runSpacing: AppSpacing.xxs,
           children: [
             Icon(Icons.lock_outline, size: 14, color: palette.textMuted),
-            const SizedBox(width: AppSpacing.xxs),
             Text(
               AppStrings.comingSoon,
               style: Theme.of(

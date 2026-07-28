@@ -20,10 +20,18 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final appBarHeight =
+        56.0 + ((textScale - 1).clamp(0.0, 1.0).toDouble() * 24.0);
+
     return Scaffold(
       appBar: title == null
           ? null
-          : AppBar(title: Text(title!), actions: actions),
+          : AppBar(
+              toolbarHeight: appBarHeight,
+              title: Text(title!, maxLines: 2),
+              actions: actions,
+            ),
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
