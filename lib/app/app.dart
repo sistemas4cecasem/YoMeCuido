@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_theme.dart';
+import '../data/repositories/content_repository.dart';
+import '../data/repositories/local_content_repository.dart';
 import 'app_router.dart';
 import 'app_strings.dart';
 
 class YoMeCuidoApp extends StatelessWidget {
-  const YoMeCuidoApp({super.key});
+  YoMeCuidoApp({ContentRepository? contentRepository, super.key})
+    : _router = AppRouter(
+        contentRepository: contentRepository ?? LocalContentRepository(),
+      );
+
+  final AppRouter _router;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,7 @@ class YoMeCuidoApp extends StatelessWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       initialRoute: AppRoutes.home,
-      onGenerateRoute: AppRouter.onGenerateRoute,
+      onGenerateRoute: _router.onGenerateRoute,
     );
   }
 }
