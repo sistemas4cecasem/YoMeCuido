@@ -6,18 +6,18 @@ import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/info_card.dart';
 import '../../shared/widgets/category_card.dart';
 
-class CategoryDetailPlaceholderScreen extends StatelessWidget {
-  const CategoryDetailPlaceholderScreen({required this.category, super.key});
+class QuizPlaceholderScreen extends StatelessWidget {
+  const QuizPlaceholderScreen({required this.category, super.key});
 
   final Category category;
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: AppStrings.temporaryDetailTitle,
+      title: AppStrings.quizPlaceholderTitle,
       child: InfoCard(
         title: category.title,
-        body: AppStrings.temporaryDetailBody,
+        body: AppStrings.quizPlaceholderBody,
         icon: categoryIconFromName(category.iconName),
       ),
     );

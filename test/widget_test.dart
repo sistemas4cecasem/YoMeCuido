@@ -20,6 +20,18 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<void> openCategories(WidgetTester tester) async {
+    await pumpApp(tester);
+    await tester.tap(find.text(AppStrings.start));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> openDetail(WidgetTester tester) async {
+    await openCategories(tester);
+    await tester.tap(find.text('Relaciones y violencia digital'));
+    await tester.pumpAndSettle();
+  }
+
   testWidgets('la bienvenida muestra logo, frase y botón', (tester) async {
     await pumpApp(tester);
 
@@ -52,9 +64,7 @@ void main() {
   testWidgets('se muestran ocho categorías y solo una habilitada', (
     tester,
   ) async {
-    await pumpApp(tester);
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
+    await openCategories(tester);
 
     for (final category in repository.categories) {
       expect(find.text(category.title), findsOneWidget);
@@ -73,44 +83,148 @@ void main() {
   });
 
   testWidgets('las categorías bloqueadas no navegan', (tester) async {
-    await pumpApp(tester);
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
+    await openCategories(tester);
 
     await tester.tap(find.text('Protección de cuentas y autenticación'));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.temporaryDetailBody), findsNothing);
+    expect(find.text(AppStrings.startLesson), findsNothing);
     expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
     expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
   });
 
-  testWidgets('la categoría habilitada permite avanzar', (tester) async {
-    await pumpApp(tester);
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
+  testWidgets('abre el detalle desde la categoría habilitada', (tester) async {
+    await openDetail(tester);
 
-    await tester.tap(find.text('Relaciones y violencia digital'));
-    await tester.pumpAndSettle();
-
-    expect(find.text(AppStrings.temporaryDetailBody), findsOneWidget);
     expect(find.text('Relaciones y violencia digital'), findsWidgets);
+    expect(
+      find.text(
+        'Aprende a reconocer el control, el acoso, las amenazas y otras '
+        'formas de violencia que pueden ocurrir mediante redes sociales, '
+        'mensajería, cuentas y dispositivos.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('el detalle muestra datos principales', (tester) async {
+    await openDetail(tester);
+
+    expect(find.byIcon(Icons.shield_outlined), findsWidgets);
+    expect(find.text('12 actividades'), findsOneWidget);
+    expect(find.text('10–15 minutos'), findsOneWidget);
+    expect(find.text('Nivel básico e intermedio'), findsOneWidget);
+    expect(find.text(AppStrings.objectivesTitle), findsOneWidget);
+    expect(
+      find.text('Identificar señales de control y acoso digital.'),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        'Comprender la importancia del consentimiento y de las redes de apoyo.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text(AppStrings.sensitiveContentWarningTitle), findsOneWidget);
+    expect(find.text(AppStrings.startLesson), findsOneWidget);
+  });
+
+  testWidgets('navega entre las cuatro cápsulas teóricas', (tester) async {
+    await openDetail(tester);
+
+    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.pumpAndSettle();
+
+    expect(repository.loadLessonPagesCalls, 1);
+    expect(find.text('1 de 4'), findsOneWidget);
+    expect(find.text('¿Qué es la violencia digital?'), findsOneWidget);
+    expect(
+      tester.widget<OutlinedButton>(find.byType(OutlinedButton)).enabled,
+      isFalse,
+    );
+
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    expect(find.text('2 de 4'), findsOneWidget);
+    expect(
+      find.text('El control no es una muestra de cuidado'),
+      findsOneWidget,
+    );
+    expect(
+      tester.widget<OutlinedButton>(find.byType(OutlinedButton)).enabled,
+      isTrue,
+    );
+
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    expect(find.text('3 de 4'), findsOneWidget);
+    expect(find.text('Consentimiento y contenido íntimo'), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.previous));
+    await tester.pumpAndSettle();
+    expect(find.text('2 de 4'), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    expect(find.text('4 de 4'), findsOneWidget);
+    expect(find.text('Cómo actuar'), findsOneWidget);
+    expect(find.text(AppStrings.startActivities), findsOneWidget);
+    expect(find.text(AppStrings.next), findsNothing);
+  });
+
+  testWidgets('el último botón abre el placeholder del cuestionario', (
+    tester,
+  ) async {
+    await openDetail(tester);
+
+    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizPlaceholderTitle), findsOneWidget);
+    expect(find.text(AppStrings.quizPlaceholderBody), findsOneWidget);
   });
 }
 
 class _FakeContentRepository implements ContentRepository {
   int loadCategoriesCalls = 0;
+  int loadLessonPagesCalls = 0;
 
   final categories = const <Category>[
     Category(
       id: 'relations_violence_digital',
       title: 'Relaciones y violencia digital',
-      description: 'Contenido disponible para la demo.',
+      description:
+          'Aprende a reconocer el control, el acoso, las amenazas y otras '
+          'formas de violencia que pueden ocurrir mediante redes sociales, '
+          'mensajería, cuentas y dispositivos.',
       iconName: 'shield_outlined',
       status: CategoryStatus.available,
       isEnabled: true,
-      indicators: <String>[],
-      objectives: <String>[],
+      indicators: <String>[
+        '12 actividades',
+        '10–15 minutos',
+        'Nivel básico e intermedio',
+      ],
+      objectives: <String>[
+        'Identificar señales de control y acoso digital.',
+        'Proteger la privacidad y recuperar el control de las cuentas.',
+        'Reconocer acciones seguras ante amenazas.',
+        'Comprender la importancia del consentimiento y de las redes de apoyo.',
+      ],
+      warning:
+          'Algunos contenidos mencionan acoso, amenazas, grooming y difusión '
+          'no consentida de contenido íntimo. Puedes salir de la lección '
+          'cuando lo necesites.',
       lessonId: 'relations_violence',
     ),
     Category(
@@ -185,6 +299,43 @@ class _FakeContentRepository implements ContentRepository {
     ),
   ];
 
+  final lessonPages = const <LessonPage>[
+    LessonPage(
+      id: 'what_is_digital_violence',
+      order: 1,
+      title: '¿Qué es la violencia digital?',
+      body:
+          'La violencia digital incluye acciones realizadas mediante redes '
+          'sociales, mensajería, cuentas o dispositivos para controlar, '
+          'vigilar, intimidar, acosar o causar daño a otra persona.',
+    ),
+    LessonPage(
+      id: 'control_is_not_care',
+      order: 2,
+      title: 'El control no es una muestra de cuidado',
+      body:
+          'Exigir contraseñas, revisar mensajes sin permiso, controlar '
+          'contactos o pedir la ubicación en todo momento puede ser una forma '
+          'de control digital.',
+    ),
+    LessonPage(
+      id: 'consent_and_intimate_content',
+      order: 3,
+      title: 'Consentimiento y contenido íntimo',
+      body:
+          'Compartir una imagen con una persona no significa autorizar su '
+          'publicación o reenvío.',
+    ),
+    LessonPage(
+      id: 'how_to_act',
+      order: 4,
+      title: 'Cómo actuar',
+      body:
+          'Ante amenazas o acoso, conviene guardar evidencia, proteger las '
+          'cuentas, bloquear o reportar cuando sea seguro y buscar apoyo.',
+    ),
+  ];
+
   @override
   Future<List<Category>> loadCategories() async {
     loadCategoriesCalls += 1;
@@ -192,8 +343,9 @@ class _FakeContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<LessonPage>> loadLessonPages(String categoryId) {
-    throw UnimplementedError();
+  Future<List<LessonPage>> loadLessonPages(String categoryId) async {
+    loadLessonPagesCalls += 1;
+    return lessonPages;
   }
 
   @override
