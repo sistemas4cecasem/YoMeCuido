@@ -1,0 +1,95 @@
+{
+  "categories": [
+    {
+      "id": "relations_violence_digital",
+      "title": "Relaciones y violencia digital",
+      "description": "Aprende a reconocer el control, el acoso, las amenazas y otras formas de violencia que pueden ocurrir mediante redes sociales, mensajería, cuentas y dispositivos.",
+      "iconName": "shield_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "lessonId": "relations_violence",
+      "indicators": [
+        "12 actividades",
+        "10–15 minutos",
+        "Nivel básico e intermedio"
+      ],
+      "objectives": [
+        "Identificar señales de control y acoso digital.",
+        "Proteger la privacidad y recuperar el control de las cuentas.",
+        "Reconocer acciones seguras ante amenazas.",
+        "Comprender la importancia del consentimiento y de las redes de apoyo."
+      ],
+      "warning": "Algunos contenidos mencionan acoso, amenazas, grooming y difusión no consentida de contenido íntimo. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "account_protection_authentication",
+      "title": "Protección de cuentas y autenticación",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "lock_outline",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "device_app_security",
+      "title": "Seguridad de dispositivos y aplicaciones",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "phone_android_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "personal_data_privacy_identity",
+      "title": "Datos personales, privacidad e identidad",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "badge_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "phishing_social_engineering",
+      "title": "Engaños, phishing e ingeniería social",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "mark_email_unread_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "digital_payments_consumption",
+      "title": "Pagos, transferencias, compras y consumo digital",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "credit_card_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "information_misinformation_ai",
+      "title": "Información, desinformación e inteligencia artificial",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "fact_check_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    },
+    {
+      "id": "incident_response_recovery",
+      "title": "Respuesta y recuperación ante incidentes",
+      "description": "Esta categoría estará disponible próximamente.",
+      "iconName": "health_and_safety_outlined",
+      "status": "comingSoon",
+      "isEnabled": false,
+      "indicators": [],
+      "objectives": []
+    }
+  ]
+}

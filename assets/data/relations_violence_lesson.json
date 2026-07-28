@@ -1,0 +1,28 @@
+{
+  "lessonPages": [
+    {
+      "id": "what_is_digital_violence",
+      "order": 1,
+      "title": "¿Qué es la violencia digital?",
+      "body": "La violencia digital incluye acciones realizadas mediante redes sociales, mensajería, cuentas o dispositivos para controlar, vigilar, intimidar, acosar o causar daño a otra persona."
+    },
+    {
+      "id": "control_is_not_care",
+      "order": 2,
+      "title": "El control no es una muestra de cuidado",
+      "body": "Exigir contraseñas, revisar mensajes sin permiso, controlar contactos o pedir la ubicación en todo momento puede ser una forma de control digital. El afecto no elimina el derecho a la privacidad."
+    },
+    {
+      "id": "consent_and_intimate_content",
+      "order": 3,
+      "title": "Consentimiento y contenido íntimo",
+      "body": "Compartir una imagen con una persona no significa autorizar su publicación o reenvío. Difundir o amenazar con difundir contenido íntimo sin permiso vulnera el consentimiento."
+    },
+    {
+      "id": "how_to_act",
+      "order": 4,
+      "title": "Cómo actuar",
+      "body": "Ante amenazas o acoso, conviene guardar evidencia, proteger las cuentas, bloquear o reportar cuando sea seguro y buscar apoyo. Si existe riesgo físico inmediato, la prioridad es llegar a un lugar seguro y solicitar ayuda de emergencia."
+    }
+  ]
+}
