@@ -14,7 +14,6 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
     final textTheme = Theme.of(context).textTheme;
 
     return AppScaffold(
@@ -53,7 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                     AppStrings.appTagline,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyLarge?.copyWith(
-                      color: palette.textMuted,
+                      color: context.colors.textSecondary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),

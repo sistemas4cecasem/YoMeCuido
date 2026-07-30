@@ -19,9 +19,7 @@ class YoMeCuidoApp extends StatelessWidget {
     return MaterialApp(
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      theme: AppTheme.data(),
       initialRoute: AppRoutes.home,
       onGenerateRoute: _router.onGenerateRoute,
     );

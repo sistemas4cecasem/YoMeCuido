@@ -189,7 +189,7 @@ class _TheoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
@@ -198,7 +198,7 @@ class _TheoryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.menu_book_outlined, color: palette.purple, size: 32),
+            Icon(Icons.menu_book_outlined, color: colors.orangeDark, size: 32),
             const SizedBox(height: AppSpacing.md),
             Text(page.title, style: textTheme.headlineMedium),
             const SizedBox(height: AppSpacing.md),

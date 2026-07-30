@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppTypography {
-  static TextTheme textTheme(Color textPrimary, Color textMuted) {
+  static TextTheme textTheme(Color textPrimary, Color textSecondary) {
     const base = TextTheme();
 
     return base.copyWith(
@@ -42,7 +42,7 @@ abstract final class AppTypography {
         height: 1.5,
       ),
       bodyMedium: TextStyle(
-        color: textMuted,
+        color: textSecondary,
         fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 1.45,

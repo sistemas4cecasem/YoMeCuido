@@ -17,10 +17,15 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
+      color: colors.orangeSoft,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        side: BorderSide(color: colors.border),
+      ),
       child: Padding(
         padding: AppInsets.card,
         child: Row(
@@ -29,7 +34,7 @@ class InfoCard extends StatelessWidget {
             if (icon != null) ...[
               Semantics(
                 label: title,
-                child: Icon(icon, color: palette.purple, size: 28),
+                child: Icon(icon, color: colors.orangeDark, size: 28),
               ),
               const SizedBox(width: AppSpacing.md),
             ],

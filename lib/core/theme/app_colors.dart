@@ -1,112 +1,116 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class AppPalette extends ThemeExtension<AppPalette> {
-  const AppPalette({
-    required this.orange,
-    required this.purple,
-    required this.purpleSoft,
+class AppColors extends ThemeExtension<AppColors> {
+  const AppColors({
     required this.background,
     required this.surface,
-    required this.surfaceHigh,
+    required this.surfaceStrong,
+    required this.orangePrimary,
+    required this.orangeDark,
+    required this.orangeSoft,
+    required this.purpleSecondary,
     required this.textPrimary,
-    required this.textMuted,
+    required this.textSecondary,
     required this.border,
-    required this.error,
+    required this.disabledSurface,
+    required this.disabledText,
     required this.success,
+    required this.error,
   });
 
-  static const light = AppPalette(
-    orange: Color(0xFFFF8A00),
-    purple: Color(0xFF7B1FA2),
-    purpleSoft: Color(0xFFF7F2FF),
-    background: Color(0xFFFAF8FC),
-    surface: Color(0xFFFFFFFF),
-    surfaceHigh: Color(0xFFFFFFFF),
-    textPrimary: Color(0xFF17151B),
-    textMuted: Color(0xFF6F6878),
-    border: Color(0xFFE7E1EB),
-    error: Color(0xFFB3261E),
+  static const fixed = AppColors(
+    background: Color(0xFFFFF3E0),
+    surface: Color(0xFFFFFBF6),
+    surfaceStrong: Color(0xFFFFFFFF),
+    orangePrimary: Color(0xFFFF8A00),
+    orangeDark: Color(0xFFC95D00),
+    orangeSoft: Color(0xFFFFE2BD),
+    purpleSecondary: Color(0xFF7B1FA2),
+    textPrimary: Color(0xFF241A14),
+    textSecondary: Color(0xFF6E5D52),
+    border: Color(0xFFE8D8CA),
+    disabledSurface: Color(0xFFF2EAE3),
+    disabledText: Color(0xFF91857C),
     success: Color(0xFF2E7D32),
+    error: Color(0xFFB3261E),
   );
 
-  static const dark = AppPalette(
-    orange: Color(0xFFFF9D24),
-    purple: Color(0xFF9C4DCC),
-    purpleSoft: Color(0xFF2C1838),
-    background: Color(0xFF0B1117),
-    surface: Color(0xFF141B23),
-    surfaceHigh: Color(0xFF1B2430),
-    textPrimary: Color(0xFFF5F7FA),
-    textMuted: Color(0xFFAAB3BE),
-    border: Color(0xFF2C3744),
-    error: Color(0xFFFFB4AB),
-    success: Color(0xFF8BD49C),
-  );
-
-  final Color orange;
-  final Color purple;
-  final Color purpleSoft;
   final Color background;
   final Color surface;
-  final Color surfaceHigh;
+  final Color surfaceStrong;
+  final Color orangePrimary;
+  final Color orangeDark;
+  final Color orangeSoft;
+  final Color purpleSecondary;
   final Color textPrimary;
-  final Color textMuted;
+  final Color textSecondary;
   final Color border;
-  final Color error;
+  final Color disabledSurface;
+  final Color disabledText;
   final Color success;
+  final Color error;
 
   @override
-  AppPalette copyWith({
-    Color? orange,
-    Color? purple,
-    Color? purpleSoft,
+  AppColors copyWith({
     Color? background,
     Color? surface,
-    Color? surfaceHigh,
+    Color? surfaceStrong,
+    Color? orangePrimary,
+    Color? orangeDark,
+    Color? orangeSoft,
+    Color? purpleSecondary,
     Color? textPrimary,
-    Color? textMuted,
+    Color? textSecondary,
     Color? border,
-    Color? error,
+    Color? disabledSurface,
+    Color? disabledText,
     Color? success,
+    Color? error,
   }) {
-    return AppPalette(
-      orange: orange ?? this.orange,
-      purple: purple ?? this.purple,
-      purpleSoft: purpleSoft ?? this.purpleSoft,
+    return AppColors(
       background: background ?? this.background,
       surface: surface ?? this.surface,
-      surfaceHigh: surfaceHigh ?? this.surfaceHigh,
+      surfaceStrong: surfaceStrong ?? this.surfaceStrong,
+      orangePrimary: orangePrimary ?? this.orangePrimary,
+      orangeDark: orangeDark ?? this.orangeDark,
+      orangeSoft: orangeSoft ?? this.orangeSoft,
+      purpleSecondary: purpleSecondary ?? this.purpleSecondary,
       textPrimary: textPrimary ?? this.textPrimary,
-      textMuted: textMuted ?? this.textMuted,
+      textSecondary: textSecondary ?? this.textSecondary,
       border: border ?? this.border,
-      error: error ?? this.error,
+      disabledSurface: disabledSurface ?? this.disabledSurface,
+      disabledText: disabledText ?? this.disabledText,
       success: success ?? this.success,
+      error: error ?? this.error,
     );
   }
 
   @override
-  AppPalette lerp(ThemeExtension<AppPalette>? other, double t) {
-    if (other is! AppPalette) {
+  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
+    if (other is! AppColors) {
       return this;
     }
 
-    return AppPalette(
-      orange: Color.lerp(orange, other.orange, t)!,
-      purple: Color.lerp(purple, other.purple, t)!,
-      purpleSoft: Color.lerp(purpleSoft, other.purpleSoft, t)!,
+    return AppColors(
       background: Color.lerp(background, other.background, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
-      surfaceHigh: Color.lerp(surfaceHigh, other.surfaceHigh, t)!,
+      surfaceStrong: Color.lerp(surfaceStrong, other.surfaceStrong, t)!,
+      orangePrimary: Color.lerp(orangePrimary, other.orangePrimary, t)!,
+      orangeDark: Color.lerp(orangeDark, other.orangeDark, t)!,
+      orangeSoft: Color.lerp(orangeSoft, other.orangeSoft, t)!,
+      purpleSecondary: Color.lerp(purpleSecondary, other.purpleSecondary, t)!,
       textPrimary: Color.lerp(textPrimary, other.textPrimary, t)!,
-      textMuted: Color.lerp(textMuted, other.textMuted, t)!,
+      textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       border: Color.lerp(border, other.border, t)!,
-      error: Color.lerp(error, other.error, t)!,
+      disabledSurface: Color.lerp(disabledSurface, other.disabledSurface, t)!,
+      disabledText: Color.lerp(disabledText, other.disabledText, t)!,
       success: Color.lerp(success, other.success, t)!,
+      error: Color.lerp(error, other.error, t)!,
     );
   }
 }
 
-extension AppPaletteAccess on BuildContext {
-  AppPalette get palette => Theme.of(this).extension<AppPalette>()!;
+extension AppColorsAccess on BuildContext {
+  AppColors get colors => Theme.of(this).extension<AppColors>()!;
 }

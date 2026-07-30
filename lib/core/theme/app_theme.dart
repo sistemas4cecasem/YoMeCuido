@@ -5,90 +5,169 @@ import 'app_spacing.dart';
 import 'app_typography.dart';
 
 abstract final class AppTheme {
-  static ThemeData light() => _build(AppPalette.light, Brightness.light);
-
-  static ThemeData dark() => _build(AppPalette.dark, Brightness.dark);
-
-  static ThemeData _build(AppPalette palette, Brightness brightness) {
-    final colorScheme = ColorScheme(
-      brightness: brightness,
-      primary: palette.purple,
-      onPrimary: Colors.white,
-      secondary: palette.orange,
-      onSecondary: Colors.black,
-      error: palette.error,
-      onError: brightness == Brightness.light
-          ? Colors.white
-          : const Color(0xFF601410),
-      surface: palette.surface,
-      onSurface: palette.textPrimary,
-    );
-
+  static ThemeData data() {
+    const colors = AppColors.fixed;
     final textTheme = AppTypography.textTheme(
-      palette.textPrimary,
-      palette.textMuted,
+      colors.textPrimary,
+      colors.textSecondary,
+    );
+    final colorScheme = ColorScheme(
+      brightness: Brightness.light,
+      primary: colors.orangePrimary,
+      onPrimary: colors.surfaceStrong,
+      secondary: colors.purpleSecondary,
+      onSecondary: colors.surfaceStrong,
+      error: colors.error,
+      onError: colors.surfaceStrong,
+      surface: colors.surface,
+      onSurface: colors.textPrimary,
     );
 
     return ThemeData(
       useMaterial3: true,
-      brightness: brightness,
+      brightness: Brightness.light,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: palette.background,
+      scaffoldBackgroundColor: colors.background,
+      canvasColor: colors.background,
       textTheme: textTheme,
-      extensions: <ThemeExtension<dynamic>>[palette],
+      extensions: const <ThemeExtension<dynamic>>[colors],
       appBarTheme: AppBarTheme(
         centerTitle: false,
         elevation: 0,
         scrolledUnderElevation: 0,
-        backgroundColor: palette.background,
-        foregroundColor: palette.textPrimary,
+        backgroundColor: colors.background,
+        foregroundColor: colors.textPrimary,
         titleTextStyle: textTheme.titleLarge,
       ),
       cardTheme: CardThemeData(
-        color: palette.surface,
-        elevation: brightness == Brightness.light ? 1 : 0,
+        color: colors.surface,
+        elevation: 1,
+        shadowColor: colors.orangeDark.withValues(alpha: 0.08),
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadii.card),
-          side: BorderSide(color: palette.border),
+          side: BorderSide(color: colors.border),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size.fromHeight(AppSizing.primaryButtonHeight),
-          padding: AppInsets.button,
-          elevation: 0,
-          backgroundColor: palette.purple,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: palette.border,
-          disabledForegroundColor: palette.textMuted,
-          textStyle: textTheme.labelLarge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.button),
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(
+            Size.fromHeight(AppSizing.primaryButtonHeight),
+          ),
+          padding: const WidgetStatePropertyAll(AppInsets.button),
+          elevation: const WidgetStatePropertyAll(0),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colors.disabledSurface;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return colors.orangeDark;
+            }
+            return colors.orangePrimary;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colors.disabledText;
+            }
+            return colors.surfaceStrong;
+          }),
+          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadii.button),
+            ),
           ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(AppSizing.primaryButtonHeight),
-          padding: AppInsets.button,
-          foregroundColor: brightness == Brightness.light
-              ? palette.purple
-              : palette.textPrimary,
-          disabledForegroundColor: palette.textMuted,
-          textStyle: textTheme.labelLarge,
-          side: BorderSide(
-            color: brightness == Brightness.light
-                ? palette.border
-                : palette.purple,
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(
+            Size.fromHeight(AppSizing.primaryButtonHeight),
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.button),
+          padding: const WidgetStatePropertyAll(AppInsets.button),
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.pressed)) {
+              return colors.orangeSoft;
+            }
+            return null;
+          }),
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return colors.disabledText;
+            }
+            return colors.orangeDark;
+          }),
+          textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+          side: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return BorderSide(color: colors.border);
+            }
+            return BorderSide(color: colors.orangePrimary);
+          }),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadii.button),
+            ),
           ),
         ),
       ),
-      iconTheme: IconThemeData(color: palette.purple),
-      dividerTheme: DividerThemeData(color: palette.border),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colors.orangeDark,
+          textStyle: textTheme.labelLarge,
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: colors.surface,
+        labelStyle: textTheme.bodyMedium,
+        floatingLabelStyle: textTheme.bodyMedium?.copyWith(
+          color: colors.orangeDark,
+          fontWeight: FontWeight.w600,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.button),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          borderSide: BorderSide(color: colors.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          borderSide: BorderSide(color: colors.orangePrimary, width: 2),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          borderSide: BorderSide(color: colors.border),
+        ),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: colors.orangePrimary,
+        linearTrackColor: colors.orangeSoft,
+        circularTrackColor: colors.orangeSoft,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.textPrimary,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: colors.surfaceStrong,
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.sm),
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: colors.surface,
+        surfaceTintColor: colors.surface,
+        titleTextStyle: textTheme.titleLarge,
+        contentTextStyle: textTheme.bodyLarge,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          side: BorderSide(color: colors.border),
+        ),
+      ),
+      iconTheme: IconThemeData(color: colors.orangeDark),
+      dividerTheme: DividerThemeData(color: colors.border),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
-import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 import '../../data/models/quiz_question.dart';
@@ -379,8 +378,6 @@ class _FillBlankInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-
     return TextField(
       controller: textController,
       enabled: !controller.isAnswerConfirmed,
@@ -395,19 +392,6 @@ class _FillBlankInput extends StatelessWidget {
       decoration: InputDecoration(
         labelText: AppStrings.fillBlankHint,
         counterText: '',
-        filled: true,
-        fillColor: palette.surface,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.button),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.button),
-          borderSide: BorderSide(color: palette.border),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppRadii.button),
-          borderSide: BorderSide(color: palette.purple, width: 2),
-        ),
       ),
       onChanged: controller.updateWrittenAnswer,
       onSubmitted: (_) {

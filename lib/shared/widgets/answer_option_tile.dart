@@ -17,10 +17,10 @@ class AnswerOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final borderColor = isSelected ? palette.purple : palette.border;
-    final backgroundColor = isSelected ? palette.purpleSoft : palette.surface;
+    final borderColor = isSelected ? colors.orangePrimary : colors.border;
+    final backgroundColor = isSelected ? colors.orangeSoft : colors.surface;
 
     return Semantics(
       button: true,
@@ -46,14 +46,14 @@ class AnswerOptionTile extends StatelessWidget {
                   isSelected
                       ? Icons.check_circle_outline
                       : Icons.radio_button_unchecked,
-                  color: isSelected ? palette.purple : palette.textMuted,
+                  color: isSelected ? colors.orangeDark : colors.textSecondary,
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
                   child: Text(
                     text,
                     style: textTheme.bodyLarge?.copyWith(
-                      color: palette.textPrimary,
+                      color: colors.textPrimary,
                     ),
                   ),
                 ),

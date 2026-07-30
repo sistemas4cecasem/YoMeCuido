@@ -13,11 +13,12 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
     final enabled = category.isEnabled;
-    final iconColor = enabled ? palette.purple : palette.textMuted;
-    final iconBackground = enabled ? palette.purpleSoft : palette.surfaceHigh;
+    final iconColor = enabled ? colors.orangeDark : colors.disabledText;
+    final iconBackground = enabled ? colors.orangeSoft : colors.disabledSurface;
+    final borderColor = enabled ? colors.orangePrimary : colors.border;
 
     return Semantics(
       button: true,
@@ -26,7 +27,11 @@ class CategoryCard extends StatelessWidget {
           ? category.title
           : '${category.title}, ${AppStrings.comingSoon}',
       child: Card(
-        color: enabled ? palette.surface : palette.surfaceHigh,
+        color: enabled ? colors.surface : colors.disabledSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          side: BorderSide(color: borderColor, width: enabled ? 1.5 : 1),
+        ),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppRadii.card),
@@ -41,7 +46,7 @@ class CategoryCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: iconBackground,
                     borderRadius: BorderRadius.circular(AppRadii.sm),
-                    border: Border.all(color: palette.border),
+                    border: Border.all(color: borderColor),
                   ),
                   child: Icon(
                     categoryIconFromName(category.iconName),
@@ -57,13 +62,13 @@ class CategoryCard extends StatelessWidget {
                         category.title,
                         style: textTheme.titleSmall?.copyWith(
                           color: enabled
-                              ? palette.textPrimary
-                              : palette.textMuted,
+                              ? colors.textPrimary
+                              : colors.disabledText,
                         ),
                       ),
                       if (!enabled) ...[
                         const SizedBox(height: AppSpacing.xs),
-                        _ComingSoonPill(palette: palette),
+                        _ComingSoonPill(colors: colors),
                       ],
                     ],
                   ),
@@ -76,7 +81,7 @@ class CategoryCard extends StatelessWidget {
                       label: AppStrings.comingSoon,
                       child: Icon(
                         Icons.lock_outline,
-                        color: palette.textMuted,
+                        color: colors.disabledText,
                         size: 22,
                       ),
                     ),
@@ -92,15 +97,16 @@ class CategoryCard extends StatelessWidget {
 }
 
 class _ComingSoonPill extends StatelessWidget {
-  const _ComingSoonPill({required this.palette});
+  const _ComingSoonPill({required this.colors});
 
-  final AppPalette palette;
+  final AppColors colors;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border.all(color: palette.border),
+        color: colors.disabledSurface,
+        border: Border.all(color: colors.border),
         borderRadius: BorderRadius.circular(AppRadii.sm),
       ),
       child: Padding(
@@ -113,12 +119,12 @@ class _ComingSoonPill extends StatelessWidget {
           spacing: AppSpacing.xxs,
           runSpacing: AppSpacing.xxs,
           children: [
-            Icon(Icons.lock_outline, size: 14, color: palette.textMuted),
+            Icon(Icons.lock_outline, size: 14, color: colors.disabledText),
             Text(
               AppStrings.comingSoon,
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: palette.textMuted),
+              ).textTheme.bodyMedium?.copyWith(color: colors.disabledText),
             ),
           ],
         ),

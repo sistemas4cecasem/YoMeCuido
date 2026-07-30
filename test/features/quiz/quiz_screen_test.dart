@@ -18,8 +18,7 @@ void main() {
   Future<void> pumpQuiz(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
+        theme: AppTheme.data(),
         home: Builder(
           builder: (context) {
             return TextButton(

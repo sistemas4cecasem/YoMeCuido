@@ -17,7 +17,7 @@ class CategoryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
 
     return AppScaffold(
@@ -50,7 +50,7 @@ class CategoryDetailScreen extends StatelessWidget {
                     for (final objective in category.objectives) ...[
                       _ObjectiveRow(text: objective),
                       if (objective != category.objectives.last)
-                        Divider(height: AppSpacing.lg, color: palette.border),
+                        Divider(height: AppSpacing.lg, color: colors.border),
                     ],
                   ],
                 ),
@@ -78,7 +78,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
@@ -88,16 +88,16 @@ class _Header extends StatelessWidget {
           width: 64,
           height: 64,
           decoration: BoxDecoration(
-            color: palette.purpleSoft,
+            color: colors.orangeSoft,
             borderRadius: BorderRadius.circular(AppRadii.card),
-            border: Border.all(color: palette.border),
+            border: Border.all(color: colors.border),
           ),
           child: Semantics(
             label: category.title,
             child: Icon(
               categoryIconFromName(category.iconName),
               size: 34,
-              color: palette.purple,
+              color: colors.orangeDark,
             ),
           ),
         ),
@@ -115,12 +115,12 @@ class _StartLessonBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: palette.background,
-        border: Border(top: BorderSide(color: palette.border)),
+        color: colors.background,
+        border: Border(top: BorderSide(color: colors.border)),
       ),
       child: SafeArea(
         top: false,
@@ -157,13 +157,13 @@ class _IndicatorChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: palette.surface,
+        color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadii.sm),
-        border: Border.all(color: palette.border),
+        border: Border.all(color: colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -183,12 +183,12 @@ class _ObjectiveRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(Icons.check_circle_outline, color: palette.purple, size: 22),
+        Icon(Icons.check_circle_outline, color: colors.success, size: 22),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(text, style: Theme.of(context).textTheme.bodyLarge),

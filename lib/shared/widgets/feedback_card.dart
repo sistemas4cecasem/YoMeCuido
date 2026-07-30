@@ -18,13 +18,13 @@ class FeedbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final statusColor = isCorrect ? palette.success : palette.error;
+    final statusColor = isCorrect ? colors.success : colors.error;
     final statusText = isCorrect ? AppStrings.correct : AppStrings.reviewAnswer;
 
     return Card(
-      color: palette.surfaceHigh,
+      color: colors.surfaceStrong,
       child: Padding(
         padding: AppInsets.card,
         child: Column(
@@ -53,7 +53,7 @@ class FeedbackCard extends StatelessWidget {
               Text(
                 '${AppStrings.expectedAnswer}: $expectedAnswer',
                 style: textTheme.bodyMedium?.copyWith(
-                  color: palette.textMuted,
+                  color: colors.textSecondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

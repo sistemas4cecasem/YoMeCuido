@@ -34,25 +34,22 @@ void main() {
 
   const sizes = <Size>[Size(360, 640), Size(393, 873), Size(412, 915)];
 
-  test('paletas clara y oscura mantienen contrastes principales', () {
-    for (final palette in <AppPalette>[AppPalette.light, AppPalette.dark]) {
-      expect(
-        _contrast(palette.textPrimary, palette.background),
-        greaterThan(7),
-      );
-      expect(_contrast(palette.textMuted, palette.surface), greaterThan(4.5));
-      expect(_contrast(palette.purple, palette.background), greaterThan(3));
-      expect(_contrast(Colors.white, palette.purple), greaterThan(4.5));
-      expect(_contrast(palette.error, palette.surface), greaterThan(4.5));
-      expect(_contrast(palette.success, palette.surface), greaterThan(4.5));
-      expect(palette.orange, isNot(palette.purple));
-    }
+  test('la identidad visual fija mantiene contrastes principales', () {
+    const colors = AppColors.fixed;
+
+    expect(_contrast(colors.textPrimary, colors.background), greaterThan(7));
+    expect(_contrast(colors.textSecondary, colors.surface), greaterThan(4.5));
+    expect(_contrast(colors.textPrimary, colors.orangeSoft), greaterThan(4.5));
+    expect(_contrast(colors.orangeDark, colors.orangeSoft), greaterThan(3));
+    expect(_contrast(colors.error, colors.surface), greaterThan(4.5));
+    expect(_contrast(colors.success, colors.surface), greaterThan(4.5));
+    expect(colors.orangePrimary, isNot(colors.purpleSecondary));
   });
 
   for (final size in sizes) {
     testWidgets('flujo principal sin overflow en ${size.width.toInt()}x'
-        '${size.height.toInt()} claro', (tester) async {
-      await _configureView(tester, size: size, brightness: Brightness.light);
+        '${size.height.toInt()}', (tester) async {
+      await _configureView(tester, size: size);
 
       await _pumpDemo(tester, contentRepository);
       _expectNoFlutterException(tester);
@@ -99,7 +96,6 @@ void main() {
     await _configureView(
       tester,
       size: const Size(360, 640),
-      brightness: Brightness.dark,
       textScale: 1.6,
       disableAnimations: true,
     );
@@ -144,7 +140,6 @@ void main() {
 Future<void> _configureView(
   WidgetTester tester, {
   required Size size,
-  required Brightness brightness,
   double textScale = 1,
   bool disableAnimations = false,
 }) async {
@@ -156,7 +151,6 @@ Future<void> _configureView(
 
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = size;
-  tester.binding.platformDispatcher.platformBrightnessTestValue = brightness;
   tester.binding.platformDispatcher.textScaleFactorTestValue = textScale;
   tester.binding.platformDispatcher.accessibilityFeaturesTestValue =
       FakeAccessibilityFeatures(disableAnimations: disableAnimations);
@@ -254,14 +248,14 @@ Future<void> _pumpUntilFound(WidgetTester tester, Finder finder) async {
 double _contrast(Color foreground, Color background) {
   final foregroundLuminance = foreground.computeLuminance();
   final backgroundLuminance = background.computeLuminance();
-  final lighter = foregroundLuminance > backgroundLuminance
+  final higher = foregroundLuminance > backgroundLuminance
       ? foregroundLuminance
       : backgroundLuminance;
-  final darker = foregroundLuminance > backgroundLuminance
+  final lower = foregroundLuminance > backgroundLuminance
       ? backgroundLuminance
       : foregroundLuminance;
 
-  return (lighter + 0.05) / (darker + 0.05);
+  return (higher + 0.05) / (lower + 0.05);
 }
 
 class _CachedContentRepository implements ContentRepository {

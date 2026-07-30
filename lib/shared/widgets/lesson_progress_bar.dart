@@ -14,7 +14,7 @@ class LessonProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final value = totalSteps == 0 ? 0.0 : currentStep / totalSteps;
 
     return Semantics(
@@ -23,8 +23,8 @@ class LessonProgressBar extends StatelessWidget {
         value: value.clamp(0.0, 1.0),
         minHeight: 8,
         borderRadius: BorderRadius.circular(999),
-        backgroundColor: palette.border,
-        color: palette.purple,
+        backgroundColor: colors.orangeSoft,
+        color: colors.orangePrimary,
       ),
     );
   }

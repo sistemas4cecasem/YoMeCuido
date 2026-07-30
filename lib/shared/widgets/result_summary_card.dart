@@ -12,16 +12,21 @@ class ResultSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
+      color: colors.surfaceStrong,
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.verified_outlined, color: palette.purple, size: 36),
+            Icon(
+              Icons.verified_outlined,
+              color: colors.purpleSecondary,
+              size: 36,
+            ),
             const SizedBox(height: AppSpacing.md),
             Text(AppStrings.lessonCompleted, style: textTheme.headlineMedium),
             const SizedBox(height: AppSpacing.lg),
@@ -48,7 +53,7 @@ class _ScoreProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
     final progress = result.correctAnswers / result.totalQuestions;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
@@ -79,8 +84,8 @@ class _ScoreProgress extends StatelessWidget {
                   value: progress,
                   minHeight: 8,
                   borderRadius: BorderRadius.circular(999),
-                  backgroundColor: palette.border,
-                  color: palette.purple,
+                  backgroundColor: colors.orangeSoft,
+                  color: colors.orangePrimary,
                 ),
               ],
             )
@@ -95,8 +100,8 @@ class _ScoreProgress extends StatelessWidget {
                       value: progress,
                       strokeWidth: 12,
                       strokeCap: StrokeCap.round,
-                      backgroundColor: palette.border,
-                      color: palette.purple,
+                      backgroundColor: colors.orangeSoft,
+                      color: colors.orangePrimary,
                     ),
                   ),
                   Column(
@@ -116,7 +121,7 @@ class _ScoreProgress extends StatelessWidget {
                         'respuestas correctas',
                         textAlign: TextAlign.center,
                         style: textTheme.bodyMedium?.copyWith(
-                          color: palette.textMuted,
+                          color: colors.textSecondary,
                         ),
                       ),
                     ],
@@ -135,14 +140,14 @@ class _Reminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final colors = context.colors;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.xs),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.check_outlined, size: 20, color: palette.success),
+          Icon(Icons.check_outlined, size: 20, color: colors.success),
           const SizedBox(width: AppSpacing.xs),
           Expanded(child: Text(text)),
         ],
