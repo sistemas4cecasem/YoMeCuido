@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../app/app_assets.dart';
 import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/quiz_result.dart';
+import 'character_image.dart';
 
 class ResultSummaryCard extends StatelessWidget {
   const ResultSummaryCard({required this.result, super.key});
@@ -22,10 +24,12 @@ class ResultSummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              Icons.verified_outlined,
-              color: colors.purpleSecondary,
-              size: 36,
+            const Center(
+              child: CharacterImage(
+                assetPath: AppAssets.boyCompleted,
+                semanticLabel: 'Personaje celebrando una actividad completada',
+                height: 132,
+              ),
             ),
             const SizedBox(height: AppSpacing.md),
             Text(AppStrings.lessonCompleted, style: textTheme.headlineMedium),

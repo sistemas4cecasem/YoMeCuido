@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import '../../app/app_router.dart';
+import '../../app/app_assets.dart';
 import '../../app/app_strings.dart';
+import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
@@ -12,16 +14,19 @@ import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/lesson_progress_bar.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/secondary_button.dart';
+import '../../shared/widgets/character_image.dart';
 
 class LessonScreen extends StatefulWidget {
   const LessonScreen({
     required this.category,
     required this.contentRepository,
+    required this.progressController,
     super.key,
   });
 
   final Category category;
   final ContentRepository contentRepository;
+  final CategoryProgressController progressController;
 
   @override
   State<LessonScreen> createState() => _LessonScreenState();
@@ -30,6 +35,7 @@ class LessonScreen extends StatefulWidget {
 class _LessonScreenState extends State<LessonScreen> {
   late Future<List<LessonPage>> _pagesFuture;
   int _pageIndex = 0;
+  final Set<String> _reportedPageIds = <String>{};
 
   @override
   void initState() {
@@ -62,12 +68,29 @@ class _LessonScreenState extends State<LessonScreen> {
     if (isLastPage) {
       Navigator.of(
         context,
-      ).pushNamed(AppRoutes.quiz, arguments: widget.category);
+      ).pushNamed(AppRoutes.activities, arguments: widget.category);
       return;
     }
 
     setState(() {
       _pageIndex += 1;
+    });
+  }
+
+  void _markPageViewed(LessonPage page, int totalPages) {
+    if (!_reportedPageIds.add(page.id)) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      widget.progressController.markTheoryPageViewed(
+        categoryId: widget.category.id,
+        pageId: page.id,
+        totalPages: totalPages,
+      );
     });
   }
 
@@ -97,6 +120,7 @@ class _LessonScreenState extends State<LessonScreen> {
           final step = _pageIndex + 1;
           final isFirstPage = _pageIndex == 0;
           final isLastPage = _pageIndex == pages.length - 1;
+          _markPageViewed(page, pages.length);
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -191,6 +215,9 @@ class _TheoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
+    final illustrationAsset = page.order.isEven
+        ? AppAssets.girlTheory
+        : AppAssets.boyTheory;
 
     return Card(
       child: Padding(
@@ -198,8 +225,16 @@ class _TheoryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.menu_book_outlined, color: colors.orangeDark, size: 32),
+            Center(
+              child: CharacterImage(
+                assetPath: illustrationAsset,
+                semanticLabel: 'Personaje leyendo contenido teórico',
+                height: 132,
+              ),
+            ),
             const SizedBox(height: AppSpacing.md),
+            Icon(Icons.menu_book_outlined, color: colors.orangeDark, size: 32),
+            const SizedBox(height: AppSpacing.sm),
             Text(page.title, style: textTheme.headlineMedium),
             const SizedBox(height: AppSpacing.md),
             Text(page.body, style: textTheme.bodyLarge),

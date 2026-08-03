@@ -1,4 +1,5 @@
 import 'package:demo_yomecuido/app/app_strings.dart';
+import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
@@ -10,9 +11,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late _FakeQuizRepository repository;
+  late CategoryProgressController progressController;
 
   setUp(() {
     repository = _FakeQuizRepository();
+    progressController = CategoryProgressController();
   });
 
   Future<void> pumpQuiz(WidgetTester tester) async {
@@ -28,6 +31,7 @@ void main() {
                     builder: (context) => QuizScreen(
                       category: _category,
                       contentRepository: repository,
+                      progressController: progressController,
                     ),
                   ),
                 );
@@ -119,8 +123,10 @@ void main() {
     expect(find.text('Retroalimentación exacta.'), findsOneWidget);
     expect(
       find.text('${AppStrings.expectedAnswer}: Respuesta correcta'),
-      findsOneWidget,
+      findsNothing,
     );
+    expect(find.text('Respuesta incorrecta'), findsOneWidget);
+    expect(find.text('Respuesta correcta'), findsNothing);
   });
 
   testWidgets('avanza de actividad después de la retroalimentación', (
@@ -202,6 +208,7 @@ void main() {
     expect(find.text('12 de 12'), findsOneWidget);
     expect(find.text('100%'), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.text(AppStrings.viewCategorySummary), findsOneWidget);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
     expect(find.text(AppStrings.backToCategories), findsOneWidget);
   });

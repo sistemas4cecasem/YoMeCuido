@@ -62,7 +62,7 @@ void main() {
 
       await _openDetail(tester);
       _expectNoFlutterException(tester);
-      _expectPrimaryButtonTarget(tester, AppStrings.startLesson);
+      _expectPrimaryButtonTarget(tester, AppStrings.viewActivities);
 
       await _openLessonLastPage(tester);
       _expectNoFlutterException(tester);
@@ -103,8 +103,11 @@ void main() {
     await _pumpDemo(tester, contentRepository);
     await _openCategories(tester);
     await _openDetail(tester);
+    _expectNoFlutterException(tester, reason: 'detalle con texto escalado');
     await _openLessonLastPage(tester);
+    _expectNoFlutterException(tester, reason: 'teoría con texto escalado');
     await _openQuiz(tester);
+    _expectNoFlutterException(tester, reason: 'quiz con texto escalado');
 
     for (var activity = 1; activity <= 12; activity += 1) {
       await _answerActivity(tester, activity);
@@ -133,7 +136,7 @@ void main() {
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
     expect(find.text(AppStrings.backToCategories), findsOneWidget);
-    _expectPrimaryButtonTarget(tester, AppStrings.repeatLesson);
+    _expectPrimaryButtonTarget(tester, AppStrings.viewCategorySummary);
   });
 }
 
@@ -183,11 +186,12 @@ Future<void> _openCategories(WidgetTester tester) async {
 
 Future<void> _openDetail(WidgetTester tester) async {
   await tester.tap(find.text('Relaciones y violencia digital').first);
-  await _pumpUntilFound(tester, find.text(AppStrings.startLesson));
+  await _pumpUntilFound(tester, find.text(AppStrings.viewTheory));
 }
 
 Future<void> _openLessonLastPage(WidgetTester tester) async {
-  await tester.tap(find.text(AppStrings.startLesson));
+  await tester.ensureVisible(find.text(AppStrings.viewTheory));
+  await tester.tap(find.text(AppStrings.viewTheory));
   await _pumpUntilFound(tester, find.text('1 de 4'));
 
   for (var index = 0; index < 3; index += 1) {
@@ -198,6 +202,9 @@ Future<void> _openLessonLastPage(WidgetTester tester) async {
 
 Future<void> _openQuiz(WidgetTester tester) async {
   await tester.tap(find.text(AppStrings.startActivities));
+  await _pumpUntilFound(tester, find.text(AppStrings.firstActivityBlock));
+  await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
+  await tester.tap(find.text(AppStrings.firstActivityBlock));
   await _pumpUntilFound(tester, find.text(AppStrings.quizTitle));
 }
 

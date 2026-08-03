@@ -35,30 +35,44 @@ class AnswerOptionTile extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppRadii.card),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.sm,
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  isSelected
-                      ? Icons.check_circle_outline
-                      : Icons.radio_button_unchecked,
-                  color: isSelected ? colors.orangeDark : colors.textSecondary,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final usesLargeText =
+                  MediaQuery.textScalerOf(context).scale(1) > 1.3;
+              final icon = Icon(
+                isSelected
+                    ? Icons.check_circle_outline
+                    : Icons.radio_button_unchecked,
+                color: isSelected ? colors.orangeDark : colors.textSecondary,
+              );
+              final label = Text(
+                text,
+                style: textTheme.bodyLarge?.copyWith(color: colors.textPrimary),
+              );
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
                 ),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Text(
-                    text,
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: colors.textPrimary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                child: usesLargeText || constraints.maxWidth < 300
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          icon,
+                          const SizedBox(height: AppSpacing.xs),
+                          label,
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          icon,
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(child: label),
+                        ],
+                      ),
+              );
+            },
           ),
         ),
       ),

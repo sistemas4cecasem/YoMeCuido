@@ -44,12 +44,12 @@ class _ButtonContent extends StatelessWidget {
     }
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(icon),
         const SizedBox(width: AppSpacing.xs),
-        Flexible(child: Text(label, textAlign: TextAlign.center)),
+        Flexible(child: Text(label, maxLines: 2, textAlign: TextAlign.center)),
       ],
     );
   }

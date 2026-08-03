@@ -10,6 +10,36 @@ abstract final class AppStrings {
       'No pudimos cargar el contenido de la demo. Intenta nuevamente.';
   static const retry = 'Reintentar';
   static const categoryDetailTitle = 'Relaciones y violencia digital';
+  static const learningRouteTitle = 'Ruta de aprendizaje';
+  static const categoryProgress = 'Progreso de la categoría';
+  static const theoryTitle = 'Teoría';
+  static const activitiesTitle = 'Actividades';
+  static const summaryTitle = 'Resumen y progreso';
+  static const homeTitle = 'Inicio';
+  static const profileTitle = 'Perfil';
+  static const profileLockedSnackBar =
+      'El perfil no está disponible en esta demo';
+  static const demoLockedSnackBar =
+      'Este bloque estará disponible en una próxima etapa de la demo';
+  static const viewTheory = 'Ver teoría';
+  static const viewActivities = 'Ir a actividades';
+  static const viewCategorySummary = 'Ver resumen de categoría';
+  static const completed = 'Completado';
+  static const completedPlural = 'Completadas';
+  static const pending = 'Pendiente';
+  static const available = 'Disponible';
+  static const locked = 'Bloqueado';
+  static const firstActivityBlock = 'Actividad 1';
+  static const secondActivityBlock = 'Actividad 2';
+  static const thirdActivityBlock = 'Actividad 3';
+  static const finalActivityBlock = 'Actividad final';
+  static const finalActivitySubtitle = 'Evaluación completa';
+  static const activityMenuIntroTitle = 'Pon a prueba lo que aprendiste';
+  static const activityMenuIntroBody =
+      'Completa las actividades y revisa tu avance dentro de la categoría.';
+  static const keepProgressingTitle = 'Vas por buen camino';
+  static const keepProgressingBody =
+      'Sigue aprendiendo y practicando para fortalecer tus decisiones de autocuidado.';
   static const startLesson = 'Comenzar lección';
   static const objectivesTitle = 'Objetivos de aprendizaje';
   static const sensitiveContentWarningTitle = 'Contenido sensible';

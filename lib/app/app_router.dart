@@ -2,27 +2,36 @@ import 'package:flutter/material.dart';
 
 import '../data/models/category.dart';
 import '../data/repositories/content_repository.dart';
+import '../features/activities/activities_menu_screen.dart';
 import '../features/categories/categories_screen.dart';
 import '../features/category_detail/category_detail_screen.dart';
+import '../features/category_summary/category_summary_screen.dart';
 import '../features/lesson/lesson_screen.dart';
 import '../features/quiz/quiz_screen.dart';
 import '../features/splash/welcome_screen.dart';
 import '../shared/widgets/app_scaffold.dart';
 import 'app_strings.dart';
+import 'category_progress_controller.dart';
 
 abstract final class AppRoutes {
   static const home = '/';
   static const categories = '/categories';
   static const categoryDetail = '/category-detail';
   static const lesson = '/lesson';
+  static const activities = '/activities';
   static const quiz = '/quiz';
+  static const categorySummary = '/category-summary';
 }
 
 class AppRouter {
-  const AppRouter({required ContentRepository contentRepository})
-    : _contentRepository = contentRepository;
+  const AppRouter({
+    required ContentRepository contentRepository,
+    required CategoryProgressController progressController,
+  }) : _contentRepository = contentRepository,
+       _progressController = progressController;
 
   final ContentRepository _contentRepository;
+  final CategoryProgressController _progressController;
 
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute<void>(
@@ -35,14 +44,26 @@ class AppRouter {
           ),
           AppRoutes.categoryDetail => CategoryDetailScreen(
             category: settings.arguments! as Category,
+            progressController: _progressController,
           ),
           AppRoutes.lesson => LessonScreen(
             category: settings.arguments! as Category,
             contentRepository: _contentRepository,
+            progressController: _progressController,
+          ),
+          AppRoutes.activities => ActivitiesMenuScreen(
+            category: settings.arguments! as Category,
+            contentRepository: _contentRepository,
+            progressController: _progressController,
           ),
           AppRoutes.quiz => QuizScreen(
             category: settings.arguments! as Category,
             contentRepository: _contentRepository,
+            progressController: _progressController,
+          ),
+          AppRoutes.categorySummary => CategorySummaryScreen(
+            category: settings.arguments! as Category,
+            progressController: _progressController,
           ),
           _ => const _UnknownRoute(),
         };

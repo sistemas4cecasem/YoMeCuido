@@ -27,7 +27,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Relaciones y violencia digital'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.ensureVisible(find.text(AppStrings.viewTheory));
+    await tester.tap(find.text(AppStrings.viewTheory));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
@@ -36,6 +37,9 @@ void main() {
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
+    await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
   }
 
@@ -50,11 +54,11 @@ void main() {
         correctly ? ' evidencia ' : 'otra',
       );
     } else {
-      await tester.tap(
-        correctly
-            ? find.byType(AnswerOptionTile).first
-            : find.byType(AnswerOptionTile).last,
-      );
+      final option = correctly
+          ? find.byType(AnswerOptionTile).first
+          : find.byType(AnswerOptionTile).last;
+      await tester.ensureVisible(option);
+      await tester.tap(option);
     }
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.submitAnswer));
@@ -72,11 +76,11 @@ void main() {
         correctly: activity <= correctAnswers,
       );
 
-      await tester.tap(
-        find.text(
-          activity == 12 ? AppStrings.seeResult : AppStrings.nextActivity,
-        ),
+      final nextButton = find.text(
+        activity == 12 ? AppStrings.seeResult : AppStrings.nextActivity,
       );
+      await tester.ensureVisible(nextButton);
+      await tester.tap(nextButton);
       await tester.pumpAndSettle();
     }
   }
@@ -149,7 +153,7 @@ void main() {
     await tester.tap(find.text('Protección de cuentas y autenticación'));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.startLesson), findsNothing);
+    expect(find.text(AppStrings.viewTheory), findsNothing);
     expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
     expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
   });
@@ -187,13 +191,16 @@ void main() {
       findsOneWidget,
     );
     expect(find.text(AppStrings.sensitiveContentWarningTitle), findsOneWidget);
-    expect(find.text(AppStrings.startLesson), findsOneWidget);
+    expect(find.text(AppStrings.viewTheory), findsOneWidget);
+    expect(find.text(AppStrings.viewActivities), findsOneWidget);
+    expect(find.text(AppStrings.summaryTitle), findsWidgets);
   });
 
   testWidgets('navega entre las cuatro cápsulas teóricas', (tester) async {
     await openDetail(tester);
 
-    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.ensureVisible(find.text(AppStrings.viewTheory));
+    await tester.tap(find.text(AppStrings.viewTheory));
     await tester.pumpAndSettle();
 
     expect(repository.loadLessonPagesCalls, 1);
@@ -235,10 +242,13 @@ void main() {
     expect(find.text(AppStrings.next), findsNothing);
   });
 
-  testWidgets('el último botón abre el cuestionario', (tester) async {
+  testWidgets('el último botón abre el menú de actividades y el cuestionario', (
+    tester,
+  ) async {
     await openDetail(tester);
 
-    await tester.tap(find.text(AppStrings.startLesson));
+    await tester.ensureVisible(find.text(AppStrings.viewTheory));
+    await tester.tap(find.text(AppStrings.viewTheory));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
@@ -249,7 +259,15 @@ void main() {
     await tester.tap(find.text(AppStrings.startActivities));
     await tester.pumpAndSettle();
 
-    expect(repository.loadQuizQuestionsCalls, 1);
+    expect(find.text(AppStrings.activitiesTitle), findsWidgets);
+    expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
+    expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
+
+    await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
+    await tester.tap(find.text(AppStrings.firstActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(repository.loadQuizQuestionsCalls, 2);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsOneWidget);
     expect(
@@ -292,6 +310,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.startActivities));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
+    await tester.tap(find.text(AppStrings.firstActivityBlock));
+    await tester.pumpAndSettle();
 
     await completeActivities(tester, correctAnswers: 0);
 
@@ -325,7 +346,7 @@ void main() {
 
       expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
       expect(find.text(AppStrings.lessonCompleted), findsNothing);
-      expect(find.text(AppStrings.startLesson), findsNothing);
+      expect(find.text(AppStrings.viewTheory), findsNothing);
 
       await tester.pageBack();
       await tester.pumpAndSettle();

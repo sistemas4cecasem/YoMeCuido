@@ -1,9 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../app/app_assets.dart';
 import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
+import '../../app/category_progress_controller.dart';
+import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 import '../../data/models/quiz_question.dart';
@@ -11,7 +16,7 @@ import '../../data/models/quiz_result.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/widgets/answer_option_tile.dart';
 import '../../shared/widgets/app_scaffold.dart';
-import '../../shared/widgets/feedback_card.dart';
+import '../../shared/widgets/character_image.dart';
 import '../../shared/widgets/lesson_progress_bar.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/result_summary_card.dart';
@@ -22,11 +27,13 @@ class QuizScreen extends StatefulWidget {
   const QuizScreen({
     required this.category,
     required this.contentRepository,
+    required this.progressController,
     super.key,
   });
 
   final Category category;
   final ContentRepository contentRepository;
+  final CategoryProgressController progressController;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -74,6 +81,7 @@ class _QuizScreenState extends State<QuizScreen> {
           return _QuizFlow(
             category: widget.category,
             questions: snapshot.data!,
+            progressController: widget.progressController,
           );
         },
       ),
@@ -82,10 +90,15 @@ class _QuizScreenState extends State<QuizScreen> {
 }
 
 class _QuizFlow extends StatefulWidget {
-  const _QuizFlow({required this.category, required this.questions});
+  const _QuizFlow({
+    required this.category,
+    required this.questions,
+    required this.progressController,
+  });
 
   final Category category;
   final List<QuizQuestion> questions;
+  final CategoryProgressController progressController;
 
   @override
   State<_QuizFlow> createState() => _QuizFlowState();
@@ -101,6 +114,15 @@ class _QuizFlowState extends State<_QuizFlow> {
   void initState() {
     super.initState();
     _controller = QuizController(questions: widget.questions);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      widget.progressController.startActivityAttempt(
+        categoryId: widget.category.id,
+        totalActivities: widget.questions.length,
+      );
+    });
   }
 
   @override
@@ -152,7 +174,18 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _submitAnswer() {
     FocusManager.instance.primaryFocus?.unfocus();
-    _controller.submitAnswer();
+    final submitted = _controller.submitAnswer();
+    if (!submitted) {
+      return;
+    }
+
+    widget.progressController.recordActivityAnswer(
+      categoryId: widget.category.id,
+      activityIndex: _controller.currentIndex,
+      correctAnswers: _controller.correctAnswers,
+      totalActivities: _controller.totalQuestions,
+      result: _controller.isFinished ? _controller.quizResult : null,
+    );
   }
 
   void _goForward() {
@@ -174,6 +207,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       _showResult = false;
     });
     _controller.reset();
+    widget.progressController.resetCategory(widget.category.id);
     // Repeating starts at theory because AGENTS.md defines the lesson as
     // capsules plus activities, and the result invites reviewing again.
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -208,6 +242,12 @@ class _QuizFlowState extends State<_QuizFlow> {
     });
   }
 
+  void _openCategorySummary() {
+    Navigator.of(
+      context,
+    ).pushNamed(AppRoutes.categorySummary, arguments: widget.category);
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope<void>(
@@ -223,6 +263,7 @@ class _QuizFlowState extends State<_QuizFlow> {
           if (_showResult) {
             return _ResultView(
               result: _controller.generateResult(),
+              onOpenSummary: _openCategorySummary,
               onRepeatLesson: _repeatLesson,
               onBackToCategories: _backToCategories,
             );
@@ -279,6 +320,8 @@ class _ActivityView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                _ActivityIllustration(controller: controller),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   controller.currentStatement,
                   style: textTheme.headlineSmall,
@@ -288,16 +331,6 @@ class _ActivityView extends StatelessWidget {
                   controller: controller,
                   textController: answerTextController,
                 ),
-                if (controller.isAnswerConfirmed) ...[
-                  const SizedBox(height: AppSpacing.lg),
-                  FeedbackCard(
-                    isCorrect: controller.isCurrentAnswerCorrect ?? false,
-                    feedback: controller.currentFeedback ?? '',
-                    expectedAnswer: controller.isCurrentAnswerCorrect == false
-                        ? controller.currentCorrectAnswerText
-                        : null,
-                  ),
-                ],
               ],
             ),
           ),
@@ -343,6 +376,267 @@ class _AnswerInput extends StatelessWidget {
   }
 }
 
+class _ActivityIllustration extends StatelessWidget {
+  const _ActivityIllustration({required this.controller});
+
+  final QuizController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
+    final assetPath = _assetForState(controller);
+    final titleText = _titleTextForState(controller);
+    final bodyText = _bodyTextForState(controller);
+
+    return Card(
+      color: colors.surfaceStrong,
+      child: Padding(
+        padding: AppInsets.card,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final useVerticalLayout =
+                constraints.maxWidth < 360 ||
+                MediaQuery.textScalerOf(context).scale(1) > 1.2;
+            final image = AnimatedSwitcher(
+              duration: reduceMotion
+                  ? Duration.zero
+                  : const Duration(milliseconds: 220),
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              child: CharacterImage(
+                key: ValueKey(assetPath),
+                assetPath: assetPath,
+                semanticLabel: '$titleText. $bodyText',
+                height: useVerticalLayout ? 112 : 128,
+              ),
+            );
+            final illustratedState = Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                image,
+                if (!reduceMotion &&
+                    controller.isAnswerConfirmed &&
+                    controller.isCurrentAnswerCorrect == true)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: _CorrectConfetti(
+                        key: ValueKey(controller.currentQuestionId),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+            final content = Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(_iconForState(controller), color: _colorForState(colors)),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        titleText,
+                        style: textTheme.titleSmall?.copyWith(
+                          color: controller.isAnswerConfirmed
+                              ? _colorForState(colors)
+                              : colors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        bodyText,
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colors.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+
+            if (useVerticalLayout) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(child: illustratedState),
+                  const SizedBox(height: AppSpacing.sm),
+                  content,
+                ],
+              );
+            }
+
+            return Row(
+              children: [
+                illustratedState,
+                const SizedBox(width: AppSpacing.md),
+                Expanded(child: content),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  String _assetForState(QuizController controller) {
+    final isEvenActivity = controller.currentActivityNumber.isEven;
+
+    if (controller.isAnswerConfirmed) {
+      if (controller.isCurrentAnswerCorrect == true) {
+        return isEvenActivity ? AppAssets.girlCorrect : AppAssets.boyCorrect;
+      }
+
+      return isEvenActivity ? AppAssets.girlIncorrect : AppAssets.boyIncorrect;
+    }
+
+    if (controller.currentQuestionType == QuestionType.fillBlank) {
+      return isEvenActivity ? AppAssets.girlTip : AppAssets.boyTip;
+    }
+
+    return isEvenActivity ? AppAssets.girlThinking : AppAssets.boyThinking;
+  }
+
+  String _titleTextForState(QuizController controller) {
+    if (controller.isAnswerConfirmed) {
+      if (controller.isCurrentAnswerCorrect == true) {
+        return AppStrings.correct;
+      }
+
+      return AppStrings.reviewAnswer;
+    }
+
+    return 'Antes de responder';
+  }
+
+  String _bodyTextForState(QuizController controller) {
+    if (controller.isAnswerConfirmed) {
+      return controller.currentFeedback ?? '';
+    }
+
+    if (controller.currentQuestionType == QuestionType.fillBlank) {
+      return 'Piensa en una palabra breve y concreta.';
+    }
+
+    return 'Lee la situación y elige la respuesta más segura.';
+  }
+
+  IconData _iconForState(QuizController controller) {
+    if (controller.isAnswerConfirmed) {
+      return controller.isCurrentAnswerCorrect == true
+          ? Icons.check_circle_outline
+          : Icons.info_outline;
+    }
+
+    return controller.currentQuestionType == QuestionType.fillBlank
+        ? Icons.lightbulb_outline
+        : Icons.psychology_outlined;
+  }
+
+  Color _colorForState(AppColors colors) {
+    if (!controller.isAnswerConfirmed) {
+      return colors.orangeDark;
+    }
+
+    return controller.isCurrentAnswerCorrect == true
+        ? colors.success
+        : colors.error;
+  }
+}
+
+class _CorrectConfetti extends StatefulWidget {
+  const _CorrectConfetti({super.key});
+
+  @override
+  State<_CorrectConfetti> createState() => _CorrectConfettiState();
+}
+
+class _CorrectConfettiState extends State<_CorrectConfetti>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return CustomPaint(
+          painter: _ConfettiPainter(progress: _controller.value),
+        );
+      },
+    );
+  }
+}
+
+class _ConfettiPainter extends CustomPainter {
+  const _ConfettiPainter({required this.progress});
+
+  final double progress;
+
+  static const _colors = <Color>[
+    Color(0xFFFF8A00),
+    Color(0xFFFFC107),
+    Color(0xFF2E7D32),
+    Color(0xFF7B1FA2),
+    Color(0xFF2196F3),
+  ];
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final eased = Curves.easeOutCubic.transform(progress);
+    final opacity = (1 - progress).clamp(0.0, 1.0);
+    final center = Offset(size.width / 2, size.height * 0.35);
+
+    for (var index = 0; index < 18; index += 1) {
+      final angle = (-130 + (index * 260 / 17)) * math.pi / 180;
+      final distance = (32 + (index % 5) * 8) * eased;
+      final drift = Offset(math.cos(angle), math.sin(angle)) * distance;
+      final fall = Offset(0, 18 * progress * progress);
+      final position = center + drift + fall;
+      final paint = Paint()
+        ..color = _colors[index % _colors.length].withValues(alpha: opacity);
+      final width = 5.0 + (index % 3);
+      final height = 9.0 + (index % 2) * 3.0;
+
+      canvas.save();
+      canvas.translate(position.dx, position.dy);
+      canvas.rotate(angle + progress * math.pi);
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromCenter(center: Offset.zero, width: width, height: height),
+          const Radius.circular(1.5),
+        ),
+        paint,
+      );
+      canvas.restore();
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ConfettiPainter oldDelegate) {
+    return oldDelegate.progress != progress;
+  }
+}
+
 class _ChoiceOptions extends StatelessWidget {
   const _ChoiceOptions({required this.controller});
 
@@ -350,9 +644,15 @@ class _ChoiceOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final visibleOptions = controller.isAnswerConfirmed
+        ? controller.currentOptions.where((option) {
+            return option.id == controller.selectedOptionId;
+          })
+        : controller.currentOptions;
+
     return Column(
       children: [
-        for (final option in controller.currentOptions) ...[
+        for (final option in visibleOptions) ...[
           AnswerOptionTile(
             text: option.text,
             isSelected: controller.selectedOptionId == option.id,
@@ -407,11 +707,13 @@ class _FillBlankInput extends StatelessWidget {
 class _ResultView extends StatelessWidget {
   const _ResultView({
     required this.result,
+    required this.onOpenSummary,
     required this.onRepeatLesson,
     required this.onBackToCategories,
   });
 
   final QuizResult result;
+  final VoidCallback onOpenSummary;
   final VoidCallback onRepeatLesson;
   final VoidCallback onBackToCategories;
 
@@ -427,6 +729,12 @@ class _ResultView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         PrimaryButton(
+          label: AppStrings.viewCategorySummary,
+          icon: Icons.insights_outlined,
+          onPressed: onOpenSummary,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        SecondaryButton(
           label: AppStrings.repeatLesson,
           icon: Icons.refresh_outlined,
           onPressed: onRepeatLesson,
