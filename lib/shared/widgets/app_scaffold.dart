@@ -25,6 +25,12 @@ class AppScaffold extends StatelessWidget {
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final appBarHeight =
         56.0 + ((textScale - 1).clamp(0.0, 1.0).toDouble() * 24.0);
+    final contentPadding = EdgeInsets.only(
+      left: AppSpacing.screen,
+      top: AppSpacing.lg,
+      right: AppSpacing.screen,
+      bottom: bottomNavigationBar == null ? AppSpacing.lg : 0,
+    );
 
     return Scaffold(
       backgroundColor: colors.background,
@@ -38,6 +44,7 @@ class AppScaffold extends StatelessWidget {
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
+        bottom: bottomNavigationBar == null,
         child: ColoredBox(
           color: colors.background,
           child: Align(
@@ -46,7 +53,7 @@ class AppScaffold extends StatelessWidget {
               constraints: const BoxConstraints(
                 maxWidth: AppSizing.maxContentWidth,
               ),
-              child: Padding(padding: AppInsets.screen, child: child),
+              child: Padding(padding: contentPadding, child: child),
             ),
           ),
         ),

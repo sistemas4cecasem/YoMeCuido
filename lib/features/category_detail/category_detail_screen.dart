@@ -12,8 +12,6 @@ import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/character_image.dart';
 import '../../shared/widgets/demo_bottom_navigation_bar.dart';
 import '../../shared/widgets/info_card.dart';
-import '../../shared/widgets/primary_button.dart';
-import '../../shared/widgets/secondary_button.dart';
 
 class CategoryDetailScreen extends StatelessWidget {
   const CategoryDetailScreen({
@@ -29,10 +27,7 @@ class CategoryDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: category.title,
-      bottomNavigationBar: DemoBottomNavigationBar(
-        selectedItem: DemoNavItem.categories,
-        category: category,
-      ),
+      bottomNavigationBar: DemoBottomNavigationBar(category: category),
       child: AnimatedBuilder(
         animation: progressController,
         builder: (context, child) {
@@ -58,22 +53,12 @@ class CategoryDetailScreen extends StatelessWidget {
                   ).pushNamed(AppRoutes.categorySummary, arguments: category),
                 ),
                 const SizedBox(height: AppSpacing.lg),
-                _ActionGrid(category: category),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  AppStrings.objectivesTitle,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                _ObjectivesCard(objectives: category.objectives),
-                if (category.warning != null) ...[
-                  const SizedBox(height: AppSpacing.lg),
+                if (category.warning != null)
                   InfoCard(
                     title: AppStrings.sensitiveContentWarningTitle,
                     body: category.warning!,
                     icon: Icons.info_outline,
                   ),
-                ],
               ],
             ),
           );
@@ -93,6 +78,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
+    final showSideContent = MediaQuery.textScalerOf(context).scale(1) <= 1.2;
 
     return Card(
       color: colors.surfaceStrong,
@@ -127,6 +113,10 @@ class _Header extends StatelessWidget {
                           style: textTheme.titleMedium,
                         ),
                       ),
+                      if (!showSideContent) ...[
+                        const SizedBox(width: AppSpacing.xs),
+                        _ObjectivesButton(objectives: category.objectives),
+                      ],
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -143,10 +133,15 @@ class _Header extends StatelessWidget {
                 ],
               ),
             ),
-            if (MediaQuery.textScalerOf(context).scale(1) <= 1.2) ...[
+            if (showSideContent) ...[
               const SizedBox(width: AppSpacing.sm),
               Column(
                 children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: _ObjectivesButton(objectives: category.objectives),
+                  ),
+                  const SizedBox(height: AppSpacing.xxs),
                   const CharacterImage(
                     assetPath: AppAssets.girlMenu,
                     semanticLabel: 'Personaje explorando opciones',
@@ -160,6 +155,63 @@ class _Header extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ObjectivesButton extends StatelessWidget {
+  const _ObjectivesButton({required this.objectives});
+
+  final List<String> objectives;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return IconButton(
+      onPressed: () => showDialog<void>(
+        context: context,
+        builder: (context) => _ObjectivesDialog(objectives: objectives),
+      ),
+      icon: const Icon(Icons.help_outline),
+      color: colors.orangeDark,
+      style: IconButton.styleFrom(
+        backgroundColor: colors.orangeSoft,
+        minimumSize: const Size.square(AppSizing.minTouchTarget),
+        side: BorderSide(color: colors.orangePrimary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadii.sm),
+        ),
+      ),
+      tooltip: AppStrings.viewObjectives,
+    );
+  }
+}
+
+class _ObjectivesDialog extends StatelessWidget {
+  const _ObjectivesDialog({required this.objectives});
+
+  final List<String> objectives;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text(AppStrings.objectivesTitle),
+      contentPadding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        0,
+      ),
+      content: SingleChildScrollView(
+        child: _ObjectivesCard(objectives: objectives),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text(AppStrings.close),
+        ),
+      ],
     );
   }
 }
@@ -363,55 +415,6 @@ class _RouteStepCard extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class _ActionGrid extends StatelessWidget {
-  const _ActionGrid({required this.category});
-
-  final Category category;
-
-  @override
-  Widget build(BuildContext context) {
-    final shouldStack =
-        MediaQuery.sizeOf(context).width < 380 ||
-        MediaQuery.textScalerOf(context).scale(1) > 1.2;
-
-    final theoryButton = SecondaryButton(
-      label: AppStrings.viewTheory,
-      icon: Icons.menu_book_outlined,
-      onPressed: () {
-        Navigator.of(context).pushNamed(AppRoutes.lesson, arguments: category);
-      },
-    );
-    final activityButton = PrimaryButton(
-      label: AppStrings.viewActivities,
-      icon: Icons.edit_outlined,
-      onPressed: () {
-        Navigator.of(
-          context,
-        ).pushNamed(AppRoutes.activities, arguments: category);
-      },
-    );
-
-    if (shouldStack) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          theoryButton,
-          const SizedBox(height: AppSpacing.sm),
-          activityButton,
-        ],
-      );
-    }
-
-    return Row(
-      children: [
-        Expanded(child: theoryButton),
-        const SizedBox(width: AppSpacing.sm),
-        Expanded(child: activityButton),
-      ],
     );
   }
 }

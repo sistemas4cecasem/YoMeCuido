@@ -27,8 +27,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Relaciones y violencia digital'));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text(AppStrings.viewTheory));
-    await tester.tap(find.text(AppStrings.viewTheory));
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
@@ -153,7 +153,7 @@ void main() {
     await tester.tap(find.text('Protección de cuentas y autenticación'));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.viewTheory), findsNothing);
+    expect(find.text(AppStrings.theoryTitle), findsNothing);
     expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
     expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
   });
@@ -179,6 +179,22 @@ void main() {
     expect(find.text('12 actividades'), findsOneWidget);
     expect(find.text('10–15 minutos'), findsOneWidget);
     expect(find.text('Nivel básico e intermedio'), findsOneWidget);
+    expect(find.byTooltip(AppStrings.viewObjectives), findsOneWidget);
+    expect(find.text(AppStrings.objectivesTitle), findsNothing);
+    expect(find.text(AppStrings.sensitiveContentWarningTitle), findsOneWidget);
+    expect(find.text(AppStrings.theoryTitle), findsOneWidget);
+    expect(find.text(AppStrings.activitiesTitle), findsOneWidget);
+    expect(find.text(AppStrings.summaryTitle), findsWidgets);
+  });
+
+  testWidgets('el detalle muestra objetivos en una ventana flotante', (
+    tester,
+  ) async {
+    await openDetail(tester);
+
+    await tester.tap(find.byTooltip(AppStrings.viewObjectives));
+    await tester.pumpAndSettle();
+
     expect(find.text(AppStrings.objectivesTitle), findsOneWidget);
     expect(
       find.text('Identificar señales de control y acoso digital.'),
@@ -190,17 +206,18 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.text(AppStrings.sensitiveContentWarningTitle), findsOneWidget);
-    expect(find.text(AppStrings.viewTheory), findsOneWidget);
-    expect(find.text(AppStrings.viewActivities), findsOneWidget);
-    expect(find.text(AppStrings.summaryTitle), findsWidgets);
+
+    await tester.tap(find.text(AppStrings.close));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.objectivesTitle), findsNothing);
   });
 
   testWidgets('navega entre las cuatro cápsulas teóricas', (tester) async {
     await openDetail(tester);
 
-    await tester.ensureVisible(find.text(AppStrings.viewTheory));
-    await tester.tap(find.text(AppStrings.viewTheory));
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
 
     expect(repository.loadLessonPagesCalls, 1);
@@ -247,8 +264,8 @@ void main() {
   ) async {
     await openDetail(tester);
 
-    await tester.ensureVisible(find.text(AppStrings.viewTheory));
-    await tester.tap(find.text(AppStrings.viewTheory));
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
@@ -346,7 +363,7 @@ void main() {
 
       expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
       expect(find.text(AppStrings.lessonCompleted), findsNothing);
-      expect(find.text(AppStrings.viewTheory), findsNothing);
+      expect(find.text(AppStrings.theoryTitle), findsNothing);
 
       await tester.pageBack();
       await tester.pumpAndSettle();

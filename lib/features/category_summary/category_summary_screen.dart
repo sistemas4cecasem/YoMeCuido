@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app/app_assets.dart';
-import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
 import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
@@ -10,8 +9,6 @@ import '../../data/models/category.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
 import '../../shared/widgets/demo_bottom_navigation_bar.dart';
-import '../../shared/widgets/primary_button.dart';
-import '../../shared/widgets/secondary_button.dart';
 
 class CategorySummaryScreen extends StatelessWidget {
   const CategorySummaryScreen({
@@ -45,22 +42,6 @@ class CategorySummaryScreen extends StatelessWidget {
                 _ProgressStats(progress: progress),
                 const SizedBox(height: AppSpacing.md),
                 _EncouragementCard(progress: progress),
-                const SizedBox(height: AppSpacing.lg),
-                PrimaryButton(
-                  label: AppStrings.viewActivities,
-                  icon: Icons.edit_outlined,
-                  onPressed: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.activities, arguments: category),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                SecondaryButton(
-                  label: AppStrings.viewTheory,
-                  icon: Icons.menu_book_outlined,
-                  onPressed: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.lesson, arguments: category),
-                ),
               ],
             ),
           );

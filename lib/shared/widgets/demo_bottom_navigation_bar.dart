@@ -6,16 +6,12 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 
-enum DemoNavItem { home, categories, progress, profile }
+enum DemoNavItem { home, progress, profile }
 
 class DemoBottomNavigationBar extends StatelessWidget {
-  const DemoBottomNavigationBar({
-    required this.selectedItem,
-    this.category,
-    super.key,
-  });
+  const DemoBottomNavigationBar({this.selectedItem, this.category, super.key});
 
-  final DemoNavItem selectedItem;
+  final DemoNavItem? selectedItem;
   final Category? category;
 
   @override
@@ -46,19 +42,10 @@ class DemoBottomNavigationBar extends StatelessWidget {
                 }),
               ),
               _NavButton(
-                icon: Icons.inventory_2_outlined,
-                label: AppStrings.categoriesTitle,
-                selected: selectedItem == DemoNavItem.categories,
-                onTap: () => Navigator.of(context).popUntil((route) {
-                  return route.settings.name == AppRoutes.categories ||
-                      route.isFirst;
-                }),
-              ),
-              _NavButton(
                 icon: Icons.tune_outlined,
                 label: AppStrings.summaryTitle,
                 selected: selectedItem == DemoNavItem.progress,
-                onTap: category == null
+                onTap: category == null || selectedItem == DemoNavItem.progress
                     ? null
                     : () => Navigator.of(context).pushNamed(
                         AppRoutes.categorySummary,

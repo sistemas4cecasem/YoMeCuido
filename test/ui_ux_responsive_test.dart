@@ -62,7 +62,7 @@ void main() {
 
       await _openDetail(tester);
       _expectNoFlutterException(tester);
-      _expectPrimaryButtonTarget(tester, AppStrings.viewActivities);
+      _expectRouteStepTarget(tester, AppStrings.activitiesTitle);
 
       await _openLessonLastPage(tester);
       _expectNoFlutterException(tester);
@@ -186,12 +186,12 @@ Future<void> _openCategories(WidgetTester tester) async {
 
 Future<void> _openDetail(WidgetTester tester) async {
   await tester.tap(find.text('Relaciones y violencia digital').first);
-  await _pumpUntilFound(tester, find.text(AppStrings.viewTheory));
+  await _pumpUntilFound(tester, find.text(AppStrings.theoryTitle));
 }
 
 Future<void> _openLessonLastPage(WidgetTester tester) async {
-  await tester.ensureVisible(find.text(AppStrings.viewTheory));
-  await tester.tap(find.text(AppStrings.viewTheory));
+  await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+  await tester.tap(find.text(AppStrings.theoryTitle));
   await _pumpUntilFound(tester, find.text('1 de 4'));
 
   for (var index = 0; index < 3; index += 1) {
@@ -229,6 +229,13 @@ Future<void> _answerActivity(WidgetTester tester, int activity) async {
 void _expectPrimaryButtonTarget(WidgetTester tester, String label) {
   final button = find.widgetWithText(ElevatedButton, label);
   expect(tester.getSize(button).height, greaterThanOrEqualTo(52));
+}
+
+void _expectRouteStepTarget(WidgetTester tester, String label) {
+  final routeStepCard = find
+      .ancestor(of: find.text(label), matching: find.byType(Card))
+      .first;
+  expect(tester.getSize(routeStepCard).height, greaterThanOrEqualTo(48));
 }
 
 void _expectNoFlutterException(WidgetTester tester, {String? reason}) {

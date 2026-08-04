@@ -42,6 +42,8 @@ abstract final class AppStrings {
       'Sigue aprendiendo y practicando para fortalecer tus decisiones de autocuidado.';
   static const startLesson = 'Comenzar lección';
   static const objectivesTitle = 'Objetivos de aprendizaje';
+  static const viewObjectives = 'Ver objetivos de aprendizaje';
+  static const close = 'Cerrar';
   static const sensitiveContentWarningTitle = 'Contenido sensible';
   static const previous = 'Anterior';
   static const next = 'Siguiente';
