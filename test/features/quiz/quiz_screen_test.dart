@@ -48,7 +48,9 @@ void main() {
   }
 
   Future<void> selectFirstOption(WidgetTester tester) async {
-    await tester.tap(find.text('Respuesta correcta'));
+    final option = find.text('Respuesta correcta');
+    await tester.ensureVisible(option);
+    await tester.tap(option);
     await tester.pumpAndSettle();
   }
 
@@ -62,23 +64,19 @@ void main() {
       await tester.enterText(find.byType(TextField), ' evidencia ');
       await tester.pumpAndSettle();
     } else {
-      await tester.tap(find.text('Respuesta correcta'));
+      final option = find.text('Respuesta correcta');
+      await tester.ensureVisible(option);
+      await tester.tap(option);
       await tester.pumpAndSettle();
     }
 
     await submit(tester);
   }
 
-  testWidgets('botón Responder inicia deshabilitado sin selección', (
-    tester,
-  ) async {
+  testWidgets('botón Responder no se muestra sin selección', (tester) async {
     await pumpQuiz(tester);
 
-    final button = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, AppStrings.submitAnswer),
-    );
-
-    expect(button.enabled, isFalse);
+    expect(find.text(AppStrings.submitAnswer), findsNothing);
   });
 
   testWidgets(
@@ -88,13 +86,29 @@ void main() {
 
       await selectFirstOption(tester);
 
-      expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline), findsNothing);
       final button = tester.widget<ElevatedButton>(
         find.widgetWithText(ElevatedButton, AppStrings.submitAnswer),
       );
       expect(button.enabled, isTrue);
     },
   );
+
+  testWidgets('tocar otra vez una opción la desmarca', (tester) async {
+    await pumpQuiz(tester);
+
+    final option = find.text('Respuesta correcta');
+    await tester.ensureVisible(option);
+    await tester.tap(option);
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.submitAnswer), findsOneWidget);
+
+    await tester.tap(option);
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.submitAnswer), findsNothing);
+  });
 
   testWidgets('confirma respuesta y muestra retroalimentación correcta', (
     tester,
@@ -115,11 +129,14 @@ void main() {
   ) async {
     await pumpQuiz(tester);
 
-    await tester.tap(find.text('Respuesta incorrecta'));
+    final incorrectOption = find.text('Respuesta incorrecta');
+    await tester.ensureVisible(incorrectOption);
+    await tester.tap(incorrectOption);
     await tester.pumpAndSettle();
     await submit(tester);
 
     expect(find.text(AppStrings.reviewAnswer), findsOneWidget);
+    expect(find.byIcon(Icons.cancel_outlined), findsOneWidget);
     expect(find.text('Retroalimentación exacta.'), findsOneWidget);
     expect(
       find.text('${AppStrings.expectedAnswer}: Respuesta correcta'),
@@ -139,7 +156,7 @@ void main() {
     await tester.tap(find.text(AppStrings.nextActivity));
     await tester.pumpAndSettle();
 
-    expect(find.text('Actividad 2 de 12'), findsOneWidget);
+    expect(find.text('Actividad 2 de 12'), findsNothing);
     expect(find.byType(TextField), findsOneWidget);
   });
 
@@ -150,10 +167,7 @@ void main() {
     await tester.tap(find.text(AppStrings.nextActivity));
     await tester.pumpAndSettle();
 
-    final buttonBeforeInput = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, AppStrings.submitAnswer),
-    );
-    expect(buttonBeforeInput.enabled, isFalse);
+    expect(find.text(AppStrings.submitAnswer), findsNothing);
 
     await tester.enterText(find.byType(TextField), ' evidencia ');
     await tester.pumpAndSettle();
@@ -187,7 +201,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.exitLessonTitle), findsNothing);
-    expect(find.text('Actividad 1 de 12'), findsOneWidget);
+    expect(find.text('Actividad 1 de 12'), findsNothing);
   });
 
   testWidgets('llega al resultado después de 12 actividades', (tester) async {
@@ -207,10 +221,31 @@ void main() {
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
     expect(find.text('12 de 12'), findsOneWidget);
     expect(find.text('100%'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.text(AppStrings.viewCategorySummary), findsOneWidget);
+    expect(find.text('preguntas'), findsOneWidget);
+    expect(find.text('correctas'), findsOneWidget);
+    expect(find.text('por reforzar'), findsOneWidget);
+    expect(find.text(AppStrings.backToActivities), findsOneWidget);
+    expect(find.text(AppStrings.viewCategorySummary), findsNothing);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
-    expect(find.text(AppStrings.backToCategories), findsOneWidget);
+    expect(find.text(AppStrings.backToCategories), findsNothing);
+  });
+
+  testWidgets('enviar una palabra desde el teclado actualiza el progreso', (
+    tester,
+  ) async {
+    await pumpQuiz(tester);
+
+    await answerCurrentCorrectly(tester, 1);
+    await tester.tap(find.text(AppStrings.nextActivity));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), ' evidencia ');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle();
+
+    final progress = progressController.snapshotFor(_category.id);
+    expect(find.text(AppStrings.correct), findsOneWidget);
+    expect(progress.completedActivities, 2);
   });
 }
 

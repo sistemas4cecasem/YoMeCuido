@@ -286,13 +286,13 @@ void main() {
 
     expect(repository.loadQuizQuestionsCalls, 2);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
-    expect(find.text('Actividad 1 de 12'), findsOneWidget);
+    expect(find.text('Actividad 1 de 12'), findsNothing);
     expect(
       find.text('¿Cuál es un ejemplo de violencia digital?'),
       findsOneWidget,
     );
   });
-  testWidgets('repetir lecci\u00f3n vuelve a la primera c\u00e1psula', (
+  testWidgets('repetir lecci\u00f3n vuelve a la primera actividad', (
     tester,
   ) async {
     await openQuiz(tester);
@@ -304,13 +304,13 @@ void main() {
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
 
-    expect(find.text('1 de 4'), findsOneWidget);
     expect(
-      find.text('\u00bfQu\u00e9 es la violencia digital?'),
+      find.text('\u00bfCu\u00e1l es un ejemplo de violencia digital?'),
       findsOneWidget,
     );
     expect(find.text(AppStrings.lessonCompleted), findsNothing);
-    expect(find.text(AppStrings.quizTitle), findsNothing);
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+    expect(find.text(AppStrings.submitAnswer), findsNothing);
   });
 
   testWidgets('repetir lecci\u00f3n reinicia el puntaje', (tester) async {
@@ -318,17 +318,6 @@ void main() {
     await completeActivities(tester, correctAnswers: 12);
 
     await tester.tap(find.text(AppStrings.repeatLesson));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.startActivities));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
-    await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
 
     await completeActivities(tester, correctAnswers: 0);
@@ -344,34 +333,29 @@ void main() {
     );
   });
 
-  testWidgets(
-    'volver a categor\u00edas limpia el flujo y conserva la pila correcta',
-    (tester) async {
-      await openQuiz(tester);
-      await completeActivities(tester, correctAnswers: 8);
+  testWidgets('el resultado no muestra volver a categor\u00edas', (
+    tester,
+  ) async {
+    await openQuiz(tester);
+    await completeActivities(tester, correctAnswers: 8);
 
-      expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-      expect(
-        find.text(
-          'Buen trabajo. Sigue practicando para fortalecer tus decisiones de autocuidado.',
-        ),
-        findsOneWidget,
-      );
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text(AppStrings.backToCategories), findsNothing);
+  });
 
-      await tester.tap(find.text(AppStrings.backToCategories));
-      await tester.pumpAndSettle();
+  testWidgets('volver a actividades abre el listado de actividades', (
+    tester,
+  ) async {
+    await openQuiz(tester);
+    await completeActivities(tester, correctAnswers: 8);
 
-      expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
-      expect(find.text(AppStrings.lessonCompleted), findsNothing);
-      expect(find.text(AppStrings.theoryTitle), findsNothing);
+    await tester.tap(find.text(AppStrings.backToActivities));
+    await tester.pumpAndSettle();
 
-      await tester.pageBack();
-      await tester.pumpAndSettle();
-
-      expect(find.text(AppStrings.appTagline), findsOneWidget);
-      expect(find.text(AppStrings.categoriesTitle), findsNothing);
-    },
-  );
+    expect(find.text(AppStrings.lessonCompleted), findsNothing);
+    expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
+    expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
+  });
 }
 
 class _FakeContentRepository implements ContentRepository {

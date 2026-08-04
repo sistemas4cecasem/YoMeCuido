@@ -32,6 +32,41 @@ class QuizResult {
   final int percentage;
   final String closingMessage;
 
+  QuizResultLevel get level {
+    if (correctAnswers >= 10) {
+      return QuizResultLevel.high;
+    }
+    if (correctAnswers >= 7) {
+      return QuizResultLevel.medium;
+    }
+
+    return QuizResultLevel.low;
+  }
+
+  String get achievementLabel {
+    return switch (level) {
+      QuizResultLevel.high => '¡Bien hecho!',
+      QuizResultLevel.medium => 'Buen avance',
+      QuizResultLevel.low => 'Necesita refuerzo',
+    };
+  }
+
+  String get headlineMessage {
+    return switch (level) {
+      QuizResultLevel.high => 'Sigue así, vas muy bien.',
+      QuizResultLevel.medium => 'Vas avanzando, sigue practicando.',
+      QuizResultLevel.low => 'Puedes repetir y reforzar con calma.',
+    };
+  }
+
+  String get characterAssetKey {
+    return switch (level) {
+      QuizResultLevel.high => 'boyCompleted',
+      QuizResultLevel.medium => 'girlProgress',
+      QuizResultLevel.low => 'boyThinking',
+    };
+  }
+
   static String _messageFor(int correctAnswers) {
     if (correctAnswers >= 10) {
       return 'Muy bien. Reconoces varias señales de riesgo y acciones de protección.';
@@ -43,3 +78,5 @@ class QuizResult {
     return 'Has completado la lección. Puedes repetirla y revisar nuevamente las recomendaciones.';
   }
 }
+
+enum QuizResultLevel { high, medium, low }

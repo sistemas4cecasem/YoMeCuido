@@ -34,7 +34,9 @@ class FeedbackCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
-                  isCorrect ? Icons.check_circle_outline : Icons.info_outline,
+                  isCorrect
+                      ? Icons.check_circle_outline
+                      : Icons.cancel_outlined,
                   color: statusColor,
                 ),
                 const SizedBox(width: AppSpacing.sm),

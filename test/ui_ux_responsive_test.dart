@@ -70,15 +70,7 @@ void main() {
 
       await _openQuiz(tester);
       _expectNoFlutterException(tester);
-      _expectPrimaryButtonTarget(tester, AppStrings.submitAnswer);
-      expect(
-        tester
-            .widget<ElevatedButton>(
-              find.widgetWithText(ElevatedButton, AppStrings.submitAnswer),
-            )
-            .enabled,
-        isFalse,
-      );
+      expect(find.text(AppStrings.submitAnswer), findsNothing);
 
       await _answerActivity(tester, 1);
       _expectNoFlutterException(tester);
@@ -135,8 +127,8 @@ void main() {
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
-    expect(find.text(AppStrings.backToCategories), findsOneWidget);
-    _expectPrimaryButtonTarget(tester, AppStrings.viewCategorySummary);
+    expect(find.text(AppStrings.backToCategories), findsNothing);
+    _expectPrimaryButtonTarget(tester, AppStrings.backToActivities);
   });
 }
 

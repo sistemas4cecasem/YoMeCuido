@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../app/app_assets.dart';
-import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
 import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
@@ -202,50 +201,28 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _repeatLesson() {
     _answerTextController.clear();
-    setState(() {
-      _allowPop = true;
-      _showResult = false;
-    });
     _controller.reset();
     widget.progressController.resetCategory(widget.category.id);
-    // Repeating starts at theory because AGENTS.md defines the lesson as
-    // capsules plus activities, and the result invites reviewing again.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRoutes.lesson,
-        arguments: widget.category,
-        (route) {
-          return route.settings.name == AppRoutes.categoryDetail ||
-              route.isFirst;
-        },
-      );
-    });
-  }
-
-  void _backToCategories() {
-    _answerTextController.clear();
+    widget.progressController.startActivityAttempt(
+      categoryId: widget.category.id,
+      totalActivities: widget.questions.length,
+    );
     setState(() {
-      _allowPop = true;
+      _allowPop = false;
       _showResult = false;
     });
-    _controller.reset();
+  }
+
+  void _backToActivities() {
+    setState(() {
+      _allowPop = true;
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
       }
-      Navigator.of(context).popUntil((route) {
-        return route.settings.name == AppRoutes.categories || route.isFirst;
-      });
+      Navigator.of(context).pop();
     });
-  }
-
-  void _openCategorySummary() {
-    Navigator.of(
-      context,
-    ).pushNamed(AppRoutes.categorySummary, arguments: widget.category);
   }
 
   @override
@@ -263,9 +240,8 @@ class _QuizFlowState extends State<_QuizFlow> {
           if (_showResult) {
             return _ResultView(
               result: _controller.generateResult(),
-              onOpenSummary: _openCategorySummary,
+              onBackToActivities: _backToActivities,
               onRepeatLesson: _repeatLesson,
-              onBackToCategories: _backToCategories,
             );
           }
 
@@ -302,12 +278,6 @@ class _ActivityView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'Actividad ${controller.currentActivityNumber} de '
-          '${controller.totalQuestions}',
-          style: textTheme.titleSmall,
-        ),
-        const SizedBox(height: AppSpacing.sm),
         LessonProgressBar(
           currentStep: controller.currentActivityNumber,
           totalSteps: controller.totalQuestions,
@@ -330,6 +300,7 @@ class _ActivityView extends StatelessWidget {
                 _AnswerInput(
                   controller: controller,
                   textController: answerTextController,
+                  onSubmitAnswer: onSubmitAnswer,
                 ),
               ],
             ),
@@ -346,22 +317,52 @@ class _ActivityView extends StatelessWidget {
                 : Icons.arrow_forward_outlined,
             onPressed: onGoForward,
           )
-        else
-          PrimaryButton(
-            label: AppStrings.submitAnswer,
-            icon: Icons.check_outlined,
-            onPressed: controller.canSubmitAnswer ? onSubmitAnswer : null,
+        else if (controller.canSubmitAnswer)
+          Align(
+            alignment: Alignment.centerRight,
+            child: _CompactSubmitButton(onPressed: onSubmitAnswer),
           ),
       ],
     );
   }
 }
 
+class _CompactSubmitButton extends StatelessWidget {
+  const _CompactSubmitButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: AppStrings.submitAnswer,
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: const Icon(Icons.check_outlined),
+        label: const Text(AppStrings.submitAnswer),
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(0, 48),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.sm,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _AnswerInput extends StatelessWidget {
-  const _AnswerInput({required this.controller, required this.textController});
+  const _AnswerInput({
+    required this.controller,
+    required this.textController,
+    required this.onSubmitAnswer,
+  });
 
   final QuizController controller;
   final TextEditingController textController;
+  final VoidCallback onSubmitAnswer;
 
   @override
   Widget build(BuildContext context) {
@@ -371,6 +372,7 @@ class _AnswerInput extends StatelessWidget {
       QuestionType.fillBlank => _FillBlankInput(
         controller: controller,
         textController: textController,
+        onSubmitAnswer: onSubmitAnswer,
       ),
     };
   }
@@ -397,8 +399,12 @@ class _ActivityIllustration extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final useVerticalLayout =
-                constraints.maxWidth < 360 ||
-                MediaQuery.textScalerOf(context).scale(1) > 1.2;
+                constraints.maxWidth < 260 ||
+                MediaQuery.textScalerOf(context).scale(1) > 1.35;
+            final characterWidth = (constraints.maxWidth * 0.32).clamp(
+              96.0,
+              136.0,
+            );
             final image = AnimatedSwitcher(
               duration: reduceMotion
                   ? Duration.zero
@@ -409,7 +415,7 @@ class _ActivityIllustration extends StatelessWidget {
                 key: ValueKey(assetPath),
                 assetPath: assetPath,
                 semanticLabel: '$titleText. $bodyText',
-                height: useVerticalLayout ? 112 : 128,
+                height: useVerticalLayout ? 124 : 174,
               ),
             );
             final illustratedState = Stack(
@@ -429,16 +435,19 @@ class _ActivityIllustration extends StatelessWidget {
                   ),
               ],
             );
-            final content = Row(
+            final content = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(_iconForState(controller), color: _colorForState(colors)),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      _iconForState(controller),
+                      color: _colorForState(colors),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Text(
                         titleText,
                         style: textTheme.titleSmall?.copyWith(
                           color: controller.isAnswerConfirmed
@@ -446,35 +455,59 @@ class _ActivityIllustration extends StatelessWidget {
                               : colors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        bodyText,
-                        style: textTheme.bodyLarge?.copyWith(
-                          color: colors.textPrimary,
-                        ),
-                      ),
-                    ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  bodyText,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: colors.textPrimary,
                   ),
                 ),
               ],
+            );
+            final constrainedIllustration = SizedBox(
+              width: characterWidth,
+              height: 174,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
+                child: illustratedState,
+              ),
             );
 
             if (useVerticalLayout) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(child: illustratedState),
-                  const SizedBox(height: AppSpacing.sm),
                   content,
+                  const SizedBox(height: AppSpacing.sm),
+                  Center(
+                    child: SizedBox(
+                      height: 124,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: illustratedState,
+                      ),
+                    ),
+                  ),
                 ],
               );
             }
 
             return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                illustratedState,
+                Expanded(flex: 3, child: content),
                 const SizedBox(width: AppSpacing.md),
-                Expanded(child: content),
+                Flexible(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: constrainedIllustration,
+                  ),
+                ),
               ],
             );
           },
@@ -529,7 +562,7 @@ class _ActivityIllustration extends StatelessWidget {
     if (controller.isAnswerConfirmed) {
       return controller.isCurrentAnswerCorrect == true
           ? Icons.check_circle_outline
-          : Icons.info_outline;
+          : Icons.cancel_outlined;
     }
 
     return controller.currentQuestionType == QuestionType.fillBlank
@@ -651,6 +684,7 @@ class _ChoiceOptions extends StatelessWidget {
         : controller.currentOptions;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final option in visibleOptions) ...[
           AnswerOptionTile(
@@ -671,10 +705,12 @@ class _FillBlankInput extends StatelessWidget {
   const _FillBlankInput({
     required this.controller,
     required this.textController,
+    required this.onSubmitAnswer,
   });
 
   final QuizController controller;
   final TextEditingController textController;
+  final VoidCallback onSubmitAnswer;
 
   @override
   Widget build(BuildContext context) {
@@ -696,8 +732,7 @@ class _FillBlankInput extends StatelessWidget {
       onChanged: controller.updateWrittenAnswer,
       onSubmitted: (_) {
         if (controller.canSubmitAnswer) {
-          FocusManager.instance.primaryFocus?.unfocus();
-          controller.submitAnswer();
+          onSubmitAnswer();
         }
       },
     );
@@ -707,15 +742,13 @@ class _FillBlankInput extends StatelessWidget {
 class _ResultView extends StatelessWidget {
   const _ResultView({
     required this.result,
-    required this.onOpenSummary,
+    required this.onBackToActivities,
     required this.onRepeatLesson,
-    required this.onBackToCategories,
   });
 
   final QuizResult result;
-  final VoidCallback onOpenSummary;
+  final VoidCallback onBackToActivities;
   final VoidCallback onRepeatLesson;
-  final VoidCallback onBackToCategories;
 
   @override
   Widget build(BuildContext context) {
@@ -729,21 +762,15 @@ class _ResultView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         PrimaryButton(
-          label: AppStrings.viewCategorySummary,
-          icon: Icons.insights_outlined,
-          onPressed: onOpenSummary,
+          label: AppStrings.backToActivities,
+          icon: Icons.format_list_bulleted_outlined,
+          onPressed: onBackToActivities,
         ),
         const SizedBox(height: AppSpacing.sm),
         SecondaryButton(
           label: AppStrings.repeatLesson,
           icon: Icons.refresh_outlined,
           onPressed: onRepeatLesson,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        SecondaryButton(
-          label: AppStrings.backToCategories,
-          icon: Icons.list_alt_outlined,
-          onPressed: onBackToCategories,
         ),
       ],
     );

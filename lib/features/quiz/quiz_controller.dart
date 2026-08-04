@@ -116,7 +116,7 @@ class QuizController extends ChangeNotifier {
       throw ArgumentError('Unknown option id "$optionId".');
     }
 
-    _selectedOptionId = optionId;
+    _selectedOptionId = _selectedOptionId == optionId ? null : optionId;
     notifyListeners();
   }
 

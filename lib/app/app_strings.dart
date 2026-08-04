@@ -24,6 +24,7 @@ abstract final class AppStrings {
   static const viewTheory = 'Ver teoría';
   static const viewActivities = 'Ir a actividades';
   static const viewCategorySummary = 'Ver resumen de categoría';
+  static const backToActivities = 'Volver a actividades';
   static const completed = 'Completado';
   static const completedPlural = 'Completadas';
   static const pending = 'Pendiente';

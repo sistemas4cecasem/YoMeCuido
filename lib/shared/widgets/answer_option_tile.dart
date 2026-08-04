@@ -25,54 +25,40 @@ class AnswerOptionTile extends StatelessWidget {
     return Semantics(
       button: true,
       selected: isSelected,
-      child: Card(
-        color: backgroundColor,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.card),
-          side: BorderSide(color: borderColor, width: isSelected ? 2 : 1),
-        ),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadii.card),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final usesLargeText =
-                  MediaQuery.textScalerOf(context).scale(1) > 1.3;
-              final icon = Icon(
-                isSelected
-                    ? Icons.check_circle_outline
-                    : Icons.radio_button_unchecked,
-                color: isSelected ? colors.orangeDark : colors.textSecondary,
-              );
-              final label = Text(
-                text,
-                style: textTheme.bodyLarge?.copyWith(color: colors.textPrimary),
-              );
-
-              return Padding(
+      child: SizedBox(
+        width: double.infinity,
+        child: Card(
+          color: backgroundColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadii.card),
+            side: BorderSide(color: borderColor, width: isSelected ? 2 : 1),
+          ),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(AppRadii.card),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 60),
+              child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
                   vertical: AppSpacing.sm,
                 ),
-                child: usesLargeText || constraints.maxWidth < 300
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          icon,
-                          const SizedBox(height: AppSpacing.xs),
-                          label,
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          icon,
-                          const SizedBox(width: AppSpacing.sm),
-                          Expanded(child: label),
-                        ],
-                      ),
-              );
-            },
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: colors.textPrimary,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),

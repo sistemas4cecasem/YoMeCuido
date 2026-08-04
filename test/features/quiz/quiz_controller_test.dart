@@ -27,6 +27,21 @@ void main() {
       expect(controller.correctAnswers, 0);
     });
 
+    test('toggles a selected option when tapped again', () {
+      final controller = QuizController(questions: _questions);
+
+      controller.selectOption('control_passwords_threaten_messages');
+      expect(
+        controller.selectedOptionId,
+        'control_passwords_threaten_messages',
+      );
+      expect(controller.canSubmitAnswer, isTrue);
+
+      controller.selectOption('control_passwords_threaten_messages');
+      expect(controller.selectedOptionId, isNull);
+      expect(controller.canSubmitAnswer, isFalse);
+    });
+
     test('validates true and false answers by id', () {
       final controller = QuizController(questions: _questions);
 
@@ -165,6 +180,10 @@ void main() {
         result.closingMessage,
         'Muy bien. Reconoces varias se\u00f1ales de riesgo y acciones de protecci\u00f3n.',
       );
+      expect(result.level, QuizResultLevel.high);
+      expect(result.achievementLabel, '¡Bien hecho!');
+      expect(result.headlineMessage, 'Sigue así, vas muy bien.');
+      expect(result.characterAssetKey, 'boyCompleted');
     });
 
     test('generates the medium score closing message', () {
@@ -177,6 +196,10 @@ void main() {
         result.closingMessage,
         'Buen trabajo. Sigue practicando para fortalecer tus decisiones de autocuidado.',
       );
+      expect(result.level, QuizResultLevel.medium);
+      expect(result.achievementLabel, 'Buen avance');
+      expect(result.headlineMessage, 'Vas avanzando, sigue practicando.');
+      expect(result.characterAssetKey, 'girlProgress');
     });
 
     test('generates the low score closing message', () {
@@ -189,6 +212,10 @@ void main() {
         result.closingMessage,
         'Has completado la lecci\u00f3n. Puedes repetirla y revisar nuevamente las recomendaciones.',
       );
+      expect(result.level, QuizResultLevel.low);
+      expect(result.achievementLabel, 'Necesita refuerzo');
+      expect(result.headlineMessage, 'Puedes repetir y reforzar con calma.');
+      expect(result.characterAssetKey, 'boyThinking');
     });
   });
 }
