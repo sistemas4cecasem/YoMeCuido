@@ -6,12 +6,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash_yomecuido" />
-    </item>
-
-    <item android:bottom="48dp">
-        <bitmap
-            android:gravity="bottom|center_horizontal"
-            android:src="@drawable/splash_cecasem_light" />
+            android:src="@drawable/splash_yomecuido_system" />
     </item>
 </layer-list>
