@@ -37,4 +37,30 @@ abstract final class AppAssets {
       '$_charactersPath/chico_09_mision_completada_a.png';
   static const boyMenu =
       '$_charactersPath/chico_10_explorando_menu_opciones_a.png';
+
+  static const activityGirlNormal =
+      '$_charactersPath/chica_expresion_normal.png';
+  static const activityGirlCorrect =
+      '$_charactersPath/chica_respuesta_correcta.png';
+  static const activityGirlIncorrect =
+      '$_charactersPath/chica_respuesta_incorrecta.png';
+
+  static const activityBoyNormal =
+      '$_charactersPath/chico_expresion_normal.png';
+  static const activityBoyCorrect =
+      '$_charactersPath/chico_respuesta_correcta.png';
+  static const activityBoyIncorrect =
+      '$_charactersPath/chico_respuesta_incorrecta.png';
+
+  static const theoryGirlThinking1 = '$_charactersPath/chica_pensando_1.png';
+  static const theoryGirlThinking2 = '$_charactersPath/chica_pensando_2.png';
+  static const theoryBoyThinking1 = '$_charactersPath/chico_pensando_1.png';
+  static const theoryBoyThinking2 = '$_charactersPath/chico_pensando_2.png';
+
+  static const theoryThinkingCharacters = <String>[
+    theoryGirlThinking1,
+    theoryGirlThinking2,
+    theoryBoyThinking1,
+    theoryBoyThinking2,
+  ];
 }

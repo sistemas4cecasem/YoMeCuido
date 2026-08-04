@@ -80,7 +80,7 @@ class _ResultHero extends StatelessWidget {
         final character = CharacterImage(
           assetPath: _characterAssetForResult(result),
           semanticLabel: _characterSemanticLabelForResult(result),
-          height: 184,
+          height: AppSizing.characterFeatureHeight,
         );
 
         if (useVerticalLayout) {

@@ -179,7 +179,7 @@ class _IntroCard extends StatelessWidget {
             const CharacterImage(
               assetPath: AppAssets.boyStart,
               semanticLabel: 'Personaje listo para iniciar actividades',
-              height: 112,
+              height: AppSizing.characterInlineHeight,
             ),
           ],
         ),

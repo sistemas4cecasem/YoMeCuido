@@ -235,7 +235,7 @@ class _EncouragementCard extends StatelessWidget {
                   ? AppAssets.girlCompleted
                   : AppAssets.girlProgress,
               semanticLabel: 'Personaje mostrando avance',
-              height: 112,
+              height: AppSizing.characterInlineHeight,
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(

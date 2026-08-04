@@ -20,6 +20,8 @@ abstract final class AppSizing {
   static const minTouchTarget = 48.0;
   static const primaryButtonHeight = 52.0;
   static const maxContentWidth = 560.0;
+  static const characterInlineHeight = 180.0;
+  static const characterFeatureHeight = 220.0;
 }
 
 abstract final class AppInsets {

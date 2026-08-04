@@ -84,76 +84,102 @@ class _Header extends StatelessWidget {
       color: colors.surfaceStrong,
       child: Padding(
         padding: AppInsets.card,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: AppSizing.minTouchTarget,
-                        height: AppSizing.minTouchTarget,
-                        decoration: BoxDecoration(
-                          color: colors.orangeSoft,
-                          borderRadius: BorderRadius.circular(AppRadii.sm),
-                          border: Border.all(color: colors.orangePrimary),
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: AppSizing.minTouchTarget,
+                          height: AppSizing.minTouchTarget,
+                          decoration: BoxDecoration(
+                            color: colors.orangeSoft,
+                            borderRadius: BorderRadius.circular(AppRadii.sm),
+                            border: Border.all(color: colors.orangePrimary),
+                          ),
+                          child: Icon(
+                            categoryIconFromName(category.iconName),
+                            color: colors.orangeDark,
+                          ),
                         ),
-                        child: Icon(
-                          categoryIconFromName(category.iconName),
-                          color: colors.orangeDark,
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: Text(
+                            category.title,
+                            style: textTheme.titleMedium,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: Text(
-                          category.title,
-                          style: textTheme.titleMedium,
-                        ),
-                      ),
-                      if (!showSideContent) ...[
-                        const SizedBox(width: AppSpacing.xs),
-                        _ObjectivesButton(objectives: category.objectives),
+                        if (!showSideContent) ...[
+                          const SizedBox(width: AppSpacing.xs),
+                          _ObjectivesButton(objectives: category.objectives),
+                        ],
                       ],
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(category.description, style: textTheme.bodyLarge),
-                  const SizedBox(height: AppSpacing.md),
-                  Wrap(
-                    spacing: AppSpacing.xs,
-                    runSpacing: AppSpacing.xs,
-                    children: [
-                      for (final indicator in category.indicators)
-                        _IndicatorChip(label: indicator),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    Text(category.description, style: textTheme.bodyLarge),
+                    const SizedBox(height: AppSpacing.md),
+                    Wrap(
+                      spacing: AppSpacing.xs,
+                      runSpacing: AppSpacing.xs,
+                      children: [
+                        for (final indicator in category.indicators)
+                          _IndicatorChip(label: indicator),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              if (showSideContent) ...[
+                const SizedBox(width: AppSpacing.sm),
+                _HeaderSidePanel(
+                  objectives: category.objectives,
+                  progress: progress,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderSidePanel extends StatelessWidget {
+  const _HeaderSidePanel({required this.objectives, required this.progress});
+
+  final List<String> objectives;
+  final CategoryProgressSnapshot progress;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 104,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: _ObjectivesButton(objectives: objectives),
+          ),
+          Expanded(
+            child: Center(
+              child: const CharacterImage(
+                assetPath: AppAssets.girlMenu,
+                semanticLabel: 'Personaje explorando opciones',
+                height: AppSizing.characterInlineHeight,
               ),
             ),
-            if (showSideContent) ...[
-              const SizedBox(width: AppSpacing.sm),
-              Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: _ObjectivesButton(objectives: category.objectives),
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  const CharacterImage(
-                    assetPath: AppAssets.girlMenu,
-                    semanticLabel: 'Personaje explorando opciones',
-                    height: 116,
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  _ProgressPill(progress: progress),
-                ],
-              ),
-            ],
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: _ProgressPill(progress: progress),
+          ),
+        ],
       ),
     );
   }

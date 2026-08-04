@@ -106,6 +106,9 @@ class _QuizFlow extends StatefulWidget {
 class _QuizFlowState extends State<_QuizFlow> {
   late final QuizController _controller;
   final TextEditingController _answerTextController = TextEditingController();
+  final math.Random _characterRandom = math.Random();
+  final Map<String, _ActivityCharacter> _activityCharacters =
+      <String, _ActivityCharacter>{};
   bool _allowPop = false;
   bool _showResult = false;
 
@@ -201,6 +204,7 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _repeatLesson() {
     _answerTextController.clear();
+    _activityCharacters.clear();
     _controller.reset();
     widget.progressController.resetCategory(widget.category.id);
     widget.progressController.startActivityAttempt(
@@ -225,6 +229,15 @@ class _QuizFlowState extends State<_QuizFlow> {
     });
   }
 
+  _ActivityCharacter _characterForCurrentActivity() {
+    return _activityCharacters.putIfAbsent(
+      _controller.currentQuestionId,
+      () => _characterRandom.nextBool()
+          ? _ActivityCharacter.girl
+          : _ActivityCharacter.boy,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope<void>(
@@ -247,6 +260,7 @@ class _QuizFlowState extends State<_QuizFlow> {
 
           return _ActivityView(
             controller: _controller,
+            activityCharacter: _characterForCurrentActivity(),
             answerTextController: _answerTextController,
             onSubmitAnswer: _submitAnswer,
             onGoForward: _goForward,
@@ -260,12 +274,14 @@ class _QuizFlowState extends State<_QuizFlow> {
 class _ActivityView extends StatelessWidget {
   const _ActivityView({
     required this.controller,
+    required this.activityCharacter,
     required this.answerTextController,
     required this.onSubmitAnswer,
     required this.onGoForward,
   });
 
   final QuizController controller;
+  final _ActivityCharacter activityCharacter;
   final TextEditingController answerTextController;
   final VoidCallback onSubmitAnswer;
   final VoidCallback onGoForward;
@@ -290,7 +306,10 @@ class _ActivityView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _ActivityIllustration(controller: controller),
+                _ActivityIllustration(
+                  controller: controller,
+                  activityCharacter: activityCharacter,
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
                   controller.currentStatement,
@@ -379,9 +398,13 @@ class _AnswerInput extends StatelessWidget {
 }
 
 class _ActivityIllustration extends StatelessWidget {
-  const _ActivityIllustration({required this.controller});
+  const _ActivityIllustration({
+    required this.controller,
+    required this.activityCharacter,
+  });
 
   final QuizController controller;
+  final _ActivityCharacter activityCharacter;
 
   @override
   Widget build(BuildContext context) {
@@ -401,10 +424,12 @@ class _ActivityIllustration extends StatelessWidget {
             final useVerticalLayout =
                 constraints.maxWidth < 260 ||
                 MediaQuery.textScalerOf(context).scale(1) > 1.35;
-            final characterWidth = (constraints.maxWidth * 0.32).clamp(
-              96.0,
-              136.0,
+            final characterWidth = (constraints.maxWidth - 150).clamp(
+              140.0,
+              190.0,
             );
+            const horizontalImageHeight = AppSizing.characterFeatureHeight;
+            const verticalImageHeight = AppSizing.characterInlineHeight;
             final image = AnimatedSwitcher(
               duration: reduceMotion
                   ? Duration.zero
@@ -415,7 +440,9 @@ class _ActivityIllustration extends StatelessWidget {
                 key: ValueKey(assetPath),
                 assetPath: assetPath,
                 semanticLabel: '$titleText. $bodyText',
-                height: useVerticalLayout ? 124 : 174,
+                height: useVerticalLayout
+                    ? verticalImageHeight
+                    : horizontalImageHeight,
               ),
             );
             final illustratedState = Stack(
@@ -469,7 +496,7 @@ class _ActivityIllustration extends StatelessWidget {
             );
             final constrainedIllustration = SizedBox(
               width: characterWidth,
-              height: 174,
+              height: horizontalImageHeight,
               child: FittedBox(
                 fit: BoxFit.contain,
                 alignment: Alignment.bottomCenter,
@@ -485,7 +512,7 @@ class _ActivityIllustration extends StatelessWidget {
                   const SizedBox(height: AppSpacing.sm),
                   Center(
                     child: SizedBox(
-                      height: 124,
+                      height: verticalImageHeight,
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: illustratedState,
@@ -499,14 +526,11 @@ class _ActivityIllustration extends StatelessWidget {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(flex: 3, child: content),
-                const SizedBox(width: AppSpacing.md),
-                Flexible(
-                  flex: 1,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: constrainedIllustration,
-                  ),
+                Expanded(child: content),
+                const SizedBox(width: AppSpacing.sm),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: constrainedIllustration,
                 ),
               ],
             );
@@ -517,21 +541,15 @@ class _ActivityIllustration extends StatelessWidget {
   }
 
   String _assetForState(QuizController controller) {
-    final isEvenActivity = controller.currentActivityNumber.isEven;
-
     if (controller.isAnswerConfirmed) {
       if (controller.isCurrentAnswerCorrect == true) {
-        return isEvenActivity ? AppAssets.girlCorrect : AppAssets.boyCorrect;
+        return activityCharacter.correctAsset;
       }
 
-      return isEvenActivity ? AppAssets.girlIncorrect : AppAssets.boyIncorrect;
+      return activityCharacter.incorrectAsset;
     }
 
-    if (controller.currentQuestionType == QuestionType.fillBlank) {
-      return isEvenActivity ? AppAssets.girlTip : AppAssets.boyTip;
-    }
-
-    return isEvenActivity ? AppAssets.girlThinking : AppAssets.boyThinking;
+    return activityCharacter.normalAsset;
   }
 
   String _titleTextForState(QuizController controller) {
@@ -579,6 +597,29 @@ class _ActivityIllustration extends StatelessWidget {
         ? colors.success
         : colors.error;
   }
+}
+
+enum _ActivityCharacter {
+  boy(
+    normalAsset: AppAssets.activityBoyNormal,
+    correctAsset: AppAssets.activityBoyCorrect,
+    incorrectAsset: AppAssets.activityBoyIncorrect,
+  ),
+  girl(
+    normalAsset: AppAssets.activityGirlNormal,
+    correctAsset: AppAssets.activityGirlCorrect,
+    incorrectAsset: AppAssets.activityGirlIncorrect,
+  );
+
+  const _ActivityCharacter({
+    required this.normalAsset,
+    required this.correctAsset,
+    required this.incorrectAsset,
+  });
+
+  final String normalAsset;
+  final String correctAsset;
+  final String incorrectAsset;
 }
 
 class _CorrectConfetti extends StatefulWidget {

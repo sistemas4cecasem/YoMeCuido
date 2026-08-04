@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
@@ -34,6 +36,8 @@ class LessonScreen extends StatefulWidget {
 
 class _LessonScreenState extends State<LessonScreen> {
   late Future<List<LessonPage>> _pagesFuture;
+  final math.Random _theoryImageRandom = math.Random();
+  final Map<String, String> _theoryImageByPageId = <String, String>{};
   int _pageIndex = 0;
   final Set<String> _reportedPageIds = <String>{};
 
@@ -46,6 +50,7 @@ class _LessonScreenState extends State<LessonScreen> {
   void _retry() {
     setState(() {
       _pageIndex = 0;
+      _theoryImageByPageId.clear();
       _pagesFuture = widget.contentRepository.loadLessonPages(
         widget.category.id,
       );
@@ -94,6 +99,13 @@ class _LessonScreenState extends State<LessonScreen> {
     });
   }
 
+  String _theoryImageForPage(LessonPage page) {
+    return _theoryImageByPageId.putIfAbsent(page.id, () {
+      final theoryImages = AppAssets.theoryThinkingCharacters;
+      return theoryImages[_theoryImageRandom.nextInt(theoryImages.length)];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -133,7 +145,12 @@ class _LessonScreenState extends State<LessonScreen> {
               LessonProgressBar(currentStep: step, totalSteps: pages.length),
               const SizedBox(height: AppSpacing.lg),
               Expanded(
-                child: SingleChildScrollView(child: _TheoryCard(page: page)),
+                child: SingleChildScrollView(
+                  child: _TheoryCard(
+                    page: page,
+                    illustrationAsset: _theoryImageForPage(page),
+                  ),
+                ),
               ),
               const SizedBox(height: AppSpacing.lg),
               _LessonActions(
@@ -207,17 +224,15 @@ class _LessonActions extends StatelessWidget {
 }
 
 class _TheoryCard extends StatelessWidget {
-  const _TheoryCard({required this.page});
+  const _TheoryCard({required this.page, required this.illustrationAsset});
 
   final LessonPage page;
+  final String illustrationAsset;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final illustrationAsset = page.order.isEven
-        ? AppAssets.girlTheory
-        : AppAssets.boyTheory;
 
     return Card(
       child: Padding(
@@ -229,7 +244,7 @@ class _TheoryCard extends StatelessWidget {
               child: CharacterImage(
                 assetPath: illustrationAsset,
                 semanticLabel: 'Personaje leyendo contenido teórico',
-                height: 132,
+                height: AppSizing.characterFeatureHeight,
               ),
             ),
             const SizedBox(height: AppSpacing.md),
