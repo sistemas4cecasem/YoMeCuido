@@ -186,34 +186,126 @@ class _HeaderSidePanel extends StatelessWidget {
   }
 }
 
-class _ObjectivesButton extends StatelessWidget {
+class _ObjectivesButton extends StatefulWidget {
   const _ObjectivesButton({required this.objectives});
 
   final List<String> objectives;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
+  State<_ObjectivesButton> createState() => _ObjectivesButtonState();
+}
 
+class _ObjectivesButtonState extends State<_ObjectivesButton>
+    with SingleTickerProviderStateMixin {
+  static const _infoBlue = Color(0xFF1565C0);
+  static const _infoHighlight = Color(0xFF90CAF9);
+
+  late final AnimationController _shineController;
+
+  @override
+  void initState() {
+    super.initState();
+    _shineController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.of(context).disableAnimations) {
+      _shineController.stop();
+      return;
+    }
+    if (!_shineController.isAnimating && !_shineController.isCompleted) {
+      _shineController.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _shineController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       onPressed: () => AppDialog.showContent(
         context,
         title: AppStrings.objectivesTitle,
         icon: Icons.checklist_outlined,
         closeLabel: AppStrings.close,
-        content: _ObjectivesCard(objectives: objectives),
+        content: _ObjectivesCard(objectives: widget.objectives),
       ),
-      icon: const Icon(Icons.help_outline),
-      color: colors.orangeDark,
+      icon: _ShiningInfoIcon(animation: _shineController),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints.tightFor(
+        width: AppSizing.minTouchTarget,
+        height: AppSizing.minTouchTarget,
+      ),
+      color: _infoBlue,
       style: IconButton.styleFrom(
-        backgroundColor: colors.orangeSoft,
         minimumSize: const Size.square(AppSizing.minTouchTarget),
-        side: BorderSide(color: colors.orangePrimary),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadii.sm),
-        ),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        foregroundColor: _infoBlue,
+        overlayColor: _infoHighlight.withValues(alpha: 0.18),
       ),
       tooltip: AppStrings.viewObjectives,
+    );
+  }
+}
+
+class _ShiningInfoIcon extends StatelessWidget {
+  const _ShiningInfoIcon({required this.animation});
+
+  final Animation<double> animation;
+
+  @override
+  Widget build(BuildContext context) {
+    const icon = Icons.info_outline;
+    final reduceMotion = MediaQuery.of(context).disableAnimations;
+
+    return SizedBox.square(
+      dimension: AppSizing.minTouchTarget,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          const Icon(icon, color: _ObjectivesButtonState._infoBlue, size: 30),
+          if (!reduceMotion)
+            AnimatedBuilder(
+              animation: animation,
+              builder: (context, child) {
+                return ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (bounds) {
+                    final offset = bounds.width * ((animation.value * 2) - 0.5);
+                    return const LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        _ObjectivesButtonState._infoHighlight,
+                        Colors.white,
+                        _ObjectivesButtonState._infoHighlight,
+                        Colors.transparent,
+                      ],
+                      stops: [0, 0.42, 0.5, 0.58, 1],
+                    ).createShader(
+                      Rect.fromLTWH(
+                        offset - bounds.width,
+                        0,
+                        bounds.width,
+                        bounds.height,
+                      ),
+                    );
+                  },
+                  child: child,
+                );
+              },
+              child: const Icon(icon, color: Colors.white, size: 30),
+            ),
+        ],
+      ),
     );
   }
 }
