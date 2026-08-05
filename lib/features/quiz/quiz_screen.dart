@@ -13,6 +13,7 @@ import '../../data/models/category.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
 import '../../data/repositories/content_repository.dart';
+import '../../shared/feedback/app_dialog.dart';
 import '../../shared/widgets/answer_option_tile.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
@@ -160,25 +161,17 @@ class _QuizFlowState extends State<_QuizFlow> {
       return;
     }
 
-    final shouldExit = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(AppStrings.exitLessonTitle),
-        content: const Text(AppStrings.exitLessonBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text(AppStrings.keepLearning),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text(AppStrings.exit),
-          ),
-        ],
-      ),
+    final shouldExit = await AppDialog.showConfirmation(
+      context,
+      title: AppStrings.exitLessonTitle,
+      message: AppStrings.exitLessonBody,
+      cancelLabel: AppStrings.keepLearning,
+      confirmLabel: AppStrings.exit,
+      icon: Icons.logout_outlined,
+      isDestructiveConfirm: true,
     );
 
-    if (mounted && shouldExit == true) {
+    if (mounted && shouldExit) {
       _popQuizRoute();
     }
   }

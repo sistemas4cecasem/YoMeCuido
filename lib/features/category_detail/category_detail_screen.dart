@@ -7,6 +7,7 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../shared/feedback/app_dialog.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/character_image.dart';
@@ -195,9 +196,12 @@ class _ObjectivesButton extends StatelessWidget {
     final colors = context.colors;
 
     return IconButton(
-      onPressed: () => showDialog<void>(
-        context: context,
-        builder: (context) => _ObjectivesDialog(objectives: objectives),
+      onPressed: () => AppDialog.showContent(
+        context,
+        title: AppStrings.objectivesTitle,
+        icon: Icons.checklist_outlined,
+        closeLabel: AppStrings.close,
+        content: _ObjectivesCard(objectives: objectives),
       ),
       icon: const Icon(Icons.help_outline),
       color: colors.orangeDark,
@@ -210,34 +214,6 @@ class _ObjectivesButton extends StatelessWidget {
         ),
       ),
       tooltip: AppStrings.viewObjectives,
-    );
-  }
-}
-
-class _ObjectivesDialog extends StatelessWidget {
-  const _ObjectivesDialog({required this.objectives});
-
-  final List<String> objectives;
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text(AppStrings.objectivesTitle),
-      contentPadding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.md,
-        AppSpacing.lg,
-        0,
-      ),
-      content: SingleChildScrollView(
-        child: _ObjectivesCard(objectives: objectives),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text(AppStrings.close),
-        ),
-      ],
     );
   }
 }

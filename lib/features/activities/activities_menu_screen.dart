@@ -10,6 +10,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/repositories/content_repository.dart';
+import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
 
@@ -53,11 +54,7 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
   }
 
   void _showLockedMessage() {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(content: Text(AppStrings.demoLockedSnackBar)),
-      );
+    AppToast.showInfo(context, AppStrings.demoLockedSnackBar);
   }
 
   @override

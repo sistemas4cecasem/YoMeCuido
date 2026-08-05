@@ -6,6 +6,7 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 import '../../data/repositories/content_repository.dart';
+import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/primary_button.dart';
@@ -36,11 +37,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   void _openCategory(Category category) {
     if (!category.isEnabled) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          const SnackBar(content: Text(AppStrings.comingSoonSnackBar)),
-        );
+      AppToast.showInfo(context, AppStrings.comingSoonSnackBar);
       return;
     }
 

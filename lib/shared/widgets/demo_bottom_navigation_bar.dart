@@ -5,6 +5,7 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../feedback/app_toast.dart';
 
 enum DemoNavItem { home, progress, profile }
 
@@ -58,13 +59,7 @@ class DemoBottomNavigationBar extends StatelessWidget {
                 selected: selectedItem == DemoNavItem.profile,
                 disabled: true,
                 onTap: () {
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      const SnackBar(
-                        content: Text(AppStrings.profileLockedSnackBar),
-                      ),
-                    );
+                  AppToast.showInfo(context, AppStrings.profileLockedSnackBar);
                 },
               ),
             ],
