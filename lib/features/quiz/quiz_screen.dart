@@ -40,6 +40,7 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   late Future<List<QuizQuestion>> _questionsFuture;
+  bool _showingResult = false;
 
   @override
   void initState() {
@@ -51,9 +52,20 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _retry() {
     setState(() {
+      _showingResult = false;
       _questionsFuture = widget.contentRepository.loadQuizQuestions(
         widget.category.id,
       );
+    });
+  }
+
+  void _handleResultVisibilityChanged(bool isVisible) {
+    if (_showingResult == isVisible) {
+      return;
+    }
+
+    setState(() {
+      _showingResult = isVisible;
     });
   }
 
@@ -61,6 +73,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: AppStrings.quizTitle,
+      automaticallyImplyLeading: !_showingResult,
       child: FutureBuilder<List<QuizQuestion>>(
         future: _questionsFuture,
         builder: (context, snapshot) {
@@ -81,6 +94,7 @@ class _QuizScreenState extends State<QuizScreen> {
             category: widget.category,
             questions: snapshot.data!,
             progressController: widget.progressController,
+            onResultVisibilityChanged: _handleResultVisibilityChanged,
           );
         },
       ),
@@ -93,11 +107,13 @@ class _QuizFlow extends StatefulWidget {
     required this.category,
     required this.questions,
     required this.progressController,
+    required this.onResultVisibilityChanged,
   });
 
   final Category category;
   final List<QuizQuestion> questions;
   final CategoryProgressController progressController;
+  final ValueChanged<bool> onResultVisibilityChanged;
 
   @override
   State<_QuizFlow> createState() => _QuizFlowState();
@@ -135,6 +151,10 @@ class _QuizFlowState extends State<_QuizFlow> {
   }
 
   Future<void> _handleBackIntent() async {
+    if (_showResult) {
+      return;
+    }
+
     if (_controller.answeredQuestions == 0) {
       _popQuizRoute();
       return;
@@ -195,6 +215,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       setState(() {
         _showResult = true;
       });
+      widget.onResultVisibilityChanged(true);
       return;
     }
 
@@ -215,12 +236,14 @@ class _QuizFlowState extends State<_QuizFlow> {
       _allowPop = false;
       _showResult = false;
     });
+    widget.onResultVisibilityChanged(false);
   }
 
   void _backToActivities() {
     setState(() {
       _allowPop = true;
     });
+    widget.onResultVisibilityChanged(false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;

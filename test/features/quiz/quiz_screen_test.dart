@@ -73,6 +73,19 @@ void main() {
     await submit(tester);
   }
 
+  Future<void> completeQuiz(WidgetTester tester) async {
+    for (var activity = 1; activity <= 12; activity += 1) {
+      await answerCurrentCorrectly(tester, activity);
+
+      if (activity < 12) {
+        await tester.tap(find.text(AppStrings.nextActivity));
+      } else {
+        await tester.tap(find.text(AppStrings.seeResult));
+      }
+      await tester.pumpAndSettle();
+    }
+  }
+
   testWidgets('botón Responder no se muestra sin selección', (tester) async {
     await pumpQuiz(tester);
 
@@ -191,7 +204,7 @@ void main() {
 
     await selectFirstOption(tester);
     await submit(tester);
-    await tester.pageBack();
+    await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.exitLessonTitle), findsOneWidget);
@@ -207,16 +220,7 @@ void main() {
   testWidgets('llega al resultado después de 12 actividades', (tester) async {
     await pumpQuiz(tester);
 
-    for (var activity = 1; activity <= 12; activity += 1) {
-      await answerCurrentCorrectly(tester, activity);
-
-      if (activity < 12) {
-        await tester.tap(find.text(AppStrings.nextActivity));
-      } else {
-        await tester.tap(find.text(AppStrings.seeResult));
-      }
-      await tester.pumpAndSettle();
-    }
+    await completeQuiz(tester);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
     expect(find.text('12 de 12'), findsOneWidget);
@@ -228,6 +232,20 @@ void main() {
     expect(find.text(AppStrings.viewCategorySummary), findsNothing);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
     expect(find.text(AppStrings.backToCategories), findsNothing);
+  });
+
+  testWidgets('el resultado final bloquea volver atrás', (tester) async {
+    await pumpQuiz(tester);
+    await completeQuiz(tester);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.byType(BackButton), findsNothing);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text(AppStrings.exitLessonTitle), findsNothing);
   });
 
   testWidgets('enviar una palabra desde el teclado actualiza el progreso', (

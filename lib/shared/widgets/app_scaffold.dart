@@ -8,6 +8,7 @@ class AppScaffold extends StatelessWidget {
     required this.child,
     this.title,
     this.actions,
+    this.automaticallyImplyLeading = true,
     this.bottomNavigationBar,
     this.floatingActionButton,
     super.key,
@@ -15,6 +16,7 @@ class AppScaffold extends StatelessWidget {
 
   final String? title;
   final List<Widget>? actions;
+  final bool automaticallyImplyLeading;
   final Widget child;
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
@@ -38,6 +40,7 @@ class AppScaffold extends StatelessWidget {
           ? null
           : AppBar(
               toolbarHeight: appBarHeight,
+              automaticallyImplyLeading: automaticallyImplyLeading,
               title: Text(title!, maxLines: 2),
               actions: actions,
             ),
