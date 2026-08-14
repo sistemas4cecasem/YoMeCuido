@@ -73,7 +73,7 @@ class _LessonScreenState extends State<LessonScreen> {
     if (isLastPage) {
       Navigator.of(
         context,
-      ).pushNamed(AppRoutes.activities, arguments: widget.category);
+      ).pushReplacementNamed(AppRoutes.activities, arguments: widget.category);
       return;
     }
 

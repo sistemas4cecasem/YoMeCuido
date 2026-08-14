@@ -292,6 +292,33 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets('volver desde actividades abre el detalle de categorÃ­a', (
+    tester,
+  ) async {
+    await openDetail(tester);
+
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.learningRouteTitle), findsOneWidget);
+    expect(find.text(AppStrings.startActivities), findsNothing);
+  });
+
   testWidgets('repetir lecci\u00f3n vuelve a la primera actividad', (
     tester,
   ) async {

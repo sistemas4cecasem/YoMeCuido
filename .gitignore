@@ -44,4 +44,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Generated Android packages
+*.apk
+
 AGENTS.md
