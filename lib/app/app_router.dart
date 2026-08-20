@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../data/models/category.dart';
+import '../data/repositories/auth_repository.dart';
 import '../data/repositories/content_repository.dart';
+import '../features/auth/forgot_password_screen.dart';
+import '../features/auth/login_screen.dart';
+import '../features/auth/register_screen.dart';
 import '../features/activities/activities_menu_screen.dart';
 import '../features/categories/categories_screen.dart';
 import '../features/category_detail/category_detail_screen.dart';
@@ -16,6 +20,9 @@ import 'category_progress_controller.dart';
 
 abstract final class AppRoutes {
   static const home = '/';
+  static const login = '/login';
+  static const register = '/register';
+  static const forgotPassword = '/forgot-password';
   static const highLevelCategories = '/high-level-categories';
   static const categories = '/categories';
   static const categoryDetail = '/category-detail';
@@ -28,11 +35,14 @@ abstract final class AppRoutes {
 class AppRouter {
   const AppRouter({
     required ContentRepository contentRepository,
+    required AuthRepository authRepository,
     required CategoryProgressController progressController,
   }) : _contentRepository = contentRepository,
+       _authRepository = authRepository,
        _progressController = progressController;
 
   final ContentRepository _contentRepository;
+  final AuthRepository _authRepository;
   final CategoryProgressController _progressController;
 
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -40,7 +50,12 @@ class AppRouter {
       settings: settings,
       builder: (context) {
         return switch (settings.name) {
-          AppRoutes.home || null => const WelcomeScreen(),
+          AppRoutes.home || null => const WelcomeScreen(showAuthAction: false),
+          AppRoutes.login => LoginScreen(authRepository: _authRepository),
+          AppRoutes.register => RegisterScreen(authRepository: _authRepository),
+          AppRoutes.forgotPassword => ForgotPasswordScreen(
+            authRepository: _authRepository,
+          ),
           AppRoutes.highLevelCategories => const HighLevelCategoriesScreen(),
           AppRoutes.categories => CategoriesScreen(
             contentRepository: _contentRepository,

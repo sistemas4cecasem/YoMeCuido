@@ -1,7 +1,42 @@
 abstract final class AppStrings {
   static const appName = 'YoMeCuido';
   static const appTagline = 'Aprende a protegerte en el mundo digital.';
+  static const checkingSession = 'Verificando sesión...';
   static const start = 'Comenzar';
+  static const cancel = 'Cancelar';
+  static const signOut = 'Cerrar sesión';
+  static const signOutTitle = '¿Cerrar sesión?';
+  static const signOutBody =
+      'Tendrás que iniciar sesión nuevamente para volver a YoMeCuido.';
+  static const signOutError =
+      'No pudimos cerrar la sesión. Intenta nuevamente.';
+  static const loginTitle = 'Iniciar sesión';
+  static const loginIntroTitle = 'Acceso con correo';
+  static const loginIntroBody =
+      'Ingresa con una cuenta ya registrada en YoMeCuido.';
+  static const loginAction = 'Ingresar';
+  static const loginSuccessMessage = 'Sesión iniciada correctamente.';
+  static const createAccountPrompt = '¿No tienes una cuenta? Crear cuenta';
+  static const forgotPasswordPrompt = '¿Olvidaste tu contraseña?';
+  static const forgotPasswordTitle = 'Recuperar contraseña';
+  static const forgotPasswordIntroTitle = 'Restablecimiento por correo';
+  static const forgotPasswordIntroBody =
+      'Ingresa tu correo y Firebase enviará las instrucciones de recuperación.';
+  static const requestPasswordReset = 'Solicitar recuperación';
+  static const forgotPasswordSuccessMessage =
+      'Si existe una cuenta asociada a ese correo, se enviarán las instrucciones para restablecer la contraseña.';
+  static const backToLogin = 'Volver al inicio de sesión';
+  static const registerTitle = 'Crear cuenta';
+  static const registerIntroTitle = 'Registro con correo';
+  static const registerIntroBody =
+      'Crea una cuenta para preparar las próximas funciones de YoMeCuido.';
+  static const emailLabel = 'Correo electrónico';
+  static const passwordLabel = 'Contraseña';
+  static const confirmPasswordLabel = 'Confirmar contraseña';
+  static const createAccount = 'Crear cuenta';
+  static const showPassword = 'Mostrar contraseña';
+  static const hidePassword = 'Ocultar contraseña';
+  static const registerSuccessMessage = 'Cuenta creada correctamente.';
   static const categoriesTitle = 'Categorías';
   static const digitalSecurityTitle = 'Seguridad digital';
   static const traffickingTitle = 'Trata y tráfico';

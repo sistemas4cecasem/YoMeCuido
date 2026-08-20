@@ -4,10 +4,20 @@ import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../data/repositories/auth_repository.dart';
+import '../auth/sign_out_button.dart';
 import '../../shared/widgets/primary_button.dart';
+import '../../shared/widgets/secondary_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  const WelcomeScreen({
+    this.showAuthAction = true,
+    this.authRepository,
+    super.key,
+  });
+
+  final bool showAuthAction;
+  final AuthRepository? authRepository;
 
   static const logoAssetPath =
       'assets/images/brand/welcome_art_generated_v1.png';
@@ -47,6 +57,12 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    if (authRepository != null)
+                      Positioned(
+                        top: AppSpacing.xs,
+                        right: AppSpacing.screen,
+                        child: SignOutButton(authRepository: authRepository!),
+                      ),
                     Positioned(
                       left: AppSpacing.screen,
                       right: AppSpacing.screen,
@@ -73,6 +89,19 @@ class WelcomeScreen extends StatelessWidget {
                               ).pushNamed(AppRoutes.highLevelCategories);
                             },
                           ),
+                          if (showAuthAction) ...[
+                            const SizedBox(height: AppSpacing.sm),
+                            SecondaryButton(
+                              label: AppStrings.loginTitle,
+                              icon: Icons.login_outlined,
+                              semanticsLabel: AppStrings.loginTitle,
+                              onPressed: () {
+                                Navigator.of(
+                                  context,
+                                ).pushNamed(AppRoutes.login);
+                              },
+                            ),
+                          ],
                         ],
                       ),
                     ),

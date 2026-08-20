@@ -1,4 +1,4 @@
-package com.example.demo_yomecuido
+package org.cecasem.yomecuido
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,11 @@
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/core/theme/app_colors.dart';
+import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/local_content_repository.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
@@ -166,7 +168,11 @@ Future<void> _pumpDemo(
   await tester.pumpWidget(const SizedBox.shrink());
   await tester.pump();
   await tester.pumpWidget(
-    YoMeCuidoApp(key: UniqueKey(), contentRepository: contentRepository),
+    YoMeCuidoApp(
+      key: UniqueKey(),
+      contentRepository: contentRepository,
+      authRepository: const _SignedInAuthRepository(),
+    ),
   );
   await _pumpRouteFrame(tester);
 }
@@ -296,4 +302,38 @@ class _CachedContentRepository implements ContentRepository {
   Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
     return quizQuestions;
   }
+}
+
+class _SignedInAuthRepository implements AuthRepository {
+  const _SignedInAuthRepository();
+
+  static const _user = AuthUser(uid: 'uid-123', email: 'persona@example.com');
+
+  @override
+  AuthUser? get currentUser => _user;
+
+  @override
+  Stream<AuthUser?> authStateChanges() => Stream.value(_user);
+
+  @override
+  Future<AuthUser> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail({required String email}) async {}
+
+  @override
+  Future<AuthUser> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signOut() async {}
 }

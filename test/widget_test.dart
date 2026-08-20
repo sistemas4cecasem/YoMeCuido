@@ -1,8 +1,10 @@
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
+import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/features/splash/welcome_screen.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
@@ -17,7 +19,12 @@ void main() {
   });
 
   Future<void> pumpApp(WidgetTester tester) async {
-    await tester.pumpWidget(YoMeCuidoApp(contentRepository: repository));
+    await tester.pumpWidget(
+      YoMeCuidoApp(
+        contentRepository: repository,
+        authRepository: const _SignedInAuthRepository(),
+      ),
+    );
     await tester.pumpAndSettle();
   }
 
@@ -414,6 +421,40 @@ void main() {
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
     expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
   });
+}
+
+class _SignedInAuthRepository implements AuthRepository {
+  const _SignedInAuthRepository();
+
+  static const _user = AuthUser(uid: 'uid-123', email: 'persona@example.com');
+
+  @override
+  AuthUser? get currentUser => _user;
+
+  @override
+  Stream<AuthUser?> authStateChanges() => Stream.value(_user);
+
+  @override
+  Future<AuthUser> registerWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> sendPasswordResetEmail({required String email}) async {}
+
+  @override
+  Future<AuthUser> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signOut() async {}
 }
 
 class _FakeContentRepository implements ContentRepository {
