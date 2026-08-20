@@ -25,6 +25,8 @@ void main() {
     await pumpApp(tester);
     await tester.tap(find.text(AppStrings.start));
     await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Relaciones y violencia digital'));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
@@ -89,6 +91,8 @@ void main() {
     await pumpApp(tester);
     await tester.tap(find.text(AppStrings.start));
     await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+    await tester.pumpAndSettle();
   }
 
   Future<void> openDetail(WidgetTester tester) async {
@@ -116,14 +120,41 @@ void main() {
     expect(find.text(AppStrings.start), findsOneWidget);
   });
 
-  testWidgets('el botón Comenzar abre categorías', (tester) async {
+  testWidgets('el botón Comenzar abre categorías altas', (tester) async {
     await pumpApp(tester);
 
     await tester.tap(find.text(AppStrings.start));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
+    expect(find.text(AppStrings.categoriesTitle), findsNothing);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(repository.loadCategoriesCalls, 0);
+  });
+
+  testWidgets('trata y tráfico queda bloqueada', (tester) async {
+    await pumpApp(tester);
+
+    await tester.tap(find.text(AppStrings.start));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.traffickingTitle));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.categoriesTitle), findsNothing);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
+    expect(repository.loadCategoriesCalls, 0);
+  });
+
+  testWidgets('seguridad digital abre las categorías existentes', (
+    tester,
+  ) async {
+    await openCategories(tester);
+
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
     expect(repository.loadCategoriesCalls, 1);
+    expect(find.text('Relaciones y violencia digital'), findsOneWidget);
   });
 
   testWidgets('se muestran ocho categorías y solo una habilitada', (
@@ -154,7 +185,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.theoryTitle), findsNothing);
-    expect(find.text(AppStrings.categoriesTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
     expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
   });
 

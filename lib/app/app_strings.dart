@@ -3,6 +3,10 @@ abstract final class AppStrings {
   static const appTagline = 'Aprende a protegerte en el mundo digital.';
   static const start = 'Comenzar';
   static const categoriesTitle = 'Categorías';
+  static const digitalSecurityTitle = 'Seguridad digital';
+  static const traffickingTitle = 'Trata y tráfico';
+  static const digitalSecurityDescription =
+      'Protege tus cuentas, dispositivos y datos.';
   static const comingSoon = 'Próximamente';
   static const comingSoonSnackBar =
       'Esta categoría estará disponible próximamente';

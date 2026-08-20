@@ -6,6 +6,7 @@ import '../features/activities/activities_menu_screen.dart';
 import '../features/categories/categories_screen.dart';
 import '../features/category_detail/category_detail_screen.dart';
 import '../features/category_summary/category_summary_screen.dart';
+import '../features/high_level_categories/high_level_categories_screen.dart';
 import '../features/lesson/lesson_screen.dart';
 import '../features/quiz/quiz_screen.dart';
 import '../features/splash/welcome_screen.dart';
@@ -15,6 +16,7 @@ import 'category_progress_controller.dart';
 
 abstract final class AppRoutes {
   static const home = '/';
+  static const highLevelCategories = '/high-level-categories';
   static const categories = '/categories';
   static const categoryDetail = '/category-detail';
   static const lesson = '/lesson';
@@ -39,6 +41,7 @@ class AppRouter {
       builder: (context) {
         return switch (settings.name) {
           AppRoutes.home || null => const WelcomeScreen(),
+          AppRoutes.highLevelCategories => const HighLevelCategoriesScreen(),
           AppRoutes.categories => CategoriesScreen(
             contentRepository: _contentRepository,
           ),

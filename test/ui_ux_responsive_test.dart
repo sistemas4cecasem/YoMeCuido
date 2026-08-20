@@ -57,7 +57,7 @@ void main() {
 
       await _openCategories(tester);
       _expectNoFlutterException(tester);
-      expect(find.text(AppStrings.comingSoon), findsNWidgets(7));
+      expect(find.text(AppStrings.comingSoon), findsAtLeastNWidgets(7));
       expect(find.byIcon(Icons.lock_outline), findsWidgets);
 
       await _openDetail(tester);
@@ -173,6 +173,13 @@ Future<void> _pumpDemo(
 
 Future<void> _openCategories(WidgetTester tester) async {
   await tester.tap(find.text(AppStrings.start));
+  await _pumpUntilFound(tester, find.text(AppStrings.digitalSecurityTitle));
+  final digitalSecurityCardTitle = find
+      .text(AppStrings.digitalSecurityTitle)
+      .last;
+  await tester.ensureVisible(digitalSecurityCardTitle);
+  await _pumpRouteFrame(tester);
+  await tester.tap(digitalSecurityCardTitle);
   await _pumpUntilFound(tester, find.text('Relaciones y violencia digital'));
 }
 

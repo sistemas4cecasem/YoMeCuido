@@ -1,4 +1,6 @@
 abstract final class AppAssets {
+  static const appBackground = 'assets/images/brand/app_background.png';
+
   static const _charactersPath = 'assets/images/characters';
 
   static const girlCorrect =

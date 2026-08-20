@@ -49,7 +49,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: AppStrings.categoriesTitle,
+      title: AppStrings.digitalSecurityTitle,
       child: FutureBuilder<List<Category>>(
         future: _categoriesFuture,
         builder: (context, snapshot) {

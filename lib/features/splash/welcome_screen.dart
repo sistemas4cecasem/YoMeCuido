@@ -70,7 +70,7 @@ class WelcomeScreen extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(
                                 context,
-                              ).pushNamed(AppRoutes.categories);
+                              ).pushNamed(AppRoutes.highLevelCategories);
                             },
                           ),
                         ],

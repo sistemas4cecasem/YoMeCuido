@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import 'app_background.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
@@ -41,6 +42,7 @@ class AppScaffold extends StatelessWidget {
           : AppBar(
               toolbarHeight: appBarHeight,
               automaticallyImplyLeading: automaticallyImplyLeading,
+              backgroundColor: colors.background.withValues(alpha: 0.88),
               title: Text(title!, maxLines: 2),
               actions: actions,
             ),
@@ -48,8 +50,7 @@ class AppScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       body: SafeArea(
         bottom: bottomNavigationBar == null,
-        child: ColoredBox(
-          color: colors.background,
+        child: AppBackground(
           child: Align(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
