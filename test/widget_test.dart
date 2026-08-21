@@ -6,7 +6,6 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
-import 'package:demo_yomecuido/features/splash/welcome_screen.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,8 +29,6 @@ void main() {
 
   Future<void> openQuiz(WidgetTester tester) async {
     await pumpApp(tester);
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Relaciones y violencia digital'));
@@ -96,8 +93,6 @@ void main() {
 
   Future<void> openCategories(WidgetTester tester) async {
     await pumpApp(tester);
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
     await tester.pumpAndSettle();
   }
@@ -108,30 +103,19 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('la bienvenida muestra logo, frase y botón', (tester) async {
+  testWidgets('con sesión inicia en categorías altas', (tester) async {
     await pumpApp(tester);
 
-    expect(find.byKey(const Key('welcome_logo')), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (widget) =>
-            widget is Image &&
-            widget.fit == BoxFit.contain &&
-            widget.image is AssetImage &&
-            (widget.image as AssetImage).assetName ==
-                WelcomeScreen.logoAssetPath,
-      ),
-      findsOneWidget,
-    );
-    expect(find.text(AppStrings.appTagline), findsOneWidget);
-    expect(find.text(AppStrings.start), findsOneWidget);
+    expect(find.byKey(const Key('welcome_logo')), findsNothing);
+    expect(find.text(AppStrings.start), findsNothing);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
   });
 
-  testWidgets('el botón Comenzar abre categorías altas', (tester) async {
+  testWidgets('las categorías altas no cargan categorías inferiores al abrir', (
+    tester,
+  ) async {
     await pumpApp(tester);
-
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.categoriesTitle), findsNothing);
     expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
@@ -143,8 +127,6 @@ void main() {
   testWidgets('trata y tráfico queda bloqueada', (tester) async {
     await pumpApp(tester);
 
-    await tester.tap(find.text(AppStrings.start));
-    await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.traffickingTitle));
     await tester.pumpAndSettle();
 

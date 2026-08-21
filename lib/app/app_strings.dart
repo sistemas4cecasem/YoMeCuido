@@ -11,6 +11,7 @@ abstract final class AppStrings {
   static const signOutError =
       'No pudimos cerrar la sesión. Intenta nuevamente.';
   static const loginTitle = 'Iniciar sesión';
+  static const addAccount = 'Crear cuenta';
   static const loginIntroTitle = 'Acceso con correo';
   static const loginIntroBody =
       'Ingresa con una cuenta ya registrada en YoMeCuido.';

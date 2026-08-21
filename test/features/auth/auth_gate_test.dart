@@ -15,7 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('shows login when Authentication has no user', (tester) async {
+  testWidgets('shows access welcome when Authentication has no user', (
+    tester,
+  ) async {
     final authRepository = _ControllableAuthRepository();
 
     await _pumpGate(tester, authRepository);
@@ -25,10 +27,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.loginTitle), findsOneWidget);
+    expect(find.text(AppStrings.addAccount), findsOneWidget);
+    expect(find.byKey(const Key('welcome_logo')), findsOneWidget);
     expect(find.text(AppStrings.start), findsNothing);
   });
 
-  testWidgets('shows YoMeCuido when Authentication has a user', (tester) async {
+  testWidgets('shows high-level categories when Authentication has a user', (
+    tester,
+  ) async {
     final authRepository = _ControllableAuthRepository();
 
     await _pumpGate(tester, authRepository);
@@ -37,11 +43,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.start), findsOneWidget);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.byTooltip(AppStrings.signOut), findsOneWidget);
+    expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.loginTitle), findsNothing);
+    expect(find.text(AppStrings.addAccount), findsNothing);
   });
 
-  testWidgets('moves from login to YoMeCuido after auth state changes', (
+  testWidgets('moves from login to high-level categories after auth changes', (
     tester,
   ) async {
     final authRepository = _ControllableAuthRepository();
@@ -50,14 +60,19 @@ void main() {
     authRepository.emit(null);
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.loginTitle), findsOneWidget);
+    await tester.tap(find.text(AppStrings.loginTitle));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.loginIntroTitle), findsOneWidget);
 
     authRepository.emit(
       const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.start), findsOneWidget);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.loginTitle), findsNothing);
   });
 
@@ -70,7 +85,7 @@ void main() {
     authRepository.emit(null);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(AppStrings.createAccountPrompt));
+    await tester.tap(find.text(AppStrings.addAccount));
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.registerTitle), findsWidgets);
 
@@ -79,7 +94,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.start), findsOneWidget);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.registerTitle), findsNothing);
   });
 
@@ -104,6 +121,7 @@ void main() {
 
     expect(authRepository.signOutCallCount, 1);
     expect(find.text(AppStrings.loginTitle), findsOneWidget);
+    expect(find.text(AppStrings.addAccount), findsOneWidget);
     expect(find.text(AppStrings.start), findsNothing);
   });
 
@@ -124,7 +142,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(authRepository.signOutCallCount, 1);
-    expect(find.text(AppStrings.start), findsOneWidget);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.loginTitle), findsNothing);
     expect(find.text(AppStrings.signOutError), findsOneWidget);
   });

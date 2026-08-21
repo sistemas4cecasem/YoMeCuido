@@ -55,7 +55,7 @@ void main() {
 
       await _pumpDemo(tester, contentRepository);
       _expectNoFlutterException(tester);
-      _expectPrimaryButtonTarget(tester, AppStrings.start);
+      _expectRouteStepTarget(tester, AppStrings.digitalSecurityTitle);
 
       await _openCategories(tester);
       _expectNoFlutterException(tester);
@@ -178,8 +178,6 @@ Future<void> _pumpDemo(
 }
 
 Future<void> _openCategories(WidgetTester tester) async {
-  await tester.tap(find.text(AppStrings.start));
-  await _pumpUntilFound(tester, find.text(AppStrings.digitalSecurityTitle));
   final digitalSecurityCardTitle = find
       .text(AppStrings.digitalSecurityTitle)
       .last;

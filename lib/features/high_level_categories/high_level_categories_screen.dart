@@ -4,11 +4,20 @@ import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../data/repositories/auth_repository.dart';
+import '../auth/sign_out_button.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_background.dart';
 
 class HighLevelCategoriesScreen extends StatelessWidget {
-  const HighLevelCategoriesScreen({super.key});
+  const HighLevelCategoriesScreen({
+    this.authRepository,
+    this.showBackButton = true,
+    super.key,
+  });
+
+  final AuthRepository? authRepository;
+  final bool showBackButton;
 
   void _openDigitalSecurity(BuildContext context) {
     Navigator.of(context).pushNamed(AppRoutes.categories);
@@ -36,18 +45,28 @@ class HighLevelCategoriesScreen extends StatelessWidget {
                   AppSpacing.screen,
                   0,
                 ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    onPressed: () => Navigator.of(context).maybePop(),
-                    icon: const Icon(Icons.arrow_back_outlined),
-                    tooltip: MaterialLocalizations.of(
-                      context,
-                    ).backButtonTooltip,
-                    constraints: const BoxConstraints.tightFor(
-                      width: AppSizing.minTouchTarget,
-                      height: AppSizing.minTouchTarget,
-                    ),
+                child: SizedBox(
+                  height: AppSizing.minTouchTarget,
+                  child: Row(
+                    children: [
+                      if (showBackButton)
+                        IconButton(
+                          onPressed: () => Navigator.of(context).maybePop(),
+                          icon: const Icon(Icons.arrow_back_outlined),
+                          tooltip: MaterialLocalizations.of(
+                            context,
+                          ).backButtonTooltip,
+                          constraints: const BoxConstraints.tightFor(
+                            width: AppSizing.minTouchTarget,
+                            height: AppSizing.minTouchTarget,
+                          ),
+                        )
+                      else
+                        const SizedBox(width: AppSizing.minTouchTarget),
+                      const Spacer(),
+                      if (authRepository != null)
+                        SignOutButton(authRepository: authRepository!),
+                    ],
                   ),
                 ),
               ),

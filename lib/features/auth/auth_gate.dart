@@ -5,8 +5,8 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../high_level_categories/high_level_categories_screen.dart';
 import '../splash/welcome_screen.dart';
-import 'login_screen.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({required this.authRepository, super.key});
@@ -31,19 +31,19 @@ class _AuthGateState extends State<AuthGate> {
 
         if (snapshot.hasError) {
           _handleAuthState(false);
-          return LoginScreen(authRepository: widget.authRepository);
+          return const WelcomeScreen();
         }
 
         final user = snapshot.data;
         if (user == null) {
           _handleAuthState(false);
-          return LoginScreen(authRepository: widget.authRepository);
+          return const WelcomeScreen();
         }
 
         _handleAuthState(true);
-        return WelcomeScreen(
-          showAuthAction: false,
+        return HighLevelCategoriesScreen(
           authRepository: widget.authRepository,
+          showBackButton: false,
         );
       },
     );

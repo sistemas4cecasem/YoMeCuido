@@ -50,7 +50,7 @@ class AppRouter {
       settings: settings,
       builder: (context) {
         return switch (settings.name) {
-          AppRoutes.home || null => const WelcomeScreen(showAuthAction: false),
+          AppRoutes.home || null => const WelcomeScreen(),
           AppRoutes.login => LoginScreen(authRepository: _authRepository),
           AppRoutes.register => RegisterScreen(authRepository: _authRepository),
           AppRoutes.forgotPassword => ForgotPasswordScreen(

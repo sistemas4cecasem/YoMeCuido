@@ -9,22 +9,26 @@ import '../auth/sign_out_button.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/secondary_button.dart';
 
+enum WelcomeMode { access, learning }
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({
-    this.showAuthAction = true,
+    this.mode = WelcomeMode.access,
     this.authRepository,
     super.key,
   });
 
-  final bool showAuthAction;
+  final WelcomeMode mode;
   final AuthRepository? authRepository;
 
   static const logoAssetPath =
       'assets/images/brand/welcome_art_generated_v1.png';
+  static const _actionsMaxWidth = 320.0;
+  static const _actionsBottomRatio = 0.19;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final isLearningMode = mode == WelcomeMode.learning;
 
     return Scaffold(
       backgroundColor: context.colors.background,
@@ -34,7 +38,12 @@ class WelcomeScreen extends StatelessWidget {
             final contentWidth = constraints.maxWidth < 420
                 ? constraints.maxWidth
                 : 420.0;
-            final actionBottomSpacing = constraints.maxHeight * 0.22;
+            final actionBottomSpacing =
+                constraints.maxHeight * _actionsBottomRatio;
+            final actionsWidth =
+                contentWidth - (AppSpacing.screen * 2) < _actionsMaxWidth
+                ? contentWidth - (AppSpacing.screen * 2)
+                : _actionsMaxWidth;
 
             return Center(
               child: SizedBox(
@@ -64,45 +73,18 @@ class WelcomeScreen extends StatelessWidget {
                         child: SignOutButton(authRepository: authRepository!),
                       ),
                     Positioned(
-                      left: AppSpacing.screen,
-                      right: AppSpacing.screen,
+                      left: 0,
+                      right: 0,
                       bottom: actionBottomSpacing,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppStrings.appTagline,
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: context.colors.textSecondary,
-                              fontWeight: FontWeight.w600,
+                      child: Center(
+                        child: SizedBox(
+                          width: actionsWidth,
+                          child: _CompactActionTheme(
+                            child: _WelcomeActions(
+                              isLearningMode: isLearningMode,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.md),
-                          PrimaryButton(
-                            label: AppStrings.start,
-                            semanticsLabel: AppStrings.start,
-                            onPressed: () {
-                              Navigator.of(
-                                context,
-                              ).pushNamed(AppRoutes.highLevelCategories);
-                            },
-                          ),
-                          if (showAuthAction) ...[
-                            const SizedBox(height: AppSpacing.sm),
-                            SecondaryButton(
-                              label: AppStrings.loginTitle,
-                              icon: Icons.login_outlined,
-                              semanticsLabel: AppStrings.loginTitle,
-                              onPressed: () {
-                                Navigator.of(
-                                  context,
-                                ).pushNamed(AppRoutes.login);
-                              },
-                            ),
-                          ],
-                        ],
+                        ),
                       ),
                     ),
                   ],
@@ -112,6 +94,98 @@ class WelcomeScreen extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _CompactActionTheme extends StatelessWidget {
+  const _CompactActionTheme({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final compactTextStyle = theme.textTheme.labelMedium?.copyWith(
+      fontWeight: FontWeight.w600,
+    );
+
+    final compactStyle = ButtonStyle(
+      minimumSize: const WidgetStatePropertyAll(
+        Size.fromHeight(AppSizing.primaryButtonHeight),
+      ),
+      padding: const WidgetStatePropertyAll(
+        EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.xs,
+        ),
+      ),
+      textStyle: WidgetStatePropertyAll(compactTextStyle),
+    );
+
+    return Theme(
+      data: theme.copyWith(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: _mergeButtonStyle(
+            theme.elevatedButtonTheme.style,
+            compactStyle,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: _mergeButtonStyle(
+            theme.outlinedButtonTheme.style,
+            compactStyle,
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
+
+  ButtonStyle _mergeButtonStyle(ButtonStyle? base, ButtonStyle compactStyle) {
+    return (base ?? const ButtonStyle()).copyWith(
+      minimumSize: compactStyle.minimumSize,
+      padding: compactStyle.padding,
+      textStyle: compactStyle.textStyle,
+    );
+  }
+}
+
+class _WelcomeActions extends StatelessWidget {
+  const _WelcomeActions({required this.isLearningMode});
+
+  final bool isLearningMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        PrimaryButton(
+          label: isLearningMode ? AppStrings.start : AppStrings.loginTitle,
+          icon: isLearningMode ? null : Icons.login_outlined,
+          semanticsLabel: isLearningMode
+              ? AppStrings.start
+              : AppStrings.loginTitle,
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              isLearningMode ? AppRoutes.highLevelCategories : AppRoutes.login,
+            );
+          },
+        ),
+        if (!isLearningMode) ...[
+          const SizedBox(height: AppSpacing.sm),
+          SecondaryButton(
+            label: AppStrings.addAccount,
+            icon: Icons.person_add_alt_1_outlined,
+            semanticsLabel: AppStrings.addAccount,
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.register);
+            },
+          ),
+        ],
+      ],
     );
   }
 }
