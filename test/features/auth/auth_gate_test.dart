@@ -49,7 +49,8 @@ void main() {
 
     expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
     expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
-    expect(find.byTooltip(AppStrings.signOut), findsOneWidget);
+    expect(find.byTooltip(AppStrings.profileTitle), findsOneWidget);
+    expect(find.byTooltip(AppStrings.signOut), findsNothing);
     expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.loginTitle), findsNothing);
     expect(find.text(AppStrings.addAccount), findsNothing);
@@ -128,7 +129,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byTooltip(AppStrings.signOut));
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.signOut));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 250));
     expect(find.text(AppStrings.signOutTitle), findsOneWidget);
@@ -156,7 +158,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byTooltip(AppStrings.signOut));
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.signOut));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 250));
     await tester.tap(find.text(AppStrings.signOut).last);
@@ -171,7 +174,7 @@ void main() {
   });
 
   testWidgets(
-    'disables sign out while confirmation is open and restores on cancel',
+    'opens user profile and keeps menu available after canceling sign out',
     (tester) async {
       final authRepository = _ControllableAuthRepository();
 
@@ -185,19 +188,27 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byTooltip(AppStrings.signOut));
+      await _openUserMenu(tester);
+      await tester.tap(find.text(AppStrings.viewProfile));
+      await tester.pumpAndSettle();
+
+      expect(find.text(AppStrings.profileTitle), findsOneWidget);
+      expect(find.text('persona@example.com'), findsOneWidget);
+      expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);
+
+      await tester.tap(find.text(AppStrings.close));
+      await tester.pumpAndSettle();
+
+      await _openUserMenu(tester);
+      await tester.tap(find.text(AppStrings.signOut));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 250));
-
-      final busyButton = tester.widget<IconButton>(_signOutIconButton());
-      expect(busyButton.onPressed, isNull);
       expect(find.text(AppStrings.signOutTitle), findsOneWidget);
 
       await tester.tap(find.text(AppStrings.cancel));
       await tester.pumpAndSettle();
 
-      final enabledButton = tester.widget<IconButton>(_signOutIconButton());
-      expect(enabledButton.onPressed, isNotNull);
+      expect(find.byTooltip(AppStrings.profileTitle), findsOneWidget);
       expect(authRepository.signOutCallCount, 0);
     },
   );
@@ -228,12 +239,37 @@ void main() {
     expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
     expect(find.text(AppStrings.emailVerificationTitle), findsNothing);
   });
+
+  testWidgets(
+    'shows a pending verification message when email is not verified',
+    (tester) async {
+      final authRepository = _ControllableAuthRepository();
+
+      await _pumpGate(tester, authRepository);
+      authRepository.emit(
+        const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      );
+      await tester.pumpAndSettle();
+
+      authRepository.nextReloadedUser = const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+      );
+      await tester.tap(find.text(AppStrings.emailVerificationCheck));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 250));
+
+      expect(authRepository.reloadCallCount, 1);
+      expect(find.text(AppStrings.emailVerificationTitle), findsOneWidget);
+      expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+      expect(find.text(AppStrings.emailVerificationPending), findsWidgets);
+    },
+  );
 }
 
-Finder _signOutIconButton() {
-  return find.byWidgetPredicate(
-    (widget) => widget is IconButton && widget.tooltip == AppStrings.signOut,
-  );
+Future<void> _openUserMenu(WidgetTester tester) async {
+  await tester.tap(find.byTooltip(AppStrings.profileTitle));
+  await tester.pumpAndSettle();
 }
 
 Future<void> _pumpGate(

@@ -5,9 +5,8 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
-import '../feedback/app_toast.dart';
 
-enum DemoNavItem { home, progress, profile }
+enum DemoNavItem { home, progress }
 
 class DemoBottomNavigationBar extends StatelessWidget {
   const DemoBottomNavigationBar({this.selectedItem, this.category, super.key});
@@ -53,15 +52,6 @@ class DemoBottomNavigationBar extends StatelessWidget {
                         arguments: category,
                       ),
               ),
-              _NavButton(
-                icon: Icons.person_outline,
-                label: AppStrings.profileTitle,
-                selected: selectedItem == DemoNavItem.profile,
-                disabled: true,
-                onTap: () {
-                  AppToast.showInfo(context, AppStrings.profileLockedSnackBar);
-                },
-              ),
             ],
           ),
         ),
@@ -76,25 +66,23 @@ class _NavButton extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
-    this.disabled = false,
   });
 
   final IconData icon;
   final String label;
   final bool selected;
-  final bool disabled;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final activeColor = colors.orangeDark;
-    final inactiveColor = disabled ? colors.disabledText : colors.textSecondary;
+    final inactiveColor = colors.textSecondary;
 
     return Expanded(
       child: Semantics(
         button: true,
-        enabled: !disabled,
+        enabled: onTap != null,
         label: label,
         child: InkWell(
           onTap: onTap,

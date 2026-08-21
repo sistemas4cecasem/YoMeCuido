@@ -4,8 +4,9 @@ import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../data/models/auth_user.dart';
 import '../../data/repositories/auth_repository.dart';
-import '../auth/sign_out_button.dart';
+import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_background.dart';
 
@@ -61,11 +62,11 @@ class HighLevelCategoriesScreen extends StatelessWidget {
                             height: AppSizing.minTouchTarget,
                           ),
                         )
+                      else if (authRepository != null)
+                        _UserAccountMenu(authRepository: authRepository!)
                       else
                         const SizedBox(width: AppSizing.minTouchTarget),
                       const Spacer(),
-                      if (authRepository != null)
-                        SignOutButton(authRepository: authRepository!),
                     ],
                   ),
                 ),
@@ -103,6 +104,189 @@ class HighLevelCategoriesScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+enum _UserMenuAction { profile, signOut }
+
+class _UserAccountMenu extends StatefulWidget {
+  const _UserAccountMenu({required this.authRepository});
+
+  final AuthRepository authRepository;
+
+  @override
+  State<_UserAccountMenu> createState() => _UserAccountMenuState();
+}
+
+class _UserAccountMenuState extends State<_UserAccountMenu> {
+  bool _isSigningOut = false;
+
+  Future<void> _handleAction(_UserMenuAction action) async {
+    switch (action) {
+      case _UserMenuAction.profile:
+        await _showProfile();
+      case _UserMenuAction.signOut:
+        await _confirmAndSignOut();
+    }
+  }
+
+  Future<void> _showProfile() {
+    final user = widget.authRepository.currentUser;
+
+    return AppDialog.showContent(
+      context,
+      title: AppStrings.profileTitle,
+      icon: Icons.person_outline,
+      closeLabel: AppStrings.close,
+      content: _ProfileDetails(user: user),
+    );
+  }
+
+  Future<void> _confirmAndSignOut() async {
+    if (_isSigningOut) {
+      return;
+    }
+
+    setState(() {
+      _isSigningOut = true;
+    });
+
+    final shouldSignOut = await AppDialog.showConfirmation(
+      context,
+      title: AppStrings.signOutTitle,
+      message: AppStrings.signOutBody,
+      cancelLabel: AppStrings.cancel,
+      confirmLabel: AppStrings.signOut,
+      icon: Icons.logout_outlined,
+      isDestructiveConfirm: true,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (!shouldSignOut) {
+      setState(() {
+        _isSigningOut = false;
+      });
+      return;
+    }
+
+    try {
+      await widget.authRepository.signOut();
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      AppToast.showError(context, AppStrings.signOutError);
+      setState(() {
+        _isSigningOut = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<_UserMenuAction>(
+      tooltip: AppStrings.profileTitle,
+      enabled: !_isSigningOut,
+      icon: _isSigningOut
+          ? const SizedBox(
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(strokeWidth: 2.5),
+            )
+          : const Icon(Icons.person_outline),
+      constraints: const BoxConstraints(minWidth: 220),
+      onSelected: _handleAction,
+      itemBuilder: (context) {
+        return const [
+          PopupMenuItem(
+            value: _UserMenuAction.profile,
+            child: _UserMenuItem(
+              icon: Icons.account_circle_outlined,
+              label: AppStrings.viewProfile,
+            ),
+          ),
+          PopupMenuItem(
+            value: _UserMenuAction.signOut,
+            child: _UserMenuItem(
+              icon: Icons.logout_outlined,
+              label: AppStrings.signOut,
+            ),
+          ),
+        ];
+      },
+    );
+  }
+}
+
+class _UserMenuItem extends StatelessWidget {
+  const _UserMenuItem({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(child: Text(label)),
+      ],
+    );
+  }
+}
+
+class _ProfileDetails extends StatelessWidget {
+  const _ProfileDetails({required this.user});
+
+  final AuthUser? user;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    final email = user?.email ?? '-';
+    final verified = user?.isEmailVerified == true;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppStrings.profileEmail,
+          style: textTheme.bodySmall?.copyWith(
+            color: colors.textSecondary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xxs),
+        Text(email, style: textTheme.bodyLarge),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: [
+            Icon(
+              verified ? Icons.verified_user_outlined : Icons.error_outline,
+              color: verified ? colors.success : colors.error,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                verified
+                    ? AppStrings.profileVerifiedEmail
+                    : AppStrings.profileUnverifiedEmail,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

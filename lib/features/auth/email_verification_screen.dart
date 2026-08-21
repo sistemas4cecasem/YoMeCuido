@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/secondary_button.dart';
@@ -51,6 +52,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           _message = AppStrings.emailVerificationPending;
           _isError = true;
         });
+        AppToast.showWarning(context, AppStrings.emailVerificationPending);
       }
     } catch (_) {
       if (mounted) {
@@ -58,6 +60,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           _message = AppStrings.emailVerificationError;
           _isError = true;
         });
+        AppToast.showError(context, AppStrings.emailVerificationError);
       }
     } finally {
       if (mounted) {
@@ -85,6 +88,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         setState(() {
           _message = AppStrings.emailVerificationSent;
         });
+        AppToast.showSuccess(context, AppStrings.emailVerificationSent);
       }
     } catch (_) {
       if (mounted) {
@@ -92,6 +96,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
           _message = AppStrings.emailVerificationError;
           _isError = true;
         });
+        AppToast.showError(context, AppStrings.emailVerificationError);
       }
     } finally {
       if (mounted) {
@@ -167,32 +172,35 @@ class _VerificationMessage extends StatelessWidget {
     final colors = context.colors;
     final color = isError ? colors.error : colors.success;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(AppRadii.button),
-        border: Border.all(color: color),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.sm),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(
-              isError ? Icons.error_outline : Icons.check_circle_outline,
-              color: color,
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                message,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: colors.textPrimary,
-                  fontWeight: FontWeight.w600,
+    return Semantics(
+      liveRegion: true,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.surface,
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          border: Border.all(color: color),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                isError ? Icons.error_outline : Icons.check_circle_outline,
+                color: color,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  message,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

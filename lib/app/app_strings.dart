@@ -37,7 +37,7 @@ abstract final class AppStrings {
   static const emailVerificationCheck = 'Ya verifiqué mi correo';
   static const emailVerificationResend = 'Reenviar correo';
   static const emailVerificationPending =
-      'Aún no aparece como verificado. Revisa tu bandeja y vuelve a intentarlo.';
+      'Debes verificar tu correo antes de ingresar. Revisa tu bandeja y vuelve a intentarlo.';
   static const emailVerificationSent =
       'Enviamos nuevamente el correo de verificación.';
   static const emailVerificationError =
@@ -69,6 +69,10 @@ abstract final class AppStrings {
   static const summaryTitle = 'Resumen y progreso';
   static const homeTitle = 'Inicio';
   static const profileTitle = 'Perfil';
+  static const viewProfile = 'Ver perfil';
+  static const profileEmail = 'Correo';
+  static const profileVerifiedEmail = 'Correo verificado';
+  static const profileUnverifiedEmail = 'Correo pendiente de verificación';
   static const profileLockedSnackBar =
       'El perfil no está disponible en esta demo';
   static const demoLockedSnackBar =
