@@ -167,6 +167,12 @@ class _FakeAuthRepository implements AuthRepository {
   Future<void> sendPasswordResetEmail({required String email}) async {}
 
   @override
+  Future<void> sendEmailVerification() async {}
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() async => currentUser;
+
+  @override
   Future<AuthUser> signInWithEmailAndPassword({
     required String email,
     required String password,

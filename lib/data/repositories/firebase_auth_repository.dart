@@ -14,7 +14,7 @@ class FirebaseAuthRepository implements AuthRepository {
 
   @override
   Stream<AuthUser?> authStateChanges() {
-    return _firebaseAuth.authStateChanges().map((user) => user?.toAuthUser());
+    return _firebaseAuth.userChanges().map((user) => user?.toAuthUser());
   }
 
   @override
@@ -59,6 +59,31 @@ class FirebaseAuthRepository implements AuthRepository {
     );
   }
 
+  @override
+  Future<void> sendEmailVerification() {
+    return _runAuthOperation(() async {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        throw const AuthException(AuthFailureReason.unknown);
+      }
+
+      await user.sendEmailVerification();
+    });
+  }
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() {
+    return _runAuthOperation(() async {
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        return null;
+      }
+
+      await user.reload();
+      return _firebaseAuth.currentUser?.toAuthUser();
+    });
+  }
+
   Future<T> _runAuthOperation<T>(Future<T> Function() operation) async {
     try {
       return await operation();
@@ -82,6 +107,6 @@ class FirebaseAuthRepository implements AuthRepository {
 
 extension on User {
   AuthUser toAuthUser() {
-    return AuthUser(uid: uid, email: email);
+    return AuthUser(uid: uid, email: email, isEmailVerified: emailVerified);
   }
 }

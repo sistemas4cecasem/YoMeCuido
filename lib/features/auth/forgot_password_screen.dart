@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../shared/widgets/app_scaffold.dart';
+import 'auth_form_layout.dart';
 import 'forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -47,62 +48,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
-          return SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const _ForgotPasswordIntro(),
-                const SizedBox(height: AppSpacing.lg),
-                _ForgotPasswordFormCard(
-                  controller: _controller,
-                  emailController: _emailController,
-                  onSubmit: _submit,
-                ),
-              ],
+          return AuthFormLayout(
+            child: _ForgotPasswordFormCard(
+              controller: _controller,
+              emailController: _emailController,
+              onSubmit: _submit,
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _ForgotPasswordIntro extends StatelessWidget {
-  const _ForgotPasswordIntro();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Card(
-      color: colors.orangeSoft,
-      child: Padding(
-        padding: AppInsets.card,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(Icons.mark_email_read_outlined, color: colors.orangeDark),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.forgotPasswordIntroTitle,
-                    style: textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    AppStrings.forgotPasswordIntroBody,
-                    style: textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

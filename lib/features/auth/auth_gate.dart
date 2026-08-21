@@ -6,6 +6,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
+import 'email_verification_screen.dart';
 import '../splash/welcome_screen.dart';
 
 class AuthGate extends StatefulWidget {
@@ -19,6 +20,7 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   bool? _lastHadUser;
+  AuthUser? _checkedUser;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +36,31 @@ class _AuthGateState extends State<AuthGate> {
           return const WelcomeScreen();
         }
 
-        final user = snapshot.data;
+        final streamedUser = snapshot.data;
+        final user = _checkedUser?.uid == streamedUser?.uid
+            ? _checkedUser
+            : streamedUser;
         if (user == null) {
+          _checkedUser = null;
           _handleAuthState(false);
           return const WelcomeScreen();
         }
 
         _handleAuthState(true);
+        if (!user.isEmailVerified) {
+          return EmailVerificationScreen(
+            authRepository: widget.authRepository,
+            onVerificationChecked: (checkedUser) {
+              if (mounted) {
+                setState(() {
+                  _checkedUser = checkedUser;
+                });
+              }
+            },
+          );
+        }
+
+        _checkedUser = null;
         return HighLevelCategoriesScreen(
           authRepository: widget.authRepository,
           showBackButton: false,

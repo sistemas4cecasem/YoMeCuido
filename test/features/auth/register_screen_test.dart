@@ -37,6 +37,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(repository.registerCallCount, 1);
+    expect(repository.sendVerificationCallCount, 1);
     expect(repository.lastEmail, 'persona@example.com');
     expect(find.text(AppStrings.registerSuccessMessage), findsOneWidget);
   });
@@ -44,6 +45,7 @@ void main() {
 
 class _FakeAuthRepository implements AuthRepository {
   int registerCallCount = 0;
+  int sendVerificationCallCount = 0;
   String? lastEmail;
 
   @override
@@ -64,6 +66,14 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<void> sendPasswordResetEmail({required String email}) async {}
+
+  @override
+  Future<void> sendEmailVerification() async {
+    sendVerificationCallCount += 1;
+  }
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() async => currentUser;
 
   @override
   Future<AuthUser> signInWithEmailAndPassword({

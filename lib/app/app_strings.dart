@@ -31,13 +31,25 @@ abstract final class AppStrings {
   static const registerIntroTitle = 'Registro con correo';
   static const registerIntroBody =
       'Crea una cuenta para preparar las próximas funciones de YoMeCuido.';
+  static const emailVerificationTitle = 'Verifica tu correo';
+  static const emailVerificationBody =
+      'Enviamos un enlace de verificación a tu correo. Confírmalo para ingresar a YoMeCuido.';
+  static const emailVerificationCheck = 'Ya verifiqué mi correo';
+  static const emailVerificationResend = 'Reenviar correo';
+  static const emailVerificationPending =
+      'Aún no aparece como verificado. Revisa tu bandeja y vuelve a intentarlo.';
+  static const emailVerificationSent =
+      'Enviamos nuevamente el correo de verificación.';
+  static const emailVerificationError =
+      'No pudimos verificar el estado del correo. Intenta nuevamente.';
   static const emailLabel = 'Correo electrónico';
   static const passwordLabel = 'Contraseña';
   static const confirmPasswordLabel = 'Confirmar contraseña';
   static const createAccount = 'Crear cuenta';
   static const showPassword = 'Mostrar contraseña';
   static const hidePassword = 'Ocultar contraseña';
-  static const registerSuccessMessage = 'Cuenta creada correctamente.';
+  static const registerSuccessMessage =
+      'Cuenta creada correctamente. Revisa tu correo para verificarla.';
   static const categoriesTitle = 'Categorías';
   static const digitalSecurityTitle = 'Seguridad digital';
   static const traffickingTitle = 'Trata y tráfico';

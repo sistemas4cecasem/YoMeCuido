@@ -63,6 +63,9 @@ class RegisterController extends ChangeNotifier {
         email: normalizedEmail,
         password: password,
       );
+      if (!user.isEmailVerified) {
+        await _authRepository.sendEmailVerification();
+      }
       _registeredUser = user;
       return user;
     } on AuthException catch (exception) {

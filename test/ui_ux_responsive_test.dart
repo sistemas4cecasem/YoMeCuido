@@ -305,7 +305,11 @@ class _CachedContentRepository implements ContentRepository {
 class _SignedInAuthRepository implements AuthRepository {
   const _SignedInAuthRepository();
 
-  static const _user = AuthUser(uid: 'uid-123', email: 'persona@example.com');
+  static const _user = AuthUser(
+    uid: 'uid-123',
+    email: 'persona@example.com',
+    isEmailVerified: true,
+  );
 
   @override
   AuthUser? get currentUser => _user;
@@ -323,6 +327,12 @@ class _SignedInAuthRepository implements AuthRepository {
 
   @override
   Future<void> sendPasswordResetEmail({required String email}) async {}
+
+  @override
+  Future<void> sendEmailVerification() async {}
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() async => _user;
 
   @override
   Future<AuthUser> signInWithEmailAndPassword({

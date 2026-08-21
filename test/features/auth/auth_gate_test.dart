@@ -39,7 +39,11 @@ void main() {
 
     await _pumpGate(tester, authRepository);
     authRepository.emit(
-      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -63,10 +67,15 @@ void main() {
     await tester.tap(find.text(AppStrings.loginTitle));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.loginIntroTitle), findsOneWidget);
+    expect(find.text(AppStrings.loginAction), findsOneWidget);
+    expect(find.text(AppStrings.loginIntroTitle), findsNothing);
 
     authRepository.emit(
-      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -90,7 +99,11 @@ void main() {
     expect(find.text(AppStrings.registerTitle), findsWidgets);
 
     authRepository.emit(
-      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -107,7 +120,11 @@ void main() {
 
     await _pumpGate(tester, authRepository);
     authRepository.emit(
-      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -131,7 +148,11 @@ void main() {
 
     await _pumpGate(tester, authRepository);
     authRepository.emit(
-      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
     );
     await tester.pumpAndSettle();
 
@@ -156,7 +177,11 @@ void main() {
 
       await _pumpGate(tester, authRepository);
       authRepository.emit(
-        const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+        const AuthUser(
+          uid: 'uid-123',
+          email: 'persona@example.com',
+          isEmailVerified: true,
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -176,6 +201,33 @@ void main() {
       expect(authRepository.signOutCallCount, 0);
     },
   );
+
+  testWidgets('blocks high-level categories until email is verified', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+
+    await _pumpGate(tester, authRepository);
+    authRepository.emit(
+      const AuthUser(uid: 'uid-123', email: 'persona@example.com'),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.emailVerificationTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+
+    authRepository.nextReloadedUser = const AuthUser(
+      uid: 'uid-123',
+      email: 'persona@example.com',
+      isEmailVerified: true,
+    );
+    await tester.tap(find.text(AppStrings.emailVerificationCheck));
+    await tester.pumpAndSettle();
+
+    expect(authRepository.reloadCallCount, 1);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.emailVerificationTitle), findsNothing);
+  });
 }
 
 Finder _signOutIconButton() {
@@ -210,6 +262,9 @@ class _ControllableAuthRepository implements AuthRepository {
   AuthUser? _currentUser;
   bool shouldFailSignOut = false;
   int signOutCallCount = 0;
+  int sendVerificationCallCount = 0;
+  int reloadCallCount = 0;
+  AuthUser? nextReloadedUser;
 
   void emit(AuthUser? user) {
     _currentUser = user;
@@ -234,6 +289,19 @@ class _ControllableAuthRepository implements AuthRepository {
 
   @override
   Future<void> sendPasswordResetEmail({required String email}) async {}
+
+  @override
+  Future<void> sendEmailVerification() async {
+    sendVerificationCallCount += 1;
+  }
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() async {
+    reloadCallCount += 1;
+    final user = nextReloadedUser ?? _currentUser;
+    _currentUser = user;
+    return user;
+  }
 
   @override
   Future<AuthUser> signInWithEmailAndPassword({

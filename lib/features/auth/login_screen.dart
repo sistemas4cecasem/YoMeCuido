@@ -6,6 +6,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../shared/widgets/app_scaffold.dart';
+import 'auth_form_layout.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -60,68 +61,23 @@ class _LoginScreenState extends State<LoginScreen> {
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
-          return SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const _LoginIntro(),
-                const SizedBox(height: AppSpacing.lg),
-                _LoginFormCard(
-                  controller: _controller,
-                  emailController: _emailController,
-                  passwordController: _passwordController,
-                  isPasswordVisible: _isPasswordVisible,
-                  onTogglePasswordVisibility: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                  onSubmit: _submit,
-                  onOpenRegister: _openRegister,
-                  onOpenForgotPassword: _openForgotPassword,
-                ),
-              ],
+          return AuthFormLayout(
+            child: _LoginFormCard(
+              controller: _controller,
+              emailController: _emailController,
+              passwordController: _passwordController,
+              isPasswordVisible: _isPasswordVisible,
+              onTogglePasswordVisibility: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              },
+              onSubmit: _submit,
+              onOpenRegister: _openRegister,
+              onOpenForgotPassword: _openForgotPassword,
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _LoginIntro extends StatelessWidget {
-  const _LoginIntro();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Card(
-      color: colors.orangeSoft,
-      child: Padding(
-        padding: AppInsets.card,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(Icons.login_outlined, color: colors.orangeDark),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.loginIntroTitle,
-                    style: textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(AppStrings.loginIntroBody, style: textTheme.bodyMedium),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
