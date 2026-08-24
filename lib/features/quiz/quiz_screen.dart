@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
@@ -137,9 +138,12 @@ class _QuizFlowState extends State<_QuizFlow> {
       if (!mounted) {
         return;
       }
-      widget.progressController.startActivityAttempt(
-        categoryId: widget.category.id,
-        totalActivities: widget.questions.length,
+      unawaited(
+        widget.progressController.startActivityAttempt(
+          categoryId: widget.category.id,
+          lessonId: widget.category.lessonId ?? widget.category.id,
+          totalActivities: widget.questions.length,
+        ),
       );
     });
   }
@@ -189,18 +193,33 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _submitAnswer() {
     FocusManager.instance.primaryFocus?.unfocus();
+    final activityId = _controller.currentQuestionId;
+    final answer = _currentAnswerForPersistence();
     final submitted = _controller.submitAnswer();
     if (!submitted) {
       return;
     }
 
-    widget.progressController.recordActivityAnswer(
-      categoryId: widget.category.id,
-      activityIndex: _controller.currentIndex,
-      correctAnswers: _controller.correctAnswers,
-      totalActivities: _controller.totalQuestions,
-      result: _controller.isFinished ? _controller.quizResult : null,
+    unawaited(
+      widget.progressController.recordActivityAnswer(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        activityId: activityId,
+        answer: answer,
+        isCorrect: _controller.isCurrentAnswerCorrect ?? false,
+        correctAnswers: _controller.correctAnswers,
+        totalActivities: _controller.totalQuestions,
+        result: _controller.isFinished ? _controller.quizResult : null,
+      ),
     );
+  }
+
+  String _currentAnswerForPersistence() {
+    return switch (_controller.currentQuestionType) {
+      QuestionType.multipleChoice ||
+      QuestionType.trueFalse => _controller.selectedOptionId ?? '',
+      QuestionType.fillBlank => _controller.writtenAnswer.trim(),
+    };
   }
 
   void _goForward() {
@@ -221,9 +240,12 @@ class _QuizFlowState extends State<_QuizFlow> {
     _activityCharacters.clear();
     _controller.reset();
     widget.progressController.resetCategory(widget.category.id);
-    widget.progressController.startActivityAttempt(
-      categoryId: widget.category.id,
-      totalActivities: widget.questions.length,
+    unawaited(
+      widget.progressController.startActivityAttempt(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        totalActivities: widget.questions.length,
+      ),
     );
     setState(() {
       _allowPop = false;

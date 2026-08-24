@@ -1,1 +1,27 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"yomecuido-1dc1a","appId":"1:670755048605:android:c3c55b194fb3a31fae5874","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"yomecuido-1dc1a","configurations":{"android":"1:670755048605:android:c3c55b194fb3a31fae5874"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "yomecuido-1dc1a",
+          "appId": "1:670755048605:android:c3c55b194fb3a31fae5874",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "yomecuido-1dc1a",
+          "configurations": {
+            "android": "1:670755048605:android:c3c55b194fb3a31fae5874"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "southamerica-west1",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

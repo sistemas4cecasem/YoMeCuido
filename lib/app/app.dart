@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../core/theme/app_theme.dart';
 import '../data/repositories/auth_repository.dart';
+import '../data/repositories/category_progress_repository.dart';
 import '../data/repositories/content_repository.dart';
 import '../data/repositories/firebase_auth_repository.dart';
 import '../data/repositories/local_content_repository.dart';
@@ -11,16 +12,27 @@ import 'app_strings.dart';
 import 'category_progress_controller.dart';
 
 class YoMeCuidoApp extends StatelessWidget {
-  YoMeCuidoApp({
+  factory YoMeCuidoApp({
     ContentRepository? contentRepository,
     AuthRepository? authRepository,
+    CategoryProgressController? progressController,
     Key? key,
-  }) : this._(
-         contentRepository: contentRepository ?? LocalContentRepository(),
-         authRepository: authRepository ?? FirebaseAuthRepository(),
-         progressController: CategoryProgressController(),
-         key: key,
-       );
+  }) {
+    final resolvedAuthRepository = authRepository ?? FirebaseAuthRepository();
+    final resolvedProgressController =
+        progressController ??
+        CategoryProgressController(
+          persistence: CategoryProgressRepository(),
+          currentUserIdProvider: () => resolvedAuthRepository.currentUser?.uid,
+        );
+
+    return YoMeCuidoApp._(
+      contentRepository: contentRepository ?? LocalContentRepository(),
+      authRepository: resolvedAuthRepository,
+      progressController: resolvedProgressController,
+      key: key,
+    );
+  }
 
   YoMeCuidoApp._({
     required ContentRepository contentRepository,
@@ -32,10 +44,12 @@ class YoMeCuidoApp extends StatelessWidget {
          authRepository: authRepository,
          progressController: progressController,
        ),
-       _authRepository = authRepository;
+       _authRepository = authRepository,
+       _progressController = progressController;
 
   final AppRouter _router;
   final AuthRepository _authRepository;
+  final CategoryProgressController _progressController;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +57,10 @@ class YoMeCuidoApp extends StatelessWidget {
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.data(),
-      home: AuthGate(authRepository: _authRepository),
+      home: AuthGate(
+        authRepository: _authRepository,
+        progressController: _progressController,
+      ),
       onGenerateRoute: _router.onGenerateRoute,
     );
   }

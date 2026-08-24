@@ -1,5 +1,6 @@
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
+import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_colors.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
@@ -172,6 +173,7 @@ Future<void> _pumpDemo(
       key: UniqueKey(),
       contentRepository: contentRepository,
       authRepository: const _SignedInAuthRepository(),
+      progressController: CategoryProgressController(),
     ),
   );
   await _pumpRouteFrame(tester);

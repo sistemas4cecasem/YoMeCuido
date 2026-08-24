@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart' show kDebugMode;
@@ -91,10 +92,13 @@ class _LessonScreenState extends State<LessonScreen> {
       if (!mounted) {
         return;
       }
-      widget.progressController.markTheoryPageViewed(
-        categoryId: widget.category.id,
-        pageId: page.id,
-        totalPages: totalPages,
+      unawaited(
+        widget.progressController.markTheoryPageViewed(
+          categoryId: widget.category.id,
+          lessonId: widget.category.lessonId ?? widget.category.id,
+          pageId: page.id,
+          totalPages: totalPages,
+        ),
       );
     });
   }

@@ -1,5 +1,6 @@
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
+import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
@@ -22,6 +23,7 @@ void main() {
       YoMeCuidoApp(
         contentRepository: repository,
         authRepository: const _SignedInAuthRepository(),
+        progressController: CategoryProgressController(),
       ),
     );
     await tester.pumpAndSettle();

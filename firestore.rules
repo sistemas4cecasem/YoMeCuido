@@ -1,0 +1,251 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: Firebase Auth uid
+    // Fields:
+    //   - email: string (required, owner email, max 254)
+    //   - createdAt: timestamp (required, immutable after create)
+    //   - updatedAt: timestamp (required)
+    //
+    // Subcollection: users/{uid}/categoryProgress
+    // Document ID: categoryId
+    // Fields:
+    //   - categoryId: string (required, must match document ID)
+    //   - lessonId: string (required, stable local-content reference)
+    //   - status: string (required: notStarted, inProgress, completed)
+    //   - viewedLessonPageIds: list (required, max 100)
+    //   - completedActivityIds: list (required, max 100)
+    //   - correctAnswers: int (required, 0..totalActivities)
+    //   - totalLessonPages: int (required, 0..100)
+    //   - totalActivities: int (required, 0..100)
+    //   - attemptCount: int (required, 0..1000, cannot decrease)
+    //   - startedAt: timestamp (required, immutable after create)
+    //   - lastActivityAt: timestamp|null (required)
+    //   - completedAt: timestamp|null (required)
+    //   - updatedAt: timestamp (required)
+    //   - latestAnswers: map (required, max 100 activity keys)
+    //
+    // Educational content remains local to Flutter. These rules validate the
+    // persisted progress shape without enumerating content IDs.
+    // ===============================================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function userProfileExists(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId));
+    }
+
+    function profileFields() {
+      return ['email', 'createdAt', 'updatedAt'];
+    }
+
+    function hasOnlyProfileFields() {
+      return request.resource.data.keys().hasOnly(profileFields());
+    }
+
+    function hasRequiredProfileFields() {
+      return request.resource.data.keys().hasAll(profileFields());
+    }
+
+    function isValidProfileEmail() {
+      return request.resource.data.email is string
+        && request.resource.data.email.size() > 3
+        && request.resource.data.email.size() <= 254
+        && request.auth.token.email is string
+        && request.resource.data.email == request.auth.token.email;
+    }
+
+    function isValidUserProfile() {
+      return hasOnlyProfileFields()
+        && hasRequiredProfileFields()
+        && isValidProfileEmail()
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+    }
+
+    function isValidNewUserProfile() {
+      return isValidUserProfile()
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function isValidUpdatedUserProfile() {
+      return isValidUserProfile()
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function progressFields() {
+      return [
+        'categoryId',
+        'lessonId',
+        'status',
+        'viewedLessonPageIds',
+        'completedActivityIds',
+        'correctAnswers',
+        'totalLessonPages',
+        'totalActivities',
+        'attemptCount',
+        'startedAt',
+        'lastActivityAt',
+        'completedAt',
+        'updatedAt',
+        'latestAnswers',
+      ];
+    }
+
+    function hasOnlyProgressFields() {
+      return request.resource.data.keys().hasOnly(progressFields());
+    }
+
+    function hasRequiredProgressFields() {
+      return request.resource.data.keys().hasAll(progressFields());
+    }
+
+    function hasValidProgressIds(categoryId) {
+      return request.resource.data.categoryId is string
+        && request.resource.data.categoryId == categoryId
+        && request.resource.data.categoryId.size() > 0
+        && request.resource.data.categoryId.size() <= 120
+        && request.resource.data.lessonId is string
+        && request.resource.data.lessonId.size() > 0
+        && request.resource.data.lessonId.size() <= 120;
+    }
+
+    function hasValidProgressStatus() {
+      return request.resource.data.status in [
+        'notStarted',
+        'inProgress',
+        'completed',
+      ];
+    }
+
+    function hasValidProgressLists() {
+      return request.resource.data.viewedLessonPageIds is list
+        && request.resource.data.viewedLessonPageIds.size() <= 100
+        && request.resource.data.completedActivityIds is list
+        && request.resource.data.completedActivityIds.size() <= 100
+        && request.resource.data.completedActivityIds.size()
+          <= request.resource.data.totalActivities;
+    }
+
+    function hasValidProgressNumbers() {
+      return request.resource.data.totalLessonPages is int
+        && request.resource.data.totalLessonPages >= 0
+        && request.resource.data.totalLessonPages <= 100
+        && request.resource.data.totalActivities is int
+        && request.resource.data.totalActivities >= 0
+        && request.resource.data.totalActivities <= 100
+        && request.resource.data.correctAnswers is int
+        && request.resource.data.correctAnswers >= 0
+        && request.resource.data.correctAnswers <= request.resource.data.totalActivities
+        && request.resource.data.correctAnswers <= request.resource.data.completedActivityIds.size()
+        && request.resource.data.attemptCount is int
+        && request.resource.data.attemptCount >= 0
+        && request.resource.data.attemptCount <= 1000;
+    }
+
+    function hasValidAttemptCountOnCreate() {
+      return request.resource.data.attemptCount >= 0;
+    }
+
+    function hasValidAttemptCountOnUpdate() {
+      return request.resource.data.attemptCount >= resource.data.attemptCount;
+    }
+
+    function hasValidProgressCompletionState() {
+      return request.resource.data.status == 'completed'
+        ? request.resource.data.completedAt is timestamp
+        : request.resource.data.completedAt == null;
+    }
+
+    function hasValidLatestAnswers() {
+      return request.resource.data.latestAnswers is map
+        && request.resource.data.latestAnswers.keys().size() <= 100
+        && request.resource.data.latestAnswers.keys().size()
+          <= request.resource.data.totalActivities
+        && request.resource.data.latestAnswers.keys().hasOnly(
+          request.resource.data.completedActivityIds
+        );
+    }
+
+    function hasValidProgressTimestampsOnCreate() {
+      return request.resource.data.startedAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.lastActivityAt == null
+          || request.resource.data.lastActivityAt == request.time
+        )
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt == request.time
+        );
+    }
+
+    function hasValidProgressTimestampsOnUpdate() {
+      return request.resource.data.startedAt == resource.data.startedAt
+        && request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.lastActivityAt == null
+          || request.resource.data.lastActivityAt == request.time
+          || request.resource.data.lastActivityAt == resource.data.lastActivityAt
+        )
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt == request.time
+          || request.resource.data.completedAt == resource.data.completedAt
+        );
+    }
+
+    function isValidCategoryProgress(categoryId) {
+      return hasOnlyProgressFields()
+        && hasRequiredProgressFields()
+        && hasValidProgressIds(categoryId)
+        && hasValidProgressStatus()
+        && hasValidProgressLists()
+        && hasValidProgressNumbers()
+        && hasValidProgressCompletionState()
+        && hasValidLatestAnswers();
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && isValidNewUserProfile();
+      allow update: if isOwner(userId) && isValidUpdatedUserProfile();
+      allow delete: if false;
+
+      match /categoryProgress/{categoryId} {
+        allow get, list: if isOwner(userId) && userProfileExists(userId);
+        allow create: if isOwner(userId)
+          && userProfileExists(userId)
+          && isValidCategoryProgress(categoryId)
+          && hasValidAttemptCountOnCreate()
+          && hasValidProgressTimestampsOnCreate();
+        allow update: if isOwner(userId)
+          && userProfileExists(userId)
+          && isValidCategoryProgress(categoryId)
+          && hasValidAttemptCountOnUpdate()
+          && hasValidProgressTimestampsOnUpdate();
+        allow delete: if false;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

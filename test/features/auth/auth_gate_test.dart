@@ -285,7 +285,10 @@ Future<void> _pumpGate(
   await tester.pumpWidget(
     MaterialApp(
       theme: AppTheme.data(),
-      home: AuthGate(authRepository: authRepository),
+      home: AuthGate(
+        authRepository: authRepository,
+        progressController: CategoryProgressController(),
+      ),
       onGenerateRoute: router.onGenerateRoute,
     ),
   );

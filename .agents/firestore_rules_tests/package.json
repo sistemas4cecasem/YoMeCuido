@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.10.0"
+  },
+  "scripts": {
+    "test": "node rules_test.js"
+  }
+}

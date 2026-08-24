@@ -48,3 +48,9 @@ app.*.map.json
 *.apk
 
 AGENTS.md
+
+# Local agent tooling
+.agents/skills/
+.agents/firestore_rules_tests/node_modules/
+.claude/
+skills-lock.json

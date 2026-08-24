@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../app/app_strings.dart';
+import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
@@ -10,17 +11,24 @@ import 'email_verification_screen.dart';
 import '../splash/welcome_screen.dart';
 
 class AuthGate extends StatefulWidget {
-  const AuthGate({required this.authRepository, super.key});
+  const AuthGate({
+    required this.authRepository,
+    required this.progressController,
+    super.key,
+  });
 
   final AuthRepository authRepository;
+  final CategoryProgressController progressController;
 
   @override
   State<AuthGate> createState() => _AuthGateState();
 }
 
 class _AuthGateState extends State<AuthGate> {
-  bool? _lastHadUser;
+  String? _lastUserUid;
   AuthUser? _checkedUser;
+  String? _progressLoadUid;
+  Future<void>? _progressLoadFuture;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +40,8 @@ class _AuthGateState extends State<AuthGate> {
         }
 
         if (snapshot.hasError) {
-          _handleAuthState(false);
+          _handleAuthState(null);
+          widget.progressController.clearForSignedOutUser();
           return const WelcomeScreen();
         }
 
@@ -42,11 +51,12 @@ class _AuthGateState extends State<AuthGate> {
             : streamedUser;
         if (user == null) {
           _checkedUser = null;
-          _handleAuthState(false);
+          _handleAuthState(null);
+          widget.progressController.clearForSignedOutUser();
           return const WelcomeScreen();
         }
 
-        _handleAuthState(true);
+        _handleAuthState(user);
         if (!user.isEmailVerified) {
           return EmailVerificationScreen(
             authRepository: widget.authRepository,
@@ -61,21 +71,41 @@ class _AuthGateState extends State<AuthGate> {
         }
 
         _checkedUser = null;
-        return HighLevelCategoriesScreen(
+        return _HydratedHome(
+          user: user,
+          progressLoadFuture: _ensureProgressLoad(user),
+          progressController: widget.progressController,
           authRepository: widget.authRepository,
-          showBackButton: false,
         );
       },
     );
   }
 
-  void _handleAuthState(bool hasUser) {
-    final lastHadUser = _lastHadUser;
-    _lastHadUser = hasUser;
+  Future<void> _ensureProgressLoad(AuthUser user) {
+    if (widget.progressController.hasResolvedProgressFor(user.uid)) {
+      return Future<void>.value();
+    }
 
-    if (lastHadUser == null || lastHadUser == hasUser) {
+    if (_progressLoadUid != user.uid || _progressLoadFuture == null) {
+      _progressLoadUid = user.uid;
+      _progressLoadFuture = widget.progressController
+          .loadPersistedProgressForUser(user.uid);
+    }
+
+    return _progressLoadFuture!;
+  }
+
+  void _handleAuthState(AuthUser? user) {
+    final previousUserUid = _lastUserUid;
+    final nextUserUid = user?.uid;
+    _lastUserUid = nextUserUid;
+
+    if (previousUserUid == nextUserUid) {
       return;
     }
+
+    _progressLoadUid = null;
+    _progressLoadFuture = null;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final navigator = Navigator.maybeOf(context);
@@ -85,6 +115,44 @@ class _AuthGateState extends State<AuthGate> {
 
       navigator.popUntil((route) => route.isFirst);
     });
+  }
+}
+
+class _HydratedHome extends StatelessWidget {
+  const _HydratedHome({
+    required this.user,
+    required this.progressLoadFuture,
+    required this.progressController,
+    required this.authRepository,
+  });
+
+  final AuthUser user;
+  final Future<void> progressLoadFuture;
+  final CategoryProgressController progressController;
+  final AuthRepository authRepository;
+
+  @override
+  Widget build(BuildContext context) {
+    if (progressController.hasResolvedProgressFor(user.uid)) {
+      return HighLevelCategoriesScreen(
+        authRepository: authRepository,
+        showBackButton: false,
+      );
+    }
+
+    return FutureBuilder<void>(
+      future: progressLoadFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const _AuthLoadingView();
+        }
+
+        return HighLevelCategoriesScreen(
+          authRepository: authRepository,
+          showBackButton: false,
+        );
+      },
+    );
   }
 }
 

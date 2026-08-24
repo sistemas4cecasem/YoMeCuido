@@ -35,6 +35,7 @@ enum AuthFailureReason {
   operationNotAllowed,
   tooManyRequests,
   networkRequestFailed,
+  userProfileUnavailable,
   unknown,
 }
 
@@ -77,6 +78,8 @@ class AuthException implements Exception {
         'Hay demasiados intentos. Intenta nuevamente más tarde.',
       AuthFailureReason.networkRequestFailed =>
         'No pudimos conectar con el servicio. Revisa tu conexión.',
+      AuthFailureReason.userProfileUnavailable =>
+        'No pudimos preparar tu perfil. Intenta nuevamente.',
       AuthFailureReason.unknown =>
         'No pudimos completar la operación. Intenta nuevamente.',
     };
