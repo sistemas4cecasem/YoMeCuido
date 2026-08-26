@@ -19,6 +19,8 @@ class QuizOption {
 class QuizQuestion {
   const QuizQuestion({
     required this.id,
+    required this.categoryId,
+    required this.activityId,
     required this.type,
     required this.statement,
     required this.options,
@@ -52,6 +54,8 @@ class QuizQuestion {
 
     return QuizQuestion(
       id: readString(json, 'id'),
+      categoryId: readString(json, 'categoryId'),
+      activityId: readString(json, 'activityId'),
       type: type,
       statement: readString(json, 'statement'),
       options: options,
@@ -64,6 +68,8 @@ class QuizQuestion {
   }
 
   final String id;
+  final String categoryId;
+  final String activityId;
   final QuestionType type;
   final String statement;
   final List<QuizOption> options;

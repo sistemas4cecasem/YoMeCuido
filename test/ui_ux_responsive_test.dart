@@ -4,6 +4,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_colors.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
@@ -24,6 +25,9 @@ void main() {
     final lessonPages = await localRepository.loadLessonPages(
       LocalContentRepository.relationsViolenceCategoryId,
     );
+    final activities = await localRepository.loadActivities(
+      LocalContentRepository.relationsViolenceCategoryId,
+    );
     final quizQuestions = await localRepository.loadQuizQuestions(
       LocalContentRepository.relationsViolenceCategoryId,
     );
@@ -31,6 +35,7 @@ void main() {
     contentRepository = _CachedContentRepository(
       categories: categories,
       lessonPages: lessonPages,
+      activities: activities,
       quizQuestions: quizQuestions,
     );
   });
@@ -281,11 +286,13 @@ class _CachedContentRepository implements ContentRepository {
   const _CachedContentRepository({
     required this.categories,
     required this.lessonPages,
+    required this.activities,
     required this.quizQuestions,
   });
 
   final List<Category> categories;
   final List<LessonPage> lessonPages;
+  final List<LearningActivity> activities;
   final List<QuizQuestion> quizQuestions;
 
   @override
@@ -296,6 +303,11 @@ class _CachedContentRepository implements ContentRepository {
   @override
   Future<List<LessonPage>> loadLessonPages(String categoryId) async {
     return lessonPages;
+  }
+
+  @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) async {
+    return activities;
   }
 
   @override

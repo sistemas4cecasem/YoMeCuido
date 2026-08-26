@@ -3,6 +3,7 @@ import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
@@ -454,6 +455,7 @@ class _SignedInAuthRepository implements AuthRepository {
 class _FakeContentRepository implements ContentRepository {
   int loadCategoriesCalls = 0;
   int loadLessonPagesCalls = 0;
+  int loadActivitiesCalls = 0;
   int loadQuizQuestionsCalls = 0;
 
   final categories = const <Category>[
@@ -593,6 +595,15 @@ class _FakeContentRepository implements ContentRepository {
     ),
   ];
 
+  final activities = const <LearningActivity>[
+    LearningActivity(
+      id: 'relations_violence_activity_01',
+      categoryId: 'relations_violence_digital',
+      title: AppStrings.firstActivityBlock,
+      order: 1,
+    ),
+  ];
+
   final quizQuestions = _buildQuizQuestions();
 
   @override
@@ -608,6 +619,12 @@ class _FakeContentRepository implements ContentRepository {
   }
 
   @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) async {
+    loadActivitiesCalls += 1;
+    return activities;
+  }
+
+  @override
   Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
     loadQuizQuestionsCalls += 1;
     return quizQuestions;
@@ -618,6 +635,8 @@ List<QuizQuestion> _buildQuizQuestions() {
   return <QuizQuestion>[
     const QuizQuestion(
       id: 'activity_1',
+      categoryId: 'relations_violence_digital',
+      activityId: 'relations_violence_activity_01',
       type: QuestionType.multipleChoice,
       statement: '¿Cuál es un ejemplo de violencia digital?',
       options: <QuizOption>[
@@ -640,6 +659,8 @@ List<QuizQuestion> _buildQuizQuestions() {
     ),
     const QuizQuestion(
       id: 'activity_2',
+      categoryId: 'relations_violence_digital',
+      activityId: 'relations_violence_activity_01',
       type: QuestionType.fillBlank,
       statement: 'Las capturas pueden servir como ______.',
       options: <QuizOption>[],
@@ -652,6 +673,8 @@ List<QuizQuestion> _buildQuizQuestions() {
     for (var index = 3; index <= 12; index += 1)
       QuizQuestion(
         id: 'activity_$index',
+        categoryId: 'relations_violence_digital',
+        activityId: 'relations_violence_activity_01',
         type: QuestionType.multipleChoice,
         statement: 'Actividad de práctica $index',
         options: <QuizOption>[

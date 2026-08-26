@@ -1,0 +1,10 @@
+{
+  "activities": [
+    {
+      "id": "relations_violence_activity_01",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 1",
+      "order": 1
+    }
+  ]
+}

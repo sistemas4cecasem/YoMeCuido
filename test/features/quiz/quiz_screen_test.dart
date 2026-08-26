@@ -2,6 +2,7 @@ import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
@@ -279,6 +280,11 @@ class _FakeQuizRepository implements ContentRepository {
   }
 
   @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) {
+    throw UnimplementedError();
+  }
+
+  @override
   Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
     return _quizQuestions;
   }
@@ -299,6 +305,8 @@ List<QuizQuestion> get _quizQuestions {
   return <QuizQuestion>[
     const QuizQuestion(
       id: 'activity_1',
+      categoryId: 'relations_violence_digital',
+      activityId: 'relations_violence_activity_01',
       type: QuestionType.multipleChoice,
       statement: 'Pregunta de opción múltiple',
       options: <QuizOption>[
@@ -313,6 +321,8 @@ List<QuizQuestion> get _quizQuestions {
     ),
     const QuizQuestion(
       id: 'activity_2',
+      categoryId: 'relations_violence_digital',
+      activityId: 'relations_violence_activity_01',
       type: QuestionType.fillBlank,
       statement: 'Las capturas pueden servir como ______.',
       options: <QuizOption>[],
@@ -325,6 +335,8 @@ List<QuizQuestion> get _quizQuestions {
     for (var index = 3; index <= 12; index += 1)
       QuizQuestion(
         id: 'activity_$index',
+        categoryId: 'relations_violence_digital',
+        activityId: 'relations_violence_activity_01',
         type: QuestionType.multipleChoice,
         statement: 'Pregunta $index',
         options: <QuizOption>[

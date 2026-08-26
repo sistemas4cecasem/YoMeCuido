@@ -2,6 +2,8 @@
   "questions": [
     {
       "id": "activity_1",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Cuál es un ejemplo de violencia digital?",
       "options": [
@@ -29,6 +31,8 @@
     },
     {
       "id": "activity_2",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "trueFalse",
       "statement": "La víctima es responsable de una difusión íntima por haber confiado.",
       "options": [
@@ -48,6 +52,8 @@
     },
     {
       "id": "activity_3",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "Ante amenazas digitales, ¿qué conviene hacer?",
       "options": [
@@ -75,6 +81,8 @@
     },
     {
       "id": "activity_4",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "Una pareja exige acceso permanente a tus cuentas. ¿Qué puede indicar?",
       "options": [
@@ -102,6 +110,8 @@
     },
     {
       "id": "activity_5",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Qué es grooming?",
       "options": [
@@ -129,6 +139,8 @@
     },
     {
       "id": "activity_6",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "fillBlank",
       "statement": "Amenazar con publicar contenido íntimo para exigir algo se llama ______.",
       "options": [],
@@ -143,6 +155,8 @@
     },
     {
       "id": "activity_7",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "trueFalse",
       "statement": "Compartir la ubicación en tiempo real con una persona controladora puede aumentar el riesgo.",
       "options": [
@@ -162,6 +176,8 @@
     },
     {
       "id": "activity_8",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Cuál es una respuesta adecuada ante el ciberacoso?",
       "options": [
@@ -189,6 +205,8 @@
     },
     {
       "id": "activity_9",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "fillBlank",
       "statement": "Las capturas, los enlaces y las fechas pueden servir como ______.",
       "options": [],
@@ -202,6 +220,8 @@
     },
     {
       "id": "activity_10",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Qué debes hacer si alguien amenaza con publicar fotos íntimas?",
       "options": [
@@ -229,6 +249,8 @@
     },
     {
       "id": "activity_11",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Qué práctica ayuda a protegerse de una expareja con acceso digital?",
       "options": [
@@ -256,6 +278,8 @@
     },
     {
       "id": "activity_12",
+      "categoryId": "relations_violence_digital",
+      "activityId": "relations_violence_activity_01",
       "type": "multipleChoice",
       "statement": "¿Qué prioridad existe cuando hay riesgo físico inmediato?",
       "options": [

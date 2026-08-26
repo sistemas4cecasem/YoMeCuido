@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../models/category.dart';
+import '../models/learning_activity.dart';
 import '../models/lesson_page.dart';
 import '../models/quiz_question.dart';
 import 'content_repository.dart';
@@ -14,6 +15,8 @@ class LocalContentRepository implements ContentRepository {
   static const relationsViolenceCategoryId = 'relations_violence_digital';
   static const _categoriesPath = 'assets/data/categories.json';
   static const _lessonPath = 'assets/data/relations_violence_lesson.json';
+  static const _activitiesPath =
+      'assets/data/relations_violence_activities.json';
   static const _questionsPath = 'assets/data/relations_violence_questions.json';
 
   final AssetBundle _assetBundle;
@@ -35,6 +38,17 @@ class LocalContentRepository implements ContentRepository {
       assetPath: _lessonPath,
       listKey: 'lessonPages',
       parser: LessonPage.fromJson,
+    );
+  }
+
+  @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) {
+    _validateSupportedCategory(categoryId);
+
+    return _loadList(
+      assetPath: _activitiesPath,
+      listKey: 'activities',
+      parser: LearningActivity.fromJson,
     );
   }
 

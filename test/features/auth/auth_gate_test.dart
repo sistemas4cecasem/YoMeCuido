@@ -6,6 +6,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
@@ -371,6 +372,11 @@ class _EmptyContentRepository implements ContentRepository {
   @override
   Future<List<LessonPage>> loadLessonPages(String categoryId) async {
     return const <LessonPage>[];
+  }
+
+  @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) async {
+    return const <LearningActivity>[];
   }
 
   @override

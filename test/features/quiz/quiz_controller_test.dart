@@ -274,6 +274,8 @@ void _answerCurrentIncorrectly(QuizController controller) {
 const _questions = <QuizQuestion>[
   QuizQuestion(
     id: 'activity_1',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: '¿Cuál es un ejemplo de violencia digital?',
     options: <QuizOption>[
@@ -293,6 +295,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_2',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.trueFalse,
     statement:
         'La víctima es responsable de una difusión íntima por haber confiado.',
@@ -310,6 +314,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_3',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: 'Ante amenazas digitales, ¿qué conviene hacer?',
     options: <QuizOption>[
@@ -328,6 +334,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_4',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: 'Una pareja exige acceso permanente a tus cuentas.',
     options: <QuizOption>[
@@ -343,6 +351,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_5',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: '¿Qué es grooming?',
     options: <QuizOption>[
@@ -360,6 +370,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_6',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.fillBlank,
     statement:
         'Amenazar con publicar contenido íntimo para exigir algo se llama.',
@@ -372,6 +384,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_7',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.trueFalse,
     statement:
         'Compartir la ubicación en tiempo real con una persona controladora '
@@ -388,6 +402,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_8',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: '¿Cuál es una respuesta adecuada ante el ciberacoso?',
     options: <QuizOption>[
@@ -405,6 +421,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_9',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.fillBlank,
     statement: 'Las capturas, los enlaces y las fechas pueden servir como.',
     options: <QuizOption>[],
@@ -416,6 +434,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_10',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement:
         '¿Qué debes hacer si alguien amenaza con publicar fotos íntimas?',
@@ -436,6 +456,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_11',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: '¿Qué práctica ayuda a protegerse de una expareja?',
     options: <QuizOption>[
@@ -453,6 +475,8 @@ const _questions = <QuizQuestion>[
   ),
   QuizQuestion(
     id: 'activity_12',
+    categoryId: _categoryId,
+    activityId: _activityId,
     type: QuestionType.multipleChoice,
     statement: '¿Qué prioridad existe cuando hay riesgo físico inmediato?',
     options: <QuizOption>[
@@ -470,3 +494,6 @@ const _questions = <QuizQuestion>[
     difficulty: 'intermedia',
   ),
 ];
+
+const _categoryId = 'relations_violence_digital';
+const _activityId = 'relations_violence_activity_01';
