@@ -311,8 +311,16 @@ class _CachedContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
-    return quizQuestions;
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
+    return quizQuestions
+        .where((question) {
+          return question.categoryId == categoryId &&
+              (activityId == null || question.activityId == activityId);
+        })
+        .toList(growable: false);
   }
 }
 

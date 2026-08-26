@@ -46,20 +46,37 @@ void main() {
       expect(pages.map((page) => page.order), [1, 2, 3, 4]);
     });
 
-    test('loads the current normalized learning activity', () async {
+    test('loads six ordered learning activities', () async {
       final activities = await repository.loadActivities(
         LocalContentRepository.relationsViolenceCategoryId,
       );
 
-      expect(activities, hasLength(1));
-      expect(activities.single.id, 'relations_violence_activity_01');
+      expect(activities, hasLength(6));
+      expect(activities.map((activity) => activity.id), <String>[
+        'relations_violence_activity_01',
+        'relations_violence_activity_02',
+        'relations_violence_activity_03',
+        'relations_violence_activity_04',
+        'relations_violence_activity_05',
+        'relations_violence_activity_06',
+      ]);
       expect(
-        activities.single.categoryId,
-        LocalContentRepository.relationsViolenceCategoryId,
+        activities.every(
+          (activity) =>
+              activity.categoryId ==
+              LocalContentRepository.relationsViolenceCategoryId,
+        ),
+        isTrue,
       );
-      expect(activities.single.title, 'Actividad 1');
-      expect(activities.single.order, 1);
-      expect(activities.single, isA<LearningActivity>());
+      expect(activities.map((activity) => activity.order), <int>[
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+      ]);
+      expect(activities.first, isA<LearningActivity>());
     });
 
     test('loads exactly twelve quiz questions', () async {
@@ -78,6 +95,37 @@ void main() {
         ),
         isTrue,
       );
+    });
+
+    test('loads quiz questions for one concrete activity', () async {
+      final questions = await repository.loadQuizQuestions(
+        LocalContentRepository.relationsViolenceCategoryId,
+        activityId: 'relations_violence_activity_01',
+      );
+
+      expect(questions, hasLength(12));
+      expect(
+        questions.every((question) {
+          return question.categoryId ==
+                  LocalContentRepository.relationsViolenceCategoryId &&
+              question.activityId == 'relations_violence_activity_01';
+        }),
+        isTrue,
+      );
+    });
+
+    test('does not mix questions from other or empty activities', () async {
+      final emptyActivityQuestions = await repository.loadQuizQuestions(
+        LocalContentRepository.relationsViolenceCategoryId,
+        activityId: 'relations_violence_activity_02',
+      );
+      final missingActivityQuestions = await repository.loadQuizQuestions(
+        LocalContentRepository.relationsViolenceCategoryId,
+        activityId: 'relations_violence_activity_missing',
+      );
+
+      expect(emptyActivityQuestions, isEmpty);
+      expect(missingActivityQuestions, isEmpty);
     });
 
     test('decodes all supported question types', () async {

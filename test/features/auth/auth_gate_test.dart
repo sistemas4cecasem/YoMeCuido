@@ -380,7 +380,10 @@ class _EmptyContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
     return const <QuizQuestion>[];
   }
 }

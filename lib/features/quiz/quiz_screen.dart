@@ -11,6 +11,7 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/models/learning_activity.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
 import '../../data/repositories/content_repository.dart';
@@ -27,12 +28,14 @@ import 'quiz_controller.dart';
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
     required this.category,
+    required this.activity,
     required this.contentRepository,
     required this.progressController,
     super.key,
   });
 
   final Category category;
+  final LearningActivity activity;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
 
@@ -49,6 +52,7 @@ class _QuizScreenState extends State<QuizScreen> {
     super.initState();
     _questionsFuture = widget.contentRepository.loadQuizQuestions(
       widget.category.id,
+      activityId: widget.activity.id,
     );
   }
 
@@ -57,6 +61,7 @@ class _QuizScreenState extends State<QuizScreen> {
       _showingResult = false;
       _questionsFuture = widget.contentRepository.loadQuizQuestions(
         widget.category.id,
+        activityId: widget.activity.id,
       );
     });
   }

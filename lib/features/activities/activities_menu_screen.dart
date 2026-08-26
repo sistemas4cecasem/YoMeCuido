@@ -8,7 +8,7 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
-import '../../data/models/quiz_question.dart';
+import '../../data/models/learning_activity.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
@@ -31,26 +31,50 @@ class ActivitiesMenuScreen extends StatefulWidget {
 }
 
 class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
-  late Future<List<QuizQuestion>> _questionsFuture;
+  late Future<_ActivitiesMenuData> _menuDataFuture;
 
   @override
   void initState() {
     super.initState();
-    _questionsFuture = widget.contentRepository.loadQuizQuestions(
-      widget.category.id,
-    );
+    _menuDataFuture = _loadMenuData();
   }
 
   void _retry() {
     setState(() {
-      _questionsFuture = widget.contentRepository.loadQuizQuestions(
-        widget.category.id,
-      );
+      _menuDataFuture = _loadMenuData();
     });
   }
 
-  void _openQuiz() {
-    Navigator.of(context).pushNamed(AppRoutes.quiz, arguments: widget.category);
+  Future<_ActivitiesMenuData> _loadMenuData() async {
+    final activities = await widget.contentRepository.loadActivities(
+      widget.category.id,
+    );
+    final sortedActivities = activities.toList(growable: false)
+      ..sort((a, b) => a.order.compareTo(b.order));
+    final questionCounts = <String, int>{};
+
+    for (final activity in sortedActivities) {
+      final questions = await widget.contentRepository.loadQuizQuestions(
+        widget.category.id,
+        activityId: activity.id,
+      );
+      questionCounts[activity.id] = questions.length;
+    }
+
+    return _ActivitiesMenuData(
+      activities: sortedActivities,
+      questionCountsByActivityId: questionCounts,
+    );
+  }
+
+  void _openQuiz(LearningActivity activity) {
+    Navigator.of(context).pushNamed(
+      AppRoutes.quiz,
+      arguments: QuizRouteArguments(
+        category: widget.category,
+        activity: activity,
+      ),
+    );
   }
 
   void _showLockedMessage() {
@@ -61,8 +85,8 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: AppStrings.activitiesTitle,
-      child: FutureBuilder<List<QuizQuestion>>(
-        future: _questionsFuture,
+      child: FutureBuilder<_ActivitiesMenuData>(
+        future: _menuDataFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
@@ -70,14 +94,14 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
 
           if (snapshot.hasError ||
               !snapshot.hasData ||
-              snapshot.data!.isEmpty) {
+              snapshot.data!.activities.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
               debugPrint('Activities load error: ${snapshot.error}');
             }
             return _ActivitiesLoadError(onRetry: _retry);
           }
 
-          final totalQuestions = snapshot.data!.length;
+          final menuData = snapshot.data!;
 
           return AnimatedBuilder(
             animation: widget.progressController,
@@ -90,43 +114,34 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _IntroCard(totalQuestions: totalQuestions),
+                    _IntroCard(totalActivities: menuData.activities.length),
                     const SizedBox(height: AppSpacing.lg),
-                    _ActivityBlockCard(
-                      title: AppStrings.firstActivityBlock,
-                      subtitle: '$totalQuestions actividades',
-                      progressLabel:
-                          '${progress.completedActivities} de '
-                          '$totalQuestions completadas',
-                      icon: Icons.workspace_premium_outlined,
-                      unlocked: true,
-                      completed: progress.completedActivities >= totalQuestions,
-                      onTap: _openQuiz,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _ActivityBlockCard(
-                      title: AppStrings.secondActivityBlock,
-                      subtitle: '$totalQuestions actividades',
-                      icon: Icons.lock_outline,
-                      unlocked: false,
-                      onTap: _showLockedMessage,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _ActivityBlockCard(
-                      title: AppStrings.thirdActivityBlock,
-                      subtitle: '$totalQuestions actividades',
-                      icon: Icons.lock_outline,
-                      unlocked: false,
-                      onTap: _showLockedMessage,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _ActivityBlockCard(
-                      title: AppStrings.finalActivityBlock,
-                      subtitle: AppStrings.finalActivitySubtitle,
-                      icon: Icons.emoji_events_outlined,
-                      unlocked: false,
-                      onTap: _showLockedMessage,
-                    ),
+                    for (final activity in menuData.activities) ...[
+                      _ActivityBlockCard(
+                        title: activity.title,
+                        subtitle: menuData.questionCountFor(activity.id) > 0
+                            ? '${menuData.questionCountFor(activity.id)} preguntas'
+                            : AppStrings.comingSoon,
+                        progressLabel:
+                            menuData.questionCountFor(activity.id) > 0
+                            ? '${progress.completedActivities} de '
+                                  '${menuData.questionCountFor(activity.id)} '
+                                  'completadas'
+                            : null,
+                        icon: menuData.questionCountFor(activity.id) > 0
+                            ? Icons.workspace_premium_outlined
+                            : Icons.lock_outline,
+                        unlocked: menuData.questionCountFor(activity.id) > 0,
+                        completed:
+                            menuData.questionCountFor(activity.id) > 0 &&
+                            progress.completedActivities >=
+                                menuData.questionCountFor(activity.id),
+                        onTap: menuData.questionCountFor(activity.id) > 0
+                            ? () => _openQuiz(activity)
+                            : _showLockedMessage,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                    ],
                   ],
                 ),
               );
@@ -139,9 +154,9 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
 }
 
 class _IntroCard extends StatelessWidget {
-  const _IntroCard({required this.totalQuestions});
+  const _IntroCard({required this.totalActivities});
 
-  final int totalQuestions;
+  final int totalActivities;
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +183,7 @@ class _IntroCard extends StatelessWidget {
                     style: textTheme.bodyMedium,
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  _SmallInfoPill(label: '$totalQuestions actividades'),
+                  _SmallInfoPill(label: '$totalActivities actividades'),
                 ],
               ),
             ),
@@ -182,6 +197,20 @@ class _IntroCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _ActivitiesMenuData {
+  const _ActivitiesMenuData({
+    required this.activities,
+    required this.questionCountsByActivityId,
+  });
+
+  final List<LearningActivity> activities;
+  final Map<String, int> questionCountsByActivityId;
+
+  int questionCountFor(String activityId) {
+    return questionCountsByActivityId[activityId] ?? 0;
   }
 }
 

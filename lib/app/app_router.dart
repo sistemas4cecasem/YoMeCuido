@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/models/category.dart';
+import '../data/models/learning_activity.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/content_repository.dart';
 import '../features/auth/forgot_password_screen.dart';
@@ -74,11 +75,7 @@ class AppRouter {
             contentRepository: _contentRepository,
             progressController: _progressController,
           ),
-          AppRoutes.quiz => QuizScreen(
-            category: settings.arguments! as Category,
-            contentRepository: _contentRepository,
-            progressController: _progressController,
-          ),
+          AppRoutes.quiz => _buildQuizScreen(settings),
           AppRoutes.categorySummary => CategorySummaryScreen(
             category: settings.arguments! as Category,
             progressController: _progressController,
@@ -88,6 +85,24 @@ class AppRouter {
       },
     );
   }
+
+  Widget _buildQuizScreen(RouteSettings settings) {
+    final arguments = settings.arguments! as QuizRouteArguments;
+
+    return QuizScreen(
+      category: arguments.category,
+      activity: arguments.activity,
+      contentRepository: _contentRepository,
+      progressController: _progressController,
+    );
+  }
+}
+
+class QuizRouteArguments {
+  const QuizRouteArguments({required this.category, required this.activity});
+
+  final Category category;
+  final LearningActivity activity;
 }
 
 class _UnknownRoute extends StatelessWidget {

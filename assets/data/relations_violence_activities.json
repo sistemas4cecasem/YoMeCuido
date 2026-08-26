@@ -5,6 +5,36 @@
       "categoryId": "relations_violence_digital",
       "title": "Actividad 1",
       "order": 1
+    },
+    {
+      "id": "relations_violence_activity_02",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 2",
+      "order": 2
+    },
+    {
+      "id": "relations_violence_activity_03",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 3",
+      "order": 3
+    },
+    {
+      "id": "relations_violence_activity_04",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 4",
+      "order": 4
+    },
+    {
+      "id": "relations_violence_activity_05",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 5",
+      "order": 5
+    },
+    {
+      "id": "relations_violence_activity_06",
+      "categoryId": "relations_violence_digital",
+      "title": "Actividad 6",
+      "order": 6
     }
   ]
 }

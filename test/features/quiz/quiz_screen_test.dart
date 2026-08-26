@@ -31,6 +31,7 @@ void main() {
                   MaterialPageRoute<void>(
                     builder: (context) => QuizScreen(
                       category: _category,
+                      activity: _activity,
                       contentRepository: repository,
                       progressController: progressController,
                     ),
@@ -321,10 +322,20 @@ class _FakeQuizRepository implements ContentRepository {
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
     return quizQuestions;
   }
 }
+
+const _activity = LearningActivity(
+  id: 'relations_violence_activity_01',
+  categoryId: 'relations_violence_digital',
+  title: 'Actividad 1',
+  order: 1,
+);
 
 const _category = Category(
   id: 'relations_violence_digital',

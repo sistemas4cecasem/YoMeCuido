@@ -307,12 +307,45 @@ void main() {
     await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
 
-    expect(repository.loadQuizQuestionsCalls, 2);
+    expect(repository.loadQuizQuestionsCalls, 7);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsNothing);
     expect(
       find.text('¿Cuál es un ejemplo de violencia digital?'),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('el menú renderiza seis actividades reales del repositorio', (
+    tester,
+  ) async {
+    await openDetail(tester);
+
+    await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
+    await tester.tap(find.text(AppStrings.activitiesTitle));
+    await tester.pumpAndSettle();
+
+    expect(repository.loadActivitiesCalls, 1);
+    expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
+    expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
+    expect(find.text(AppStrings.thirdActivityBlock), findsOneWidget);
+
+    await tester.ensureVisible(find.text('Actividad 6'));
+
+    expect(find.text('Actividad 4'), findsOneWidget);
+    expect(find.text('Actividad 5'), findsOneWidget);
+    expect(find.text('Actividad 6'), findsOneWidget);
+    expect(find.text(AppStrings.finalActivityBlock), findsNothing);
+    expect(find.text(AppStrings.comingSoon), findsNWidgets(5));
+
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.demoLockedSnackBar), findsOneWidget);
+    expect(
+      find.text('¿Cuál es un ejemplo de violencia digital?'),
+      findsNothing,
     );
   });
 
@@ -602,6 +635,36 @@ class _FakeContentRepository implements ContentRepository {
       title: AppStrings.firstActivityBlock,
       order: 1,
     ),
+    LearningActivity(
+      id: 'relations_violence_activity_02',
+      categoryId: 'relations_violence_digital',
+      title: AppStrings.secondActivityBlock,
+      order: 2,
+    ),
+    LearningActivity(
+      id: 'relations_violence_activity_03',
+      categoryId: 'relations_violence_digital',
+      title: AppStrings.thirdActivityBlock,
+      order: 3,
+    ),
+    LearningActivity(
+      id: 'relations_violence_activity_04',
+      categoryId: 'relations_violence_digital',
+      title: 'Actividad 4',
+      order: 4,
+    ),
+    LearningActivity(
+      id: 'relations_violence_activity_05',
+      categoryId: 'relations_violence_digital',
+      title: 'Actividad 5',
+      order: 5,
+    ),
+    LearningActivity(
+      id: 'relations_violence_activity_06',
+      categoryId: 'relations_violence_digital',
+      title: 'Actividad 6',
+      order: 6,
+    ),
   ];
 
   final quizQuestions = _buildQuizQuestions();
@@ -625,9 +688,17 @@ class _FakeContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
     loadQuizQuestionsCalls += 1;
-    return quizQuestions;
+    return quizQuestions
+        .where((question) {
+          return question.categoryId == categoryId &&
+              (activityId == null || question.activityId == activityId);
+        })
+        .toList(growable: false);
   }
 }
 

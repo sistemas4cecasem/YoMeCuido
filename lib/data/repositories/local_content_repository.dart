@@ -42,25 +42,39 @@ class LocalContentRepository implements ContentRepository {
   }
 
   @override
-  Future<List<LearningActivity>> loadActivities(String categoryId) {
+  Future<List<LearningActivity>> loadActivities(String categoryId) async {
     _validateSupportedCategory(categoryId);
 
-    return _loadList(
+    final activities = await _loadList(
       assetPath: _activitiesPath,
       listKey: 'activities',
       parser: LearningActivity.fromJson,
     );
+    final categoryActivities = activities
+        .where((activity) => activity.categoryId == categoryId)
+        .toList(growable: false);
+
+    return categoryActivities..sort((a, b) => a.order.compareTo(b.order));
   }
 
   @override
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) {
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
     _validateSupportedCategory(categoryId);
 
-    return _loadList(
+    final questions = await _loadList(
       assetPath: _questionsPath,
       listKey: 'questions',
       parser: QuizQuestion.fromJson,
     );
+    return questions
+        .where((question) {
+          return question.categoryId == categoryId &&
+              (activityId == null || question.activityId == activityId);
+        })
+        .toList(growable: false);
   }
 
   Future<List<T>> _loadList<T>({

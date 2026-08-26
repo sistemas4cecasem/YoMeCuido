@@ -10,7 +10,10 @@ abstract class ContentRepository {
 
   Future<List<LearningActivity>> loadActivities(String categoryId);
 
-  Future<List<QuizQuestion>> loadQuizQuestions(String categoryId);
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  });
 }
 
 class ContentLoadException implements Exception {
