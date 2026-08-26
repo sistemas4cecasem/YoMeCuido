@@ -85,7 +85,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
           if (snapshot.hasError ||
               !snapshot.hasData ||
-              snapshot.data!.length != QuizController.expectedQuestionCount) {
+              snapshot.data!.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
               debugPrint('Quiz load error: ${snapshot.error}');
             }
@@ -223,7 +223,7 @@ class _QuizFlowState extends State<_QuizFlow> {
   }
 
   void _goForward() {
-    if (_controller.isLastActivity) {
+    if (_controller.isLastQuestion) {
       setState(() {
         _showResult = true;
       });
@@ -332,8 +332,14 @@ class _ActivityView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Text(
+          'Pregunta ${controller.currentQuestionNumber} de '
+          '${controller.totalQuestions}',
+          style: textTheme.titleSmall,
+        ),
+        const SizedBox(height: AppSpacing.sm),
         LessonProgressBar(
-          currentStep: controller.currentActivityNumber,
+          currentStep: controller.currentQuestionNumber,
           totalSteps: controller.totalQuestions,
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -366,10 +372,10 @@ class _ActivityView extends StatelessWidget {
         const SizedBox(height: AppSpacing.md),
         if (controller.isAnswerConfirmed)
           PrimaryButton(
-            label: controller.isLastActivity
+            label: controller.isLastQuestion
                 ? AppStrings.seeResult
                 : AppStrings.nextActivity,
-            icon: controller.isLastActivity
+            icon: controller.isLastQuestion
                 ? Icons.assessment_outlined
                 : Icons.arrow_forward_outlined,
             onPressed: onGoForward,

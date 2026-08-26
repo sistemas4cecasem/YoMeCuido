@@ -6,14 +6,10 @@ import '../../data/models/quiz_result.dart';
 class QuizController extends ChangeNotifier {
   QuizController({required List<QuizQuestion> questions})
     : _questions = List<QuizQuestion>.unmodifiable(questions) {
-    if (_questions.length != expectedQuestionCount) {
-      throw ArgumentError(
-        'QuizController requires exactly $expectedQuestionCount questions.',
-      );
+    if (_questions.isEmpty) {
+      throw ArgumentError('QuizController requires at least one question.');
     }
   }
-
-  static const expectedQuestionCount = 12;
 
   final List<QuizQuestion> _questions;
 
@@ -30,7 +26,7 @@ class QuizController extends ChangeNotifier {
 
   int get currentIndex => _currentIndex;
 
-  int get currentActivityNumber => _currentIndex + 1;
+  int get currentQuestionNumber => _currentIndex + 1;
 
   QuizQuestion get _currentQuestion => _questions[_currentIndex];
 
@@ -64,7 +60,7 @@ class QuizController extends ChangeNotifier {
 
   bool get isFinished => _isFinished;
 
-  bool get isLastActivity => _currentIndex == totalQuestions - 1;
+  bool get isLastQuestion => _currentIndex == totalQuestions - 1;
 
   String? get currentFeedback {
     if (!_isAnswerConfirmed) {
@@ -82,7 +78,7 @@ class QuizController extends ChangeNotifier {
     return _currentIndex;
   }
 
-  double get progress => currentActivityNumber / totalQuestions;
+  double get progress => currentQuestionNumber / totalQuestions;
 
   bool get canSubmitAnswer {
     if (_isAnswerConfirmed || _isFinished) {
@@ -149,7 +145,7 @@ class QuizController extends ChangeNotifier {
     if (isCorrect) {
       _correctAnswers += 1;
     }
-    if (isLastActivity) {
+    if (isLastQuestion) {
       _finishQuiz();
     }
 

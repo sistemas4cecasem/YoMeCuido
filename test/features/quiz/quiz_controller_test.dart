@@ -137,6 +137,49 @@ void main() {
       expect(controller.quizResult.totalQuestions, 12);
     });
 
+    test('works with ten questions and uses the real total', () {
+      final controller = QuizController(questions: _buildChoiceQuestions(10));
+
+      expect(controller.totalQuestions, 10);
+      expect(controller.currentQuestionNumber, 1);
+      expect(controller.isLastQuestion, isFalse);
+
+      _answerAllCorrectly(controller);
+
+      expect(controller.isFinished, isTrue);
+      expect(controller.correctAnswers, 10);
+      expect(controller.quizResult.totalQuestions, 10);
+      expect(controller.quizResult.percentage, 100);
+    });
+
+    test('works with fifteen questions and detects the last question', () {
+      final controller = QuizController(questions: _buildChoiceQuestions(15));
+
+      for (var index = 1; index < 15; index += 1) {
+        expect(controller.isLastQuestion, isFalse);
+        controller.selectOption('correct_$index');
+        expect(controller.submitAnswer(), isTrue);
+        expect(controller.goToNextActivity(), isTrue);
+      }
+
+      expect(controller.currentQuestionNumber, 15);
+      expect(controller.totalQuestions, 15);
+      expect(controller.isLastQuestion, isTrue);
+
+      controller.selectOption('correct_15');
+      expect(controller.submitAnswer(), isTrue);
+
+      expect(controller.isFinished, isTrue);
+      expect(controller.quizResult.totalQuestions, 15);
+    });
+
+    test('rejects an empty question list', () {
+      expect(
+        () => QuizController(questions: const <QuizQuestion>[]),
+        throwsArgumentError,
+      );
+    });
+
     test('resets the full quiz state', () {
       final controller = QuizController(questions: _questions);
 
@@ -241,14 +284,15 @@ void _answerAllCorrectly(QuizController controller) {
 }
 
 void _answerCurrentCorrectly(QuizController controller) {
-  final question = _questions[controller.currentIndex];
-
   switch (controller.currentQuestionType) {
     case QuestionType.multipleChoice:
     case QuestionType.trueFalse:
-      controller.selectOption(question.correctAnswer);
+      final correctOption = controller.currentOptions.firstWhere(
+        (option) => option.text == controller.currentCorrectAnswerText,
+      );
+      controller.selectOption(correctOption.id);
     case QuestionType.fillBlank:
-      controller.updateWrittenAnswer(question.correctAnswer);
+      controller.updateWrittenAnswer(controller.currentCorrectAnswerText);
   }
 
   controller.submitAnswer();
@@ -497,3 +541,25 @@ const _questions = <QuizQuestion>[
 
 const _categoryId = 'relations_violence_digital';
 const _activityId = 'relations_violence_activity_01';
+
+List<QuizQuestion> _buildChoiceQuestions(int count) {
+  return <QuizQuestion>[
+    for (var index = 1; index <= count; index += 1)
+      QuizQuestion(
+        id: 'question_$index',
+        categoryId: _categoryId,
+        activityId: _activityId,
+        type: QuestionType.multipleChoice,
+        statement: 'Pregunta $index',
+        options: <QuizOption>[
+          QuizOption(id: 'correct_$index', text: 'Respuesta correcta'),
+          QuizOption(id: 'incorrect_$index', text: 'Respuesta incorrecta'),
+        ],
+        correctAnswer: 'correct_$index',
+        acceptedAnswers: <String>['correct_$index'],
+        feedback: 'Retroalimentación $index.',
+        capacity: 'responder',
+        difficulty: 'básica',
+      ),
+  ];
+}

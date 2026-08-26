@@ -91,6 +91,40 @@ void main() {
     await pumpQuiz(tester);
 
     expect(find.text(AppStrings.submitAnswer), findsNothing);
+    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
+  });
+
+  testWidgets('muestra el total real con diez preguntas', (tester) async {
+    repository.quizQuestions = _buildQuizQuestions(10);
+
+    await pumpQuiz(tester);
+
+    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
+
+    for (var activity = 1; activity < 10; activity += 1) {
+      await answerCurrentCorrectly(tester, activity);
+      await tester.tap(find.text(AppStrings.nextActivity));
+      await tester.pumpAndSettle();
+    }
+
+    expect(find.text('Pregunta 10 de 10'), findsOneWidget);
+
+    await answerCurrentCorrectly(tester, 10);
+    await tester.tap(find.text(AppStrings.seeResult));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text('10 de 10'), findsOneWidget);
+  });
+
+  testWidgets('muestra error de carga para una lista vacía', (tester) async {
+    repository.quizQuestions = const <QuizQuestion>[];
+
+    await pumpQuiz(tester);
+
+    expect(find.text(AppStrings.contentLoadError), findsOneWidget);
+    expect(find.text(AppStrings.retry), findsOneWidget);
+    expect(find.text('Pregunta 1 de 0'), findsNothing);
   });
 
   testWidgets(
@@ -269,6 +303,8 @@ void main() {
 }
 
 class _FakeQuizRepository implements ContentRepository {
+  List<QuizQuestion> quizQuestions = _buildQuizQuestions(12);
+
   @override
   Future<List<Category>> loadCategories() {
     throw UnimplementedError();
@@ -286,7 +322,7 @@ class _FakeQuizRepository implements ContentRepository {
 
   @override
   Future<List<QuizQuestion>> loadQuizQuestions(String categoryId) async {
-    return _quizQuestions;
+    return quizQuestions;
   }
 }
 
@@ -301,38 +337,40 @@ const _category = Category(
   objectives: <String>[],
 );
 
-List<QuizQuestion> get _quizQuestions {
+List<QuizQuestion> _buildQuizQuestions(int count) {
   return <QuizQuestion>[
-    const QuizQuestion(
-      id: 'activity_1',
-      categoryId: 'relations_violence_digital',
-      activityId: 'relations_violence_activity_01',
-      type: QuestionType.multipleChoice,
-      statement: 'Pregunta de opción múltiple',
-      options: <QuizOption>[
-        QuizOption(id: 'correct', text: 'Respuesta correcta'),
-        QuizOption(id: 'incorrect', text: 'Respuesta incorrecta'),
-      ],
-      correctAnswer: 'correct',
-      acceptedAnswers: <String>['correct'],
-      feedback: 'Retroalimentación exacta.',
-      capacity: 'reconocer',
-      difficulty: 'básica',
-    ),
-    const QuizQuestion(
-      id: 'activity_2',
-      categoryId: 'relations_violence_digital',
-      activityId: 'relations_violence_activity_01',
-      type: QuestionType.fillBlank,
-      statement: 'Las capturas pueden servir como ______.',
-      options: <QuizOption>[],
-      correctAnswer: 'evidencia',
-      acceptedAnswers: <String>['evidencia'],
-      feedback: 'La palabra se valida sin depender de mayúsculas.',
-      capacity: 'responder',
-      difficulty: 'básica',
-    ),
-    for (var index = 3; index <= 12; index += 1)
+    if (count >= 1)
+      const QuizQuestion(
+        id: 'activity_1',
+        categoryId: 'relations_violence_digital',
+        activityId: 'relations_violence_activity_01',
+        type: QuestionType.multipleChoice,
+        statement: 'Pregunta de opción múltiple',
+        options: <QuizOption>[
+          QuizOption(id: 'correct', text: 'Respuesta correcta'),
+          QuizOption(id: 'incorrect', text: 'Respuesta incorrecta'),
+        ],
+        correctAnswer: 'correct',
+        acceptedAnswers: <String>['correct'],
+        feedback: 'Retroalimentación exacta.',
+        capacity: 'reconocer',
+        difficulty: 'básica',
+      ),
+    if (count >= 2)
+      const QuizQuestion(
+        id: 'activity_2',
+        categoryId: 'relations_violence_digital',
+        activityId: 'relations_violence_activity_01',
+        type: QuestionType.fillBlank,
+        statement: 'Las capturas pueden servir como ______.',
+        options: <QuizOption>[],
+        correctAnswer: 'evidencia',
+        acceptedAnswers: <String>['evidencia'],
+        feedback: 'La palabra se valida sin depender de mayúsculas.',
+        capacity: 'responder',
+        difficulty: 'básica',
+      ),
+    for (var index = 3; index <= count; index += 1)
       QuizQuestion(
         id: 'activity_$index',
         categoryId: 'relations_violence_digital',
