@@ -20,21 +20,34 @@ abstract class CategoryProgressPersistence {
     required String uid,
     required String categoryId,
     required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required List<String> questionIds,
     required int totalLessonPages,
     required int totalActivities,
   });
 
-  Future<void> recordActivityAnswer({
+  Future<void> recordAttemptAnswer({
+    required String uid,
+    required String categoryId,
+    required String activityId,
+    required String attemptId,
+    required String questionId,
+    required String answer,
+    required bool isCorrect,
+  });
+
+  Future<void> completeActivityAttempt({
     required String uid,
     required String categoryId,
     required String lessonId,
     required String activityId,
-    required String answer,
-    required bool isCorrect,
+    required String attemptId,
     required int correctAnswers,
+    required int totalQuestions,
+    required int percentage,
     required int totalLessonPages,
     required int totalActivities,
-    required bool isCompleted,
   });
 }
 
@@ -43,6 +56,8 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
   static const progressCollection = 'categoryProgress';
+  static const activitiesCollection = 'activities';
+  static const attemptsCollection = 'attempts';
 
   final FirebaseFirestore _firestore;
 
@@ -57,7 +72,16 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
 
         for (final document in snapshot.docs) {
           try {
-            records.add(CategoryProgressRecord.fromFirestore(document));
+            final activities = await _fetchActivityProgress(
+              uid: uid,
+              categoryId: document.id,
+            );
+            records.add(
+              CategoryProgressRecord.fromFirestore(
+                document,
+                activities: activities,
+              ),
+            );
           } on FormatException catch (exception) {
             if (kDebugMode) {
               debugPrint(
@@ -97,14 +121,13 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
                 lessonId: lessonId,
                 totalLessonPages: totalLessonPages,
                 totalActivities: totalActivities,
-                attemptCount: 0,
               ),
               'viewedLessonPageIds': <String>[pageId],
             });
             return;
           }
 
-          final status = _existingStatus(snapshot);
+          final status = _existingCategoryStatus(snapshot);
           transaction.update(document, {
             'categoryId': categoryId,
             'lessonId': lessonId,
@@ -126,6 +149,9 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required String uid,
     required String categoryId,
     required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required List<String> questionIds,
     required int totalLessonPages,
     required int totalActivities,
   }) {
@@ -133,115 +159,206 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
       CategoryProgressFailureOperation.startActivityAttempt,
       () async {
         _validateUser(uid);
-        final document = _progressDocument(uid, categoryId);
+        final categoryDocument = _progressDocument(uid, categoryId);
+        final activityDocument = _activityDocument(uid, categoryId, activityId);
+        final attemptDocument = _attemptDocument(
+          uid,
+          categoryId,
+          activityId,
+          attemptId,
+        );
 
         await _firestore.runTransaction<void>((transaction) async {
-          final snapshot = await transaction.get(document);
-          final nextAttemptCount = _existingAttemptCount(snapshot) + 1;
-          final attemptData = <String, dynamic>{
-            'categoryId': categoryId,
-            'lessonId': lessonId,
-            'status': CategoryProgressStatus.inProgress.firestoreValue,
-            'completedActivityIds': <String>[],
-            'correctAnswers': 0,
-            'totalLessonPages': totalLessonPages,
-            'totalActivities': totalActivities,
-            'attemptCount': nextAttemptCount,
-            'lastActivityAt': null,
-            'completedAt': null,
-            'updatedAt': FieldValue.serverTimestamp(),
-            'latestAnswers': <String, Map<String, dynamic>>{},
-          };
+          final categorySnapshot = await transaction.get(categoryDocument);
+          final activitySnapshot = await transaction.get(activityDocument);
 
-          if (!snapshot.exists) {
-            transaction.set(document, {
-              ..._initialProgressData(
+          if (!categorySnapshot.exists) {
+            transaction.set(
+              categoryDocument,
+              _initialProgressData(
                 categoryId: categoryId,
                 lessonId: lessonId,
                 totalLessonPages: totalLessonPages,
                 totalActivities: totalActivities,
-                attemptCount: nextAttemptCount,
               ),
-              ...attemptData,
+            );
+          } else {
+            transaction.update(categoryDocument, {
+              'categoryId': categoryId,
+              'lessonId': lessonId,
+              'status': CategoryProgressStatus.inProgress.firestoreValue,
+              'totalLessonPages': totalLessonPages,
+              'totalActivities': totalActivities,
+              'completedAt': null,
+              'updatedAt': FieldValue.serverTimestamp(),
             });
-            return;
           }
 
-          transaction.update(document, attemptData);
+          final nextAttemptCount =
+              _existingActivityAttemptCount(activitySnapshot) + 1;
+          transaction.set(activityDocument, {
+            'activityId': activityId,
+            'status': ActivityProgressStatus.inProgress.firestoreValue,
+            'attemptCount': nextAttemptCount,
+            'bestCorrectAnswers': _existingBestCorrectAnswers(activitySnapshot),
+            'bestTotalQuestions': _existingBestTotalQuestions(activitySnapshot),
+            'bestPercentage': _existingBestPercentage(activitySnapshot),
+            'lastAttemptAt': FieldValue.serverTimestamp(),
+            'completedAt': _existingActivityCompletedAt(activitySnapshot),
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+
+          transaction.set(attemptDocument, {
+            'type': QuizAttemptType.activity.firestoreValue,
+            'categoryId': categoryId,
+            'activityId': activityId,
+            'questionIds': questionIds,
+            'answers': <String, Map<String, dynamic>>{},
+            'correctAnswers': 0,
+            'totalQuestions': questionIds.length,
+            'percentage': 0,
+            'startedAt': FieldValue.serverTimestamp(),
+            'completedAt': null,
+          });
         });
       },
     );
   }
 
   @override
-  Future<void> recordActivityAnswer({
+  Future<void> recordAttemptAnswer({
     required String uid,
     required String categoryId,
-    required String lessonId,
     required String activityId,
+    required String attemptId,
+    required String questionId,
     required String answer,
     required bool isCorrect,
-    required int correctAnswers,
-    required int totalLessonPages,
-    required int totalActivities,
-    required bool isCompleted,
   }) {
     return _runProgressOperation(
-      CategoryProgressFailureOperation.recordActivityAnswer,
+      CategoryProgressFailureOperation.recordAttemptAnswer,
       () async {
         _validateUser(uid);
-        final document = _progressDocument(uid, categoryId);
+        final attemptDocument = _attemptDocument(
+          uid,
+          categoryId,
+          activityId,
+          attemptId,
+        );
         final answerData = <String, dynamic>{
+          'questionId': questionId,
           'answer': answer,
           'isCorrect': isCorrect,
           'answeredAt': FieldValue.serverTimestamp(),
         };
 
-        await _firestore.runTransaction<void>((transaction) async {
-          final snapshot = await transaction.get(document);
-          final answerUpdate = <String, dynamic>{
-            'categoryId': categoryId,
-            'lessonId': lessonId,
-            'status': isCompleted
-                ? CategoryProgressStatus.completed.firestoreValue
-                : CategoryProgressStatus.inProgress.firestoreValue,
-            'completedActivityIds': FieldValue.arrayUnion(<String>[activityId]),
-            'correctAnswers': correctAnswers,
-            'totalLessonPages': totalLessonPages,
-            'totalActivities': totalActivities,
-            'lastActivityAt': FieldValue.serverTimestamp(),
-            'completedAt': isCompleted ? FieldValue.serverTimestamp() : null,
-            'updatedAt': FieldValue.serverTimestamp(),
-            'latestAnswers.$activityId': answerData,
-          };
+        await attemptDocument.update({'answers.$questionId': answerData});
+      },
+    );
+  }
 
-          if (!snapshot.exists) {
-            transaction.set(document, {
+  @override
+  Future<void> completeActivityAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required int correctAnswers,
+    required int totalQuestions,
+    required int percentage,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) {
+    return _runProgressOperation(
+      CategoryProgressFailureOperation.completeActivityAttempt,
+      () async {
+        _validateUser(uid);
+        final categoryDocument = _progressDocument(uid, categoryId);
+        final activityDocument = _activityDocument(uid, categoryId, activityId);
+        final attemptDocument = _attemptDocument(
+          uid,
+          categoryId,
+          activityId,
+          attemptId,
+        );
+
+        await _firestore.runTransaction<void>((transaction) async {
+          final categorySnapshot = await transaction.get(categoryDocument);
+          final activitySnapshot = await transaction.get(activityDocument);
+          final completedActivityIds = _existingCompletedActivityIds(
+            categorySnapshot,
+          );
+          if (!completedActivityIds.contains(activityId)) {
+            completedActivityIds.add(activityId);
+          }
+          final categoryCompleted =
+              totalActivities > 0 &&
+              completedActivityIds.length >= totalActivities;
+          final bestPercentage = _existingBestPercentage(activitySnapshot);
+          final shouldReplaceBest = percentage >= bestPercentage;
+
+          transaction.update(attemptDocument, {
+            'correctAnswers': correctAnswers,
+            'totalQuestions': totalQuestions,
+            'percentage': percentage,
+            'completedAt': FieldValue.serverTimestamp(),
+          });
+
+          transaction.set(activityDocument, {
+            'activityId': activityId,
+            'status': ActivityProgressStatus.completed.firestoreValue,
+            'attemptCount': _existingActivityAttemptCount(activitySnapshot),
+            'bestCorrectAnswers': shouldReplaceBest
+                ? correctAnswers
+                : _existingBestCorrectAnswers(activitySnapshot),
+            'bestTotalQuestions': shouldReplaceBest
+                ? totalQuestions
+                : _existingBestTotalQuestions(activitySnapshot),
+            'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
+            'lastAttemptAt': FieldValue.serverTimestamp(),
+            'completedAt':
+                _existingActivityCompletedAt(activitySnapshot) ??
+                FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+
+          if (!categorySnapshot.exists) {
+            transaction.set(categoryDocument, {
               ..._initialProgressData(
                 categoryId: categoryId,
                 lessonId: lessonId,
                 totalLessonPages: totalLessonPages,
                 totalActivities: totalActivities,
-                attemptCount: 0,
               ),
-              'status': isCompleted
+              'status': categoryCompleted
                   ? CategoryProgressStatus.completed.firestoreValue
                   : CategoryProgressStatus.inProgress.firestoreValue,
-              'completedActivityIds': <String>[activityId],
-              'correctAnswers': correctAnswers,
-              'totalLessonPages': totalLessonPages,
-              'totalActivities': totalActivities,
+              'completedActivityIds': completedActivityIds,
               'lastActivityAt': FieldValue.serverTimestamp(),
-              'completedAt': isCompleted ? FieldValue.serverTimestamp() : null,
+              'completedAt': categoryCompleted
+                  ? FieldValue.serverTimestamp()
+                  : null,
               'updatedAt': FieldValue.serverTimestamp(),
-              'latestAnswers': <String, Map<String, dynamic>>{
-                activityId: answerData,
-              },
             });
             return;
           }
 
-          transaction.update(document, answerUpdate);
+          transaction.update(categoryDocument, {
+            'categoryId': categoryId,
+            'lessonId': lessonId,
+            'status': categoryCompleted
+                ? CategoryProgressStatus.completed.firestoreValue
+                : CategoryProgressStatus.inProgress.firestoreValue,
+            'completedActivityIds': completedActivityIds,
+            'totalLessonPages': totalLessonPages,
+            'totalActivities': totalActivities,
+            'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': categoryCompleted
+                ? FieldValue.serverTimestamp()
+                : null,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
         });
       },
     );
@@ -261,12 +378,62 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         .collection(progressCollection);
   }
 
+  DocumentReference<Map<String, dynamic>> _activityDocument(
+    String uid,
+    String categoryId,
+    String activityId,
+  ) {
+    return _progressDocument(
+      uid,
+      categoryId,
+    ).collection(activitiesCollection).doc(activityId);
+  }
+
+  DocumentReference<Map<String, dynamic>> _attemptDocument(
+    String uid,
+    String categoryId,
+    String activityId,
+    String attemptId,
+  ) {
+    return _activityDocument(
+      uid,
+      categoryId,
+      activityId,
+    ).collection(attemptsCollection).doc(attemptId);
+  }
+
+  Future<Map<String, ActivityProgressRecord>> _fetchActivityProgress({
+    required String uid,
+    required String categoryId,
+  }) async {
+    final snapshot = await _progressDocument(
+      uid,
+      categoryId,
+    ).collection(activitiesCollection).get();
+    final activities = <String, ActivityProgressRecord>{};
+
+    for (final document in snapshot.docs) {
+      try {
+        final record = ActivityProgressRecord.fromFirestore(document);
+        activities[record.activityId] = record;
+      } on FormatException catch (exception) {
+        if (kDebugMode) {
+          debugPrint(
+            '[CategoryProgress] Ignoring invalid activity progress '
+            '${document.id}: ${exception.message}',
+          );
+        }
+      }
+    }
+
+    return activities;
+  }
+
   Map<String, dynamic> _initialProgressData({
     required String categoryId,
     required String lessonId,
     required int totalLessonPages,
     required int totalActivities,
-    required int attemptCount,
   }) {
     return {
       'categoryId': categoryId,
@@ -274,19 +441,18 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
       'status': CategoryProgressStatus.inProgress.firestoreValue,
       'viewedLessonPageIds': <String>[],
       'completedActivityIds': <String>[],
-      'correctAnswers': 0,
       'totalLessonPages': totalLessonPages,
       'totalActivities': totalActivities,
-      'attemptCount': attemptCount,
       'startedAt': FieldValue.serverTimestamp(),
       'lastActivityAt': null,
       'completedAt': null,
       'updatedAt': FieldValue.serverTimestamp(),
-      'latestAnswers': <String, Map<String, dynamic>>{},
     };
   }
 
-  int _existingAttemptCount(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  int _existingActivityAttemptCount(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
     if (!snapshot.exists) {
       return 0;
     }
@@ -299,7 +465,61 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     return 0;
   }
 
-  CategoryProgressStatus _existingStatus(
+  int _existingBestCorrectAnswers(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return _readExistingNonNegativeInt(snapshot, 'bestCorrectAnswers');
+  }
+
+  int _existingBestTotalQuestions(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    return _readExistingNonNegativeInt(snapshot, 'bestTotalQuestions');
+  }
+
+  int _existingBestPercentage(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    return _readExistingNonNegativeInt(snapshot, 'bestPercentage');
+  }
+
+  int _readExistingNonNegativeInt(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    String key,
+  ) {
+    if (!snapshot.exists) {
+      return 0;
+    }
+
+    final value = snapshot.data()?[key];
+    if (value is int && value >= 0) {
+      return value;
+    }
+
+    return 0;
+  }
+
+  DateTime? _existingActivityCompletedAt(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final value = snapshot.data()?['completedAt'];
+    if (value is Timestamp) {
+      return value.toDate();
+    }
+
+    return null;
+  }
+
+  List<String> _existingCompletedActivityIds(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final value = snapshot.data()?['completedActivityIds'];
+    if (value is! List<Object?>) {
+      return <String>[];
+    }
+
+    return value.whereType<String>().toList();
+  }
+
+  CategoryProgressStatus _existingCategoryStatus(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     final value = snapshot.data()?['status'];
@@ -361,7 +581,8 @@ enum CategoryProgressFailureOperation {
   fetchAllProgress,
   markTheoryPageViewed,
   startActivityAttempt,
-  recordActivityAnswer,
+  recordAttemptAnswer,
+  completeActivityAttempt,
 }
 
 class CategoryProgressException implements Exception {

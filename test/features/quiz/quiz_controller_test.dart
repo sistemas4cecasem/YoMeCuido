@@ -326,10 +326,10 @@ void main() {
       expect(controller.quizResult.percentage, 50);
     });
 
-    test('generates the high score closing message', () {
+    test('generates the high percentage closing message', () {
       final result = QuizResult.fromScore(
-        correctAnswers: 10,
-        totalQuestions: 12,
+        correctAnswers: 8,
+        totalQuestions: 10,
       );
 
       expect(
@@ -342,10 +342,10 @@ void main() {
       expect(result.characterAssetKey, 'boyCompleted');
     });
 
-    test('generates the medium score closing message', () {
+    test('generates the medium percentage closing message', () {
       final result = QuizResult.fromScore(
         correctAnswers: 7,
-        totalQuestions: 12,
+        totalQuestions: 10,
       );
 
       expect(
@@ -358,10 +358,10 @@ void main() {
       expect(result.characterAssetKey, 'girlProgress');
     });
 
-    test('generates the low score closing message', () {
+    test('generates the low percentage closing message', () {
       final result = QuizResult.fromScore(
-        correctAnswers: 6,
-        totalQuestions: 12,
+        correctAnswers: 5,
+        totalQuestions: 10,
       );
 
       expect(

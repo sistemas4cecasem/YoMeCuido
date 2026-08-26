@@ -2,6 +2,7 @@ import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -286,23 +287,31 @@ void main() {
     expect(find.text(AppStrings.exitLessonTitle), findsNothing);
   });
 
-  testWidgets('enviar una palabra desde el teclado actualiza el progreso', (
-    tester,
-  ) async {
-    await pumpQuiz(tester);
+  testWidgets(
+    'enviar una palabra desde el teclado mantiene actividad abierta',
+    (tester) async {
+      await pumpQuiz(tester);
 
-    await answerCurrentCorrectly(tester, 1);
-    await tester.tap(find.text(AppStrings.nextActivity));
-    await tester.pumpAndSettle();
+      await answerCurrentCorrectly(tester, 1);
+      await tester.tap(find.text(AppStrings.nextActivity));
+      await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField), ' evidencia ');
-    await tester.testTextInput.receiveAction(TextInputAction.done);
-    await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), ' evidencia ');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
 
-    final progress = progressController.snapshotFor(_category.id);
-    expect(find.text(AppStrings.correct), findsOneWidget);
-    expect(progress.completedActivities, 2);
-  });
+      final progress = progressController.snapshotFor(_category.id);
+      final activityProgress = progressController.activityProgressFor(
+        categoryId: _category.id,
+        activityId: _activity.id,
+      );
+      expect(find.text(AppStrings.correct), findsOneWidget);
+      expect(progress.completedActivities, 0);
+      expect(progress.completedActivityIds, isEmpty);
+      expect(activityProgress.attemptCount, 1);
+      expect(activityProgress.status, ActivityProgressStatus.inProgress);
+    },
+  );
 }
 
 class _FakeQuizRepository implements ContentRepository {

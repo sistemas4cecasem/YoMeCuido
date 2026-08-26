@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 
 import '../data/models/category_progress.dart';
 import '../data/models/quiz_result.dart';
 import '../data/repositories/category_progress_repository.dart';
+
+typedef AttemptIdGenerator = String Function();
 
 enum ProgressHydrationStatus { notStarted, loading, loaded, error }
 
@@ -10,12 +15,16 @@ class CategoryProgressController extends ChangeNotifier {
   CategoryProgressController({
     CategoryProgressPersistence? persistence,
     String? Function()? currentUserIdProvider,
+    AttemptIdGenerator? attemptIdGenerator,
   }) : _persistence = persistence,
-       _currentUserIdProvider = currentUserIdProvider;
+       _currentUserIdProvider = currentUserIdProvider,
+       _attemptIdGenerator = attemptIdGenerator ?? _defaultAttemptId;
 
   final CategoryProgressPersistence? _persistence;
   final String? Function()? _currentUserIdProvider;
+  final AttemptIdGenerator _attemptIdGenerator;
   final Map<String, _MutableCategoryProgress> _progressByCategory = {};
+  final Map<String, _MutableQuizAttempt> _attemptsById = {};
   ProgressHydrationStatus _hydrationStatus = ProgressHydrationStatus.notStarted;
   String? _hydratedUserId;
   Object? _hydrationError;
@@ -58,6 +67,7 @@ class CategoryProgressController extends ChangeNotifier {
     _hydrationError = null;
     if (previousUserId != normalizedUid) {
       _progressByCategory.clear();
+      _attemptsById.clear();
     }
     notifyListeners();
 
@@ -94,15 +104,27 @@ class CategoryProgressController extends ChangeNotifier {
     _hydratedUserId = null;
     _hydrationStatus = ProgressHydrationStatus.notStarted;
     _hydrationError = null;
-    if (_progressByCategory.isEmpty) {
+    if (_progressByCategory.isEmpty && _attemptsById.isEmpty) {
       return;
     }
     _progressByCategory.clear();
+    _attemptsById.clear();
     notifyListeners();
   }
 
   CategoryProgressSnapshot snapshotFor(String categoryId) {
     return _entryFor(categoryId).snapshot;
+  }
+
+  ActivityProgressSnapshot activityProgressFor({
+    required String categoryId,
+    required String activityId,
+  }) {
+    return _entryFor(categoryId).activitySnapshotFor(activityId);
+  }
+
+  QuizAttemptSnapshot? attemptFor(String attemptId) {
+    return _attemptsById[attemptId]?.snapshot;
   }
 
   Future<void> markTheoryPageViewed({
@@ -132,77 +154,150 @@ class CategoryProgressController extends ChangeNotifier {
     }
   }
 
-  Future<void> startActivityAttempt({
-    required String categoryId,
-    required String lessonId,
-    required int totalActivities,
-  }) async {
-    final progress = _entryFor(categoryId);
-    progress
-      ..activityTotal = totalActivities
-      ..completedActivityIds.clear()
-      ..correctAnswers = 0
-      ..attemptCount += 1
-      ..status = CategoryProgressStatus.inProgress
-      ..result = null
-      ..lastActivityAt = null
-      ..completedAt = null
-      ..updatedAt = DateTime.now();
-    progress.latestAnswers.clear();
-    notifyListeners();
-
-    await _persistForCurrentUser((uid) {
-      return _persistence!.startActivityAttempt(
-        uid: uid,
-        categoryId: categoryId,
-        lessonId: lessonId,
-        totalLessonPages: progress.theoryTotal,
-        totalActivities: totalActivities,
-      );
-    });
-  }
-
-  Future<void> recordActivityAnswer({
+  String startActivityAttempt({
     required String categoryId,
     required String lessonId,
     required String activityId,
+    required List<String> questionIds,
+    required int totalActivities,
+  }) {
+    final attemptId = _attemptIdGenerator();
+    final now = DateTime.now();
+    final progress = _entryFor(categoryId)
+      ..activityTotal = totalActivities
+      ..status = CategoryProgressStatus.inProgress
+      ..completedAt = null
+      ..updatedAt = now;
+    progress.activityProgressFor(activityId)
+      ..status = ActivityProgressStatus.inProgress
+      ..attemptCount += 1
+      ..lastAttemptAt = now
+      ..updatedAt = now;
+    _attemptsById[attemptId] = _MutableQuizAttempt(
+      id: attemptId,
+      type: QuizAttemptType.activity,
+      categoryId: categoryId,
+      activityId: activityId,
+      questionIds: questionIds,
+      startedAt: now,
+    );
+    notifyListeners();
+
+    unawaited(
+      _persistForCurrentUser((uid) {
+        return _persistence!.startActivityAttempt(
+          uid: uid,
+          categoryId: categoryId,
+          lessonId: lessonId,
+          activityId: activityId,
+          attemptId: attemptId,
+          questionIds: questionIds,
+          totalLessonPages: progress.theoryTotal,
+          totalActivities: totalActivities,
+        );
+      }),
+    );
+    return attemptId;
+  }
+
+  Future<void> recordAnswer({
+    required String categoryId,
+    required String activityId,
+    required String attemptId,
+    required String questionId,
     required String answer,
     required bool isCorrect,
-    required int correctAnswers,
-    required int totalActivities,
-    QuizResult? result,
   }) async {
-    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
+    final attempt = _attemptsById[attemptId];
+    if (attempt == null) {
+      throw StateError('Unknown attempt id "$attemptId".');
+    }
+    if (attempt.categoryId != categoryId || attempt.activityId != activityId) {
+      throw StateError('Attempt does not belong to the requested activity.');
+    }
+
     final answeredAt = DateTime.now();
-    progress
-      ..completedActivityIds.add(activityId)
-      ..correctAnswers = correctAnswers
-      ..status = result == null
-          ? CategoryProgressStatus.inProgress
-          : CategoryProgressStatus.completed
-      ..result = result ?? progress.result
-      ..lastActivityAt = answeredAt
-      ..completedAt = result == null ? null : answeredAt
-      ..updatedAt = answeredAt;
-    progress.latestAnswers[activityId] = CategoryProgressAnswer(
+    attempt.answers[questionId] = CategoryProgressAnswer(
+      questionId: questionId,
       answer: answer,
       isCorrect: isCorrect,
       answeredAt: answeredAt,
     );
+    _entryFor(categoryId).updatedAt = answeredAt;
     notifyListeners();
 
     await _persistForCurrentUser((uid) {
-      return _persistence!.recordActivityAnswer(
+      return _persistence!.recordAttemptAnswer(
+        uid: uid,
+        categoryId: categoryId,
+        activityId: activityId,
+        attemptId: attemptId,
+        questionId: questionId,
+        answer: answer,
+        isCorrect: isCorrect,
+      );
+    });
+  }
+
+  Future<void> completeActivityAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required QuizResult result,
+    required int totalActivities,
+  }) async {
+    final attempt = _attemptsById[attemptId];
+    if (attempt == null) {
+      throw StateError('Unknown attempt id "$attemptId".');
+    }
+
+    final now = DateTime.now();
+    attempt
+      ..correctAnswers = result.correctAnswers
+      ..totalQuestions = result.totalQuestions
+      ..percentage = result.percentage
+      ..completedAt = now;
+
+    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
+    final activity = progress.activityProgressFor(activityId);
+    final shouldReplaceBest = result.percentage >= activity.bestPercentage;
+    activity
+      ..status = ActivityProgressStatus.completed
+      ..lastAttemptAt = now
+      ..completedAt ??= now
+      ..updatedAt = now;
+    if (shouldReplaceBest) {
+      activity
+        ..bestCorrectAnswers = result.correctAnswers
+        ..bestTotalQuestions = result.totalQuestions
+        ..bestPercentage = result.percentage;
+    }
+
+    progress.completedActivityIds.add(activityId);
+    progress
+      ..status = progress.completedActivityIds.length >= progress.activityTotal
+          ? CategoryProgressStatus.completed
+          : CategoryProgressStatus.inProgress
+      ..lastActivityAt = now
+      ..completedAt = progress.status == CategoryProgressStatus.completed
+          ? now
+          : null
+      ..updatedAt = now;
+    notifyListeners();
+
+    await _persistForCurrentUser((uid) {
+      return _persistence!.completeActivityAttempt(
         uid: uid,
         categoryId: categoryId,
         lessonId: lessonId,
         activityId: activityId,
-        answer: answer,
-        isCorrect: isCorrect,
-        correctAnswers: correctAnswers,
+        attemptId: attemptId,
+        correctAnswers: result.correctAnswers,
+        totalQuestions: result.totalQuestions,
+        percentage: result.percentage,
         totalLessonPages: progress.theoryTotal,
         totalActivities: totalActivities,
-        isCompleted: result != null,
       );
     });
   }
@@ -212,13 +307,14 @@ class CategoryProgressController extends ChangeNotifier {
     progress
       ..viewedTheoryPageIds.clear()
       ..completedActivityIds.clear()
-      ..correctAnswers = 0
       ..status = CategoryProgressStatus.notStarted
-      ..result = null
       ..lastActivityAt = null
       ..completedAt = null
       ..updatedAt = DateTime.now();
-    progress.latestAnswers.clear();
+    progress.activities.clear();
+    _attemptsById.removeWhere((id, attempt) {
+      return attempt.categoryId == categoryId;
+    });
     notifyListeners();
   }
 
@@ -289,6 +385,7 @@ class CategoryProgressController extends ChangeNotifier {
     }
 
     _progressByCategory.clear();
+    _attemptsById.clear();
     _hydrationStatus = ProgressHydrationStatus.error;
     _hydrationError = error;
     notifyListeners();
@@ -315,6 +412,7 @@ class CategoryProgressController extends ChangeNotifier {
           );
         }),
       );
+    _attemptsById.clear();
     _hydratedUserId = uid;
   }
 
@@ -337,8 +435,7 @@ class CategoryProgressSnapshot {
     required this.viewedTheoryPageIds,
     required this.completedActivityIds,
     required this.status,
-    required this.attemptCount,
-    required this.latestAnswers,
+    required this.activityProgress,
     required this.startedAt,
     required this.lastActivityAt,
     required this.completedAt,
@@ -354,8 +451,7 @@ class CategoryProgressSnapshot {
   final List<String> viewedTheoryPageIds;
   final List<String> completedActivityIds;
   final CategoryProgressStatus status;
-  final int attemptCount;
-  final Map<String, CategoryProgressAnswer> latestAnswers;
+  final Map<String, ActivityProgressSnapshot> activityProgress;
   final DateTime? startedAt;
   final DateTime? lastActivityAt;
   final DateTime? completedAt;
@@ -381,23 +477,76 @@ class CategoryProgressSnapshot {
   double get overallProgress => overallPercentage / 100;
 }
 
+class ActivityProgressSnapshot {
+  const ActivityProgressSnapshot({
+    required this.activityId,
+    required this.status,
+    required this.attemptCount,
+    required this.bestCorrectAnswers,
+    required this.bestTotalQuestions,
+    required this.bestPercentage,
+    required this.lastAttemptAt,
+    required this.completedAt,
+    required this.updatedAt,
+  });
+
+  final String activityId;
+  final ActivityProgressStatus status;
+  final int attemptCount;
+  final int bestCorrectAnswers;
+  final int bestTotalQuestions;
+  final int bestPercentage;
+  final DateTime? lastAttemptAt;
+  final DateTime? completedAt;
+  final DateTime? updatedAt;
+
+  bool get isCompleted => status == ActivityProgressStatus.completed;
+}
+
+class QuizAttemptSnapshot {
+  const QuizAttemptSnapshot({
+    required this.id,
+    required this.type,
+    required this.categoryId,
+    required this.activityId,
+    required this.questionIds,
+    required this.answers,
+    required this.correctAnswers,
+    required this.totalQuestions,
+    required this.percentage,
+    required this.startedAt,
+    required this.completedAt,
+  });
+
+  final String id;
+  final QuizAttemptType type;
+  final String categoryId;
+  final String activityId;
+  final List<String> questionIds;
+  final Map<String, CategoryProgressAnswer> answers;
+  final int correctAnswers;
+  final int totalQuestions;
+  final int percentage;
+  final DateTime startedAt;
+  final DateTime? completedAt;
+
+  bool get isCompleted => completedAt != null;
+}
+
 class _MutableCategoryProgress {
-  static const _defaultActivityTotal = 12;
+  static const _defaultActivityTotal = 6;
 
   int theoryTotal = 4;
   int activityTotal = _defaultActivityTotal;
-  int correctAnswers = 0;
-  int attemptCount = 0;
   CategoryProgressStatus status = CategoryProgressStatus.notStarted;
-  QuizResult? result;
   DateTime? startedAt;
   DateTime? lastActivityAt;
   DateTime? completedAt;
   DateTime? updatedAt;
   final Set<String> viewedTheoryPageIds = <String>{};
   final Set<String> completedActivityIds = <String>{};
-  final Map<String, CategoryProgressAnswer> latestAnswers =
-      <String, CategoryProgressAnswer>{};
+  final Map<String, _MutableActivityProgress> activities =
+      <String, _MutableActivityProgress>{};
 
   _MutableCategoryProgress();
 
@@ -405,8 +554,6 @@ class _MutableCategoryProgress {
     final progress = _MutableCategoryProgress()
       ..theoryTotal = record.totalLessonPages
       ..activityTotal = record.totalActivities
-      ..correctAnswers = record.correctAnswers
-      ..attemptCount = record.attemptCount
       ..status = record.status
       ..startedAt = record.startedAt
       ..lastActivityAt = record.lastActivityAt
@@ -414,23 +561,50 @@ class _MutableCategoryProgress {
       ..updatedAt = record.updatedAt;
 
     progress.viewedTheoryPageIds.addAll(record.viewedLessonPageIds);
-    progress.completedActivityIds.addAll(record.completedActivityIds);
-    progress.latestAnswers.addAll(record.latestAnswers);
-
-    if (record.status == CategoryProgressStatus.completed &&
-        record.totalActivities > 0 &&
-        record.correctAnswers >= 0 &&
-        record.correctAnswers <= record.totalActivities) {
-      progress.result = QuizResult.fromScore(
-        correctAnswers: record.correctAnswers,
-        totalQuestions: record.totalActivities,
-      );
+    progress.completedActivityIds.addAll(
+      record.completedActivityIds.where(_isNotLegacyQuestionProgressId),
+    );
+    for (final activity in record.activities.values) {
+      progress.activities[activity.activityId] =
+          _MutableActivityProgress.fromRecord(activity);
     }
 
     return progress;
   }
 
+  _MutableActivityProgress activityProgressFor(String activityId) {
+    return activities.putIfAbsent(
+      activityId,
+      () => _MutableActivityProgress(activityId),
+    );
+  }
+
+  ActivityProgressSnapshot activitySnapshotFor(String activityId) {
+    return activityProgressFor(activityId).snapshot;
+  }
+
   CategoryProgressSnapshot get snapshot {
+    final bestActivities = activities.values
+        .where((activity) {
+          return activity.status == ActivityProgressStatus.completed &&
+              activity.bestTotalQuestions > 0;
+        })
+        .toList(growable: false);
+    final correctAnswers = bestActivities.fold<int>(
+      0,
+      (total, activity) => total + activity.bestCorrectAnswers,
+    );
+    final totalQuestions = bestActivities.fold<int>(
+      0,
+      (total, activity) => total + activity.bestTotalQuestions,
+    );
+    final result = totalQuestions == 0
+        ? null
+        : QuizResult.fromScore(
+            correctAnswers: correctAnswers,
+            totalQuestions: totalQuestions,
+          );
+
     return CategoryProgressSnapshot(
       viewedTheoryPages: viewedTheoryPageIds.length.clamp(0, theoryTotal),
       totalTheoryPages: theoryTotal,
@@ -441,9 +615,8 @@ class _MutableCategoryProgress {
       viewedTheoryPageIds: List<String>.unmodifiable(viewedTheoryPageIds),
       completedActivityIds: List<String>.unmodifiable(completedActivityIds),
       status: status,
-      attemptCount: attemptCount,
-      latestAnswers: Map<String, CategoryProgressAnswer>.unmodifiable(
-        latestAnswers,
+      activityProgress: Map<String, ActivityProgressSnapshot>.unmodifiable(
+        activities.map((key, value) => MapEntry(key, value.snapshot)),
       ),
       startedAt: startedAt,
       lastActivityAt: lastActivityAt,
@@ -451,4 +624,101 @@ class _MutableCategoryProgress {
       updatedAt: updatedAt,
     );
   }
+}
+
+class _MutableActivityProgress {
+  _MutableActivityProgress(this.activityId);
+
+  factory _MutableActivityProgress.fromRecord(ActivityProgressRecord record) {
+    return _MutableActivityProgress(record.activityId)
+      ..status = record.status
+      ..attemptCount = record.attemptCount
+      ..bestCorrectAnswers = record.bestCorrectAnswers
+      ..bestTotalQuestions = record.bestTotalQuestions
+      ..bestPercentage = record.bestPercentage
+      ..lastAttemptAt = record.lastAttemptAt
+      ..completedAt = record.completedAt
+      ..updatedAt = record.updatedAt;
+  }
+
+  final String activityId;
+  ActivityProgressStatus status = ActivityProgressStatus.notStarted;
+  int attemptCount = 0;
+  int bestCorrectAnswers = 0;
+  int bestTotalQuestions = 0;
+  int bestPercentage = 0;
+  DateTime? lastAttemptAt;
+  DateTime? completedAt;
+  DateTime? updatedAt;
+
+  ActivityProgressSnapshot get snapshot {
+    return ActivityProgressSnapshot(
+      activityId: activityId,
+      status: status,
+      attemptCount: attemptCount,
+      bestCorrectAnswers: bestCorrectAnswers,
+      bestTotalQuestions: bestTotalQuestions,
+      bestPercentage: bestPercentage,
+      lastAttemptAt: lastAttemptAt,
+      completedAt: completedAt,
+      updatedAt: updatedAt,
+    );
+  }
+}
+
+class _MutableQuizAttempt {
+  _MutableQuizAttempt({
+    required this.id,
+    required this.type,
+    required this.categoryId,
+    required this.activityId,
+    required List<String> questionIds,
+    required this.startedAt,
+  }) : questionIds = List<String>.unmodifiable(questionIds),
+       totalQuestions = questionIds.length;
+
+  final String id;
+  final QuizAttemptType type;
+  final String categoryId;
+  final String activityId;
+  final List<String> questionIds;
+  final DateTime startedAt;
+  final Map<String, CategoryProgressAnswer> answers =
+      <String, CategoryProgressAnswer>{};
+  int correctAnswers = 0;
+  int totalQuestions;
+  int percentage = 0;
+  DateTime? completedAt;
+
+  QuizAttemptSnapshot get snapshot {
+    return QuizAttemptSnapshot(
+      id: id,
+      type: type,
+      categoryId: categoryId,
+      activityId: activityId,
+      questionIds: questionIds,
+      answers: Map<String, CategoryProgressAnswer>.unmodifiable(answers),
+      correctAnswers: correctAnswers,
+      totalQuestions: totalQuestions,
+      percentage: percentage,
+      startedAt: startedAt,
+      completedAt: completedAt,
+    );
+  }
+}
+
+String _defaultAttemptId() {
+  const alphabet =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  final random = math.Random.secure();
+  final buffer = StringBuffer('attempt_');
+  for (var index = 0; index < 20; index += 1) {
+    buffer.write(alphabet[random.nextInt(alphabet.length)]);
+  }
+
+  return buffer.toString();
+}
+
+bool _isNotLegacyQuestionProgressId(String id) {
+  return !RegExp(r'^activity_\d+$').hasMatch(id);
 }

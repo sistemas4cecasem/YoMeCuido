@@ -15,6 +15,7 @@ void main() {
         final controller = CategoryProgressController(
           persistence: persistence,
           currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
         );
 
         await controller.markTheoryPageViewed(
@@ -42,108 +43,190 @@ void main() {
       },
     );
 
-    test('starts attempts and resets only current activity state', () async {
+    test(
+      'starts an activity attempt with independent id and question order',
+      () {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_07', 'question_02'],
+          totalActivities: 6,
+        );
+
+        final attempt = controller.attemptFor(attemptId);
+        final activityProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(attemptId, 'attempt_1');
+        expect(attemptId, isNot(_activityId));
+        expect(attempt?.type, QuizAttemptType.activity);
+        expect(attempt?.activityId, _activityId);
+        expect(attempt?.questionIds, <String>['question_07', 'question_02']);
+        expect(activityProgress.status, ActivityProgressStatus.inProgress);
+        expect(activityProgress.attemptCount, 1);
+        expect(
+          controller.snapshotFor(_categoryId).completedActivityIds,
+          isEmpty,
+        );
+        expect(persistence.startAttemptCalls.single.attemptId, 'attempt_1');
+      },
+    );
+
+    test(
+      'records answers by question id without completing the activity',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01'],
+          totalActivities: 6,
+        );
+
+        await controller.recordAnswer(
+          categoryId: _categoryId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          questionId: 'question_01',
+          answer: 'control_passwords_threaten_messages',
+          isCorrect: true,
+        );
+
+        final attempt = controller.attemptFor(attemptId);
+        expect(attempt?.answers, contains('question_01'));
+        expect(
+          attempt?.answers['question_01']?.answer,
+          'control_passwords_threaten_messages',
+        );
+        expect(
+          controller.snapshotFor(_categoryId).completedActivityIds,
+          isEmpty,
+        );
+        expect(persistence.answerCalls.single.questionId, 'question_01');
+        expect(persistence.answerCalls.single.activityId, _activityId);
+      },
+    );
+
+    test(
+      'completes activity and stores best percentage by activity id',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+
+        await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final snapshot = controller.snapshotFor(_categoryId);
+        final activityProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        final attempt = controller.attemptFor(attemptId);
+        expect(snapshot.completedActivityIds, <String>[_activityId]);
+        expect(snapshot.completedActivityIds, isNot(contains('question_01')));
+        expect(snapshot.completedActivities, 1);
+        expect(activityProgress.status, ActivityProgressStatus.completed);
+        expect(activityProgress.bestCorrectAnswers, 1);
+        expect(activityProgress.bestPercentage, 50);
+        expect(attempt?.correctAnswers, 1);
+        expect(attempt?.totalQuestions, 2);
+        expect(attempt?.percentage, 50);
+        expect(attempt?.isCompleted, isTrue);
+        expect(persistence.completeCalls.single.activityId, _activityId);
+      },
+    );
+
+    test('keeps retry history and preserves the best percentage', () async {
       final persistence = _FakeProgressPersistence();
       final controller = CategoryProgressController(
         persistence: persistence,
         currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
       );
-
-      await controller.markTheoryPageViewed(
+      final firstAttemptId = controller.startActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
-        pageId: 'what_is_digital_violence',
-        totalPages: 4,
+        activityId: _activityId,
+        questionIds: const <String>['question_01', 'question_02'],
+        totalActivities: 6,
       );
-      await controller.recordActivityAnswer(
+      await controller.completeActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
-        activityId: 'activity_1',
-        answer: 'safe_action',
-        isCorrect: true,
-        correctAnswers: 1,
-        totalActivities: 12,
+        activityId: _activityId,
+        attemptId: firstAttemptId,
+        result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+        totalActivities: 6,
       );
 
-      await controller.startActivityAttempt(
+      final secondAttemptId = controller.startActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
-        totalActivities: 12,
+        activityId: _activityId,
+        questionIds: const <String>['question_03', 'question_04'],
+        totalActivities: 6,
+      );
+      await controller.completeActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        attemptId: secondAttemptId,
+        result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+        totalActivities: 6,
       );
 
-      final snapshot = controller.snapshotFor(_categoryId);
-      expect(snapshot.viewedTheoryPageIds, <String>[
-        'what_is_digital_violence',
-      ]);
-      expect(snapshot.completedActivityIds, isEmpty);
-      expect(snapshot.correctAnswers, 0);
-      expect(persistence.startAttemptCalls, hasLength(1));
+      final activityProgress = controller.activityProgressFor(
+        categoryId: _categoryId,
+        activityId: _activityId,
+      );
+      expect(firstAttemptId, isNot(secondAttemptId));
+      expect(activityProgress.attemptCount, 2);
+      expect(activityProgress.bestCorrectAnswers, 2);
+      expect(activityProgress.bestPercentage, 100);
+      expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
+      expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
+      expect(persistence.startAttemptCalls, hasLength(2));
+      expect(persistence.completeCalls, hasLength(2));
     });
 
-    test('records activity progress with stable activity ids', () async {
+    test('hydrates persisted activity progress without writing it back', () {
       final persistence = _FakeProgressPersistence();
       final controller = CategoryProgressController(
         persistence: persistence,
         currentUserIdProvider: () => 'uid-123',
-      );
-
-      await controller.recordActivityAnswer(
-        categoryId: _categoryId,
-        lessonId: _lessonId,
-        activityId: 'activity_1',
-        answer: 'control_passwords_threaten_messages',
-        isCorrect: true,
-        correctAnswers: 1,
-        totalActivities: 12,
-      );
-      await controller.recordActivityAnswer(
-        categoryId: _categoryId,
-        lessonId: _lessonId,
-        activityId: 'activity_1',
-        answer: 'control_passwords_threaten_messages',
-        isCorrect: true,
-        correctAnswers: 1,
-        totalActivities: 12,
-      );
-
-      final snapshot = controller.snapshotFor(_categoryId);
-      expect(snapshot.completedActivityIds, <String>['activity_1']);
-      expect(snapshot.completedActivities, 1);
-      expect(persistence.answerCalls, hasLength(2));
-      expect(persistence.answerCalls.last.activityId, 'activity_1');
-      expect(persistence.answerCalls.last.isCompleted, isFalse);
-    });
-
-    test('marks completed answers with the final result', () async {
-      final persistence = _FakeProgressPersistence();
-      final controller = CategoryProgressController(
-        persistence: persistence,
-        currentUserIdProvider: () => 'uid-123',
-      );
-
-      await controller.recordActivityAnswer(
-        categoryId: _categoryId,
-        lessonId: _lessonId,
-        activityId: 'activity_12',
-        answer: 'emergency_help_safe_place',
-        isCorrect: true,
-        correctAnswers: 10,
-        totalActivities: 12,
-        result: QuizResult.fromScore(correctAnswers: 10, totalQuestions: 12),
-      );
-
-      final snapshot = controller.snapshotFor(_categoryId);
-      expect(snapshot.hasResult, isTrue);
-      expect(snapshot.result?.correctAnswers, 10);
-      expect(persistence.answerCalls.single.isCompleted, isTrue);
-      expect(persistence.answerCalls.single.correctAnswers, 10);
-    });
-
-    test('hydrates persisted progress without writing it back', () {
-      final persistence = _FakeProgressPersistence();
-      final controller = CategoryProgressController(
-        persistence: persistence,
-        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
       );
 
       controller.hydrateFromRecords(
@@ -152,21 +235,56 @@ void main() {
       );
 
       final snapshot = controller.snapshotFor(_categoryId);
+      final activityProgress = controller.activityProgressFor(
+        categoryId: _categoryId,
+        activityId: _activityId,
+      );
       expect(controller.hydrationStatus, ProgressHydrationStatus.loaded);
       expect(snapshot.status, CategoryProgressStatus.completed);
       expect(snapshot.viewedTheoryPageIds, <String>[
         'what_is_digital_violence',
         'control_is_not_care',
       ]);
-      expect(snapshot.completedActivityIds, <String>[
-        'activity_1',
-        'activity_2',
-      ]);
-      expect(snapshot.attemptCount, 2);
-      expect(snapshot.latestAnswers, contains('activity_1'));
+      expect(snapshot.completedActivityIds, <String>[_activityId]);
+      expect(activityProgress.attemptCount, 2);
+      expect(activityProgress.bestPercentage, 80);
       expect(snapshot.hasResult, isTrue);
-      expect(snapshot.result?.correctAnswers, 2);
+      expect(snapshot.result?.percentage, 80);
       expect(persistence.writeCallCount, 0);
+    });
+
+    test('ignores legacy completed ids that represented questions', () {
+      final persistence = _FakeProgressPersistence();
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+      final now = DateTime.utc(2026, 8, 21, 20, 30);
+
+      controller.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          CategoryProgressRecord(
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            status: CategoryProgressStatus.inProgress,
+            viewedLessonPageIds: const <String>[],
+            completedActivityIds: const <String>['activity_1', _activityId],
+            totalLessonPages: 4,
+            totalActivities: 6,
+            startedAt: now,
+            lastActivityAt: now,
+            completedAt: null,
+            updatedAt: now,
+            activities: const <String, ActivityProgressRecord>{},
+          ),
+        ],
+      );
+
+      expect(controller.snapshotFor(_categoryId).completedActivityIds, <String>[
+        _activityId,
+      ]);
     });
 
     test(
@@ -176,6 +294,7 @@ void main() {
         final controller = CategoryProgressController(
           persistence: persistence,
           currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
         );
 
         await controller.loadPersistedProgressForUser('uid-123');
@@ -193,6 +312,7 @@ void main() {
       final controller = CategoryProgressController(
         persistence: persistence,
         currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
       );
 
       controller.hydrateFromRecords(
@@ -221,6 +341,7 @@ void main() {
       final controller = CategoryProgressController(
         persistence: persistence,
         currentUserIdProvider: () => currentUid,
+        attemptIdGenerator: _sequentialAttemptIds(),
       );
 
       await controller.loadPersistedProgressForUser('uid-a');
@@ -246,6 +367,7 @@ void main() {
         final controller = CategoryProgressController(
           persistence: persistence,
           currentUserIdProvider: () => currentUid,
+          attemptIdGenerator: _sequentialAttemptIds(),
         );
 
         final loadA = controller.loadPersistedProgressForUser('uid-a');
@@ -277,6 +399,15 @@ void main() {
 
 const _categoryId = 'relations_violence_digital';
 const _lessonId = 'relations_violence';
+const _activityId = 'relations_violence_activity_01';
+
+AttemptIdGenerator _sequentialAttemptIds() {
+  var count = 0;
+  return () {
+    count += 1;
+    return 'attempt_$count';
+  };
+}
 
 class _TheoryPageCall {
   const _TheoryPageCall({required this.pageId});
@@ -285,25 +416,54 @@ class _TheoryPageCall {
 }
 
 class _StartAttemptCall {
-  const _StartAttemptCall();
+  const _StartAttemptCall({
+    required this.activityId,
+    required this.attemptId,
+    required this.questionIds,
+  });
+
+  final String activityId;
+  final String attemptId;
+  final List<String> questionIds;
 }
 
 class _AnswerCall {
   const _AnswerCall({
     required this.activityId,
-    required this.correctAnswers,
-    required this.isCompleted,
+    required this.attemptId,
+    required this.questionId,
+    required this.answer,
+    required this.isCorrect,
   });
 
   final String activityId;
+  final String attemptId;
+  final String questionId;
+  final String answer;
+  final bool isCorrect;
+}
+
+class _CompleteCall {
+  const _CompleteCall({
+    required this.activityId,
+    required this.attemptId,
+    required this.correctAnswers,
+    required this.totalQuestions,
+    required this.percentage,
+  });
+
+  final String activityId;
+  final String attemptId;
   final int correctAnswers;
-  final bool isCompleted;
+  final int totalQuestions;
+  final int percentage;
 }
 
 class _FakeProgressPersistence implements CategoryProgressPersistence {
   final theoryPageCalls = <_TheoryPageCall>[];
   final startAttemptCalls = <_StartAttemptCall>[];
   final answerCalls = <_AnswerCall>[];
+  final completeCalls = <_CompleteCall>[];
   final fetchCalls = <String>[];
   final recordsByUid = <String, List<CategoryProgressRecord>>{};
   final pendingFetchUids = <String>{};
@@ -311,7 +471,10 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       <String, List<Completer<List<CategoryProgressRecord>>>>{};
 
   int get writeCallCount =>
-      theoryPageCalls.length + startAttemptCalls.length + answerCalls.length;
+      theoryPageCalls.length +
+      startAttemptCalls.length +
+      answerCalls.length +
+      completeCalls.length;
 
   void completeFetch(String uid, List<CategoryProgressRecord> records) {
     final pendingFetches = _pendingFetches[uid];
@@ -357,30 +520,62 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String uid,
     required String categoryId,
     required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required List<String> questionIds,
     required int totalLessonPages,
     required int totalActivities,
   }) async {
-    startAttemptCalls.add(const _StartAttemptCall());
+    startAttemptCalls.add(
+      _StartAttemptCall(
+        activityId: activityId,
+        attemptId: attemptId,
+        questionIds: questionIds,
+      ),
+    );
   }
 
   @override
-  Future<void> recordActivityAnswer({
+  Future<void> recordAttemptAnswer({
     required String uid,
     required String categoryId,
-    required String lessonId,
     required String activityId,
+    required String attemptId,
+    required String questionId,
     required String answer,
     required bool isCorrect,
-    required int correctAnswers,
-    required int totalLessonPages,
-    required int totalActivities,
-    required bool isCompleted,
   }) async {
     answerCalls.add(
       _AnswerCall(
         activityId: activityId,
+        attemptId: attemptId,
+        questionId: questionId,
+        answer: answer,
+        isCorrect: isCorrect,
+      ),
+    );
+  }
+
+  @override
+  Future<void> completeActivityAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required int correctAnswers,
+    required int totalQuestions,
+    required int percentage,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {
+    completeCalls.add(
+      _CompleteCall(
+        activityId: activityId,
+        attemptId: attemptId,
         correctAnswers: correctAnswers,
-        isCompleted: isCompleted,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
       ),
     );
   }
@@ -396,25 +591,24 @@ CategoryProgressRecord _completedRecord({String categoryId = _categoryId}) {
       'what_is_digital_violence',
       'control_is_not_care',
     ],
-    completedActivityIds: const <String>['activity_1', 'activity_2'],
-    correctAnswers: 2,
+    completedActivityIds: const <String>[_activityId],
     totalLessonPages: 4,
-    totalActivities: 12,
-    attemptCount: 2,
+    totalActivities: 1,
     startedAt: now,
     lastActivityAt: now,
     completedAt: now,
     updatedAt: now,
-    latestAnswers: <String, CategoryProgressAnswer>{
-      'activity_1': CategoryProgressAnswer(
-        answer: 'control_passwords_threaten_messages',
-        isCorrect: true,
-        answeredAt: now,
-      ),
-      'activity_2': CategoryProgressAnswer(
-        answer: 'false',
-        isCorrect: true,
-        answeredAt: now,
+    activities: <String, ActivityProgressRecord>{
+      _activityId: ActivityProgressRecord(
+        activityId: _activityId,
+        status: ActivityProgressStatus.completed,
+        attemptCount: 2,
+        bestCorrectAnswers: 4,
+        bestTotalQuestions: 5,
+        bestPercentage: 80,
+        lastAttemptAt: now,
+        completedAt: now,
+        updatedAt: now,
       ),
     },
   );
@@ -428,14 +622,12 @@ CategoryProgressRecord _inProgressRecord({required String categoryId}) {
     status: CategoryProgressStatus.inProgress,
     viewedLessonPageIds: const <String>['what_is_digital_violence'],
     completedActivityIds: const <String>[],
-    correctAnswers: 0,
     totalLessonPages: 4,
-    totalActivities: 12,
-    attemptCount: 1,
+    totalActivities: 6,
     startedAt: now,
     lastActivityAt: null,
     completedAt: null,
     updatedAt: now,
-    latestAnswers: const <String, CategoryProgressAnswer>{},
+    activities: const <String, ActivityProgressRecord>{},
   );
 }

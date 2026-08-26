@@ -31,6 +31,7 @@ class QuizScreen extends StatefulWidget {
     required this.activity,
     required this.contentRepository,
     required this.progressController,
+    this.totalActivities = 1,
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
     super.key,
@@ -40,6 +41,7 @@ class QuizScreen extends StatefulWidget {
   final LearningActivity activity;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+  final int totalActivities;
   final bool shuffleQuestions;
   final bool shuffleOptions;
 
@@ -103,8 +105,10 @@ class _QuizScreenState extends State<QuizScreen> {
 
           return _QuizFlow(
             category: widget.category,
+            activity: widget.activity,
             questions: snapshot.data!,
             progressController: widget.progressController,
+            totalActivities: widget.totalActivities,
             shuffleQuestions: widget.shuffleQuestions,
             shuffleOptions: widget.shuffleOptions,
             onResultVisibilityChanged: _handleResultVisibilityChanged,
@@ -118,16 +122,20 @@ class _QuizScreenState extends State<QuizScreen> {
 class _QuizFlow extends StatefulWidget {
   const _QuizFlow({
     required this.category,
+    required this.activity,
     required this.questions,
     required this.progressController,
+    required this.totalActivities,
     required this.shuffleQuestions,
     required this.shuffleOptions,
     required this.onResultVisibilityChanged,
   });
 
   final Category category;
+  final LearningActivity activity;
   final List<QuizQuestion> questions;
   final CategoryProgressController progressController;
+  final int totalActivities;
   final bool shuffleQuestions;
   final bool shuffleOptions;
   final ValueChanged<bool> onResultVisibilityChanged;
@@ -138,6 +146,7 @@ class _QuizFlow extends StatefulWidget {
 
 class _QuizFlowState extends State<_QuizFlow> {
   late final QuizController _controller;
+  String _attemptId = '';
   final TextEditingController _answerTextController = TextEditingController();
   final math.Random _characterRandom = math.Random();
   final Map<String, _ActivityCharacter> _activityCharacters =
@@ -157,13 +166,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       if (!mounted) {
         return;
       }
-      unawaited(
-        widget.progressController.startActivityAttempt(
-          categoryId: widget.category.id,
-          lessonId: widget.category.lessonId ?? widget.category.id,
-          totalActivities: widget.questions.length,
-        ),
-      );
+      _attemptId = _startAttempt();
     });
   }
 
@@ -212,7 +215,10 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _submitAnswer() {
     FocusManager.instance.primaryFocus?.unfocus();
-    final activityId = _controller.currentQuestionId;
+    if (_attemptId.isEmpty) {
+      _attemptId = _startAttempt();
+    }
+    final questionId = _controller.currentQuestionId;
     final answer = _currentAnswerForPersistence();
     final submitted = _controller.submitAnswer();
     if (!submitted) {
@@ -220,15 +226,10 @@ class _QuizFlowState extends State<_QuizFlow> {
     }
 
     unawaited(
-      widget.progressController.recordActivityAnswer(
-        categoryId: widget.category.id,
-        lessonId: widget.category.lessonId ?? widget.category.id,
-        activityId: activityId,
+      _recordAnswerAndCompleteIfNeeded(
+        questionId: questionId,
         answer: answer,
         isCorrect: _controller.isCurrentAnswerCorrect ?? false,
-        correctAnswers: _controller.correctAnswers,
-        totalActivities: _controller.totalQuestions,
-        result: _controller.isFinished ? _controller.quizResult : null,
       ),
     );
   }
@@ -237,8 +238,36 @@ class _QuizFlowState extends State<_QuizFlow> {
     return switch (_controller.currentQuestionType) {
       QuestionType.multipleChoice ||
       QuestionType.trueFalse => _controller.selectedOptionId ?? '',
-      QuestionType.fillBlank => _controller.writtenAnswer.trim(),
+      QuestionType.fillBlank => _controller.writtenAnswer.trim().toLowerCase(),
     };
+  }
+
+  Future<void> _recordAnswerAndCompleteIfNeeded({
+    required String questionId,
+    required String answer,
+    required bool isCorrect,
+  }) async {
+    await widget.progressController.recordAnswer(
+      categoryId: widget.category.id,
+      activityId: widget.activity.id,
+      attemptId: _attemptId,
+      questionId: questionId,
+      answer: answer,
+      isCorrect: isCorrect,
+    );
+
+    if (!_controller.isFinished) {
+      return;
+    }
+
+    await widget.progressController.completeActivityAttempt(
+      categoryId: widget.category.id,
+      lessonId: widget.category.lessonId ?? widget.category.id,
+      activityId: widget.activity.id,
+      attemptId: _attemptId,
+      result: _controller.quizResult,
+      totalActivities: widget.totalActivities,
+    );
   }
 
   void _goForward() {
@@ -258,14 +287,7 @@ class _QuizFlowState extends State<_QuizFlow> {
     _answerTextController.clear();
     _activityCharacters.clear();
     _controller.reset();
-    widget.progressController.resetCategory(widget.category.id);
-    unawaited(
-      widget.progressController.startActivityAttempt(
-        categoryId: widget.category.id,
-        lessonId: widget.category.lessonId ?? widget.category.id,
-        totalActivities: widget.questions.length,
-      ),
-    );
+    _attemptId = _startAttempt();
     setState(() {
       _allowPop = false;
       _showResult = false;
@@ -292,6 +314,16 @@ class _QuizFlowState extends State<_QuizFlow> {
       () => _characterRandom.nextBool()
           ? _ActivityCharacter.girl
           : _ActivityCharacter.boy,
+    );
+  }
+
+  String _startAttempt() {
+    return widget.progressController.startActivityAttempt(
+      categoryId: widget.category.id,
+      lessonId: widget.category.lessonId ?? widget.category.id,
+      activityId: widget.activity.id,
+      questionIds: _controller.questionIds,
+      totalActivities: widget.totalActivities,
     );
   }
 

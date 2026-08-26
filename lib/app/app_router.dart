@@ -94,15 +94,21 @@ class AppRouter {
       activity: arguments.activity,
       contentRepository: _contentRepository,
       progressController: _progressController,
+      totalActivities: arguments.totalActivities,
     );
   }
 }
 
 class QuizRouteArguments {
-  const QuizRouteArguments({required this.category, required this.activity});
+  const QuizRouteArguments({
+    required this.category,
+    required this.activity,
+    required this.totalActivities,
+  });
 
   final Category category;
   final LearningActivity activity;
+  final int totalActivities;
 }
 
 class _UnknownRoute extends StatelessWidget {

@@ -67,12 +67,13 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
     );
   }
 
-  void _openQuiz(LearningActivity activity) {
+  void _openQuiz(LearningActivity activity, int totalActivities) {
     Navigator.of(context).pushNamed(
       AppRoutes.quiz,
       arguments: QuizRouteArguments(
         category: widget.category,
         activity: activity,
+        totalActivities: totalActivities,
       ),
     );
   }
@@ -116,32 +117,16 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
                   children: [
                     _IntroCard(totalActivities: menuData.activities.length),
                     const SizedBox(height: AppSpacing.lg),
-                    for (final activity in menuData.activities) ...[
-                      _ActivityBlockCard(
-                        title: activity.title,
-                        subtitle: menuData.questionCountFor(activity.id) > 0
-                            ? '${menuData.questionCountFor(activity.id)} preguntas'
-                            : AppStrings.comingSoon,
-                        progressLabel:
-                            menuData.questionCountFor(activity.id) > 0
-                            ? '${progress.completedActivities} de '
-                                  '${menuData.questionCountFor(activity.id)} '
-                                  'completadas'
-                            : null,
-                        icon: menuData.questionCountFor(activity.id) > 0
-                            ? Icons.workspace_premium_outlined
-                            : Icons.lock_outline,
-                        unlocked: menuData.questionCountFor(activity.id) > 0,
-                        completed:
-                            menuData.questionCountFor(activity.id) > 0 &&
-                            progress.completedActivities >=
-                                menuData.questionCountFor(activity.id),
-                        onTap: menuData.questionCountFor(activity.id) > 0
-                            ? () => _openQuiz(activity)
-                            : _showLockedMessage,
+                    for (final activity in menuData.activities)
+                      _ActivityBlock(
+                        activity: activity,
+                        menuData: menuData,
+                        progress: progress,
+                        onOpen: (activity) {
+                          _openQuiz(activity, menuData.activities.length);
+                        },
+                        onLocked: _showLockedMessage,
                       ),
-                      const SizedBox(height: AppSpacing.sm),
-                    ],
                   ],
                 ),
               );
@@ -211,6 +196,53 @@ class _ActivitiesMenuData {
 
   int questionCountFor(String activityId) {
     return questionCountsByActivityId[activityId] ?? 0;
+  }
+}
+
+class _ActivityBlock extends StatelessWidget {
+  const _ActivityBlock({
+    required this.activity,
+    required this.menuData,
+    required this.progress,
+    required this.onOpen,
+    required this.onLocked,
+  });
+
+  final LearningActivity activity;
+  final _ActivitiesMenuData menuData;
+  final CategoryProgressSnapshot progress;
+  final ValueChanged<LearningActivity> onOpen;
+  final VoidCallback onLocked;
+
+  @override
+  Widget build(BuildContext context) {
+    final questionCount = menuData.questionCountFor(activity.id);
+    final unlocked = questionCount > 0;
+    final activityProgress = progress.activityProgress[activity.id];
+    final completed =
+        progress.completedActivityIds.contains(activity.id) ||
+        activityProgress?.isCompleted == true;
+    final attempts = activityProgress?.attemptCount ?? 0;
+    final progressLabel = !unlocked
+        ? null
+        : completed
+        ? 'Completada'
+        : attempts > 0
+        ? 'Intento iniciado'
+        : 'Pendiente';
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: _ActivityBlockCard(
+        title: activity.title,
+        subtitle: unlocked ? '$questionCount preguntas' : AppStrings.comingSoon,
+        progressLabel: progressLabel,
+        icon: unlocked ? Icons.workspace_premium_outlined : Icons.lock_outline,
+        unlocked: unlocked,
+        completed: completed,
+        onTap: unlocked ? () => onOpen(activity) : onLocked,
+      ),
+    );
   }
 }
 

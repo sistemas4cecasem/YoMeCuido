@@ -245,7 +245,7 @@ class _ScoreRing extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final progress = result.correctAnswers / result.totalQuestions;
+    final progress = result.progressFraction;
 
     return Semantics(
       label:

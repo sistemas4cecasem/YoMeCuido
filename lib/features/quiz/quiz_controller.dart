@@ -41,6 +41,10 @@ class QuizController extends ChangeNotifier {
 
   int get totalQuestions => _questions.length;
 
+  List<String> get questionIds {
+    return List<String>.unmodifiable(_questions.map((question) => question.id));
+  }
+
   int get currentIndex => _currentIndex;
 
   int get currentQuestionNumber => _currentIndex + 1;

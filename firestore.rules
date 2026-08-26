@@ -22,15 +22,39 @@ service cloud.firestore {
     //   - status: string (required: notStarted, inProgress, completed)
     //   - viewedLessonPageIds: list (required, max 100)
     //   - completedActivityIds: list (required, max 100)
-    //   - correctAnswers: int (required, 0..totalActivities)
     //   - totalLessonPages: int (required, 0..100)
     //   - totalActivities: int (required, 0..100)
-    //   - attemptCount: int (required, 0..1000, cannot decrease)
     //   - startedAt: timestamp (required, immutable after create)
     //   - lastActivityAt: timestamp|null (required)
     //   - completedAt: timestamp|null (required)
     //   - updatedAt: timestamp (required)
-    //   - latestAnswers: map (required, max 100 activity keys)
+    //
+    // Subcollection: users/{uid}/categoryProgress/{categoryId}/activities
+    // Document ID: activityId
+    // Fields:
+    //   - activityId: string (required, must match document ID)
+    //   - status: string (required: notStarted, inProgress, completed)
+    //   - attemptCount: int (required, 0..1000, cannot decrease)
+    //   - bestCorrectAnswers: int (required, 0..100)
+    //   - bestTotalQuestions: int (required, 0..100)
+    //   - bestPercentage: int (required, 0..100)
+    //   - lastAttemptAt: timestamp|null (required)
+    //   - completedAt: timestamp|null (required)
+    //   - updatedAt: timestamp (required)
+    //
+    // Subcollection: activities/{activityId}/attempts
+    // Document ID: generated attemptId
+    // Fields:
+    //   - type: string (required: activity, exam)
+    //   - categoryId: string (required)
+    //   - activityId: string (required)
+    //   - questionIds: list (required, max 100)
+    //   - answers: map (required, max 100 question keys)
+    //   - correctAnswers: int (required, 0..totalQuestions)
+    //   - totalQuestions: int (required, 0..100)
+    //   - percentage: int (required, 0..100)
+    //   - startedAt: timestamp (required, immutable after create)
+    //   - completedAt: timestamp|null (required)
     //
     // Educational content remains local to Flutter. These rules validate the
     // persisted progress shape without enumerating content IDs.
@@ -95,15 +119,12 @@ service cloud.firestore {
         'status',
         'viewedLessonPageIds',
         'completedActivityIds',
-        'correctAnswers',
         'totalLessonPages',
         'totalActivities',
-        'attemptCount',
         'startedAt',
         'lastActivityAt',
         'completedAt',
         'updatedAt',
-        'latestAnswers',
       ];
     }
 
@@ -149,37 +170,14 @@ service cloud.firestore {
         && request.resource.data.totalActivities is int
         && request.resource.data.totalActivities >= 0
         && request.resource.data.totalActivities <= 100
-        && request.resource.data.correctAnswers is int
-        && request.resource.data.correctAnswers >= 0
-        && request.resource.data.correctAnswers <= request.resource.data.totalActivities
-        && request.resource.data.correctAnswers <= request.resource.data.completedActivityIds.size()
-        && request.resource.data.attemptCount is int
-        && request.resource.data.attemptCount >= 0
-        && request.resource.data.attemptCount <= 1000;
-    }
-
-    function hasValidAttemptCountOnCreate() {
-      return request.resource.data.attemptCount >= 0;
-    }
-
-    function hasValidAttemptCountOnUpdate() {
-      return request.resource.data.attemptCount >= resource.data.attemptCount;
+        && request.resource.data.completedActivityIds.size()
+          <= request.resource.data.totalActivities;
     }
 
     function hasValidProgressCompletionState() {
       return request.resource.data.status == 'completed'
         ? request.resource.data.completedAt is timestamp
         : request.resource.data.completedAt == null;
-    }
-
-    function hasValidLatestAnswers() {
-      return request.resource.data.latestAnswers is map
-        && request.resource.data.latestAnswers.keys().size() <= 100
-        && request.resource.data.latestAnswers.keys().size()
-          <= request.resource.data.totalActivities
-        && request.resource.data.latestAnswers.keys().hasOnly(
-          request.resource.data.completedActivityIds
-        );
     }
 
     function hasValidProgressTimestampsOnCreate() {
@@ -217,8 +215,158 @@ service cloud.firestore {
         && hasValidProgressStatus()
         && hasValidProgressLists()
         && hasValidProgressNumbers()
-        && hasValidProgressCompletionState()
-        && hasValidLatestAnswers();
+        && hasValidProgressCompletionState();
+    }
+
+    function activityProgressFields() {
+      return [
+        'activityId',
+        'status',
+        'attemptCount',
+        'bestCorrectAnswers',
+        'bestTotalQuestions',
+        'bestPercentage',
+        'lastAttemptAt',
+        'completedAt',
+        'updatedAt',
+      ];
+    }
+
+    function hasValidActivityProgress(activityId) {
+      return request.resource.data.keys().hasOnly(activityProgressFields())
+        && request.resource.data.keys().hasAll(activityProgressFields())
+        && request.resource.data.activityId is string
+        && request.resource.data.activityId == activityId
+        && request.resource.data.activityId.size() > 0
+        && request.resource.data.activityId.size() <= 120
+        && request.resource.data.status in [
+          'notStarted',
+          'inProgress',
+          'completed',
+        ]
+        && request.resource.data.attemptCount is int
+        && request.resource.data.attemptCount >= 0
+        && request.resource.data.attemptCount <= 1000
+        && request.resource.data.bestCorrectAnswers is int
+        && request.resource.data.bestCorrectAnswers >= 0
+        && request.resource.data.bestCorrectAnswers <= 100
+        && request.resource.data.bestTotalQuestions is int
+        && request.resource.data.bestTotalQuestions >= 0
+        && request.resource.data.bestTotalQuestions <= 100
+        && request.resource.data.bestCorrectAnswers
+          <= request.resource.data.bestTotalQuestions
+        && request.resource.data.bestPercentage is int
+        && request.resource.data.bestPercentage >= 0
+        && request.resource.data.bestPercentage <= 100
+        && (
+          request.resource.data.lastAttemptAt == null
+          || request.resource.data.lastAttemptAt is timestamp
+        )
+        && (
+          request.resource.data.status == 'completed'
+          ? request.resource.data.completedAt is timestamp
+          : (
+            request.resource.data.completedAt == null
+            || request.resource.data.completedAt is timestamp
+          )
+        )
+        && request.resource.data.updatedAt is timestamp;
+    }
+
+    function hasValidActivityAttemptCountOnCreate() {
+      return request.resource.data.attemptCount >= 0;
+    }
+
+    function hasValidActivityAttemptCountOnUpdate() {
+      return request.resource.data.attemptCount >= resource.data.attemptCount;
+    }
+
+    function hasValidActivityTimestampsOnCreate() {
+      return request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.lastAttemptAt == null
+          || request.resource.data.lastAttemptAt == request.time
+        )
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt == request.time
+        );
+    }
+
+    function hasValidActivityTimestampsOnUpdate() {
+      return request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.lastAttemptAt == null
+          || request.resource.data.lastAttemptAt == request.time
+          || request.resource.data.lastAttemptAt == resource.data.lastAttemptAt
+        )
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt == request.time
+          || request.resource.data.completedAt == resource.data.completedAt
+        );
+    }
+
+    function attemptFields() {
+      return [
+        'type',
+        'categoryId',
+        'activityId',
+        'questionIds',
+        'answers',
+        'correctAnswers',
+        'totalQuestions',
+        'percentage',
+        'startedAt',
+        'completedAt',
+      ];
+    }
+
+    function hasValidAttempt(categoryId, activityId) {
+      return request.resource.data.keys().hasOnly(attemptFields())
+        && request.resource.data.keys().hasAll(attemptFields())
+        && request.resource.data.type in ['activity', 'exam']
+        && request.resource.data.categoryId is string
+        && request.resource.data.categoryId == categoryId
+        && request.resource.data.activityId is string
+        && request.resource.data.activityId == activityId
+        && request.resource.data.questionIds is list
+        && request.resource.data.questionIds.size() > 0
+        && request.resource.data.questionIds.size() <= 100
+        && request.resource.data.answers is map
+        && request.resource.data.answers.keys().size() <= 100
+        && request.resource.data.answers.keys().hasOnly(
+          request.resource.data.questionIds
+        )
+        && request.resource.data.totalQuestions is int
+        && request.resource.data.totalQuestions >= 0
+        && request.resource.data.totalQuestions <= 100
+        && request.resource.data.correctAnswers is int
+        && request.resource.data.correctAnswers >= 0
+        && request.resource.data.correctAnswers
+          <= request.resource.data.totalQuestions
+        && request.resource.data.percentage is int
+        && request.resource.data.percentage >= 0
+        && request.resource.data.percentage <= 100
+        && request.resource.data.startedAt is timestamp
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt is timestamp
+        );
+    }
+
+    function hasValidAttemptTimestampsOnCreate() {
+      return request.resource.data.startedAt == request.time
+        && request.resource.data.completedAt == null;
+    }
+
+    function hasValidAttemptTimestampsOnUpdate() {
+      return request.resource.data.startedAt == resource.data.startedAt
+        && (
+          request.resource.data.completedAt == null
+          || request.resource.data.completedAt == request.time
+          || request.resource.data.completedAt == resource.data.completedAt
+        );
     }
 
     match /users/{userId} {
@@ -233,14 +381,40 @@ service cloud.firestore {
         allow create: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
-          && hasValidAttemptCountOnCreate()
           && hasValidProgressTimestampsOnCreate();
         allow update: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
-          && hasValidAttemptCountOnUpdate()
           && hasValidProgressTimestampsOnUpdate();
         allow delete: if false;
+
+        match /activities/{activityId} {
+          allow get, list: if isOwner(userId) && userProfileExists(userId);
+          allow create: if isOwner(userId)
+            && userProfileExists(userId)
+            && hasValidActivityProgress(activityId)
+            && hasValidActivityAttemptCountOnCreate()
+            && hasValidActivityTimestampsOnCreate();
+          allow update: if isOwner(userId)
+            && userProfileExists(userId)
+            && hasValidActivityProgress(activityId)
+            && hasValidActivityAttemptCountOnUpdate()
+            && hasValidActivityTimestampsOnUpdate();
+          allow delete: if false;
+
+          match /attempts/{attemptId} {
+            allow get, list: if isOwner(userId) && userProfileExists(userId);
+            allow create: if isOwner(userId)
+              && userProfileExists(userId)
+              && hasValidAttempt(categoryId, activityId)
+              && hasValidAttemptTimestampsOnCreate();
+            allow update: if isOwner(userId)
+              && userProfileExists(userId)
+              && hasValidAttempt(categoryId, activityId)
+              && hasValidAttemptTimestampsOnUpdate();
+            allow delete: if false;
+          }
+        }
       }
     }
 
