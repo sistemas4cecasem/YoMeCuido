@@ -34,6 +34,8 @@ void main() {
                       activity: _activity,
                       contentRepository: repository,
                       progressController: progressController,
+                      shuffleQuestions: false,
+                      shuffleOptions: false,
                     ),
                   ),
                 );

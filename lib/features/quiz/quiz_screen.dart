@@ -31,6 +31,8 @@ class QuizScreen extends StatefulWidget {
     required this.activity,
     required this.contentRepository,
     required this.progressController,
+    this.shuffleQuestions = true,
+    this.shuffleOptions = true,
     super.key,
   });
 
@@ -38,6 +40,8 @@ class QuizScreen extends StatefulWidget {
   final LearningActivity activity;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+  final bool shuffleQuestions;
+  final bool shuffleOptions;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -101,6 +105,8 @@ class _QuizScreenState extends State<QuizScreen> {
             category: widget.category,
             questions: snapshot.data!,
             progressController: widget.progressController,
+            shuffleQuestions: widget.shuffleQuestions,
+            shuffleOptions: widget.shuffleOptions,
             onResultVisibilityChanged: _handleResultVisibilityChanged,
           );
         },
@@ -114,12 +120,16 @@ class _QuizFlow extends StatefulWidget {
     required this.category,
     required this.questions,
     required this.progressController,
+    required this.shuffleQuestions,
+    required this.shuffleOptions,
     required this.onResultVisibilityChanged,
   });
 
   final Category category;
   final List<QuizQuestion> questions;
   final CategoryProgressController progressController;
+  final bool shuffleQuestions;
+  final bool shuffleOptions;
   final ValueChanged<bool> onResultVisibilityChanged;
 
   @override
@@ -138,7 +148,11 @@ class _QuizFlowState extends State<_QuizFlow> {
   @override
   void initState() {
     super.initState();
-    _controller = QuizController(questions: widget.questions);
+    _controller = QuizController(
+      questions: widget.questions,
+      shuffleQuestions: widget.shuffleQuestions,
+      shuffleOptions: widget.shuffleOptions,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;

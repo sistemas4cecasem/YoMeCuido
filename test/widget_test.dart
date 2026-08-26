@@ -8,7 +8,6 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
-import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -57,15 +56,19 @@ void main() {
     int activity, {
     required bool correctly,
   }) async {
-    if (activity == 2) {
-      await tester.enterText(
-        find.byType(TextField),
-        correctly ? ' evidencia ' : 'otra',
-      );
+    final textField = find.byType(TextField);
+    if (textField.evaluate().isNotEmpty) {
+      await tester.enterText(textField, correctly ? ' evidencia ' : 'otra');
     } else {
       final option = correctly
-          ? find.byType(AnswerOptionTile).first
-          : find.byType(AnswerOptionTile).last;
+          ? _firstVisibleText(tester, <Finder>[
+              find.text('Controlar contraseñas y amenazar por mensajes.'),
+              find.textContaining('Acción segura'),
+            ])
+          : _firstVisibleText(tester, <Finder>[
+              find.text('Actualizar una aplicación.'),
+              find.textContaining('Acción insegura'),
+            ]);
       await tester.ensureVisible(option);
       await tester.tap(option);
     }
@@ -310,10 +313,7 @@ void main() {
     expect(repository.loadQuizQuestionsCalls, 7);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsNothing);
-    expect(
-      find.text('¿Cuál es un ejemplo de violencia digital?'),
-      findsOneWidget,
-    );
+    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
   });
 
   testWidgets('el menú renderiza seis actividades reales del repositorio', (
@@ -387,10 +387,7 @@ void main() {
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
 
-    expect(
-      find.text('\u00bfCu\u00e1l es un ejemplo de violencia digital?'),
-      findsOneWidget,
-    );
+    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
     expect(find.text(AppStrings.lessonCompleted), findsNothing);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text(AppStrings.submitAnswer), findsNothing);
@@ -439,6 +436,16 @@ void main() {
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
     expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
   });
+}
+
+Finder _firstVisibleText(WidgetTester tester, List<Finder> candidates) {
+  for (final candidate in candidates) {
+    if (candidate.evaluate().isNotEmpty) {
+      return candidate;
+    }
+  }
+
+  fail('No visible answer option matched the expected candidates.');
 }
 
 class _SignedInAuthRepository implements AuthRepository {

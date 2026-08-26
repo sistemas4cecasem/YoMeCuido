@@ -180,6 +180,119 @@ void main() {
       );
     });
 
+    test('shuffles questions without losing or duplicating ids', () {
+      final controller = QuizController(
+        questions: _questions,
+        shuffleQuestions: true,
+        shuffle: _reverseShuffle,
+      );
+      final presentedIds = _collectPresentedQuestionIds(controller);
+      final originalIds = _questions.map((question) => question.id).toList();
+
+      expect(presentedIds, hasLength(originalIds.length));
+      expect(presentedIds.toSet(), originalIds.toSet());
+      expect(presentedIds, isNot(originalIds));
+      expect(presentedIds, originalIds.reversed);
+    });
+
+    test('keeps the shuffled question order stable during an attempt', () {
+      final controller = QuizController(
+        questions: _buildChoiceQuestions(5),
+        shuffleQuestions: true,
+        shuffle: _reverseShuffle,
+      );
+      final firstQuestionId = controller.currentQuestionId;
+
+      controller.selectOption('correct_5');
+      expect(controller.currentQuestionId, firstQuestionId);
+      expect(controller.submitAnswer(), isTrue);
+      expect(controller.currentQuestionId, firstQuestionId);
+
+      controller.goToNextActivity();
+      expect(controller.currentQuestionId, 'question_4');
+    });
+
+    test('can prepare a new order after reset starts another attempt', () {
+      final controller = QuizController(
+        questions: _buildChoiceQuestions(4),
+        shuffleQuestions: true,
+        shuffle: _alternatingQuestionShuffle(),
+      );
+
+      expect(controller.currentQuestionId, 'question_4');
+
+      controller.reset();
+
+      expect(controller.currentQuestionId, 'question_1');
+    });
+
+    test(
+      'shuffles multiple choice options while keeping option ids correct',
+      () {
+        final controller = QuizController(
+          questions: _questions,
+          shuffleOptions: true,
+          shuffle: _reverseShuffle,
+        );
+
+        expect(controller.currentOptions.map((option) => option.id), <String>[
+          'update_application',
+          'control_passwords_threaten_messages',
+        ]);
+
+        controller.selectOption('control_passwords_threaten_messages');
+        expect(controller.submitAnswer(), isTrue);
+        expect(controller.isCurrentAnswerCorrect, isTrue);
+      },
+    );
+
+    test('keeps incorrect multiple choice options incorrect after shuffle', () {
+      final controller = QuizController(
+        questions: _questions,
+        shuffleOptions: true,
+        shuffle: _reverseShuffle,
+      );
+
+      controller.selectOption('update_application');
+
+      expect(controller.submitAnswer(), isTrue);
+      expect(controller.isCurrentAnswerCorrect, isFalse);
+    });
+
+    test('keeps true false option order stable', () {
+      final controller = QuizController(
+        questions: <QuizQuestion>[_questions[1]],
+        shuffleOptions: true,
+        shuffle: _reverseShuffle,
+      );
+
+      expect(controller.currentOptions.map((option) => option.id), <String>[
+        'true',
+        'false',
+      ]);
+
+      controller.selectOption('false');
+      expect(controller.submitAnswer(), isTrue);
+      expect(controller.isCurrentAnswerCorrect, isTrue);
+    });
+
+    test('keeps fill blank validation working after question shuffle', () {
+      final controller = QuizController(
+        questions: <QuizQuestion>[_questions[5], _questions.first],
+        shuffleQuestions: true,
+        shuffle: _reverseShuffle,
+      );
+
+      expect(controller.currentQuestionId, 'activity_1');
+      _answerCurrentCorrectly(controller);
+      controller.goToNextActivity();
+
+      expect(controller.currentQuestionId, 'activity_6');
+      controller.updateWrittenAnswer(' sextorsion ');
+      expect(controller.submitAnswer(), isTrue);
+      expect(controller.isCurrentAnswerCorrect, isTrue);
+    });
+
     test('resets the full quiz state', () {
       final controller = QuizController(questions: _questions);
 
@@ -299,13 +412,11 @@ void _answerCurrentCorrectly(QuizController controller) {
 }
 
 void _answerCurrentIncorrectly(QuizController controller) {
-  final question = _questions[controller.currentIndex];
-
   switch (controller.currentQuestionType) {
     case QuestionType.multipleChoice:
     case QuestionType.trueFalse:
       final incorrectOption = controller.currentOptions.firstWhere(
-        (option) => option.id != question.correctAnswer,
+        (option) => option.text != controller.currentCorrectAnswerText,
       );
       controller.selectOption(incorrectOption.id);
     case QuestionType.fillBlank:
@@ -313,6 +424,35 @@ void _answerCurrentIncorrectly(QuizController controller) {
   }
 
   controller.submitAnswer();
+}
+
+List<String> _collectPresentedQuestionIds(QuizController controller) {
+  final ids = <String>[];
+
+  while (!controller.isFinished) {
+    ids.add(controller.currentQuestionId);
+    _answerCurrentCorrectly(controller);
+    if (!controller.isFinished) {
+      controller.goToNextActivity();
+    }
+  }
+
+  return ids;
+}
+
+void _reverseShuffle<T>(List<T> items) {
+  items.setAll(0, items.reversed.toList(growable: false));
+}
+
+QuizShuffle _alternatingQuestionShuffle() {
+  var callCount = 0;
+
+  return <T>(List<T> items) {
+    callCount += 1;
+    if (callCount.isOdd) {
+      items.setAll(0, items.reversed.toList(growable: false));
+    }
+  };
 }
 
 const _questions = <QuizQuestion>[

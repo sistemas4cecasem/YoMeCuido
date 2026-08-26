@@ -1,17 +1,34 @@
+import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
 
+typedef QuizShuffle = void Function<T>(List<T> items);
+
 class QuizController extends ChangeNotifier {
-  QuizController({required List<QuizQuestion> questions})
-    : _questions = List<QuizQuestion>.unmodifiable(questions) {
-    if (_questions.isEmpty) {
+  QuizController({
+    required List<QuizQuestion> questions,
+    bool shuffleQuestions = false,
+    bool shuffleOptions = false,
+    math.Random? random,
+    QuizShuffle? shuffle,
+  }) : _sourceQuestions = List<QuizQuestion>.unmodifiable(questions),
+       _shuffleQuestions = shuffleQuestions,
+       _shuffleOptions = shuffleOptions,
+       _shuffle = shuffle ?? _randomShuffle(random) {
+    if (_sourceQuestions.isEmpty) {
       throw ArgumentError('QuizController requires at least one question.');
     }
+    _questions = _prepareQuestions();
   }
 
-  final List<QuizQuestion> _questions;
+  final List<QuizQuestion> _sourceQuestions;
+  final bool _shuffleQuestions;
+  final bool _shuffleOptions;
+  final QuizShuffle _shuffle;
+  late List<QuizQuestion> _questions;
 
   int _currentIndex = 0;
   String? _selectedOptionId;
@@ -169,6 +186,7 @@ class QuizController extends ChangeNotifier {
   }
 
   void reset() {
+    _questions = _prepareQuestions();
     _currentIndex = 0;
     _selectedOptionId = null;
     _writtenAnswer = '';
@@ -233,5 +251,50 @@ class QuizController extends ChangeNotifier {
       correctAnswers: _correctAnswers,
       totalQuestions: totalQuestions,
     );
+  }
+
+  List<QuizQuestion> _prepareQuestions() {
+    final questions = _sourceQuestions
+        .map((question) {
+          return _shuffleOptions ? _withPreparedOptions(question) : question;
+        })
+        .toList(growable: false);
+
+    if (_shuffleQuestions) {
+      _shuffle(questions);
+    }
+
+    return List<QuizQuestion>.unmodifiable(questions);
+  }
+
+  QuizQuestion _withPreparedOptions(QuizQuestion question) {
+    if (question.type != QuestionType.multipleChoice) {
+      return question;
+    }
+
+    final options = question.options.toList(growable: false);
+    _shuffle(options);
+
+    return QuizQuestion(
+      id: question.id,
+      categoryId: question.categoryId,
+      activityId: question.activityId,
+      type: question.type,
+      statement: question.statement,
+      options: List<QuizOption>.unmodifiable(options),
+      correctAnswer: question.correctAnswer,
+      acceptedAnswers: question.acceptedAnswers,
+      feedback: question.feedback,
+      capacity: question.capacity,
+      difficulty: question.difficulty,
+    );
+  }
+
+  static QuizShuffle _randomShuffle(math.Random? random) {
+    final selectedRandom = random ?? math.Random();
+
+    return <T>(List<T> items) {
+      items.shuffle(selectedRandom);
+    };
   }
 }
