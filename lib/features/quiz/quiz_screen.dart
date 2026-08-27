@@ -142,6 +142,7 @@ class _QuizScreenState extends State<QuizScreen> {
             totalActivities: widget.totalActivities,
             shuffleQuestions: widget.shuffleQuestions,
             shuffleOptions: widget.shuffleOptions,
+            onRestartRequested: _retry,
             onResultVisibilityChanged: _handleResultVisibilityChanged,
           );
         },
@@ -169,6 +170,7 @@ class _QuizFlow extends StatefulWidget {
     required this.totalActivities,
     required this.shuffleQuestions,
     required this.shuffleOptions,
+    required this.onRestartRequested,
     required this.onResultVisibilityChanged,
   });
 
@@ -180,6 +182,7 @@ class _QuizFlow extends StatefulWidget {
   final int totalActivities;
   final bool shuffleQuestions;
   final bool shuffleOptions;
+  final VoidCallback onRestartRequested;
   final ValueChanged<bool> onResultVisibilityChanged;
 
   @override
@@ -338,6 +341,12 @@ class _QuizFlowState extends State<_QuizFlow> {
   }
 
   void _repeatLesson() {
+    if (widget.exam != null) {
+      widget.onResultVisibilityChanged(false);
+      widget.onRestartRequested();
+      return;
+    }
+
     _answerTextController.clear();
     _activityCharacters.clear();
     _controller.reset();

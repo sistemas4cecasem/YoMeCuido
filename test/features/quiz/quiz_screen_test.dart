@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
@@ -8,6 +10,7 @@ import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/features/quiz/exam_question_selector.dart';
 import 'package:demo_yomecuido/features/quiz/quiz_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +21,9 @@ void main() {
 
   setUp(() {
     repository = _FakeQuizRepository();
-    progressController = CategoryProgressController();
+    progressController = CategoryProgressController(
+      attemptIdGenerator: _sequentialAttemptIds(),
+    );
   });
 
   Future<void> pumpQuiz(WidgetTester tester) async {
@@ -53,7 +58,10 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> pumpExam(WidgetTester tester) async {
+  Future<void> pumpExam(
+    WidgetTester tester, {
+    ExamQuestionSelector? selector,
+  }) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.data(),
@@ -62,6 +70,7 @@ void main() {
           exam: FinalExamConfigs.relationsViolence,
           contentRepository: repository,
           progressController: progressController,
+          examQuestionSelector: selector,
           shuffleQuestions: false,
           shuffleOptions: false,
           totalActivities: 6,
@@ -85,7 +94,7 @@ void main() {
   }
 
   Future<void> answerCurrentCorrectly(WidgetTester tester, int activity) async {
-    if (activity == 2) {
+    if (find.byType(TextField).evaluate().isNotEmpty) {
       await tester.enterText(find.byType(TextField), ' evidencia ');
       await tester.pumpAndSettle();
     } else {
@@ -107,6 +116,24 @@ void main() {
       } else {
         await tester.tap(find.text(AppStrings.seeResult));
       }
+      await tester.pumpAndSettle();
+    }
+  }
+
+  Future<void> completeVisibleQuiz(
+    WidgetTester tester, {
+    required int totalQuestions,
+  }) async {
+    for (var question = 1; question <= totalQuestions; question += 1) {
+      await answerCurrentCorrectly(tester, question);
+
+      await tester.tap(
+        find.text(
+          question == totalQuestions
+              ? AppStrings.seeResult
+              : AppStrings.nextActivity,
+        ),
+      );
       await tester.pumpAndSettle();
     }
   }
@@ -185,6 +212,28 @@ void main() {
     );
     expect(examProgress.status, ActivityProgressStatus.inProgress);
     expect(examProgress.attemptCount, 1);
+  });
+
+  testWidgets('repetir examen crea nuevo intento con nueva selección', (
+    tester,
+  ) async {
+    repository.quizQuestions = _buildMultipleChoiceQuestions(30);
+    final selector = ExamQuestionSelector(random: math.Random(8));
+
+    await pumpExam(tester, selector: selector);
+    final firstAttempt = progressController.attemptFor('attempt_1');
+
+    await completeVisibleQuiz(tester, totalQuestions: 15);
+    await tester.tap(find.text(AppStrings.repeatLesson));
+    await tester.pumpAndSettle();
+
+    final secondAttempt = progressController.attemptFor('attempt_2');
+
+    expect(firstAttempt?.questionIds, hasLength(15));
+    expect(secondAttempt?.questionIds, hasLength(15));
+    expect(secondAttempt?.id, isNot(firstAttempt?.id));
+    expect(secondAttempt?.questionIds, isNot(firstAttempt?.questionIds));
+    expect(find.text('Pregunta 1 de 15'), findsOneWidget);
   });
 
   testWidgets(
@@ -466,4 +515,43 @@ List<QuizQuestion> _buildQuizQuestions(int count) {
         difficulty: 'básica',
       ),
   ];
+}
+
+List<QuizQuestion> _buildMultipleChoiceQuestions(int count) {
+  return <QuizQuestion>[
+    for (var index = 1; index <= count; index += 1)
+      QuizQuestion(
+        id: 'exam_question_$index',
+        categoryId: 'relations_violence_digital',
+        activityId: _examActivityIdForIndex(index),
+        type: QuestionType.multipleChoice,
+        statement: 'Pregunta de examen $index',
+        options: <QuizOption>[
+          QuizOption(id: 'correct_$index', text: 'Respuesta correcta'),
+          QuizOption(id: 'incorrect_$index', text: 'Respuesta incorrecta'),
+        ],
+        correctAnswer: 'correct_$index',
+        acceptedAnswers: <String>['correct_$index'],
+        feedback: 'Retroalimentación exacta.',
+        capacity: switch (index % 3) {
+          0 => 'prevenir',
+          1 => 'reconocer',
+          _ => 'responder',
+        },
+        difficulty: index.isEven ? 'intermedia' : 'básica',
+      ),
+  ];
+}
+
+String _examActivityIdForIndex(int index) {
+  final activityNumber = (((index - 1) % 6) + 1).toString().padLeft(2, '0');
+  return 'relations_violence_activity_$activityNumber';
+}
+
+AttemptIdGenerator _sequentialAttemptIds() {
+  var count = 0;
+  return () {
+    count += 1;
+    return 'attempt_$count';
+  };
 }

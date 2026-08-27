@@ -10,6 +10,11 @@ void main() {
       expect(exam.categoryId, 'relations_violence_digital');
       expect(exam.title, 'Examen final');
       expect(exam.questionCount, 15);
+      expect(exam.minimumQuestionsPerActivity, 2);
+      expect(exam.targetDifficultyCounts, <String, int>{
+        'básica': 6,
+        'intermedia': 9,
+      });
       expect(exam.order, 7);
     });
 
