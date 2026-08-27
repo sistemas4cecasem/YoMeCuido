@@ -87,6 +87,66 @@ service cloud.firestore {
     //
     // Educational content remains local to Flutter. These rules validate the
     // persisted progress shape without enumerating content IDs.
+    //
+    // Collection: categories
+    // Document ID: categoryId, stable educational-content id
+    // Fields:
+    //   - id: string (required, must match document ID, max 120)
+    //   - title: string (required, max 120)
+    //   - description: string (required, max 1200)
+    //   - iconName: string (required, max 80)
+    //   - status: string (required: available, comingSoon)
+    //   - isEnabled: bool (required)
+    //   - order: int (required, 1..100)
+    //   - indicators: list (required, max 20)
+    //   - objectives: list (required, max 20)
+    //   - warning: string (optional, max 1200)
+    //   - lessonId: string (optional, max 120)
+    //
+    // Subcollection: categories/{categoryId}/lessonPages
+    // Document ID: lessonPageId, stable local-content id
+    // Fields:
+    //   - id: string (required, must match document ID, max 120)
+    //   - order: int (required, 1..100)
+    //   - title: string (required, max 160)
+    //   - body: string (required, max 4000)
+    //
+    // Subcollection: categories/{categoryId}/activities
+    // Document ID: activityId, stable local-content id
+    // Fields:
+    //   - id: string (required, must match document ID, max 120)
+    //   - categoryId: string (required, must match parent category)
+    //   - title: string (required, max 160)
+    //   - order: int (required, 1..100)
+    //
+    // Subcollection: categories/{categoryId}/questions
+    // Document ID: questionId, stable local-content id
+    // Fields:
+    //   - id: string (required, must match document ID, max 120)
+    //   - categoryId: string (required, must match parent category)
+    //   - activityId: string (required, max 120)
+    //   - type: string (required: multipleChoice, trueFalse, fillBlank)
+    //   - statement: string (required, max 1200)
+    //   - options: list (required, embedded option maps, max 8)
+    //   - correctAnswer: string (required, max 120)
+    //   - acceptedAnswers: list (required, max 10)
+    //   - feedback: string (required, max 2000)
+    //   - capacity: string (required, max 80)
+    //   - difficulty: string (required, max 80)
+    //
+    // Subcollection: categories/{categoryId}/examConfig
+    // Document ID: final
+    // Fields:
+    //   - id: string (required, stable exam id, max 120)
+    //   - categoryId: string (required, must match parent category)
+    //   - title: string (required, max 120)
+    //   - questionCount: int (required, 1..100)
+    //   - minimumQuestionsPerActivity: int (required, 0..20)
+    //   - targetBasicQuestions: int (required, 0..100)
+    //   - targetIntermediateQuestions: int (required, 0..100)
+    //
+    // Educational content is readable by authenticated users. Client writes are
+    // denied; administrative seeding must use a trusted server/admin process.
     // ===============================================================
 
     function isSignedIn() {
@@ -514,6 +574,31 @@ service cloud.firestore {
             allow delete: if false;
           }
         }
+      }
+    }
+
+    match /categories/{categoryId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+
+      match /lessonPages/{lessonPageId} {
+        allow read: if isSignedIn();
+        allow write: if false;
+      }
+
+      match /activities/{activityId} {
+        allow read: if isSignedIn();
+        allow write: if false;
+      }
+
+      match /questions/{questionId} {
+        allow read: if isSignedIn();
+        allow write: if false;
+      }
+
+      match /examConfig/{examConfigId} {
+        allow read: if isSignedIn();
+        allow write: if false;
       }
     }
 
