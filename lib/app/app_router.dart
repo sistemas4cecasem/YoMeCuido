@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/models/category.dart';
+import '../data/models/final_exam.dart';
 import '../data/models/learning_activity.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/content_repository.dart';
@@ -89,9 +90,20 @@ class AppRouter {
   Widget _buildQuizScreen(RouteSettings settings) {
     final arguments = settings.arguments! as QuizRouteArguments;
 
-    return QuizScreen(
+    final exam = arguments.exam;
+    if (exam != null) {
+      return QuizScreen.exam(
+        category: arguments.category,
+        exam: exam,
+        contentRepository: _contentRepository,
+        progressController: _progressController,
+        totalActivities: arguments.totalActivities,
+      );
+    }
+
+    return QuizScreen.activity(
       category: arguments.category,
-      activity: arguments.activity,
+      activity: arguments.activity!,
       contentRepository: _contentRepository,
       progressController: _progressController,
       totalActivities: arguments.totalActivities,
@@ -100,14 +112,21 @@ class AppRouter {
 }
 
 class QuizRouteArguments {
-  const QuizRouteArguments({
+  const QuizRouteArguments.activity({
     required this.category,
     required this.activity,
     required this.totalActivities,
-  });
+  }) : exam = null;
+
+  const QuizRouteArguments.exam({
+    required this.category,
+    required this.exam,
+    required this.totalActivities,
+  }) : activity = null;
 
   final Category category;
-  final LearningActivity activity;
+  final LearningActivity? activity;
+  final FinalExamConfig? exam;
   final int totalActivities;
 }
 

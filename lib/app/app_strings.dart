@@ -91,6 +91,12 @@ abstract final class AppStrings {
   static const thirdActivityBlock = 'Actividad 3';
   static const finalActivityBlock = 'Actividad final';
   static const finalActivitySubtitle = 'Evaluación completa';
+  static const finalExamTitle = 'Examen final';
+  static const finalExamSubtitle = '15 preguntas';
+  static const finalExamLocked =
+      'Completa las 6 actividades para desbloquearlo';
+  static const finalExamStarted = 'Intento iniciado';
+  static const finalExamCompleted = 'Completado';
   static const activityMenuIntroTitle = 'Pon a prueba lo que aprendiste';
   static const activityMenuIntroBody =
       'Completa las actividades y revisa tu avance dentro de la categoría.';

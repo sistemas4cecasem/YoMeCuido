@@ -127,6 +127,13 @@ class CategoryProgressController extends ChangeNotifier {
     return _attemptsById[attemptId]?.snapshot;
   }
 
+  ExamProgressSnapshot examProgressFor({
+    required String categoryId,
+    required String examId,
+  }) {
+    return _entryFor(categoryId).examSnapshotFor(examId);
+  }
+
   Future<void> markTheoryPageViewed({
     required String categoryId,
     required String lessonId,
@@ -178,6 +185,7 @@ class CategoryProgressController extends ChangeNotifier {
       type: QuizAttemptType.activity,
       categoryId: categoryId,
       activityId: activityId,
+      examId: null,
       questionIds: questionIds,
       startedAt: now,
     );
@@ -200,9 +208,58 @@ class CategoryProgressController extends ChangeNotifier {
     return attemptId;
   }
 
+  String startExamAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required List<String> questionIds,
+    required int totalActivities,
+  }) {
+    final attemptId = _attemptIdGenerator();
+    final now = DateTime.now();
+    final progress = _entryFor(categoryId)
+      ..activityTotal = totalActivities
+      ..updatedAt = now;
+    if (progress.status != CategoryProgressStatus.completed) {
+      progress.status = CategoryProgressStatus.inProgress;
+    }
+    progress.examProgressFor(examId)
+      ..status = ActivityProgressStatus.inProgress
+      ..attemptCount += 1
+      ..lastAttemptAt = now
+      ..updatedAt = now;
+    _attemptsById[attemptId] = _MutableQuizAttempt(
+      id: attemptId,
+      type: QuizAttemptType.exam,
+      categoryId: categoryId,
+      activityId: null,
+      examId: examId,
+      questionIds: questionIds,
+      startedAt: now,
+    );
+    notifyListeners();
+
+    unawaited(
+      _persistForCurrentUser((uid) {
+        return _persistence!.startExamAttempt(
+          uid: uid,
+          categoryId: categoryId,
+          lessonId: lessonId,
+          examId: examId,
+          attemptId: attemptId,
+          questionIds: questionIds,
+          totalLessonPages: progress.theoryTotal,
+          totalActivities: totalActivities,
+        );
+      }),
+    );
+    return attemptId;
+  }
+
   Future<void> recordAnswer({
     required String categoryId,
-    required String activityId,
+    String? activityId,
+    String? examId,
     required String attemptId,
     required String questionId,
     required String answer,
@@ -212,8 +269,10 @@ class CategoryProgressController extends ChangeNotifier {
     if (attempt == null) {
       throw StateError('Unknown attempt id "$attemptId".');
     }
-    if (attempt.categoryId != categoryId || attempt.activityId != activityId) {
-      throw StateError('Attempt does not belong to the requested activity.');
+    if (attempt.categoryId != categoryId ||
+        attempt.activityId != activityId ||
+        attempt.examId != examId) {
+      throw StateError('Attempt does not belong to the requested target.');
     }
 
     final answeredAt = DateTime.now();
@@ -231,6 +290,7 @@ class CategoryProgressController extends ChangeNotifier {
         uid: uid,
         categoryId: categoryId,
         activityId: activityId,
+        examId: examId,
         attemptId: attemptId,
         questionId: questionId,
         answer: answer,
@@ -302,6 +362,65 @@ class CategoryProgressController extends ChangeNotifier {
     });
   }
 
+  Future<void> completeExamAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required String attemptId,
+    required QuizResult result,
+    required int totalActivities,
+  }) async {
+    final attempt = _attemptsById[attemptId];
+    if (attempt == null) {
+      throw StateError('Unknown attempt id "$attemptId".');
+    }
+    if (attempt.type != QuizAttemptType.exam || attempt.examId != examId) {
+      throw StateError('Attempt does not belong to the requested exam.');
+    }
+
+    final now = DateTime.now();
+    attempt
+      ..correctAnswers = result.correctAnswers
+      ..totalQuestions = result.totalQuestions
+      ..percentage = result.percentage
+      ..completedAt = now;
+
+    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
+    final exam = progress.examProgressFor(examId);
+    final shouldReplaceBest = result.percentage >= exam.bestPercentage;
+    exam
+      ..status = ActivityProgressStatus.completed
+      ..lastAttemptAt = now
+      ..completedAt ??= now
+      ..updatedAt = now;
+    if (shouldReplaceBest) {
+      exam
+        ..bestCorrectAnswers = result.correctAnswers
+        ..bestTotalQuestions = result.totalQuestions
+        ..bestPercentage = result.percentage;
+    }
+
+    progress
+      ..lastActivityAt = now
+      ..updatedAt = now;
+    notifyListeners();
+
+    await _persistForCurrentUser((uid) {
+      return _persistence!.completeExamAttempt(
+        uid: uid,
+        categoryId: categoryId,
+        lessonId: lessonId,
+        examId: examId,
+        attemptId: attemptId,
+        correctAnswers: result.correctAnswers,
+        totalQuestions: result.totalQuestions,
+        percentage: result.percentage,
+        totalLessonPages: progress.theoryTotal,
+        totalActivities: totalActivities,
+      );
+    });
+  }
+
   void resetCategory(String categoryId) {
     final progress = _entryFor(categoryId);
     progress
@@ -312,6 +431,7 @@ class CategoryProgressController extends ChangeNotifier {
       ..completedAt = null
       ..updatedAt = DateTime.now();
     progress.activities.clear();
+    progress.exams.clear();
     _attemptsById.removeWhere((id, attempt) {
       return attempt.categoryId == categoryId;
     });
@@ -436,6 +556,7 @@ class CategoryProgressSnapshot {
     required this.completedActivityIds,
     required this.status,
     required this.activityProgress,
+    required this.examProgress,
     required this.startedAt,
     required this.lastActivityAt,
     required this.completedAt,
@@ -452,6 +573,7 @@ class CategoryProgressSnapshot {
   final List<String> completedActivityIds;
   final CategoryProgressStatus status;
   final Map<String, ActivityProgressSnapshot> activityProgress;
+  final Map<String, ExamProgressSnapshot> examProgress;
   final DateTime? startedAt;
   final DateTime? lastActivityAt;
   final DateTime? completedAt;
@@ -503,12 +625,39 @@ class ActivityProgressSnapshot {
   bool get isCompleted => status == ActivityProgressStatus.completed;
 }
 
+class ExamProgressSnapshot {
+  const ExamProgressSnapshot({
+    required this.examId,
+    required this.status,
+    required this.attemptCount,
+    required this.bestCorrectAnswers,
+    required this.bestTotalQuestions,
+    required this.bestPercentage,
+    required this.lastAttemptAt,
+    required this.completedAt,
+    required this.updatedAt,
+  });
+
+  final String examId;
+  final ActivityProgressStatus status;
+  final int attemptCount;
+  final int bestCorrectAnswers;
+  final int bestTotalQuestions;
+  final int bestPercentage;
+  final DateTime? lastAttemptAt;
+  final DateTime? completedAt;
+  final DateTime? updatedAt;
+
+  bool get isCompleted => status == ActivityProgressStatus.completed;
+}
+
 class QuizAttemptSnapshot {
   const QuizAttemptSnapshot({
     required this.id,
     required this.type,
     required this.categoryId,
     required this.activityId,
+    required this.examId,
     required this.questionIds,
     required this.answers,
     required this.correctAnswers,
@@ -521,7 +670,8 @@ class QuizAttemptSnapshot {
   final String id;
   final QuizAttemptType type;
   final String categoryId;
-  final String activityId;
+  final String? activityId;
+  final String? examId;
   final List<String> questionIds;
   final Map<String, CategoryProgressAnswer> answers;
   final int correctAnswers;
@@ -547,6 +697,8 @@ class _MutableCategoryProgress {
   final Set<String> completedActivityIds = <String>{};
   final Map<String, _MutableActivityProgress> activities =
       <String, _MutableActivityProgress>{};
+  final Map<String, _MutableExamProgress> exams =
+      <String, _MutableExamProgress>{};
 
   _MutableCategoryProgress();
 
@@ -568,6 +720,9 @@ class _MutableCategoryProgress {
       progress.activities[activity.activityId] =
           _MutableActivityProgress.fromRecord(activity);
     }
+    for (final exam in record.exams.values) {
+      progress.exams[exam.examId] = _MutableExamProgress.fromRecord(exam);
+    }
 
     return progress;
   }
@@ -581,6 +736,14 @@ class _MutableCategoryProgress {
 
   ActivityProgressSnapshot activitySnapshotFor(String activityId) {
     return activityProgressFor(activityId).snapshot;
+  }
+
+  _MutableExamProgress examProgressFor(String examId) {
+    return exams.putIfAbsent(examId, () => _MutableExamProgress(examId));
+  }
+
+  ExamProgressSnapshot examSnapshotFor(String examId) {
+    return examProgressFor(examId).snapshot;
   }
 
   CategoryProgressSnapshot get snapshot {
@@ -617,6 +780,9 @@ class _MutableCategoryProgress {
       status: status,
       activityProgress: Map<String, ActivityProgressSnapshot>.unmodifiable(
         activities.map((key, value) => MapEntry(key, value.snapshot)),
+      ),
+      examProgress: Map<String, ExamProgressSnapshot>.unmodifiable(
+        exams.map((key, value) => MapEntry(key, value.snapshot)),
       ),
       startedAt: startedAt,
       lastActivityAt: lastActivityAt,
@@ -666,12 +832,53 @@ class _MutableActivityProgress {
   }
 }
 
+class _MutableExamProgress {
+  _MutableExamProgress(this.examId);
+
+  factory _MutableExamProgress.fromRecord(ExamProgressRecord record) {
+    return _MutableExamProgress(record.examId)
+      ..status = record.status
+      ..attemptCount = record.attemptCount
+      ..bestCorrectAnswers = record.bestCorrectAnswers
+      ..bestTotalQuestions = record.bestTotalQuestions
+      ..bestPercentage = record.bestPercentage
+      ..lastAttemptAt = record.lastAttemptAt
+      ..completedAt = record.completedAt
+      ..updatedAt = record.updatedAt;
+  }
+
+  final String examId;
+  ActivityProgressStatus status = ActivityProgressStatus.notStarted;
+  int attemptCount = 0;
+  int bestCorrectAnswers = 0;
+  int bestTotalQuestions = 0;
+  int bestPercentage = 0;
+  DateTime? lastAttemptAt;
+  DateTime? completedAt;
+  DateTime? updatedAt;
+
+  ExamProgressSnapshot get snapshot {
+    return ExamProgressSnapshot(
+      examId: examId,
+      status: status,
+      attemptCount: attemptCount,
+      bestCorrectAnswers: bestCorrectAnswers,
+      bestTotalQuestions: bestTotalQuestions,
+      bestPercentage: bestPercentage,
+      lastAttemptAt: lastAttemptAt,
+      completedAt: completedAt,
+      updatedAt: updatedAt,
+    );
+  }
+}
+
 class _MutableQuizAttempt {
   _MutableQuizAttempt({
     required this.id,
     required this.type,
     required this.categoryId,
     required this.activityId,
+    required this.examId,
     required List<String> questionIds,
     required this.startedAt,
   }) : questionIds = List<String>.unmodifiable(questionIds),
@@ -680,7 +887,8 @@ class _MutableQuizAttempt {
   final String id;
   final QuizAttemptType type;
   final String categoryId;
-  final String activityId;
+  final String? activityId;
+  final String? examId;
   final List<String> questionIds;
   final DateTime startedAt;
   final Map<String, CategoryProgressAnswer> answers =
@@ -696,6 +904,7 @@ class _MutableQuizAttempt {
       type: type,
       categoryId: categoryId,
       activityId: activityId,
+      examId: examId,
       questionIds: questionIds,
       answers: Map<String, CategoryProgressAnswer>.unmodifiable(answers),
       correctAnswers: correctAnswers,

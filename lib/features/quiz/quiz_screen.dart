@@ -11,6 +11,7 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/models/final_exam.dart';
 import '../../data/models/learning_activity.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
@@ -23,10 +24,11 @@ import '../../shared/widgets/lesson_progress_bar.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/result_summary_card.dart';
 import '../../shared/widgets/secondary_button.dart';
+import 'exam_question_selector.dart';
 import 'quiz_controller.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({
+  const QuizScreen.activity({
     required this.category,
     required this.activity,
     required this.contentRepository,
@@ -35,13 +37,28 @@ class QuizScreen extends StatefulWidget {
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
     super.key,
-  });
+  }) : exam = null,
+       examQuestionSelector = null;
+
+  const QuizScreen.exam({
+    required this.category,
+    required this.exam,
+    required this.contentRepository,
+    required this.progressController,
+    this.totalActivities = 1,
+    this.examQuestionSelector,
+    this.shuffleQuestions = true,
+    this.shuffleOptions = true,
+    super.key,
+  }) : activity = null;
 
   final Category category;
-  final LearningActivity activity;
+  final LearningActivity? activity;
+  final FinalExamConfig? exam;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
   final int totalActivities;
+  final ExamQuestionSelector? examQuestionSelector;
   final bool shuffleQuestions;
   final bool shuffleOptions;
 
@@ -56,20 +73,30 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    _questionsFuture = widget.contentRepository.loadQuizQuestions(
-      widget.category.id,
-      activityId: widget.activity.id,
-    );
+    _questionsFuture = _loadQuestions();
   }
 
   void _retry() {
     setState(() {
       _showingResult = false;
-      _questionsFuture = widget.contentRepository.loadQuizQuestions(
-        widget.category.id,
-        activityId: widget.activity.id,
-      );
+      _questionsFuture = _loadQuestions();
     });
+  }
+
+  Future<List<QuizQuestion>> _loadQuestions() {
+    final exam = widget.exam;
+    if (exam != null) {
+      return (widget.examQuestionSelector ?? const ExamQuestionSelector())
+          .selectQuestions(
+            contentRepository: widget.contentRepository,
+            exam: exam,
+          );
+    }
+
+    return widget.contentRepository.loadQuizQuestions(
+      widget.category.id,
+      activityId: widget.activity!.id,
+    );
   }
 
   void _handleResultVisibilityChanged(bool isVisible) {
@@ -100,12 +127,16 @@ class _QuizScreenState extends State<QuizScreen> {
             if (kDebugMode && snapshot.error != null) {
               debugPrint('Quiz load error: ${snapshot.error}');
             }
-            return _QuizLoadError(onRetry: _retry);
+            return _QuizLoadError(
+              message: _loadErrorMessage(snapshot.error),
+              onRetry: _retry,
+            );
           }
 
           return _QuizFlow(
             category: widget.category,
             activity: widget.activity,
+            exam: widget.exam,
             questions: snapshot.data!,
             progressController: widget.progressController,
             totalActivities: widget.totalActivities,
@@ -117,12 +148,22 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
     );
   }
+
+  String _loadErrorMessage(Object? error) {
+    if (error is InsufficientExamQuestionsException) {
+      return 'El banco actual tiene ${error.availableQuestions} preguntas. '
+          'El examen final necesita ${error.requiredQuestions} para iniciar.';
+    }
+
+    return AppStrings.contentLoadError;
+  }
 }
 
 class _QuizFlow extends StatefulWidget {
   const _QuizFlow({
     required this.category,
     required this.activity,
+    required this.exam,
     required this.questions,
     required this.progressController,
     required this.totalActivities,
@@ -132,7 +173,8 @@ class _QuizFlow extends StatefulWidget {
   });
 
   final Category category;
-  final LearningActivity activity;
+  final LearningActivity? activity;
+  final FinalExamConfig? exam;
   final List<QuizQuestion> questions;
   final CategoryProgressController progressController;
   final int totalActivities;
@@ -249,7 +291,8 @@ class _QuizFlowState extends State<_QuizFlow> {
   }) async {
     await widget.progressController.recordAnswer(
       categoryId: widget.category.id,
-      activityId: widget.activity.id,
+      activityId: widget.activity?.id,
+      examId: widget.exam?.id,
       attemptId: _attemptId,
       questionId: questionId,
       answer: answer,
@@ -260,14 +303,25 @@ class _QuizFlowState extends State<_QuizFlow> {
       return;
     }
 
-    await widget.progressController.completeActivityAttempt(
-      categoryId: widget.category.id,
-      lessonId: widget.category.lessonId ?? widget.category.id,
-      activityId: widget.activity.id,
-      attemptId: _attemptId,
-      result: _controller.quizResult,
-      totalActivities: widget.totalActivities,
-    );
+    if (widget.exam != null) {
+      await widget.progressController.completeExamAttempt(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        examId: widget.exam!.id,
+        attemptId: _attemptId,
+        result: _controller.quizResult,
+        totalActivities: widget.totalActivities,
+      );
+    } else {
+      await widget.progressController.completeActivityAttempt(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        activityId: widget.activity!.id,
+        attemptId: _attemptId,
+        result: _controller.quizResult,
+        totalActivities: widget.totalActivities,
+      );
+    }
   }
 
   void _goForward() {
@@ -318,10 +372,21 @@ class _QuizFlowState extends State<_QuizFlow> {
   }
 
   String _startAttempt() {
+    final exam = widget.exam;
+    if (exam != null) {
+      return widget.progressController.startExamAttempt(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        examId: exam.id,
+        questionIds: _controller.questionIds,
+        totalActivities: widget.totalActivities,
+      );
+    }
+
     return widget.progressController.startActivityAttempt(
       categoryId: widget.category.id,
       lessonId: widget.category.lessonId ?? widget.category.id,
-      activityId: widget.activity.id,
+      activityId: widget.activity!.id,
       questionIds: _controller.questionIds,
       totalActivities: widget.totalActivities,
     );
@@ -914,8 +979,9 @@ class _ResultView extends StatelessWidget {
 }
 
 class _QuizLoadError extends StatelessWidget {
-  const _QuizLoadError({required this.onRetry});
+  const _QuizLoadError({required this.message, required this.onRetry});
 
+  final String message;
   final VoidCallback onRetry;
 
   @override
@@ -927,7 +993,7 @@ class _QuizLoadError extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              AppStrings.contentLoadError,
+              message,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),

@@ -23,6 +23,7 @@ void main() {
           completedAt: now,
           updatedAt: now,
           activities: const <String, ActivityProgressRecord>{},
+          exams: const <String, ExamProgressRecord>{},
         );
 
         final data = record.toFirestore();
@@ -67,12 +68,24 @@ void main() {
         completedAt: now.toDate(),
         updatedAt: now.toDate(),
       );
+      final exam = ExamProgressRecord(
+        examId: 'relations_violence_final_exam',
+        status: ActivityProgressStatus.completed,
+        attemptCount: 1,
+        bestCorrectAnswers: 12,
+        bestTotalQuestions: 15,
+        bestPercentage: 80,
+        lastAttemptAt: now.toDate(),
+        completedAt: now.toDate(),
+        updatedAt: now.toDate(),
+      );
 
       final record = CategoryProgressRecord.fromMap(
         data,
         activities: <String, ActivityProgressRecord>{
           activity.activityId: activity,
         },
+        exams: <String, ExamProgressRecord>{exam.examId: exam},
       );
 
       expect(record.status, CategoryProgressStatus.inProgress);
@@ -84,6 +97,7 @@ void main() {
         record.activities['relations_violence_activity_01']?.bestPercentage,
         80,
       );
+      expect(record.exams['relations_violence_final_exam']?.attemptCount, 1);
       expect(record.completedAt, isNull);
     });
   });
@@ -112,6 +126,30 @@ void main() {
     });
   });
 
+  group('ExamProgressRecord', () {
+    test('serializes best score fields for the final exam', () {
+      final now = DateTime.utc(2026, 8, 21, 20, 30);
+      final record = ExamProgressRecord(
+        examId: 'relations_violence_final_exam',
+        status: ActivityProgressStatus.completed,
+        attemptCount: 2,
+        bestCorrectAnswers: 14,
+        bestTotalQuestions: 15,
+        bestPercentage: 93,
+        lastAttemptAt: now,
+        completedAt: now,
+        updatedAt: now,
+      );
+
+      final data = record.toFirestore();
+
+      expect(data['examId'], 'relations_violence_final_exam');
+      expect(data['status'], 'completed');
+      expect(data['attemptCount'], 2);
+      expect(data['bestPercentage'], 93);
+    });
+  });
+
   group('QuizAttempt', () {
     test('serializes attempt identity, question order and answers', () {
       final now = DateTime.utc(2026, 8, 21, 20, 30);
@@ -120,6 +158,7 @@ void main() {
         type: QuizAttemptType.activity,
         categoryId: 'relations_violence_digital',
         activityId: 'relations_violence_activity_01',
+        examId: null,
         questionIds: const <String>['question_07', 'question_02'],
         answers: <CategoryProgressAnswer>[
           CategoryProgressAnswer(
@@ -140,6 +179,7 @@ void main() {
 
       expect(data['type'], 'activity');
       expect(data['activityId'], 'relations_violence_activity_01');
+      expect(data['examId'], isNull);
       expect(data['questionIds'], <String>['question_07', 'question_02']);
       expect(data['answers'], contains('question_07'));
       expect(
@@ -157,6 +197,7 @@ void main() {
           'type': 'activity',
           'categoryId': 'relations_violence_digital',
           'activityId': 'relations_violence_activity_01',
+          'examId': null,
           'questionIds': <String>['question_01'],
           'answers': <String, dynamic>{
             'question_01': <String, dynamic>{
@@ -176,9 +217,36 @@ void main() {
 
       expect(attempt.id, 'attempt_abc');
       expect(attempt.type, QuizAttemptType.activity);
+      expect(attempt.activityId, 'relations_violence_activity_01');
+      expect(attempt.examId, isNull);
       expect(attempt.answers.single.questionId, 'question_01');
       expect(attempt.answers.single.answer, 'option_safe');
       expect(attempt.percentage, 100);
+    });
+
+    test('serializes an exam attempt without activity id', () {
+      final now = DateTime.utc(2026, 8, 21, 20, 30);
+      final attempt = QuizAttempt(
+        id: 'attempt_exam',
+        type: QuizAttemptType.exam,
+        categoryId: 'relations_violence_digital',
+        activityId: null,
+        examId: 'relations_violence_final_exam',
+        questionIds: const <String>['question_01', 'question_02'],
+        answers: const <CategoryProgressAnswer>[],
+        correctAnswers: 0,
+        totalQuestions: 2,
+        percentage: 0,
+        startedAt: now,
+        completedAt: null,
+      );
+
+      final data = attempt.toFirestore();
+
+      expect(data['type'], 'exam');
+      expect(data['activityId'], isNull);
+      expect(data['examId'], 'relations_violence_final_exam');
+      expect(data['questionIds'], <String>['question_01', 'question_02']);
     });
   });
 }

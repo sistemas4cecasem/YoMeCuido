@@ -42,12 +42,41 @@ service cloud.firestore {
     //   - completedAt: timestamp|null (required)
     //   - updatedAt: timestamp (required)
     //
+    // Subcollection: users/{uid}/categoryProgress/{categoryId}/exams
+    // Document ID: examId
+    // Fields:
+    //   - examId: string (required, must match document ID)
+    //   - status: string (required: notStarted, inProgress, completed)
+    //   - attemptCount: int (required, 0..1000, cannot decrease)
+    //   - bestCorrectAnswers: int (required, 0..100)
+    //   - bestTotalQuestions: int (required, 0..100)
+    //   - bestPercentage: int (required, 0..100)
+    //   - lastAttemptAt: timestamp|null (required)
+    //   - completedAt: timestamp|null (required)
+    //   - updatedAt: timestamp (required)
+    //
     // Subcollection: activities/{activityId}/attempts
     // Document ID: generated attemptId
     // Fields:
-    //   - type: string (required: activity, exam)
+    //   - type: string (required: activity)
     //   - categoryId: string (required)
     //   - activityId: string (required)
+    //   - examId: null (required)
+    //   - questionIds: list (required, max 100)
+    //   - answers: map (required, max 100 question keys)
+    //   - correctAnswers: int (required, 0..totalQuestions)
+    //   - totalQuestions: int (required, 0..100)
+    //   - percentage: int (required, 0..100)
+    //   - startedAt: timestamp (required, immutable after create)
+    //   - completedAt: timestamp|null (required)
+    //
+    // Subcollection: exams/{examId}/attempts
+    // Document ID: generated attemptId
+    // Fields:
+    //   - type: string (required: exam)
+    //   - categoryId: string (required)
+    //   - activityId: null (required)
+    //   - examId: string (required)
     //   - questionIds: list (required, max 100)
     //   - answers: map (required, max 100 question keys)
     //   - correctAnswers: int (required, 0..totalQuestions)
@@ -232,13 +261,25 @@ service cloud.firestore {
       ];
     }
 
-    function hasValidActivityProgress(activityId) {
-      return request.resource.data.keys().hasOnly(activityProgressFields())
-        && request.resource.data.keys().hasAll(activityProgressFields())
-        && request.resource.data.activityId is string
-        && request.resource.data.activityId == activityId
-        && request.resource.data.activityId.size() > 0
-        && request.resource.data.activityId.size() <= 120
+    function examProgressFields() {
+      return [
+        'examId',
+        'status',
+        'attemptCount',
+        'bestCorrectAnswers',
+        'bestTotalQuestions',
+        'bestPercentage',
+        'lastAttemptAt',
+        'completedAt',
+        'updatedAt',
+      ];
+    }
+
+    function hasValidProgressSummary(examOrActivityIdField, targetId) {
+      return request.resource.data[examOrActivityIdField] is string
+        && request.resource.data[examOrActivityIdField] == targetId
+        && request.resource.data[examOrActivityIdField].size() > 0
+        && request.resource.data[examOrActivityIdField].size() <= 120
         && request.resource.data.status in [
           'notStarted',
           'inProgress',
@@ -271,6 +312,18 @@ service cloud.firestore {
           )
         )
         && request.resource.data.updatedAt is timestamp;
+    }
+
+    function hasValidActivityProgress(activityId) {
+      return request.resource.data.keys().hasOnly(activityProgressFields())
+        && request.resource.data.keys().hasAll(activityProgressFields())
+        && hasValidProgressSummary('activityId', activityId);
+    }
+
+    function hasValidExamProgress(examId) {
+      return request.resource.data.keys().hasOnly(examProgressFields())
+        && request.resource.data.keys().hasAll(examProgressFields())
+        && hasValidProgressSummary('examId', examId);
     }
 
     function hasValidActivityAttemptCountOnCreate() {
@@ -312,6 +365,7 @@ service cloud.firestore {
         'type',
         'categoryId',
         'activityId',
+        'examId',
         'questionIds',
         'answers',
         'correctAnswers',
@@ -322,14 +376,11 @@ service cloud.firestore {
       ];
     }
 
-    function hasValidAttempt(categoryId, activityId) {
+    function hasValidBaseAttempt(categoryId) {
       return request.resource.data.keys().hasOnly(attemptFields())
         && request.resource.data.keys().hasAll(attemptFields())
-        && request.resource.data.type in ['activity', 'exam']
         && request.resource.data.categoryId is string
         && request.resource.data.categoryId == categoryId
-        && request.resource.data.activityId is string
-        && request.resource.data.activityId == activityId
         && request.resource.data.questionIds is list
         && request.resource.data.questionIds.size() > 0
         && request.resource.data.questionIds.size() <= 100
@@ -353,6 +404,26 @@ service cloud.firestore {
           request.resource.data.completedAt == null
           || request.resource.data.completedAt is timestamp
         );
+    }
+
+    function hasValidActivityAttempt(categoryId, activityId) {
+      return hasValidBaseAttempt(categoryId)
+        && request.resource.data.type == 'activity'
+        && request.resource.data.activityId is string
+        && request.resource.data.activityId == activityId
+        && request.resource.data.activityId.size() > 0
+        && request.resource.data.activityId.size() <= 120
+        && request.resource.data.examId == null;
+    }
+
+    function hasValidExamAttempt(categoryId, examId) {
+      return hasValidBaseAttempt(categoryId)
+        && request.resource.data.type == 'exam'
+        && request.resource.data.activityId == null
+        && request.resource.data.examId is string
+        && request.resource.data.examId == examId
+        && request.resource.data.examId.size() > 0
+        && request.resource.data.examId.size() <= 120;
     }
 
     function hasValidAttemptTimestampsOnCreate() {
@@ -406,11 +477,39 @@ service cloud.firestore {
             allow get, list: if isOwner(userId) && userProfileExists(userId);
             allow create: if isOwner(userId)
               && userProfileExists(userId)
-              && hasValidAttempt(categoryId, activityId)
+              && hasValidActivityAttempt(categoryId, activityId)
               && hasValidAttemptTimestampsOnCreate();
             allow update: if isOwner(userId)
               && userProfileExists(userId)
-              && hasValidAttempt(categoryId, activityId)
+              && hasValidActivityAttempt(categoryId, activityId)
+              && hasValidAttemptTimestampsOnUpdate();
+            allow delete: if false;
+          }
+        }
+
+        match /exams/{examId} {
+          allow get, list: if isOwner(userId) && userProfileExists(userId);
+          allow create: if isOwner(userId)
+            && userProfileExists(userId)
+            && hasValidExamProgress(examId)
+            && hasValidActivityAttemptCountOnCreate()
+            && hasValidActivityTimestampsOnCreate();
+          allow update: if isOwner(userId)
+            && userProfileExists(userId)
+            && hasValidExamProgress(examId)
+            && hasValidActivityAttemptCountOnUpdate()
+            && hasValidActivityTimestampsOnUpdate();
+          allow delete: if false;
+
+          match /attempts/{attemptId} {
+            allow get, list: if isOwner(userId) && userProfileExists(userId);
+            allow create: if isOwner(userId)
+              && userProfileExists(userId)
+              && hasValidExamAttempt(categoryId, examId)
+              && hasValidAttemptTimestampsOnCreate();
+            allow update: if isOwner(userId)
+              && userProfileExists(userId)
+              && hasValidExamAttempt(categoryId, examId)
               && hasValidAttemptTimestampsOnUpdate();
             allow delete: if false;
           }

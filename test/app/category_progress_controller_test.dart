@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/data/models/category_progress.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/quiz_result.dart';
 import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -278,6 +279,7 @@ void main() {
             completedAt: null,
             updatedAt: now,
             activities: const <String, ActivityProgressRecord>{},
+            exams: const <String, ExamProgressRecord>{},
           ),
         ],
       );
@@ -286,6 +288,120 @@ void main() {
         _activityId,
       ]);
     });
+
+    test(
+      'completes exam attempts without marking a new activity as completed',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final attemptId = controller.startExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+
+        await controller.recordAnswer(
+          categoryId: _categoryId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          attemptId: attemptId,
+          questionId: 'question_01',
+          answer: 'safe_option',
+          isCorrect: true,
+        );
+        await controller.completeExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final snapshot = controller.snapshotFor(_categoryId);
+        final examProgress = controller.examProgressFor(
+          categoryId: _categoryId,
+          examId: FinalExamConfigs.relationsViolence.id,
+        );
+        final attempt = controller.attemptFor(attemptId);
+
+        expect(attempt?.type, QuizAttemptType.exam);
+        expect(attempt?.activityId, isNull);
+        expect(attempt?.examId, FinalExamConfigs.relationsViolence.id);
+        expect(snapshot.completedActivityIds, isEmpty);
+        expect(examProgress.status, ActivityProgressStatus.completed);
+        expect(examProgress.bestPercentage, 50);
+        expect(
+          persistence.startExamAttemptCalls.single.examId,
+          attempt?.examId,
+        );
+        expect(persistence.answerCalls.single.activityId, isNull);
+        expect(persistence.answerCalls.single.examId, attempt?.examId);
+        expect(persistence.completeExamCalls.single.examId, attempt?.examId);
+      },
+    );
+
+    test(
+      'keeps exam retry history and preserves the best exam percentage',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final firstAttemptId = controller.startExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await controller.completeExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          attemptId: firstAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final secondAttemptId = controller.startExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          questionIds: const <String>['question_03', 'question_04'],
+          totalActivities: 6,
+        );
+        await controller.completeExamAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          examId: FinalExamConfigs.relationsViolence.id,
+          attemptId: secondAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final examProgress = controller.examProgressFor(
+          categoryId: _categoryId,
+          examId: FinalExamConfigs.relationsViolence.id,
+        );
+
+        expect(firstAttemptId, isNot(secondAttemptId));
+        expect(examProgress.attemptCount, 2);
+        expect(examProgress.bestCorrectAnswers, 2);
+        expect(examProgress.bestPercentage, 100);
+        expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
+        expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
+        expect(persistence.startExamAttemptCalls, hasLength(2));
+        expect(persistence.completeExamCalls, hasLength(2));
+      },
+    );
 
     test(
       'empty persisted progress leaves controller empty but loaded',
@@ -427,16 +543,30 @@ class _StartAttemptCall {
   final List<String> questionIds;
 }
 
+class _StartExamAttemptCall {
+  const _StartExamAttemptCall({
+    required this.examId,
+    required this.attemptId,
+    required this.questionIds,
+  });
+
+  final String examId;
+  final String attemptId;
+  final List<String> questionIds;
+}
+
 class _AnswerCall {
   const _AnswerCall({
     required this.activityId,
+    required this.examId,
     required this.attemptId,
     required this.questionId,
     required this.answer,
     required this.isCorrect,
   });
 
-  final String activityId;
+  final String? activityId;
+  final String? examId;
   final String attemptId;
   final String questionId;
   final String answer;
@@ -459,11 +589,29 @@ class _CompleteCall {
   final int percentage;
 }
 
+class _CompleteExamCall {
+  const _CompleteExamCall({
+    required this.examId,
+    required this.attemptId,
+    required this.correctAnswers,
+    required this.totalQuestions,
+    required this.percentage,
+  });
+
+  final String examId;
+  final String attemptId;
+  final int correctAnswers;
+  final int totalQuestions;
+  final int percentage;
+}
+
 class _FakeProgressPersistence implements CategoryProgressPersistence {
   final theoryPageCalls = <_TheoryPageCall>[];
   final startAttemptCalls = <_StartAttemptCall>[];
+  final startExamAttemptCalls = <_StartExamAttemptCall>[];
   final answerCalls = <_AnswerCall>[];
   final completeCalls = <_CompleteCall>[];
+  final completeExamCalls = <_CompleteExamCall>[];
   final fetchCalls = <String>[];
   final recordsByUid = <String, List<CategoryProgressRecord>>{};
   final pendingFetchUids = <String>{};
@@ -473,8 +621,10 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   int get writeCallCount =>
       theoryPageCalls.length +
       startAttemptCalls.length +
+      startExamAttemptCalls.length +
       answerCalls.length +
-      completeCalls.length;
+      completeCalls.length +
+      completeExamCalls.length;
 
   void completeFetch(String uid, List<CategoryProgressRecord> records) {
     final pendingFetches = _pendingFetches[uid];
@@ -536,10 +686,31 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   }
 
   @override
+  Future<void> startExamAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required String attemptId,
+    required List<String> questionIds,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {
+    startExamAttemptCalls.add(
+      _StartExamAttemptCall(
+        examId: examId,
+        attemptId: attemptId,
+        questionIds: questionIds,
+      ),
+    );
+  }
+
+  @override
   Future<void> recordAttemptAnswer({
     required String uid,
     required String categoryId,
-    required String activityId,
+    String? activityId,
+    String? examId,
     required String attemptId,
     required String questionId,
     required String answer,
@@ -548,6 +719,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     answerCalls.add(
       _AnswerCall(
         activityId: activityId,
+        examId: examId,
         attemptId: attemptId,
         questionId: questionId,
         answer: answer,
@@ -572,6 +744,30 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     completeCalls.add(
       _CompleteCall(
         activityId: activityId,
+        attemptId: attemptId,
+        correctAnswers: correctAnswers,
+        totalQuestions: totalQuestions,
+        percentage: percentage,
+      ),
+    );
+  }
+
+  @override
+  Future<void> completeExamAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required String attemptId,
+    required int correctAnswers,
+    required int totalQuestions,
+    required int percentage,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {
+    completeExamCalls.add(
+      _CompleteExamCall(
+        examId: examId,
         attemptId: attemptId,
         correctAnswers: correctAnswers,
         totalQuestions: totalQuestions,
@@ -611,6 +807,7 @@ CategoryProgressRecord _completedRecord({String categoryId = _categoryId}) {
         updatedAt: now,
       ),
     },
+    exams: const <String, ExamProgressRecord>{},
   );
 }
 
@@ -629,5 +826,6 @@ CategoryProgressRecord _inProgressRecord({required String categoryId}) {
     completedAt: null,
     updatedAt: now,
     activities: const <String, ActivityProgressRecord>{},
+    exams: const <String, ExamProgressRecord>{},
   );
 }

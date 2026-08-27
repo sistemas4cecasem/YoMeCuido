@@ -150,12 +150,76 @@ class ActivityProgressRecord {
   }
 }
 
+class ExamProgressRecord {
+  const ExamProgressRecord({
+    required this.examId,
+    required this.status,
+    required this.attemptCount,
+    required this.bestCorrectAnswers,
+    required this.bestTotalQuestions,
+    required this.bestPercentage,
+    required this.lastAttemptAt,
+    required this.completedAt,
+    required this.updatedAt,
+  });
+
+  factory ExamProgressRecord.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final data = snapshot.data();
+    if (data == null) {
+      throw const FormatException('Exam progress document is empty.');
+    }
+
+    return ExamProgressRecord.fromMap(data);
+  }
+
+  factory ExamProgressRecord.fromMap(Map<String, dynamic> data) {
+    return ExamProgressRecord(
+      examId: _readString(data, 'examId'),
+      status: ActivityProgressStatus.fromFirestore(_readString(data, 'status')),
+      attemptCount: _readInt(data, 'attemptCount'),
+      bestCorrectAnswers: _readInt(data, 'bestCorrectAnswers'),
+      bestTotalQuestions: _readInt(data, 'bestTotalQuestions'),
+      bestPercentage: _readInt(data, 'bestPercentage'),
+      lastAttemptAt: _readNullableTimestamp(data, 'lastAttemptAt'),
+      completedAt: _readNullableTimestamp(data, 'completedAt'),
+      updatedAt: _readTimestamp(data, 'updatedAt'),
+    );
+  }
+
+  final String examId;
+  final ActivityProgressStatus status;
+  final int attemptCount;
+  final int bestCorrectAnswers;
+  final int bestTotalQuestions;
+  final int bestPercentage;
+  final DateTime? lastAttemptAt;
+  final DateTime? completedAt;
+  final DateTime updatedAt;
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'examId': examId,
+      'status': status.firestoreValue,
+      'attemptCount': attemptCount,
+      'bestCorrectAnswers': bestCorrectAnswers,
+      'bestTotalQuestions': bestTotalQuestions,
+      'bestPercentage': bestPercentage,
+      'lastAttemptAt': _nullableTimestamp(lastAttemptAt),
+      'completedAt': _nullableTimestamp(completedAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
+    };
+  }
+}
+
 class QuizAttempt {
   const QuizAttempt({
     required this.id,
     required this.type,
     required this.categoryId,
     required this.activityId,
+    required this.examId,
     required this.questionIds,
     required this.answers,
     required this.correctAnswers,
@@ -198,7 +262,8 @@ class QuizAttempt {
       id: id,
       type: QuizAttemptType.fromFirestore(_readString(data, 'type')),
       categoryId: _readString(data, 'categoryId'),
-      activityId: _readString(data, 'activityId'),
+      activityId: _readNullableString(data, 'activityId'),
+      examId: _readNullableString(data, 'examId'),
       questionIds: _readStringList(data, 'questionIds'),
       answers: List<CategoryProgressAnswer>.unmodifiable(answers),
       correctAnswers: _readInt(data, 'correctAnswers'),
@@ -212,7 +277,8 @@ class QuizAttempt {
   final String id;
   final QuizAttemptType type;
   final String categoryId;
-  final String activityId;
+  final String? activityId;
+  final String? examId;
   final List<String> questionIds;
   final List<CategoryProgressAnswer> answers;
   final int correctAnswers;
@@ -226,6 +292,7 @@ class QuizAttempt {
       'type': type.firestoreValue,
       'categoryId': categoryId,
       'activityId': activityId,
+      'examId': examId,
       'questionIds': questionIds,
       'answers': {
         for (final answer in answers) answer.questionId: answer.toFirestore(),
@@ -253,25 +320,34 @@ class CategoryProgressRecord {
     required this.completedAt,
     required this.updatedAt,
     required this.activities,
+    required this.exams,
   });
 
   factory CategoryProgressRecord.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot, {
     Map<String, ActivityProgressRecord> activities =
         const <String, ActivityProgressRecord>{},
+    Map<String, ExamProgressRecord> exams =
+        const <String, ExamProgressRecord>{},
   }) {
     final data = snapshot.data();
     if (data == null) {
       throw const FormatException('Category progress document is empty.');
     }
 
-    return CategoryProgressRecord.fromMap(data, activities: activities);
+    return CategoryProgressRecord.fromMap(
+      data,
+      activities: activities,
+      exams: exams,
+    );
   }
 
   factory CategoryProgressRecord.fromMap(
     Map<String, dynamic> data, {
     Map<String, ActivityProgressRecord> activities =
         const <String, ActivityProgressRecord>{},
+    Map<String, ExamProgressRecord> exams =
+        const <String, ExamProgressRecord>{},
   }) {
     return CategoryProgressRecord(
       categoryId: _readString(data, 'categoryId'),
@@ -286,6 +362,7 @@ class CategoryProgressRecord {
       completedAt: _readNullableTimestamp(data, 'completedAt'),
       updatedAt: _readTimestamp(data, 'updatedAt'),
       activities: Map<String, ActivityProgressRecord>.unmodifiable(activities),
+      exams: Map<String, ExamProgressRecord>.unmodifiable(exams),
     );
   }
 
@@ -301,6 +378,7 @@ class CategoryProgressRecord {
   final DateTime? completedAt;
   final DateTime updatedAt;
   final Map<String, ActivityProgressRecord> activities;
+  final Map<String, ExamProgressRecord> exams;
 
   Map<String, dynamic> toFirestore() {
     return {
@@ -325,6 +403,17 @@ Timestamp? _nullableTimestamp(DateTime? value) {
 
 String _readString(Map<String, dynamic> data, String key) {
   final value = data[key];
+  if (value is String && value.trim().isNotEmpty) {
+    return value;
+  }
+  throw FormatException('Invalid category progress "$key".');
+}
+
+String? _readNullableString(Map<String, dynamic> data, String key) {
+  final value = data[key];
+  if (value == null) {
+    return null;
+  }
   if (value is String && value.trim().isNotEmpty) {
     return value;
   }

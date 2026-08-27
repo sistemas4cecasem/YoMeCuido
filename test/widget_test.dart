@@ -3,6 +3,8 @@ import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/category_progress.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -18,12 +20,15 @@ void main() {
     repository = _FakeContentRepository();
   });
 
-  Future<void> pumpApp(WidgetTester tester) async {
+  Future<void> pumpApp(
+    WidgetTester tester, {
+    CategoryProgressController? progressController,
+  }) async {
     await tester.pumpWidget(
       YoMeCuidoApp(
         contentRepository: repository,
         authRepository: const _SignedInAuthRepository(),
-        progressController: CategoryProgressController(),
+        progressController: progressController ?? CategoryProgressController(),
       ),
     );
     await tester.pumpAndSettle();
@@ -335,7 +340,8 @@ void main() {
     expect(find.text('Actividad 4'), findsOneWidget);
     expect(find.text('Actividad 5'), findsOneWidget);
     expect(find.text('Actividad 6'), findsOneWidget);
-    expect(find.text(AppStrings.finalActivityBlock), findsNothing);
+    expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
+    expect(find.text(AppStrings.finalExamLocked), findsOneWidget);
     expect(find.text(AppStrings.comingSoon), findsNWidgets(5));
 
     await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
@@ -348,6 +354,53 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets(
+    'el examen final se desbloquea al completar las seis actividades exactas',
+    (tester) async {
+      final progressController = CategoryProgressController();
+      progressController.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _completedActivitiesRecord(repository.activities),
+        ],
+      );
+
+      await pumpApp(tester, progressController: progressController);
+      await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Relaciones y violencia digital'));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
+      await tester.tap(find.text(AppStrings.activitiesTitle));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.text(AppStrings.finalExamTitle));
+
+      expect(find.text(AppStrings.finalExamLocked), findsNothing);
+      expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
+
+      await tester.tap(find.text(AppStrings.finalExamTitle));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(
+          'El banco actual tiene 12 preguntas. '
+          'El examen final necesita 15 para iniciar.',
+        ),
+        findsOneWidget,
+      );
+      expect(
+        progressController
+            .examProgressFor(
+              categoryId: FinalExamConfigs.relationsViolence.categoryId,
+              examId: FinalExamConfigs.relationsViolence.id,
+            )
+            .attemptCount,
+        0,
+      );
+    },
+  );
 
   testWidgets('volver desde actividades abre el detalle de categorÃ­a', (
     tester,
@@ -446,6 +499,47 @@ Finder _firstVisibleText(WidgetTester tester, List<Finder> candidates) {
   }
 
   fail('No visible answer option matched the expected candidates.');
+}
+
+CategoryProgressRecord _completedActivitiesRecord(
+  List<LearningActivity> activities,
+) {
+  final now = DateTime.utc(2026, 8, 27, 12);
+  final activityRecords = <String, ActivityProgressRecord>{
+    for (final activity in activities)
+      activity.id: ActivityProgressRecord(
+        activityId: activity.id,
+        status: ActivityProgressStatus.completed,
+        attemptCount: 1,
+        bestCorrectAnswers: 2,
+        bestTotalQuestions: 2,
+        bestPercentage: 100,
+        lastAttemptAt: now,
+        completedAt: now,
+        updatedAt: now,
+      ),
+  };
+
+  return CategoryProgressRecord(
+    categoryId: FinalExamConfigs.relationsViolence.categoryId,
+    lessonId: 'relations_violence',
+    status: CategoryProgressStatus.completed,
+    viewedLessonPageIds: const <String>[
+      'what_is_digital_violence',
+      'control_is_not_care',
+      'consent_and_intimate_content',
+      'how_to_act',
+    ],
+    completedActivityIds: activities.map((activity) => activity.id).toList(),
+    totalLessonPages: 4,
+    totalActivities: activities.length,
+    startedAt: now,
+    lastActivityAt: now,
+    completedAt: now,
+    updatedAt: now,
+    activities: activityRecords,
+    exams: const <String, ExamProgressRecord>{},
+  );
 }
 
 class _SignedInAuthRepository implements AuthRepository {

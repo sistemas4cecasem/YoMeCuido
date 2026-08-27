@@ -3,6 +3,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/category_progress.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -30,7 +31,7 @@ void main() {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (context) => QuizScreen(
+                    builder: (context) => QuizScreen.activity(
                       category: _category,
                       activity: _activity,
                       contentRepository: repository,
@@ -49,6 +50,25 @@ void main() {
     );
 
     await tester.tap(find.text('Abrir cuestionario'));
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> pumpExam(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.data(),
+        home: QuizScreen.exam(
+          category: _category,
+          exam: FinalExamConfigs.relationsViolence,
+          contentRepository: repository,
+          progressController: progressController,
+          shuffleQuestions: false,
+          shuffleOptions: false,
+          totalActivities: 6,
+        ),
+      ),
+    );
+
     await tester.pumpAndSettle();
   }
 
@@ -129,6 +149,42 @@ void main() {
     expect(find.text(AppStrings.contentLoadError), findsOneWidget);
     expect(find.text(AppStrings.retry), findsOneWidget);
     expect(find.text('Pregunta 1 de 0'), findsNothing);
+  });
+
+  testWidgets(
+    'muestra estado insuficiente si el examen no tiene 15 preguntas',
+    (tester) async {
+      repository.quizQuestions = _buildQuizQuestions(12);
+
+      await pumpExam(tester);
+
+      expect(
+        find.text(
+          'El banco actual tiene 12 preguntas. '
+          'El examen final necesita 15 para iniciar.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text(AppStrings.retry), findsOneWidget);
+      expect(find.text('Pregunta 1 de 15'), findsNothing);
+    },
+  );
+
+  testWidgets('inicia examen final con 15 preguntas seleccionadas', (
+    tester,
+  ) async {
+    repository.quizQuestions = _buildQuizQuestions(18);
+
+    await pumpExam(tester);
+
+    expect(find.text('Pregunta 1 de 15'), findsOneWidget);
+
+    final examProgress = progressController.examProgressFor(
+      categoryId: _category.id,
+      examId: FinalExamConfigs.relationsViolence.id,
+    );
+    expect(examProgress.status, ActivityProgressStatus.inProgress);
+    expect(examProgress.attemptCount, 1);
   });
 
   testWidgets(
