@@ -61,11 +61,14 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
       );
       questionCounts[activity.id] = questions.length;
     }
+    final exam = await widget.contentRepository.loadFinalExamConfig(
+      widget.category.id,
+    );
 
     return _ActivitiesMenuData(
       activities: sortedActivities,
       questionCountsByActivityId: questionCounts,
-      exam: FinalExamConfigs.forCategory(widget.category.id),
+      exam: exam,
     );
   }
 

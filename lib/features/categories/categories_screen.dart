@@ -57,7 +57,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError || !snapshot.hasData) {
+          if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data!.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
               debugPrint('Content load error: ${snapshot.error}');
             }

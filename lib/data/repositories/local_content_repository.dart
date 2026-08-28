@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../models/category.dart';
+import '../models/final_exam.dart';
 import '../models/learning_activity.dart';
 import '../models/lesson_page.dart';
 import '../models/quiz_question.dart';
@@ -75,6 +76,13 @@ class LocalContentRepository implements ContentRepository {
               (activityId == null || question.activityId == activityId);
         })
         .toList(growable: false);
+  }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    _validateSupportedCategory(categoryId);
+
+    return FinalExamConfigs.forCategory(categoryId);
   }
 
   Future<List<T>> _loadList<T>({

@@ -1,4 +1,5 @@
 import '../models/category.dart';
+import '../models/final_exam.dart';
 import '../models/learning_activity.dart';
 import '../models/lesson_page.dart';
 import '../models/quiz_question.dart';
@@ -14,6 +15,8 @@ abstract class ContentRepository {
     String categoryId, {
     String? activityId,
   });
+
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId);
 }
 
 class ContentLoadException implements Exception {

@@ -1,4 +1,5 @@
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
@@ -190,9 +191,21 @@ void main() {
       expect(sextortion.isCorrectAnswer('sextor'), isFalse);
     });
 
+    test('loads final exam configuration for the supported category', () async {
+      final exam = await repository.loadFinalExamConfig(
+        LocalContentRepository.relationsViolenceCategoryId,
+      );
+
+      expect(exam, FinalExamConfigs.relationsViolence);
+    });
+
     test('throws a controlled error for unsupported content', () async {
       expect(
         () => repository.loadLessonPages('locked_category'),
+        throwsA(isA<ContentLoadException>()),
+      );
+      expect(
+        () => repository.loadFinalExamConfig('locked_category'),
         throwsA(isA<ContentLoadException>()),
       );
     });

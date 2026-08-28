@@ -5,7 +5,7 @@ import '../data/repositories/auth_repository.dart';
 import '../data/repositories/category_progress_repository.dart';
 import '../data/repositories/content_repository.dart';
 import '../data/repositories/firebase_auth_repository.dart';
-import '../data/repositories/local_content_repository.dart';
+import '../data/repositories/firestore_content_repository.dart';
 import '../features/auth/auth_gate.dart';
 import 'app_router.dart';
 import 'app_strings.dart';
@@ -27,7 +27,7 @@ class YoMeCuidoApp extends StatelessWidget {
         );
 
     return YoMeCuidoApp._(
-      contentRepository: contentRepository ?? LocalContentRepository(),
+      contentRepository: contentRepository ?? FirestoreContentRepository(),
       authRepository: resolvedAuthRepository,
       progressController: resolvedProgressController,
       key: key,

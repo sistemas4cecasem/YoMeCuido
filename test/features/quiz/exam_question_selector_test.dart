@@ -211,6 +211,11 @@ class _FakeExamContentRepository implements ContentRepository {
     requestedActivityId = activityId;
     return questions;
   }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    return FinalExamConfigs.forCategory(categoryId);
+  }
 }
 
 void _expectValidSelection(List<QuizQuestion> selected) {

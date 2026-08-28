@@ -444,6 +444,11 @@ class _FakeQuizRepository implements ContentRepository {
   }) async {
     return quizQuestions;
   }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    return FinalExamConfigs.forCategory(categoryId);
+  }
 }
 
 const _activity = LearningActivity(

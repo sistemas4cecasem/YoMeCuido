@@ -6,6 +6,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -385,5 +386,10 @@ class _EmptyContentRepository implements ContentRepository {
     String? activityId,
   }) async {
     return const <QuizQuestion>[];
+  }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    return null;
   }
 }

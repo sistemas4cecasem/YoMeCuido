@@ -4,6 +4,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_colors.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -37,6 +38,9 @@ void main() {
       lessonPages: lessonPages,
       activities: activities,
       quizQuestions: quizQuestions,
+      examConfig: await localRepository.loadFinalExamConfig(
+        LocalContentRepository.relationsViolenceCategoryId,
+      ),
     );
   });
 
@@ -288,12 +292,14 @@ class _CachedContentRepository implements ContentRepository {
     required this.lessonPages,
     required this.activities,
     required this.quizQuestions,
+    required this.examConfig,
   });
 
   final List<Category> categories;
   final List<LessonPage> lessonPages;
   final List<LearningActivity> activities;
   final List<QuizQuestion> quizQuestions;
+  final FinalExamConfig? examConfig;
 
   @override
   Future<List<Category>> loadCategories() async {
@@ -321,6 +327,11 @@ class _CachedContentRepository implements ContentRepository {
               (activityId == null || question.activityId == activityId);
         })
         .toList(growable: false);
+  }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    return examConfig?.categoryId == categoryId ? examConfig : null;
   }
 }
 

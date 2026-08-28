@@ -331,6 +331,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(repository.loadActivitiesCalls, 1);
+    expect(repository.loadFinalExamConfigCalls, 1);
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
     expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
     expect(find.text(AppStrings.thirdActivityBlock), findsOneWidget);
@@ -591,6 +592,7 @@ class _FakeContentRepository implements ContentRepository {
   int loadLessonPagesCalls = 0;
   int loadActivitiesCalls = 0;
   int loadQuizQuestionsCalls = 0;
+  int loadFinalExamConfigCalls = 0;
 
   final categories = const <Category>[
     Category(
@@ -800,6 +802,12 @@ class _FakeContentRepository implements ContentRepository {
               (activityId == null || question.activityId == activityId);
         })
         .toList(growable: false);
+  }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    loadFinalExamConfigCalls += 1;
+    return FinalExamConfigs.forCategory(categoryId);
   }
 }
 
