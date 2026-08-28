@@ -122,27 +122,27 @@ void main() {
     await _openQuiz(tester);
     _expectNoFlutterException(tester, reason: 'quiz con texto escalado');
 
-    for (var activity = 1; activity <= 12; activity += 1) {
-      await _answerActivity(tester, activity);
-      _expectNoFlutterException(tester, reason: 'actividad $activity');
+    for (var question = 1; question <= 10; question += 1) {
+      await _answerActivity(tester, question);
+      _expectNoFlutterException(tester, reason: 'pregunta $question');
 
-      if (activity == 6 || activity == 9) {
+      if (question == 6 || question == 9) {
         expect(tester.testTextInput.isVisible, isFalse);
       }
 
-      await tester.tap(
-        find.text(
-          activity == 12 ? AppStrings.seeResult : AppStrings.nextActivity,
-        ),
+      final nextButton = find.text(
+        question == 10 ? AppStrings.seeResult : AppStrings.nextActivity,
       );
-      if (activity == 12) {
+      await tester.ensureVisible(nextButton);
+      await tester.tap(nextButton);
+      if (question == 10) {
         await _pumpUntilFound(tester, find.text(AppStrings.lessonCompleted));
       } else {
         await _pumpRouteFrame(tester);
       }
       _expectNoFlutterException(
         tester,
-        reason: 'después de avanzar desde actividad $activity',
+        reason: 'después de avanzar desde pregunta $question',
       );
     }
 
@@ -215,9 +215,9 @@ Future<void> _openDetail(WidgetTester tester) async {
 Future<void> _openLessonLastPage(WidgetTester tester) async {
   await tester.ensureVisible(find.text(AppStrings.theoryTitle));
   await tester.tap(find.text(AppStrings.theoryTitle));
-  await _pumpUntilFound(tester, find.text('1 de 4'));
+  await _pumpUntilFound(tester, find.text('1 de 6'));
 
-  for (var index = 0; index < 3; index += 1) {
+  for (var index = 0; index < 5; index += 1) {
     await tester.tap(find.text(AppStrings.next));
     await _pumpRouteFrame(tester);
   }
@@ -225,9 +225,10 @@ Future<void> _openLessonLastPage(WidgetTester tester) async {
 
 Future<void> _openQuiz(WidgetTester tester) async {
   await tester.tap(find.text(AppStrings.startActivities));
-  await _pumpUntilFound(tester, find.text(AppStrings.firstActivityBlock));
-  await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
-  await tester.tap(find.text(AppStrings.firstActivityBlock));
+  const firstActivityTitle = 'Control, privacidad y límites digitales';
+  await _pumpUntilFound(tester, find.text(firstActivityTitle));
+  await tester.ensureVisible(find.text(firstActivityTitle));
+  await tester.tap(find.text(firstActivityTitle));
   await _pumpUntilFound(tester, find.text(AppStrings.quizTitle));
 }
 
@@ -301,6 +302,11 @@ Future<List<T>> _loadSeedList<T>(
   T Function(Map<String, Object?> json) parser,
 ) async {
   final decoded = jsonDecode(await File(path).readAsString());
+  if (decoded is List<Object?>) {
+    return decoded
+        .map((item) => parser(item as Map<String, Object?>))
+        .toList(growable: false);
+  }
   final root = decoded as Map<String, Object?>;
   final list = root[listKey] as List<Object?>;
   return list

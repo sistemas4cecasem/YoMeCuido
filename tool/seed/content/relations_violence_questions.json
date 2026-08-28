@@ -1,309 +1,1459 @@
-{
-  "questions": [
-    {
-      "id": "activity_1",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Cuál es un ejemplo de violencia digital?",
-      "options": [
-        {
-          "id": "control_passwords_threaten_messages",
-          "text": "Controlar contraseñas y amenazar por mensajes."
-        },
-        {
-          "id": "ask_permission_publish",
-          "text": "Pedir permiso para publicar."
-        },
-        {
-          "id": "disable_notifications",
-          "text": "Bloquear notificaciones."
-        },
-        {
-          "id": "update_application",
-          "text": "Actualizar una aplicación."
-        }
-      ],
-      "correctAnswer": "control_passwords_threaten_messages",
-      "feedback": "El control, la vigilancia y las amenazas mediante tecnología son formas de violencia.",
-      "capacity": "reconocer",
-      "difficulty": "básica"
-    },
-    {
-      "id": "activity_2",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "trueFalse",
-      "statement": "La víctima es responsable de una difusión íntima por haber confiado.",
-      "options": [
-        {
-          "id": "true",
-          "text": "Verdadero"
-        },
-        {
-          "id": "false",
-          "text": "Falso"
-        }
-      ],
-      "correctAnswer": "false",
-      "feedback": "La responsabilidad corresponde a quien difunde o amenaza con difundir el contenido sin consentimiento.",
-      "capacity": "reconocer",
-      "difficulty": "básica"
-    },
-    {
-      "id": "activity_3",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "Ante amenazas digitales, ¿qué conviene hacer?",
-      "options": [
-        {
-          "id": "save_evidence_seek_support",
-          "text": "Guardar evidencia y buscar apoyo."
-        },
-        {
-          "id": "reply_more_threats",
-          "text": "Responder con más amenazas."
-        },
-        {
-          "id": "delete_without_record",
-          "text": "Borrar todo sin registrar."
-        },
-        {
-          "id": "give_passwords",
-          "text": "Entregar contraseñas."
-        }
-      ],
-      "correctAnswer": "save_evidence_seek_support",
-      "feedback": "Conservar pruebas y acudir a una red de apoyo facilita la protección y una posible denuncia.",
-      "capacity": "responder",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_4",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "Una pareja exige acceso permanente a tus cuentas. ¿Qué puede indicar?",
-      "options": [
-        {
-          "id": "digital_control",
-          "text": "Control digital."
-        },
-        {
-          "id": "security_test",
-          "text": "Una prueba de seguridad."
-        },
-        {
-          "id": "technical_update",
-          "text": "Una actualización técnica."
-        },
-        {
-          "id": "two_factor_authentication",
-          "text": "Autenticación en dos pasos."
-        }
-      ],
-      "correctAnswer": "digital_control",
-      "feedback": "El afecto no justifica la vigilancia ni la pérdida de privacidad.",
-      "capacity": "reconocer",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_5",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Qué es grooming?",
-      "options": [
-        {
-          "id": "adult_manipulative_approach_minor_abuse",
-          "text": "El acercamiento manipulador de una persona adulta a una persona menor de edad con fines de abuso."
-        },
-        {
-          "id": "profile_update",
-          "text": "La actualización de un perfil."
-        },
-        {
-          "id": "online_purchase",
-          "text": "Una compra realizada por internet."
-        },
-        {
-          "id": "password_creation",
-          "text": "La creación de una contraseña."
-        }
-      ],
-      "correctAnswer": "adult_manipulative_approach_minor_abuse",
-      "feedback": "Puede incluir la construcción de confianza, secretos, presión o sexualización progresiva.",
-      "capacity": "reconocer",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_6",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "fillBlank",
-      "statement": "Amenazar con publicar contenido íntimo para exigir algo se llama ______.",
-      "options": [],
-      "correctAnswer": "sextorsión",
-      "acceptedAnswers": [
-        "sextorsión",
-        "sextorsion"
-      ],
-      "feedback": "No se recomienda pagar ni enfrentar la situación en soledad.",
-      "capacity": "reconocer",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_7",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "trueFalse",
-      "statement": "Compartir la ubicación en tiempo real con una persona controladora puede aumentar el riesgo.",
-      "options": [
-        {
-          "id": "true",
-          "text": "Verdadero"
-        },
-        {
-          "id": "false",
-          "text": "Falso"
-        }
-      ],
-      "correctAnswer": "true",
-      "feedback": "La ubicación puede utilizarse para vigilancia o seguimiento.",
-      "capacity": "reconocer",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_8",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Cuál es una respuesta adecuada ante el ciberacoso?",
-      "options": [
-        {
-          "id": "document_block_report_support",
-          "text": "Documentar, bloquear, reportar y buscar apoyo."
-        },
-        {
-          "id": "give_personal_data",
-          "text": "Dar datos personales."
-        },
-        {
-          "id": "reply_impulsively",
-          "text": "Responder impulsivamente."
-        },
-        {
-          "id": "accept_threats",
-          "text": "Aceptar las amenazas."
-        }
-      ],
-      "correctAnswer": "document_block_report_support",
-      "feedback": "La respuesta debe reducir el contacto, conservar pruebas y fortalecer la seguridad.",
-      "capacity": "responder",
-      "difficulty": "básica"
-    },
-    {
-      "id": "activity_9",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "fillBlank",
-      "statement": "Las capturas, los enlaces y las fechas pueden servir como ______.",
-      "options": [],
-      "correctAnswer": "evidencia",
-      "acceptedAnswers": [
-        "evidencia"
-      ],
-      "feedback": "Conviene almacenar las pruebas de manera segura y sin alterarlas.",
-      "capacity": "responder",
-      "difficulty": "básica"
-    },
-    {
-      "id": "activity_10",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Qué debes hacer si alguien amenaza con publicar fotos íntimas?",
-      "options": [
-        {
-          "id": "do_not_pay_save_evidence_seek_specialized_support",
-          "text": "No pagar, guardar pruebas y buscar apoyo especializado."
-        },
-        {
-          "id": "send_more_photos",
-          "text": "Enviar más fotos."
-        },
-        {
-          "id": "always_give_in",
-          "text": "Ceder siempre."
-        },
-        {
-          "id": "delete_account_isolate",
-          "text": "Borrar la cuenta y aislarte."
-        }
-      ],
-      "correctAnswer": "do_not_pay_save_evidence_seek_specialized_support",
-      "feedback": "Pagar no garantiza que termine la amenaza. La prioridad es protegerse y buscar acompañamiento.",
-      "capacity": "responder",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_11",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Qué práctica ayuda a protegerse de una expareja con acceso digital?",
-      "options": [
-        {
-          "id": "change_passwords_review_sessions_devices",
-          "text": "Cambiar contraseñas y revisar sesiones y dispositivos vinculados."
-        },
-        {
-          "id": "keep_shared_passwords",
-          "text": "Mantener las contraseñas compartidas."
-        },
-        {
-          "id": "ignore_alerts",
-          "text": "Ignorar las alertas."
-        },
-        {
-          "id": "send_verification_codes",
-          "text": "Enviar códigos de verificación."
-        }
-      ],
-      "correctAnswer": "change_passwords_review_sessions_devices",
-      "feedback": "Es importante recuperar el control de las cuentas y cerrar accesos no autorizados.",
-      "capacity": "recuperar",
-      "difficulty": "intermedia"
-    },
-    {
-      "id": "activity_12",
-      "categoryId": "relations_violence_digital",
-      "activityId": "relations_violence_activity_01",
-      "type": "multipleChoice",
-      "statement": "¿Qué prioridad existe cuando hay riesgo físico inmediato?",
-      "options": [
-        {
-          "id": "emergency_help_safe_place",
-          "text": "Buscar ayuda de emergencia y llegar a un lugar seguro."
-        },
-        {
-          "id": "keep_arguing_online",
-          "text": "Seguir discutiendo en línea."
-        },
-        {
-          "id": "publish_location",
-          "text": "Publicar la ubicación."
-        },
-        {
-          "id": "confront_alone",
-          "text": "Enfrentar a la persona a solas."
-        }
-      ],
-      "correctAnswer": "emergency_help_safe_place",
-      "feedback": "La seguridad física está por encima de conservar el acceso a una plataforma o continuar una conversación.",
-      "capacity": "responder",
-      "difficulty": "intermedia"
-    }
-  ]
-}
+[
+  {
+    "id": "relations_violence_q01",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es un ejemplo de violencia digital?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "Controlar contraseñas y amenazar por mensajes"
+      },
+      {
+        "id": "q01_o2",
+        "text": "Pedir permiso para publicar"
+      },
+      {
+        "id": "q01_o3",
+        "text": "Bloquear notificaciones"
+      },
+      {
+        "id": "q01_o4",
+        "text": "Actualizar una app"
+      }
+    ],
+    "correctAnswer": "q01_o1",
+    "acceptedAnswers": [],
+    "feedback": "El control, vigilancia y amenaza mediante tecnología son formas de violencia.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q02",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "fillBlank",
+    "statement": "Difundir contenido íntimo sin permiso vulnera el __.",
+    "options": [],
+    "correctAnswer": "consentimiento",
+    "acceptedAnswers": [
+      "consentimiento"
+    ],
+    "feedback": "La responsabilidad recae en quien difunde o amenaza.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q03",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "trueFalse",
+    "statement": "La víctima es responsable de una difusión íntima por haber confiado.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "false",
+    "acceptedAnswers": [],
+    "feedback": "La culpa corresponde a quien viola el consentimiento.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q04",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "Ante amenazas digitales, ¿qué conviene hacer?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Guardar evidencia y buscar apoyo"
+      },
+      {
+        "id": "q04_o2",
+        "text": "Responder con más amenazas"
+      },
+      {
+        "id": "q04_o3",
+        "text": "Borrar todo sin registrar"
+      },
+      {
+        "id": "q04_o4",
+        "text": "Entregar contraseñas"
+      }
+    ],
+    "correctAnswer": "q04_o1",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia y una red de apoyo facilitan protección y denuncia.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q05",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "fillBlank",
+    "statement": "El acoso repetido mediante mensajes o redes puede llamarse __ digital.",
+    "options": [],
+    "correctAnswer": "acoso",
+    "acceptedAnswers": [
+      "acoso"
+    ],
+    "feedback": "Puede afectar seguridad, reputación y bienestar emocional.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q06",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una pareja exige acceso permanente a tus cuentas. ¿Qué indica?",
+    "options": [
+      {
+        "id": "q06_o1",
+        "text": "Control digital"
+      },
+      {
+        "id": "q06_o2",
+        "text": "Prueba de seguridad"
+      },
+      {
+        "id": "q06_o3",
+        "text": "Actualización técnica"
+      },
+      {
+        "id": "q06_o4",
+        "text": "Autenticación doble"
+      }
+    ],
+    "correctAnswer": "q06_o1",
+    "acceptedAnswers": [],
+    "feedback": "El afecto no justifica vigilancia ni pérdida de privacidad.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q07",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "trueFalse",
+    "statement": "Bloquear a una persona agresora puede ser una medida válida de protección.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "También deben revisarse privacidad, contraseñas y canales de apoyo.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q08",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué es grooming?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Acercamiento manipulador de un adulto a un menor con fines de abuso"
+      },
+      {
+        "id": "q08_o2",
+        "text": "Actualizar perfiles"
+      },
+      {
+        "id": "q08_o3",
+        "text": "Comprar por internet"
+      },
+      {
+        "id": "q08_o4",
+        "text": "Crear una contraseña"
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "Implica confianza, secreto, presión o sexualización progresiva.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q09",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "fillBlank",
+    "statement": "Amenazar con publicar contenido íntimo para exigir algo se llama __.",
+    "options": [],
+    "correctAnswer": "sextorsión",
+    "acceptedAnswers": [
+      "sextorsión",
+      "sextorsion"
+    ],
+    "feedback": "No se recomienda pagar ni enfrentar la situación en soledad.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q10",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "Si un menor recibe mensajes sexuales de un adulto, ¿qué debe hacer?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Buscar ayuda de un adulto de confianza y guardar evidencia"
+      },
+      {
+        "id": "q10_o2",
+        "text": "Continuar en secreto"
+      },
+      {
+        "id": "q10_o3",
+        "text": "Enviar más contenido"
+      },
+      {
+        "id": "q10_o4",
+        "text": "Pagar"
+      }
+    ],
+    "correctAnswer": "q10_o1",
+    "acceptedAnswers": [],
+    "feedback": "La prioridad es protección, acompañamiento y reporte.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q11",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "trueFalse",
+    "statement": "Compartir la ubicación en tiempo real con alguien controlador puede aumentar el riesgo.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "La ubicación puede utilizarse para vigilancia o seguimiento.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q12",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es una respuesta adecuada ante ciberacoso?",
+    "options": [
+      {
+        "id": "q12_o1",
+        "text": "Documentar, bloquear, reportar y buscar apoyo"
+      },
+      {
+        "id": "q12_o2",
+        "text": "Dar datos personales"
+      },
+      {
+        "id": "q12_o3",
+        "text": "Responder impulsivamente"
+      },
+      {
+        "id": "q12_o4",
+        "text": "Aceptar amenazas"
+      }
+    ],
+    "correctAnswer": "q12_o1",
+    "acceptedAnswers": [],
+    "feedback": "La respuesta debe reducir contacto y conservar pruebas.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q13",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "fillBlank",
+    "statement": "Las capturas, enlaces y fechas pueden servir como __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia"
+    ],
+    "feedback": "Conviene almacenarlas de manera segura.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q14",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes hacer si alguien amenaza con publicar fotos íntimas?",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "No pagar, guardar pruebas y buscar apoyo especializado"
+      },
+      {
+        "id": "q14_o2",
+        "text": "Enviar más fotos"
+      },
+      {
+        "id": "q14_o3",
+        "text": "Ceder siempre"
+      },
+      {
+        "id": "q14_o4",
+        "text": "Borrar la cuenta y aislarte"
+      }
+    ],
+    "correctAnswer": "q14_o1",
+    "acceptedAnswers": [],
+    "feedback": "Pagar no garantiza que termine la amenaza.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q15",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "trueFalse",
+    "statement": "El consentimiento para enviar una foto incluye automáticamente permiso para publicarla.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "false",
+    "acceptedAnswers": [],
+    "feedback": "Cada uso requiere autorización específica.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q16",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué práctica ayuda a protegerse de una expareja con acceso digital?",
+    "options": [
+      {
+        "id": "q16_o1",
+        "text": "Cambiar claves y revisar sesiones y dispositivos vinculados"
+      },
+      {
+        "id": "q16_o2",
+        "text": "Mantener claves compartidas"
+      },
+      {
+        "id": "q16_o3",
+        "text": "Ignorar alertas"
+      },
+      {
+        "id": "q16_o4",
+        "text": "Enviar códigos"
+      }
+    ],
+    "correctAnswer": "q16_o1",
+    "acceptedAnswers": [],
+    "feedback": "Debe recuperarse el control de cuentas y dispositivos.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q17",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "fillBlank",
+    "statement": "Una red de __ puede incluir familia, amistades, profesionales o instituciones.",
+    "options": [],
+    "correctAnswer": "apoyo",
+    "acceptedAnswers": [
+      "apoyo"
+    ],
+    "feedback": "No es necesario enfrentar una situación de violencia en soledad.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q18",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué enfoque debe evitar YoMeCuido?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Culpar a la víctima"
+      },
+      {
+        "id": "q18_o2",
+        "text": "Dar acciones concretas"
+      },
+      {
+        "id": "q18_o3",
+        "text": "Promover apoyo"
+      },
+      {
+        "id": "q18_o4",
+        "text": "Explicar derechos"
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "La educación debe centrarse en la conducta agresora y las opciones de ayuda.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q19",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "trueFalse",
+    "statement": "La violencia digital puede tener consecuencias emocionales fuera de internet.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "Puede causar miedo, aislamiento, ansiedad o daño reputacional.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q20",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué prioridad existe cuando hay riesgo físico inmediato?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Buscar ayuda de emergencia y un lugar seguro"
+      },
+      {
+        "id": "q20_o2",
+        "text": "Seguir discutiendo en línea"
+      },
+      {
+        "id": "q20_o3",
+        "text": "Publicar la ubicación"
+      },
+      {
+        "id": "q20_o4",
+        "text": "Enfrentar a la persona a solas"
+      }
+    ],
+    "correctAnswer": "q20_o1",
+    "acceptedAnswers": [],
+    "feedback": "La seguridad física está por encima de conservar el acceso a una plataforma.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q21",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "multipleChoice",
+    "statement": "Tu pareja exige tus contraseñas como prueba de amor.",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Entregarlas"
+      },
+      {
+        "id": "q21_o2",
+        "text": "Mantener límites y no compartirlas"
+      },
+      {
+        "id": "q21_o3",
+        "text": "Publicarlas"
+      },
+      {
+        "id": "q21_o4",
+        "text": "Desactivar seguridad"
+      }
+    ],
+    "correctAnswer": "q21_o2",
+    "acceptedAnswers": [],
+    "feedback": "La confianza no exige perder privacidad ni control de las cuentas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q22",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "trueFalse",
+    "statement": "Revisar mensajes de otra persona sin permiso puede ser una forma de control digital.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "La privacidad también existe dentro de una relación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q23",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "fillBlank",
+    "statement": "Exigir acceso permanente a cuentas ajenas es una forma de __.",
+    "options": [],
+    "correctAnswer": "control",
+    "acceptedAnswers": [
+      "control"
+    ],
+    "feedback": "El control digital puede formar parte de una relación violenta.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q24",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué conducta respeta límites?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Pedir consentimiento"
+      },
+      {
+        "id": "q24_o2",
+        "text": "Revisar chats en secreto"
+      },
+      {
+        "id": "q24_o3",
+        "text": "Exigir ubicación"
+      },
+      {
+        "id": "q24_o4",
+        "text": "Amenazar"
+      }
+    ],
+    "correctAnswer": "q24_o1",
+    "acceptedAnswers": [],
+    "feedback": "El consentimiento y los límites deben respetarse.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q25",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "multipleChoice",
+    "statement": "Tu expareja sigue viendo tu ubicación.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Ignorar"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Revocar acceso y revisar cuentas vinculadas"
+      },
+      {
+        "id": "q25_o3",
+        "text": "Compartir más datos"
+      },
+      {
+        "id": "q25_o4",
+        "text": "Publicar ruta"
+      }
+    ],
+    "correctAnswer": "q25_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los permisos deben revisarse cuando cambia una relación.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q26",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "trueFalse",
+    "statement": "Haber compartido ubicación antes no obliga a mantener el permiso para siempre.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "El consentimiento puede retirarse.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q27",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_01",
+    "type": "fillBlank",
+    "statement": "El permiso para conocer dónde estás puede llamarse acceso a tu __.",
+    "options": [],
+    "correctAnswer": "ubicación",
+    "acceptedAnswers": [
+      "ubicación"
+    ],
+    "feedback": "Debe limitarse a personas y momentos necesarios.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q28",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué revisar tras una ruptura?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Sesiones, ubicación y dispositivos vinculados"
+      },
+      {
+        "id": "q28_o2",
+        "text": "Solo foto de perfil"
+      },
+      {
+        "id": "q28_o3",
+        "text": "Brillo"
+      },
+      {
+        "id": "q28_o4",
+        "text": "Idioma"
+      }
+    ],
+    "correctAnswer": "q28_o1",
+    "acceptedAnswers": [],
+    "feedback": "La expareja puede conservar accesos antiguos.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q29",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "multipleChoice",
+    "statement": "Recibes insultos repetidos desde varias cuentas.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Amenazar"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Guardar pruebas, bloquear y reportar"
+      },
+      {
+        "id": "q29_o3",
+        "text": "Dar datos"
+      },
+      {
+        "id": "q29_o4",
+        "text": "Pagar"
+      }
+    ],
+    "correctAnswer": "q29_o2",
+    "acceptedAnswers": [],
+    "feedback": "Documentar y reducir el contacto ayuda a contener el acoso.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q30",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "trueFalse",
+    "statement": "Bloquear a una persona agresora puede ser una medida válida de protección.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "También conviene revisar privacidad y buscar apoyo.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q31",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "fillBlank",
+    "statement": "Los mensajes hostiles repetidos pueden constituir __ digital.",
+    "options": [],
+    "correctAnswer": "acoso",
+    "acceptedAnswers": [
+      "acoso"
+    ],
+    "feedback": "El impacto puede extenderse fuera de internet.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q32",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué conviene evitar ante acoso?",
+    "options": [
+      {
+        "id": "q32_o1",
+        "text": "Responder impulsivamente con amenazas"
+      },
+      {
+        "id": "q32_o2",
+        "text": "Guardar evidencia"
+      },
+      {
+        "id": "q32_o3",
+        "text": "Buscar apoyo"
+      },
+      {
+        "id": "q32_o4",
+        "text": "Reportar"
+      }
+    ],
+    "correctAnswer": "q32_o1",
+    "acceptedAnswers": [],
+    "feedback": "Responder con amenazas puede aumentar el riesgo.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q33",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "Amenazan con publicar imágenes íntimas si no pagas.",
+    "options": [
+      {
+        "id": "q33_o1",
+        "text": "Pagar"
+      },
+      {
+        "id": "q33_o2",
+        "text": "No pagar, guardar pruebas y buscar apoyo"
+      },
+      {
+        "id": "q33_o3",
+        "text": "Enviar más fotos"
+      },
+      {
+        "id": "q33_o4",
+        "text": "Quedar en persona"
+      }
+    ],
+    "correctAnswer": "q33_o2",
+    "acceptedAnswers": [],
+    "feedback": "Ceder no garantiza que la amenaza termine.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q34",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "trueFalse",
+    "statement": "La responsabilidad de difundir contenido íntimo sin permiso recae en quien lo comparte.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "La víctima no es culpable por haber confiado.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q35",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "fillBlank",
+    "statement": "Amenazar con difundir contenido íntimo para exigir algo se llama __.",
+    "options": [],
+    "correctAnswer": "sextorsión",
+    "acceptedAnswers": [
+      "sextorsión",
+      "sextorsion"
+    ],
+    "feedback": "Debe buscarse apoyo y conservar evidencia.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q36",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes preservar?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Usuario, enlaces, fechas y mensajes"
+      },
+      {
+        "id": "q36_o2",
+        "text": "Solo recuerdos"
+      },
+      {
+        "id": "q36_o3",
+        "text": "Contraseñas públicas"
+      },
+      {
+        "id": "q36_o4",
+        "text": "Ningún registro"
+      }
+    ],
+    "correctAnswer": "q36_o1",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia puede apoyar reportes y denuncias.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q37",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "Un adulto pide a un menor conversaciones secretas y fotos.",
+    "options": [
+      {
+        "id": "q37_o1",
+        "text": "Mantener secreto"
+      },
+      {
+        "id": "q37_o2",
+        "text": "Contarlo a adulto de confianza y guardar pruebas"
+      },
+      {
+        "id": "q37_o3",
+        "text": "Enviar contenido"
+      },
+      {
+        "id": "q37_o4",
+        "text": "Pagar"
+      }
+    ],
+    "correctAnswer": "q37_o2",
+    "acceptedAnswers": [],
+    "feedback": "El secreto y la sexualización son señales de grooming.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q38",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "trueFalse",
+    "statement": "El grooming puede empezar con atención, regalos o conversación aparentemente amistosa.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "La manipulación suele ser gradual.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q39",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "fillBlank",
+    "statement": "La captación sexual de menores mediante confianza digital se denomina __.",
+    "options": [],
+    "correctAnswer": "grooming",
+    "acceptedAnswers": [
+      "grooming"
+    ],
+    "feedback": "Requiere acompañamiento adulto y protección.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q40",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué señal es preocupante?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Pedir secreto frente a cuidadores"
+      },
+      {
+        "id": "q40_o2",
+        "text": "Respetar límites"
+      },
+      {
+        "id": "q40_o3",
+        "text": "Comunicación transparente"
+      },
+      {
+        "id": "q40_o4",
+        "text": "No pedir imágenes"
+      }
+    ],
+    "correctAnswer": "q40_o1",
+    "acceptedAnswers": [],
+    "feedback": "El aislamiento facilita la manipulación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q41",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "Crean un perfil para insultar en tu nombre.",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Dar documentos al perfil"
+      },
+      {
+        "id": "q41_o2",
+        "text": "Guardar evidencia, reportar y avisar"
+      },
+      {
+        "id": "q41_o3",
+        "text": "Pagar"
+      },
+      {
+        "id": "q41_o4",
+        "text": "Compartir claves"
+      }
+    ],
+    "correctAnswer": "q41_o2",
+    "acceptedAnswers": [],
+    "feedback": "La suplantación puede usarse para dañar reputación y relaciones.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q42",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "trueFalse",
+    "statement": "Una suplantación también puede ser una forma de violencia digital.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "Puede buscar humillar, aislar o perjudicar a la víctima.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q43",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "fillBlank",
+    "statement": "Usar un perfil falso para actuar en nombre de alguien es __.",
+    "options": [],
+    "correctAnswer": "suplantación",
+    "acceptedAnswers": [
+      "suplantación"
+    ],
+    "feedback": "Debe reportarse y documentarse.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q44",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué ayuda a tus contactos?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Avisar por otro canal"
+      },
+      {
+        "id": "q44_o2",
+        "text": "Ignorar siempre"
+      },
+      {
+        "id": "q44_o3",
+        "text": "Enviar más datos al perfil"
+      },
+      {
+        "id": "q44_o4",
+        "text": "Borrar tu cuenta sin pruebas"
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "El aviso reduce engaños realizados con tu identidad.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q45",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "multipleChoice",
+    "statement": "Una persona retira permiso para compartir una foto.",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Respetarlo"
+      },
+      {
+        "id": "q45_o2",
+        "text": "Publicarla porque antes aceptó"
+      },
+      {
+        "id": "q45_o3",
+        "text": "Amenazar"
+      },
+      {
+        "id": "q45_o4",
+        "text": "Reenviar"
+      }
+    ],
+    "correctAnswer": "q45_o1",
+    "acceptedAnswers": [],
+    "feedback": "El consentimiento puede retirarse.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q46",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "trueFalse",
+    "statement": "Consentir el envío privado de una imagen no autoriza su publicación.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "Cada uso necesita autorización específica.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q47",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "fillBlank",
+    "statement": "El consentimiento puede ser específico y __.",
+    "options": [],
+    "correctAnswer": "revocable",
+    "acceptedAnswers": [
+      "revocable"
+    ],
+    "feedback": "No es una autorización permanente para cualquier uso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q48",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué acción viola consentimiento?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Reenviar una imagen privada sin permiso"
+      },
+      {
+        "id": "q48_o2",
+        "text": "Preguntar antes"
+      },
+      {
+        "id": "q48_o3",
+        "text": "Eliminarla al solicitarlo"
+      },
+      {
+        "id": "q48_o4",
+        "text": "Respetar límites"
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "La difusión no autorizada vulnera privacidad y dignidad.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q49",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "multipleChoice",
+    "statement": "Alguien te obliga a bloquear amistades y controla tus contactos.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Aceptarlo"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Reconocer aislamiento y buscar apoyo"
+      },
+      {
+        "id": "q49_o3",
+        "text": "Dar contraseñas"
+      },
+      {
+        "id": "q49_o4",
+        "text": "Ocultarlo siempre"
+      }
+    ],
+    "correctAnswer": "q49_o2",
+    "acceptedAnswers": [],
+    "feedback": "El aislamiento puede ser parte de una dinámica de control.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q50",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_03",
+    "type": "trueFalse",
+    "statement": "El control digital puede buscar separar a una persona de su red de apoyo.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "El aislamiento aumenta dependencia y vulnerabilidad.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q51",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "fillBlank",
+    "statement": "Separar a una persona de amistades y familiares es __.",
+    "options": [],
+    "correctAnswer": "aislamiento",
+    "acceptedAnswers": [
+      "aislamiento"
+    ],
+    "feedback": "Una red de apoyo puede ayudar a recuperar seguridad.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q52",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué fortalece protección?",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Mantener contactos seguros"
+      },
+      {
+        "id": "q52_o2",
+        "text": "Entregar todas las cuentas"
+      },
+      {
+        "id": "q52_o3",
+        "text": "Ocultar amenazas"
+      },
+      {
+        "id": "q52_o4",
+        "text": "Quedar a solas"
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "La red de apoyo reduce el aislamiento.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q53",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "Mensajes temporales contienen amenazas.",
+    "options": [
+      {
+        "id": "q53_o1",
+        "text": "Registrar capturas y datos antes de que desaparezcan"
+      },
+      {
+        "id": "q53_o2",
+        "text": "Borrar todo"
+      },
+      {
+        "id": "q53_o3",
+        "text": "Responder con amenazas"
+      },
+      {
+        "id": "q53_o4",
+        "text": "Pagar"
+      }
+    ],
+    "correctAnswer": "q53_o1",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia temporal puede perderse rápidamente.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q54",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "trueFalse",
+    "statement": "Fechas, enlaces y nombres de usuario ayudan a contextualizar una captura.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia es más útil cuando conserva contexto.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q55",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "fillBlank",
+    "statement": "Las capturas y registros conservados son __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia"
+    ],
+    "feedback": "Deben guardarse de forma segura.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q56",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué no conviene modificar?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "La evidencia original"
+      },
+      {
+        "id": "q56_o2",
+        "text": "La contraseña comprometida"
+      },
+      {
+        "id": "q56_o3",
+        "text": "La privacidad"
+      },
+      {
+        "id": "q56_o4",
+        "text": "Las sesiones desconocidas"
+      }
+    ],
+    "correctAnswer": "q56_o1",
+    "acceptedAnswers": [],
+    "feedback": "Mantener archivos originales ayuda a conservar autenticidad.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "relations_violence_q57",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una amenaza incluye tu dirección y anuncia agresión inmediata.",
+    "options": [
+      {
+        "id": "q57_o1",
+        "text": "Seguir discutiendo"
+      },
+      {
+        "id": "q57_o2",
+        "text": "Buscar ayuda de emergencia y lugar seguro"
+      },
+      {
+        "id": "q57_o3",
+        "text": "Publicar ubicación"
+      },
+      {
+        "id": "q57_o4",
+        "text": "Quedar a solas"
+      }
+    ],
+    "correctAnswer": "q57_o2",
+    "acceptedAnswers": [],
+    "feedback": "La seguridad física es prioritaria.",
+    "capacity": "responder",
+    "difficulty": "avanzada"
+  },
+  {
+    "id": "relations_violence_q58",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "trueFalse",
+    "statement": "Ante riesgo físico inmediato, conservar una cuenta es menos importante que proteger a la persona.",
+    "options": [
+      {
+        "id": "true",
+        "text": "Verdadero"
+      },
+      {
+        "id": "false",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "true",
+    "acceptedAnswers": [],
+    "feedback": "Las decisiones deben priorizar la vida y seguridad.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q59",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "fillBlank",
+    "statement": "La prioridad ante una amenaza inmediata es la __ física.",
+    "options": [],
+    "correctAnswer": "seguridad",
+    "acceptedAnswers": [
+      "seguridad"
+    ],
+    "feedback": "Debe buscarse apoyo sin enfrentar a la persona agresora a solas.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "relations_violence_q60",
+    "categoryId": "relations_violence_digital",
+    "activityId": "relations_violence_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué acción es más segura?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "Compartir situación con persona confiable y seguir orientación de emergencia"
+      },
+      {
+        "id": "q60_o2",
+        "text": "Confrontar a solas"
+      },
+      {
+        "id": "q60_o3",
+        "text": "Publicar ruta"
+      },
+      {
+        "id": "q60_o4",
+        "text": "Eliminar pruebas"
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "El acompañamiento reduce riesgos y mejora la respuesta.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  }
+]

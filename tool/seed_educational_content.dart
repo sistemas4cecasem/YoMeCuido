@@ -26,6 +26,7 @@ Future<void> main(List<String> arguments) async {
     final projectId = options.projectId ?? await _readDefaultProjectId();
     final databaseId = options.databaseId ?? _defaultDatabaseId;
     final bundle = await _loadSeedBundle();
+    _validateAdministrativeContent(bundle);
     final plan = EducationalContentSeedBuilder.build(bundle);
 
     _printPlanSummary(
@@ -65,6 +66,11 @@ Future<void> main(List<String> arguments) async {
       accessToken: token,
     );
 
+    final cleanupSummary = await client.deleteObsoleteEducationalDocuments(
+      desiredPaths: plan.paths,
+      categoryId: _relationsViolenceCategoryId,
+    );
+    _printCleanupSummary(cleanupSummary);
     await client.write(plan.documents);
     final remoteSummary = await client.readSummary(
       categoryIds: bundle.categories.map((category) => category.id).toList(),
@@ -121,6 +127,16 @@ Future<List<T>> _loadList<T>({
 }) async {
   final source = await File(path).readAsString();
   final decoded = jsonDecode(source);
+  if (decoded is List<Object?>) {
+    return decoded
+        .map((item) {
+          if (item is Map<String, Object?>) {
+            return parser(item);
+          }
+          throw FormatException('$path contains a malformed list item.');
+        })
+        .toList(growable: false);
+  }
   if (decoded is! Map<String, Object?>) {
     throw FormatException('$path must contain a JSON object.');
   }
@@ -137,6 +153,104 @@ Future<List<T>> _loadList<T>({
         throw FormatException('$path contains a malformed "$listKey" item.');
       })
       .toList(growable: false);
+}
+
+void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
+  const expectedLessonPages = 6;
+  const expectedActivities = 6;
+  const expectedQuestions = 60;
+  const expectedQuestionsPerActivity = 10;
+  const validCapacities = <String>{
+    'reconocer',
+    'responder',
+    'recuperar',
+    'prevenir',
+  };
+  const validDifficulties = <String>{'básica', 'intermedia', 'avanzada'};
+
+  final categories = bundle.categories
+      .where((category) => category.id == _relationsViolenceCategoryId)
+      .toList(growable: false);
+  if (categories.length != 1) {
+    throw FormatException(
+      'Expected exactly one $_relationsViolenceCategoryId category.',
+    );
+  }
+
+  final lessonPages =
+      bundle.lessonPagesByCategory[_relationsViolenceCategoryId] ??
+      const <LessonPage>[];
+  final activities =
+      bundle.activitiesByCategory[_relationsViolenceCategoryId] ??
+      const <LearningActivity>[];
+  final questions =
+      bundle.questionsByCategory[_relationsViolenceCategoryId] ??
+      const <QuizQuestion>[];
+  final examConfig = bundle.examConfigsByCategory[_relationsViolenceCategoryId];
+
+  _ensureExactCount(lessonPages, expectedLessonPages, 'lesson pages');
+  _ensureExactCount(activities, expectedActivities, 'activities');
+  _ensureExactCount(questions, expectedQuestions, 'questions');
+  if (examConfig == null) {
+    throw const FormatException('Expected one exam config.');
+  }
+  if (examConfig.questionCount != 15) {
+    throw const FormatException('Exam config must select 15 questions.');
+  }
+
+  final activityIds = activities.map((activity) => activity.id).toSet();
+  if (activityIds.length != expectedActivities) {
+    throw const FormatException('Activity ids must be unique.');
+  }
+  final questionIds = questions.map((question) => question.id).toSet();
+  if (questionIds.length != expectedQuestions) {
+    throw const FormatException('Question ids must be unique.');
+  }
+
+  final questionsByActivity = <String, int>{};
+  for (final question in questions) {
+    if (question.categoryId != _relationsViolenceCategoryId) {
+      throw const FormatException('Question categoryId is invalid.');
+    }
+    if (!activityIds.contains(question.activityId)) {
+      throw FormatException(
+        'Question ${question.id} references an invalid activityId.',
+      );
+    }
+    if (!validCapacities.contains(question.capacity)) {
+      throw FormatException('Question ${question.id} has invalid capacity.');
+    }
+    if (!validDifficulties.contains(question.difficulty)) {
+      throw FormatException('Question ${question.id} has invalid difficulty.');
+    }
+    if (question.type == QuestionType.fillBlank &&
+        question.acceptedAnswers.isEmpty) {
+      throw FormatException(
+        'Fill blank question ${question.id} requires acceptedAnswers.',
+      );
+    }
+    questionsByActivity.update(
+      question.activityId,
+      (count) => count + 1,
+      ifAbsent: () => 1,
+    );
+  }
+
+  for (final activityId in activityIds) {
+    if (questionsByActivity[activityId] != expectedQuestionsPerActivity) {
+      throw FormatException(
+        'Activity $activityId must have $expectedQuestionsPerActivity '
+        'questions.',
+      );
+    }
+  }
+}
+
+void _ensureExactCount(Iterable<Object?> values, int expected, String label) {
+  final actual = values.length;
+  if (actual != expected) {
+    throw FormatException('Expected $expected $label, found $actual.');
+  }
 }
 
 Map<String, List<T>> _groupByCategory<T>(Iterable<T> items) {
@@ -255,17 +369,23 @@ void _printRemoteSummary(_FirestoreSeedSummary summary) {
   stdout.writeln('Exam configs: ${summary.examConfigs}');
 }
 
+void _printCleanupSummary(_FirestoreCleanupSummary summary) {
+  stdout.writeln('Limpieza legacy:');
+  stdout.writeln('Documentos antiguos encontrados: ${summary.found}');
+  stdout.writeln('Documentos eliminados: ${summary.deleted}');
+}
+
 void _assertRemoteSummary(
   EducationalContentSeedPlan plan,
   _FirestoreSeedSummary summary,
 ) {
-  if (summary.categories < plan.categoryCount ||
-      summary.lessonPages < plan.lessonPageCount ||
-      summary.activities < plan.activityCount ||
-      summary.questions < plan.questionCount ||
-      summary.examConfigs < plan.examConfigCount) {
+  if (summary.categories != plan.categoryCount ||
+      summary.lessonPages != plan.lessonPageCount ||
+      summary.activities != plan.activityCount ||
+      summary.questions != plan.questionCount ||
+      summary.examConfigs != plan.examConfigCount) {
     throw const FormatException(
-      'Remote verification returned fewer documents than expected.',
+      'Remote verification returned different document counts than expected.',
     );
   }
 }
@@ -361,7 +481,7 @@ class _FirestoreRestClient {
     const maxBatchSize = 500;
     for (var index = 0; index < documents.length; index += maxBatchSize) {
       final batch = documents.skip(index).take(maxBatchSize).toList();
-      await _postJson(_documentsUri('documents:batchWrite'), <String, Object?>{
+      await _postJson(_databaseUri('documents:batchWrite'), <String, Object?>{
         'writes': batch
             .map((document) {
               return <String, Object?>{
@@ -374,6 +494,36 @@ class _FirestoreRestClient {
             .toList(growable: false),
       });
     }
+  }
+
+  Future<_FirestoreCleanupSummary> deleteObsoleteEducationalDocuments({
+    required List<String> desiredPaths,
+    required String categoryId,
+  }) async {
+    final desiredPathSet = desiredPaths.toSet();
+    final collectionPaths = <String>[
+      'categories/$categoryId/lessonPages',
+      'categories/$categoryId/activities',
+      'categories/$categoryId/questions',
+      'categories/$categoryId/examConfig',
+    ];
+    var found = 0;
+    var deleted = 0;
+
+    for (final collectionPath in collectionPaths) {
+      final documentIds = await _readCollectionDocumentIds(collectionPath);
+      for (final documentId in documentIds) {
+        final path = '$collectionPath/$documentId';
+        if (desiredPathSet.contains(path)) {
+          continue;
+        }
+        found += 1;
+        await _deleteDocument(path);
+        deleted += 1;
+      }
+    }
+
+    return _FirestoreCleanupSummary(found: found, deleted: deleted);
   }
 
   Future<_FirestoreSeedSummary> readSummary({
@@ -404,15 +554,33 @@ class _FirestoreRestClient {
   }
 
   Future<int> _readCollection(String path) async {
+    return (await _readCollectionDocumentIds(path)).length;
+  }
+
+  Future<List<String>> _readCollectionDocumentIds(String path) async {
     final response = await _getJson(_documentsUri(_encodePath(path)));
     final documents = response['documents'];
     if (documents == null) {
-      return 0;
+      return const <String>[];
     }
     if (documents is List<Object?>) {
-      return documents.length;
+      return documents
+          .map((document) {
+            if (document is Map<String, Object?>) {
+              final name = document['name'];
+              if (name is String && name.trim().isNotEmpty) {
+                return Uri.decodeComponent(name.split('/').last);
+              }
+            }
+            throw FormatException('Malformed Firestore document for "$path".');
+          })
+          .toList(growable: false);
     }
     throw FormatException('Malformed Firestore response for "$path".');
+  }
+
+  Future<void> _deleteDocument(String path) async {
+    await _sendJson('DELETE', _documentsUri(_encodePath(path)));
   }
 
   Future<void> _postJson(Uri uri, Map<String, Object?> body) async {
@@ -474,6 +642,13 @@ class _FirestoreRestClient {
     );
   }
 
+  Uri _databaseUri(String suffix) {
+    return Uri.parse(
+      'https://firestore.googleapis.com/v1/projects/$projectId/databases/'
+      '${Uri.encodeComponent(databaseId)}/$suffix',
+    );
+  }
+
   String _documentName(String path) {
     return 'projects/$projectId/databases/$databaseId/documents/$path';
   }
@@ -497,6 +672,13 @@ class _FirestoreSeedSummary {
   final int activities;
   final int questions;
   final int examConfigs;
+}
+
+class _FirestoreCleanupSummary {
+  const _FirestoreCleanupSummary({required this.found, required this.deleted});
+
+  final int found;
+  final int deleted;
 }
 
 Map<String, Object?> _toFirestoreFields(Map<String, Object?> data) {

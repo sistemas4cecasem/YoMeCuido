@@ -1,28 +1,38 @@
-{
-  "lessonPages": [
-    {
-      "id": "what_is_digital_violence",
-      "order": 1,
-      "title": "¿Qué es la violencia digital?",
-      "body": "La violencia digital incluye acciones realizadas mediante redes sociales, mensajería, cuentas o dispositivos para controlar, vigilar, intimidar, acosar o causar daño a otra persona."
-    },
-    {
-      "id": "control_is_not_care",
-      "order": 2,
-      "title": "El control no es una muestra de cuidado",
-      "body": "Exigir contraseñas, revisar mensajes sin permiso, controlar contactos o pedir la ubicación en todo momento puede ser una forma de control digital. El afecto no elimina el derecho a la privacidad."
-    },
-    {
-      "id": "consent_and_intimate_content",
-      "order": 3,
-      "title": "Consentimiento y contenido íntimo",
-      "body": "Compartir una imagen con una persona no significa autorizar su publicación o reenvío. Difundir o amenazar con difundir contenido íntimo sin permiso vulnera el consentimiento."
-    },
-    {
-      "id": "how_to_act",
-      "order": 4,
-      "title": "Cómo actuar",
-      "body": "Ante amenazas o acoso, conviene guardar evidencia, proteger las cuentas, bloquear o reportar cuando sea seguro y buscar apoyo. Si existe riesgo físico inmediato, la prioridad es llegar a un lugar seguro y solicitar ayuda de emergencia."
-    }
-  ]
-}
+[
+  {
+    "id": "control_privacy_digital_boundaries",
+    "order": 1,
+    "title": "Control, privacidad y límites digitales",
+    "body": "Exigir contraseñas, revisar mensajes sin permiso, controlar la ubicación, obligar a responder inmediatamente o decidir con quién puede hablar una persona son formas de control digital. No son pruebas de amor ni de confianza.\n\nUna relación saludable respeta privacidad, límites y consentimiento. Haber compartido una contraseña o ubicación anteriormente no significa que el permiso sea permanente. Puede retirarse.\n\nEl aislamiento también puede formar parte del control: obligar a bloquear amistades o separar a una persona de su red de apoyo aumenta su vulnerabilidad."
+  },
+  {
+    "id": "consent_intimate_content_sextortion",
+    "order": 2,
+    "title": "Consentimiento, contenido íntimo y sextorsión",
+    "body": "Enviar una fotografía o contenido íntimo a una persona no autoriza su publicación ni reenvío. Cada uso necesita consentimiento. Si una persona retira el permiso, debe respetarse.\n\nLa difusión no consentida de contenido íntimo puede causar daño grave. La responsabilidad recae en quien comparte o amenaza, no en la víctima.\n\nLa sextorsión ocurre cuando alguien amenaza con publicar contenido íntimo real o manipulado para exigir dinero, más imágenes, contacto, favores o silencio. Pagar o enviar más contenido no garantiza que la amenaza termine.\n\nAnte sextorsión, conserva evidencia, evita continuar negociando, protege tus cuentas, informa a una persona de confianza y busca apoyo especializado o institucional."
+  },
+  {
+    "id": "cyberbullying_harassment_isolation",
+    "order": 3,
+    "title": "Ciberacoso, hostigamiento y aislamiento",
+    "body": "El ciberacoso puede incluir insultos repetidos, amenazas, rumores, ataques desde varias cuentas, exclusión o vigilancia. Sus efectos pueden continuar fuera de internet y provocar miedo, ansiedad, aislamiento o daño reputacional.\n\nCuando sea seguro, guarda evidencia, bloquea, reporta, revisa privacidad y busca apoyo. Responder con amenazas puede aumentar el riesgo.\n\nNo es necesario enfrentar una situación de violencia en soledad. Familiares, amistades, profesionales e instituciones pueden formar parte de una red de apoyo."
+  },
+  {
+    "id": "grooming_identity_impersonation",
+    "order": 4,
+    "title": "Grooming y suplantación de identidad",
+    "body": "El grooming es un proceso en el que una persona adulta se acerca y manipula a una niña, niño o adolescente con fines sexuales. Puede comenzar con amistad, regalos, atención, secretos o conversaciones aparentemente normales.\n\nSon señales preocupantes pedir mantener la relación en secreto, solicitar imágenes, introducir conversaciones sexuales, amenazar o intentar encuentros sin conocimiento de personas cuidadoras. Ante estas situaciones se debe buscar inmediatamente apoyo de una persona adulta de confianza y conservar evidencia sin continuar exponiéndose.\n\nLa suplantación de identidad también puede utilizarse para humillar, acosar o dañar relaciones. Si crean un perfil falso en tu nombre, guarda evidencia, repórtalo y avisa a tus contactos por otro canal."
+  },
+  {
+    "id": "threats_evidence_safe_response",
+    "order": 5,
+    "title": "Amenazas, evidencia y respuesta segura",
+    "body": "La evidencia digital puede incluir capturas completas, nombres de usuario, enlaces, fechas, horas, mensajes, audios y otros registros. Debe conservarse de forma segura y, cuando sea posible, sin modificar el archivo original.\n\nLos mensajes temporales pueden desaparecer, por lo que conviene registrar la información importante cuando hacerlo sea seguro. No continúes una interacción peligrosa únicamente para conseguir más pruebas.\n\nAnte una amenaza, evita responder impulsivamente. Bloquear, reportar y conservar evidencia pueden ser medidas útiles según la situación."
+  },
+  {
+    "id": "recovery_support_immediate_safety",
+    "order": 6,
+    "title": "Recuperación, apoyo y seguridad inmediata",
+    "body": "Después de una relación o situación de control, revisa contraseñas, sesiones abiertas, dispositivos vinculados y permisos de ubicación. Recuperar el control digital forma parte de recuperar seguridad.\n\nMantén contacto con personas de confianza. El aislamiento aumenta la vulnerabilidad y una red de apoyo puede ayudar a tomar decisiones y buscar asistencia.\n\nSi una amenaza incluye riesgo físico inmediato, tu seguridad tiene prioridad sobre conservar una cuenta o seguir discutiendo en línea. Busca un lugar seguro y ayuda de emergencia o institucional. No enfrentes a la persona agresora a solas si eso aumenta el riesgo."
+  }
+]

@@ -16,17 +16,17 @@ void main() {
       final plan = EducationalContentSeedBuilder.build(bundle);
 
       expect(plan.categoryCount, 8);
-      expect(plan.lessonPageCount, 4);
+      expect(plan.lessonPageCount, 6);
       expect(plan.activityCount, 6);
-      expect(plan.questionCount, 12);
+      expect(plan.questionCount, 60);
       expect(plan.examConfigCount, 1);
-      expect(plan.documents, hasLength(31));
+      expect(plan.documents, hasLength(81));
       expect(plan.paths, contains('categories/relations_violence_digital'));
       expect(
         plan.paths,
         contains(
           'categories/relations_violence_digital/'
-          'lessonPages/what_is_digital_violence',
+          'lessonPages/control_privacy_digital_boundaries',
         ),
       );
       expect(
@@ -38,7 +38,10 @@ void main() {
       );
       expect(
         plan.paths,
-        contains('categories/relations_violence_digital/questions/activity_1'),
+        contains(
+          'categories/relations_violence_digital/'
+          'questions/relations_violence_q01',
+        ),
       );
       expect(
         plan.paths,
@@ -234,6 +237,11 @@ Future<List<T>> _loadList<T>(
   T Function(Map<String, Object?> json) parser,
 ) async {
   final decoded = jsonDecode(await File(path).readAsString());
+  if (decoded is List<Object?>) {
+    return decoded
+        .map((item) => parser(item as Map<String, Object?>))
+        .toList(growable: false);
+  }
   final root = decoded as Map<String, Object?>;
   final list = root[listKey] as List<Object?>;
   return list
