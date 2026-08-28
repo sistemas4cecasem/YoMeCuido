@@ -195,22 +195,22 @@ const _activityId = 'relations_violence_activity_01';
 
 Future<EducationalContentSeedBundle> _loadCurrentBundle() async {
   final categories = await _loadList(
-    'assets/data/categories.json',
+    'tool/seed/content/categories.json',
     'categories',
     Category.fromJson,
   );
   final lessonPages = await _loadList(
-    'assets/data/relations_violence_lesson.json',
+    'tool/seed/content/relations_violence_lesson.json',
     'lessonPages',
     LessonPage.fromJson,
   );
   final activities = await _loadList(
-    'assets/data/relations_violence_activities.json',
+    'tool/seed/content/relations_violence_activities.json',
     'activities',
     LearningActivity.fromJson,
   );
   final questions = await _loadList(
-    'assets/data/relations_violence_questions.json',
+    'tool/seed/content/relations_violence_questions.json',
     'questions',
     QuizQuestion.fromJson,
   );

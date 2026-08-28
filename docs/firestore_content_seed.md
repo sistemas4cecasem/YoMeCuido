@@ -15,10 +15,10 @@ usar Firebase Console y sin ejecutarse desde la app Flutter.
 
 El seed lee los archivos actuales:
 
-- `assets/data/categories.json`
-- `assets/data/relations_violence_lesson.json`
-- `assets/data/relations_violence_activities.json`
-- `assets/data/relations_violence_questions.json`
+- `tool/seed/content/categories.json`
+- `tool/seed/content/relations_violence_lesson.json`
+- `tool/seed/content/relations_violence_activities.json`
+- `tool/seed/content/relations_violence_questions.json`
 
 ## Comandos
 
@@ -32,6 +32,12 @@ Escribir en Firestore con IDs estables:
 
 ```bash
 dart run tool/seed_educational_content.dart --write
+```
+
+Comparar los conteos esperados con Firestore sin escribir:
+
+```bash
+dart run tool/seed_educational_content.dart --verify
 ```
 
 Opcionalmente:

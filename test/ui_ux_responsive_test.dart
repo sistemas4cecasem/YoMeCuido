@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
@@ -10,7 +13,6 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
-import 'package:demo_yomecuido/data/repositories/local_content_repository.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,16 +23,25 @@ void main() {
   late ContentRepository contentRepository;
 
   setUpAll(() async {
-    final localRepository = LocalContentRepository();
-    final categories = await localRepository.loadCategories();
-    final lessonPages = await localRepository.loadLessonPages(
-      LocalContentRepository.relationsViolenceCategoryId,
+    final categories = await _loadSeedList(
+      'tool/seed/content/categories.json',
+      'categories',
+      Category.fromJson,
     );
-    final activities = await localRepository.loadActivities(
-      LocalContentRepository.relationsViolenceCategoryId,
+    final lessonPages = await _loadSeedList(
+      'tool/seed/content/relations_violence_lesson.json',
+      'lessonPages',
+      LessonPage.fromJson,
     );
-    final quizQuestions = await localRepository.loadQuizQuestions(
-      LocalContentRepository.relationsViolenceCategoryId,
+    final activities = await _loadSeedList(
+      'tool/seed/content/relations_violence_activities.json',
+      'activities',
+      LearningActivity.fromJson,
+    );
+    final quizQuestions = await _loadSeedList(
+      'tool/seed/content/relations_violence_questions.json',
+      'questions',
+      QuizQuestion.fromJson,
     );
 
     contentRepository = _CachedContentRepository(
@@ -38,9 +49,7 @@ void main() {
       lessonPages: lessonPages,
       activities: activities,
       quizQuestions: quizQuestions,
-      examConfig: await localRepository.loadFinalExamConfig(
-        LocalContentRepository.relationsViolenceCategoryId,
-      ),
+      examConfig: FinalExamConfigs.relationsViolence,
     );
   });
 
@@ -284,6 +293,19 @@ double _contrast(Color foreground, Color background) {
       : foregroundLuminance;
 
   return (higher + 0.05) / (lower + 0.05);
+}
+
+Future<List<T>> _loadSeedList<T>(
+  String path,
+  String listKey,
+  T Function(Map<String, Object?> json) parser,
+) async {
+  final decoded = jsonDecode(await File(path).readAsString());
+  final root = decoded as Map<String, Object?>;
+  final list = root[listKey] as List<Object?>;
+  return list
+      .map((item) => parser(item as Map<String, Object?>))
+      .toList(growable: false);
 }
 
 class _CachedContentRepository implements ContentRepository {

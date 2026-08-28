@@ -8,10 +8,10 @@ import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 
-const _categoriesPath = 'assets/data/categories.json';
-const _lessonPath = 'assets/data/relations_violence_lesson.json';
-const _activitiesPath = 'assets/data/relations_violence_activities.json';
-const _questionsPath = 'assets/data/relations_violence_questions.json';
+const _categoriesPath = 'tool/seed/content/categories.json';
+const _lessonPath = 'tool/seed/content/relations_violence_lesson.json';
+const _activitiesPath = 'tool/seed/content/relations_violence_activities.json';
+const _questionsPath = 'tool/seed/content/relations_violence_questions.json';
 const _defaultDatabaseId = '(default)';
 const _relationsViolenceCategoryId = 'relations_violence_digital';
 
@@ -28,7 +28,30 @@ Future<void> main(List<String> arguments) async {
     final bundle = await _loadSeedBundle();
     final plan = EducationalContentSeedBuilder.build(bundle);
 
-    _printPlanSummary(plan, mode: options.write ? 'write' : 'dry-run');
+    _printPlanSummary(
+      plan,
+      mode: options.verifyOnly
+          ? 'verify'
+          : options.write
+          ? 'write'
+          : 'dry-run',
+    );
+
+    if (options.verifyOnly) {
+      final token = options.accessToken ?? await _readAccessToken();
+      final client = _FirestoreRestClient(
+        projectId: projectId,
+        databaseId: databaseId,
+        accessToken: token,
+      );
+      final remoteSummary = await client.readSummary(
+        categoryIds: bundle.categories.map((category) => category.id).toList(),
+      );
+      _printRemoteSummary(remoteSummary);
+      _assertRemoteSummary(plan, remoteSummary);
+      stdout.writeln('Verificación remota completada.');
+      return;
+    }
 
     if (!options.write) {
       _printDryRunPaths(plan);
@@ -178,16 +201,23 @@ Future<String> _readAccessToken() async {
     return envToken.trim();
   }
 
-  final result = await Process.run('gcloud', <String>[
-    'auth',
-    'application-default',
-    'print-access-token',
-  ]);
-  if (result.exitCode == 0) {
-    final token = result.stdout.toString().trim();
-    if (token.isNotEmpty) {
-      return token;
+  try {
+    final result = await Process.run('gcloud', <String>[
+      'auth',
+      'application-default',
+      'print-access-token',
+    ]);
+    if (result.exitCode == 0) {
+      final token = result.stdout.toString().trim();
+      if (token.isNotEmpty) {
+        return token;
+      }
     }
+  } on ProcessException {
+    throw const FormatException(
+      'No access token available. Install gcloud, set FIRESTORE_ACCESS_TOKEN '
+      'or pass --access-token=<token>.',
+    );
   }
 
   throw const FormatException(
@@ -250,6 +280,9 @@ void _printUsage() {
   stdout.writeln(
     '  --write                Escribe usando IDs estables con batchWrite.',
   );
+  stdout.writeln(
+    '  --verify               Compara conteos esperados con Firestore.',
+  );
   stdout.writeln('  --project-id=<id>      Sobrescribe el proyecto Firebase.');
   stdout.writeln('  --database-id=<id>     Sobrescribe la base de datos.');
   stdout.writeln('  --access-token=<token> Usa un token OAuth ya emitido.');
@@ -258,6 +291,7 @@ void _printUsage() {
 class _SeedOptions {
   const _SeedOptions({
     required this.write,
+    required this.verifyOnly,
     required this.showHelp,
     this.projectId,
     this.databaseId,
@@ -265,6 +299,7 @@ class _SeedOptions {
   });
 
   final bool write;
+  final bool verifyOnly;
   final bool showHelp;
   final String? projectId;
   final String? databaseId;
@@ -274,12 +309,21 @@ class _SeedOptions {
     final showHelp = arguments.contains('--help') || arguments.contains('-h');
     final write = arguments.contains('--write');
     final dryRun = arguments.contains('--dry-run');
-    if (write && dryRun) {
-      throw const FormatException('Use --write or --dry-run, not both.');
+    final verifyOnly = arguments.contains('--verify');
+    final modeCount = <bool>[
+      write,
+      dryRun,
+      verifyOnly,
+    ].where((mode) => mode).length;
+    if (modeCount > 1) {
+      throw const FormatException(
+        'Use only one mode: --write, --verify or --dry-run.',
+      );
     }
 
     return _SeedOptions(
       write: write,
+      verifyOnly: verifyOnly,
       showHelp: showHelp,
       projectId: _readOption(arguments, '--project-id'),
       databaseId: _readOption(arguments, '--database-id'),
