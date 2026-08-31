@@ -243,6 +243,9 @@ class _QuizFlowState extends State<_QuizFlow> {
     );
 
     if (mounted && shouldExit) {
+      if (_attemptId.isNotEmpty) {
+        widget.progressController.discardAttempt(_attemptId);
+      }
       _popQuizRoute();
     }
   }

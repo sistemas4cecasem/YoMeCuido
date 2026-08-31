@@ -72,13 +72,13 @@ void main() {
         expect(attempt?.type, QuizAttemptType.activity);
         expect(attempt?.activityId, _activityId);
         expect(attempt?.questionIds, <String>['question_07', 'question_02']);
-        expect(activityProgress.status, ActivityProgressStatus.inProgress);
-        expect(activityProgress.attemptCount, 1);
+        expect(activityProgress.status, ActivityProgressStatus.notStarted);
+        expect(activityProgress.attemptCount, 0);
         expect(
           controller.snapshotFor(_categoryId).completedActivityIds,
           isEmpty,
         );
-        expect(persistence.startAttemptCalls.single.attemptId, 'attempt_1');
+        expect(persistence.writeCallCount, 0);
       },
     );
 
@@ -118,8 +118,7 @@ void main() {
           controller.snapshotFor(_categoryId).completedActivityIds,
           isEmpty,
         );
-        expect(persistence.answerCalls.single.questionId, 'question_01');
-        expect(persistence.answerCalls.single.activityId, _activityId);
+        expect(persistence.writeCallCount, 0);
       },
     );
 
@@ -159,12 +158,15 @@ void main() {
         expect(snapshot.completedActivityIds, isNot(contains('question_01')));
         expect(snapshot.completedActivities, 1);
         expect(activityProgress.status, ActivityProgressStatus.completed);
+        expect(activityProgress.attemptCount, 1);
         expect(activityProgress.bestCorrectAnswers, 1);
         expect(activityProgress.bestPercentage, 50);
         expect(attempt?.correctAnswers, 1);
         expect(attempt?.totalQuestions, 2);
         expect(attempt?.percentage, 50);
         expect(attempt?.isCompleted, isTrue);
+        expect(persistence.startAttemptCalls, isEmpty);
+        expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeCalls.single.activityId, _activityId);
       },
     );
@@ -218,7 +220,7 @@ void main() {
       expect(activityProgress.bestPercentage, 100);
       expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
       expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
-      expect(persistence.startAttemptCalls, hasLength(2));
+      expect(persistence.startAttemptCalls, isEmpty);
       expect(persistence.completeCalls, hasLength(2));
     });
 
@@ -335,13 +337,10 @@ void main() {
         expect(attempt?.examId, FinalExamConfigs.relationsViolence.id);
         expect(snapshot.completedActivityIds, isEmpty);
         expect(examProgress.status, ActivityProgressStatus.completed);
+        expect(examProgress.attemptCount, 1);
         expect(examProgress.bestPercentage, 50);
-        expect(
-          persistence.startExamAttemptCalls.single.examId,
-          attempt?.examId,
-        );
-        expect(persistence.answerCalls.single.activityId, isNull);
-        expect(persistence.answerCalls.single.examId, attempt?.examId);
+        expect(persistence.startExamAttemptCalls, isEmpty);
+        expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeExamCalls.single.examId, attempt?.examId);
       },
     );
@@ -398,7 +397,7 @@ void main() {
         expect(examProgress.bestPercentage, 100);
         expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
         expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
-        expect(persistence.startExamAttemptCalls, hasLength(2));
+        expect(persistence.startExamAttemptCalls, isEmpty);
         expect(persistence.completeExamCalls, hasLength(2));
       },
     );
@@ -735,6 +734,9 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
@@ -759,6 +761,9 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,

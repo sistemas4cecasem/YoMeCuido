@@ -210,8 +210,8 @@ void main() {
       categoryId: _category.id,
       examId: FinalExamConfigs.relationsViolence.id,
     );
-    expect(examProgress.status, ActivityProgressStatus.inProgress);
-    expect(examProgress.attemptCount, 1);
+    expect(examProgress.status, ActivityProgressStatus.notStarted);
+    expect(examProgress.attemptCount, 0);
   });
 
   testWidgets('repetir examen crea nuevo intento con nueva selección', (
@@ -413,8 +413,8 @@ void main() {
       expect(find.text(AppStrings.correct), findsOneWidget);
       expect(progress.completedActivities, 0);
       expect(progress.completedActivityIds, isEmpty);
-      expect(activityProgress.attemptCount, 1);
-      expect(activityProgress.status, ActivityProgressStatus.inProgress);
+      expect(activityProgress.attemptCount, 0);
+      expect(activityProgress.status, ActivityProgressStatus.notStarted);
     },
   );
 }

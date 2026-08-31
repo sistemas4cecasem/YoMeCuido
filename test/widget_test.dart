@@ -207,7 +207,8 @@ void main() {
     await openDetail(tester);
 
     expect(find.byIcon(Icons.shield_outlined), findsWidgets);
-    expect(find.text('12 actividades'), findsOneWidget);
+    expect(find.text('6 actividades'), findsOneWidget);
+    expect(find.text('12 actividades'), findsNothing);
     expect(find.text('10–15 minutos'), findsOneWidget);
     expect(find.text('Nivel básico e intermedio'), findsOneWidget);
     expect(find.byTooltip(AppStrings.viewObjectives), findsOneWidget);
@@ -216,6 +217,54 @@ void main() {
     expect(find.text(AppStrings.theoryTitle), findsOneWidget);
     expect(find.text(AppStrings.activitiesTitle), findsOneWidget);
     expect(find.text(AppStrings.summaryTitle), findsWidgets);
+  });
+
+  testWidgets('el detalle corrige totales antiguos con actividades reales', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    final now = DateTime.utc(2026, 8, 31, 12);
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        CategoryProgressRecord(
+          categoryId: 'relations_violence_digital',
+          lessonId: 'relations_violence',
+          status: CategoryProgressStatus.inProgress,
+          viewedLessonPageIds: const <String>[
+            'what_is_digital_violence',
+            'control_is_not_care',
+            'consent_and_intimate_content',
+            'how_to_act',
+          ],
+          completedActivityIds: const <String>[],
+          totalLessonPages: 4,
+          totalActivities: 12,
+          startedAt: now,
+          lastActivityAt: null,
+          completedAt: null,
+          updatedAt: now,
+          activities: const <String, ActivityProgressRecord>{},
+          exams: const <String, ExamProgressRecord>{},
+        ),
+      ],
+    );
+
+    await pumpApp(tester, progressController: progressController);
+    await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Relaciones y violencia digital'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('6 actividades'), findsOneWidget);
+    expect(find.text('0 de 6 actividades completadas'), findsOneWidget);
+    expect(find.text('0 de 12 actividades completadas'), findsNothing);
+    expect(
+      progressController
+          .snapshotFor('relations_violence_digital')
+          .totalActivities,
+      6,
+    );
   });
 
   testWidgets('el detalle muestra objetivos en una ventana flotante', (
@@ -330,7 +379,28 @@ void main() {
     await tester.tap(find.text(AppStrings.activitiesTitle));
     await tester.pumpAndSettle();
 
-    expect(repository.loadActivitiesCalls, 1);
+    expect(
+      find.text(AppStrings.completeTheoryToUnlockActivities),
+      findsOneWidget,
+    );
+    expect(find.text(AppStrings.activitiesTitle), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
+    await tester.pumpAndSettle();
+    for (var page = 0; page < 3; page += 1) {
+      await tester.ensureVisible(find.text(AppStrings.next));
+      await tester.tap(find.text(AppStrings.next));
+      await tester.pumpAndSettle();
+    }
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
+
+    expect(repository.loadActivitiesCalls, 2);
     expect(repository.loadFinalExamConfigCalls, 1);
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
     expect(find.text(AppStrings.secondActivityBlock), findsOneWidget);
@@ -343,13 +413,13 @@ void main() {
     expect(find.text('Actividad 6'), findsOneWidget);
     expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
     expect(find.text(AppStrings.finalExamLocked), findsOneWidget);
-    expect(find.text(AppStrings.comingSoon), findsNWidgets(5));
+    expect(find.text(AppStrings.locked), findsNWidgets(5));
 
     await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
     await tester.tap(find.text(AppStrings.secondActivityBlock));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.demoLockedSnackBar), findsOneWidget);
+    expect(find.text(AppStrings.completePreviousActivity), findsOneWidget);
     expect(
       find.text('¿Cuál es un ejemplo de violencia digital?'),
       findsNothing,

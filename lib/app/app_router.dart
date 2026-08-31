@@ -64,6 +64,7 @@ class AppRouter {
           ),
           AppRoutes.categoryDetail => CategoryDetailScreen(
             category: settings.arguments! as Category,
+            contentRepository: _contentRepository,
             progressController: _progressController,
           ),
           AppRoutes.lesson => LessonScreen(

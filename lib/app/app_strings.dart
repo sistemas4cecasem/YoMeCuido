@@ -77,6 +77,12 @@ abstract final class AppStrings {
       'El perfil no está disponible en esta demo';
   static const demoLockedSnackBar =
       'Este bloque estará disponible en una próxima etapa de la demo';
+  static const completeTheoryToUnlockActivities =
+      'Completa primero la parte teórica para desbloquear las actividades.';
+  static const activitiesLockedByTheory =
+      'Completa la teoría para desbloquearlas';
+  static const completePreviousActivity =
+      'Completa la actividad anterior para desbloquear esta.';
   static const viewTheory = 'Ver teoría';
   static const viewActivities = 'Ir a actividades';
   static const viewCategorySummary = 'Ver resumen de categoría';

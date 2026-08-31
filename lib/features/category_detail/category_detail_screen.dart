@@ -7,61 +7,112 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
+import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/character_image.dart';
 import '../../shared/widgets/demo_bottom_navigation_bar.dart';
 import '../../shared/widgets/info_card.dart';
 
-class CategoryDetailScreen extends StatelessWidget {
+class CategoryDetailScreen extends StatefulWidget {
   const CategoryDetailScreen({
     required this.category,
+    required this.contentRepository,
     required this.progressController,
     super.key,
   });
 
   final Category category;
+  final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+
+  @override
+  State<CategoryDetailScreen> createState() => _CategoryDetailScreenState();
+}
+
+class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
+  late Future<_CategoryDetailData> _detailDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _detailDataFuture = _loadDetailData();
+  }
+
+  Future<_CategoryDetailData> _loadDetailData() async {
+    final activities = await widget.contentRepository.loadActivities(
+      widget.category.id,
+    );
+    widget.progressController.updateActivityTotal(
+      categoryId: widget.category.id,
+      totalActivities: activities.length,
+    );
+
+    return _CategoryDetailData(activityCount: activities.length);
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: category.title,
-      bottomNavigationBar: DemoBottomNavigationBar(category: category),
-      child: AnimatedBuilder(
-        animation: progressController,
-        builder: (context, child) {
-          final progress = progressController.snapshotFor(category.id);
+      title: widget.category.title,
+      bottomNavigationBar: DemoBottomNavigationBar(category: widget.category),
+      child: FutureBuilder<_CategoryDetailData>(
+        future: _detailDataFuture,
+        builder: (context, detailSnapshot) {
+          final detailData = detailSnapshot.data;
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _Header(category: category, progress: progress),
-                const SizedBox(height: AppSpacing.lg),
-                _LearningRoute(
-                  category: category,
-                  progress: progress,
-                  onOpenTheory: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.lesson, arguments: category),
-                  onOpenActivities: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.activities, arguments: category),
-                  onOpenSummary: () => Navigator.of(
-                    context,
-                  ).pushNamed(AppRoutes.categorySummary, arguments: category),
+          return AnimatedBuilder(
+            animation: widget.progressController,
+            builder: (context, child) {
+              final progress = widget.progressController.snapshotFor(
+                widget.category.id,
+              );
+              final activityCount = detailData?.activityCount;
+
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _Header(
+                      category: widget.category,
+                      progress: progress,
+                      activityCount: activityCount,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    _LearningRoute(
+                      category: widget.category,
+                      progress: progress,
+                      activityCount: activityCount,
+                      onOpenTheory: () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.lesson, arguments: widget.category),
+                      onOpenActivities: progress.hasCompletedTheory
+                          ? () => Navigator.of(context).pushNamed(
+                              AppRoutes.activities,
+                              arguments: widget.category,
+                            )
+                          : () => AppToast.showInfo(
+                              context,
+                              AppStrings.completeTheoryToUnlockActivities,
+                            ),
+                      onOpenSummary: () => Navigator.of(context).pushNamed(
+                        AppRoutes.categorySummary,
+                        arguments: widget.category,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    if (widget.category.warning != null)
+                      InfoCard(
+                        title: AppStrings.sensitiveContentWarningTitle,
+                        body: widget.category.warning!,
+                        icon: Icons.info_outline,
+                      ),
+                  ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                if (category.warning != null)
-                  InfoCard(
-                    title: AppStrings.sensitiveContentWarningTitle,
-                    body: category.warning!,
-                    icon: Icons.info_outline,
-                  ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),
@@ -69,11 +120,85 @@ class CategoryDetailScreen extends StatelessWidget {
   }
 }
 
+class _CategoryDetailData {
+  const _CategoryDetailData({required this.activityCount});
+
+  final int activityCount;
+}
+
+class _DisplayProgress {
+  const _DisplayProgress({required this.progress, required this.activityCount});
+
+  final CategoryProgressSnapshot progress;
+  final int? activityCount;
+
+  int get totalActivities => activityCount ?? progress.totalActivities;
+
+  int get completedActivities {
+    return progress.completedActivities.clamp(0, totalActivities);
+  }
+
+  bool get hasCompletedActivities {
+    return totalActivities > 0 && completedActivities >= totalActivities;
+  }
+
+  int get overallPercentage {
+    final totalSteps = progress.totalTheoryPages + totalActivities;
+    if (totalSteps == 0) {
+      return 0;
+    }
+
+    return (((progress.viewedTheoryPages + completedActivities) / totalSteps) *
+            100)
+        .round()
+        .clamp(0, 100);
+  }
+
+  double get overallProgress => overallPercentage / 100;
+}
+
+List<String> _indicatorsWithActivityCount(
+  Category category,
+  int? activityCount,
+) {
+  if (activityCount == null) {
+    return category.indicators;
+  }
+
+  var replacedActivityIndicator = false;
+  final activityLabel =
+      '$activityCount ${activityCount == 1 ? 'actividad' : 'actividades'}';
+  final indicators = category.indicators
+      .map((indicator) {
+        if (RegExp(
+          r'\bactividades?\b',
+          caseSensitive: false,
+        ).hasMatch(indicator)) {
+          replacedActivityIndicator = true;
+          return activityLabel;
+        }
+
+        return indicator;
+      })
+      .toList(growable: true);
+
+  if (!replacedActivityIndicator) {
+    indicators.insert(0, activityLabel);
+  }
+
+  return indicators;
+}
+
 class _Header extends StatelessWidget {
-  const _Header({required this.category, required this.progress});
+  const _Header({
+    required this.category,
+    required this.progress,
+    required this.activityCount,
+  });
 
   final Category category;
   final CategoryProgressSnapshot progress;
+  final int? activityCount;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +253,10 @@ class _Header extends StatelessWidget {
                       spacing: AppSpacing.xs,
                       runSpacing: AppSpacing.xs,
                       children: [
-                        for (final indicator in category.indicators)
+                        for (final indicator in _indicatorsWithActivityCount(
+                          category,
+                          activityCount,
+                        ))
                           _IndicatorChip(label: indicator),
                       ],
                     ),
@@ -140,6 +268,7 @@ class _Header extends StatelessWidget {
                 _HeaderSidePanel(
                   objectives: category.objectives,
                   progress: progress,
+                  activityCount: activityCount,
                 ),
               ],
             ],
@@ -151,10 +280,15 @@ class _Header extends StatelessWidget {
 }
 
 class _HeaderSidePanel extends StatelessWidget {
-  const _HeaderSidePanel({required this.objectives, required this.progress});
+  const _HeaderSidePanel({
+    required this.objectives,
+    required this.progress,
+    required this.activityCount,
+  });
 
   final List<String> objectives;
   final CategoryProgressSnapshot progress;
+  final int? activityCount;
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +312,10 @@ class _HeaderSidePanel extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: _ProgressPill(progress: progress),
+            child: _ProgressPill(
+              progress: progress,
+              activityCount: activityCount,
+            ),
           ),
         ],
       ),
@@ -311,13 +448,18 @@ class _ShiningInfoIcon extends StatelessWidget {
 }
 
 class _ProgressPill extends StatelessWidget {
-  const _ProgressPill({required this.progress});
+  const _ProgressPill({required this.progress, required this.activityCount});
 
   final CategoryProgressSnapshot progress;
+  final int? activityCount;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final displayProgress = _DisplayProgress(
+      progress: progress,
+      activityCount: activityCount,
+    );
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -339,7 +481,7 @@ class _ProgressPill extends StatelessWidget {
               ).textTheme.bodySmall?.copyWith(color: colors.textSecondary),
             ),
             Text(
-              '${progress.overallPercentage}%',
+              '${displayProgress.overallPercentage}%',
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
@@ -353,6 +495,7 @@ class _LearningRoute extends StatelessWidget {
   const _LearningRoute({
     required this.category,
     required this.progress,
+    required this.activityCount,
     required this.onOpenTheory,
     required this.onOpenActivities,
     required this.onOpenSummary,
@@ -360,6 +503,7 @@ class _LearningRoute extends StatelessWidget {
 
   final Category category;
   final CategoryProgressSnapshot progress;
+  final int? activityCount;
   final VoidCallback onOpenTheory;
   final VoidCallback onOpenActivities;
   final VoidCallback onOpenSummary;
@@ -367,6 +511,10 @@ class _LearningRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final displayProgress = _DisplayProgress(
+      progress: progress,
+      activityCount: activityCount,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -381,17 +529,20 @@ class _LearningRoute extends StatelessWidget {
               '${progress.totalTheoryPages} cápsulas vistas',
           icon: Icons.menu_book_outlined,
           completed: progress.hasCompletedTheory,
+          enabled: true,
           onTap: onOpenTheory,
         ),
         const SizedBox(height: AppSpacing.sm),
         _RouteStepCard(
           number: 2,
           title: AppStrings.activitiesTitle,
-          subtitle:
-              '${progress.completedActivities} de '
-              '${progress.totalActivities} actividades completadas',
+          subtitle: progress.hasCompletedTheory
+              ? '${displayProgress.completedActivities} de '
+                    '${displayProgress.totalActivities} actividades completadas'
+              : AppStrings.activitiesLockedByTheory,
           icon: Icons.edit_outlined,
-          completed: progress.hasCompletedActivities,
+          completed: displayProgress.hasCompletedActivities,
+          enabled: progress.hasCompletedTheory,
           onTap: onOpenActivities,
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -401,6 +552,7 @@ class _LearningRoute extends StatelessWidget {
           subtitle: 'Consulta tu avance y el resultado de la categoría',
           icon: Icons.insights_outlined,
           completed: progress.hasResult,
+          enabled: true,
           onTap: onOpenSummary,
         ),
       ],
@@ -415,6 +567,7 @@ class _RouteStepCard extends StatelessWidget {
     required this.subtitle,
     required this.icon,
     required this.completed,
+    required this.enabled,
     required this.onTap,
   });
 
@@ -423,15 +576,18 @@ class _RouteStepCard extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final bool completed;
+  final bool enabled;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
+    final foregroundColor = enabled ? colors.textPrimary : colors.disabledText;
+    final accentColor = enabled ? colors.orangeDark : colors.disabledText;
 
     return Card(
-      color: colors.surface,
+      color: enabled ? colors.surface : colors.disabledSurface,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadii.card),
@@ -445,9 +601,13 @@ class _RouteStepCard extends StatelessWidget {
               radius: 20,
               backgroundColor: completed
                   ? colors.success.withValues(alpha: 0.12)
-                  : colors.orangePrimary,
+                  : enabled
+                  ? colors.orangePrimary
+                  : colors.disabledSurface,
               child: completed
                   ? Icon(Icons.check_outlined, color: colors.success)
+                  : !enabled
+                  ? Icon(Icons.lock_outline, color: colors.disabledText)
                   : Text(
                       '$number',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -460,12 +620,14 @@ class _RouteStepCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(icon, size: 20, color: colors.orangeDark),
+                    Icon(icon, size: 20, color: accentColor),
                     const SizedBox(width: AppSpacing.xs),
                     Expanded(
                       child: Text(
                         title,
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: foregroundColor,
+                        ),
                       ),
                     ),
                   ],
@@ -473,9 +635,9 @@ class _RouteStepCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   subtitle,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: enabled ? colors.textSecondary : colors.disabledText,
+                  ),
                 ),
               ],
             );
@@ -499,8 +661,10 @@ class _RouteStepCard extends StatelessWidget {
                         if (showTrailingIcon) ...[
                           const SizedBox(width: AppSpacing.sm),
                           Icon(
-                            Icons.chevron_right_outlined,
-                            color: colors.orangeDark,
+                            enabled
+                                ? Icons.chevron_right_outlined
+                                : Icons.lock_outline,
+                            color: accentColor,
                           ),
                         ],
                       ],

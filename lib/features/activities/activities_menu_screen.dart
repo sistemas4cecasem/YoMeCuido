@@ -52,6 +52,10 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
     );
     final sortedActivities = activities.toList(growable: false)
       ..sort((a, b) => a.order.compareTo(b.order));
+    widget.progressController.updateActivityTotal(
+      categoryId: widget.category.id,
+      totalActivities: sortedActivities.length,
+    );
     final questionCounts = <String, int>{};
 
     for (final activity in sortedActivities) {
@@ -94,8 +98,8 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
     );
   }
 
-  void _showLockedMessage() {
-    AppToast.showInfo(context, AppStrings.demoLockedSnackBar);
+  void _showLockedMessage([String message = AppStrings.demoLockedSnackBar]) {
+    AppToast.showInfo(context, message);
   }
 
   @override
@@ -133,15 +137,28 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
                   children: [
                     _IntroCard(totalActivities: menuData.activities.length),
                     const SizedBox(height: AppSpacing.lg),
-                    for (final activity in menuData.activities)
+                    for (
+                      var index = 0;
+                      index < menuData.activities.length;
+                      index += 1
+                    )
                       _ActivityBlock(
-                        activity: activity,
+                        activity: menuData.activities[index],
+                        unlocked: _isActivityUnlocked(
+                          index,
+                          menuData.activities,
+                          progress,
+                        ),
                         menuData: menuData,
                         progress: progress,
                         onOpen: (activity) {
                           _openQuiz(activity, menuData.activities.length);
                         },
-                        onLocked: _showLockedMessage,
+                        onLocked: () => _showLockedMessage(
+                          progress.hasCompletedTheory
+                              ? AppStrings.completePreviousActivity
+                              : AppStrings.completeTheoryToUnlockActivities,
+                        ),
                       ),
                     if (menuData.exam != null)
                       _FinalExamBlock(
@@ -151,7 +168,8 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
                         onOpen: (exam) {
                           _openExam(exam, menuData.activities.length);
                         },
-                        onLocked: _showLockedMessage,
+                        onLocked: () =>
+                            _showLockedMessage(AppStrings.finalExamLocked),
                       ),
                   ],
                 ),
@@ -161,6 +179,24 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
         },
       ),
     );
+  }
+
+  bool _isActivityUnlocked(
+    int index,
+    List<LearningActivity> activities,
+    CategoryProgressSnapshot progress,
+  ) {
+    if (!progress.hasCompletedTheory) {
+      return false;
+    }
+
+    if (index == 0) {
+      return true;
+    }
+
+    final completedIds = progress.completedActivityIds.toSet();
+    return completedIds.contains(activities[index].id) ||
+        completedIds.contains(activities[index - 1].id);
   }
 }
 
@@ -279,6 +315,7 @@ class _FinalExamBlock extends StatelessWidget {
 class _ActivityBlock extends StatelessWidget {
   const _ActivityBlock({
     required this.activity,
+    required this.unlocked,
     required this.menuData,
     required this.progress,
     required this.onOpen,
@@ -286,6 +323,7 @@ class _ActivityBlock extends StatelessWidget {
   });
 
   final LearningActivity activity;
+  final bool unlocked;
   final _ActivitiesMenuData menuData;
   final CategoryProgressSnapshot progress;
   final ValueChanged<LearningActivity> onOpen;
@@ -294,13 +332,13 @@ class _ActivityBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final questionCount = menuData.questionCountFor(activity.id);
-    final unlocked = questionCount > 0;
+    final hasQuestions = questionCount > 0;
     final activityProgress = progress.activityProgress[activity.id];
     final completed =
         progress.completedActivityIds.contains(activity.id) ||
         activityProgress?.isCompleted == true;
     final attempts = activityProgress?.attemptCount ?? 0;
-    final progressLabel = !unlocked
+    final progressLabel = !unlocked || !hasQuestions
         ? null
         : completed
         ? 'Completada'
@@ -312,12 +350,16 @@ class _ActivityBlock extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: _ActivityBlockCard(
         title: activity.title,
-        subtitle: unlocked ? '$questionCount preguntas' : AppStrings.comingSoon,
+        subtitle: unlocked && hasQuestions
+            ? '$questionCount preguntas'
+            : AppStrings.locked,
         progressLabel: progressLabel,
-        icon: unlocked ? Icons.workspace_premium_outlined : Icons.lock_outline,
-        unlocked: unlocked,
+        icon: unlocked && hasQuestions
+            ? Icons.workspace_premium_outlined
+            : Icons.lock_outline,
+        unlocked: unlocked && hasQuestions,
         completed: completed,
-        onTap: unlocked ? () => onOpen(activity) : onLocked,
+        onTap: unlocked && hasQuestions ? () => onOpen(activity) : onLocked,
       ),
     );
   }

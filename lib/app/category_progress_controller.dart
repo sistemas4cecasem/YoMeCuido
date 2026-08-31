@@ -134,6 +134,33 @@ class CategoryProgressController extends ChangeNotifier {
     return _entryFor(categoryId).examSnapshotFor(examId);
   }
 
+  void updateActivityTotal({
+    required String categoryId,
+    required int totalActivities,
+  }) {
+    final normalizedTotal = totalActivities < 0 ? 0 : totalActivities;
+    final progress = _entryFor(categoryId);
+    if (progress.activityTotal == normalizedTotal) {
+      return;
+    }
+
+    progress.activityTotal = normalizedTotal;
+    final hasCompletedAll =
+        normalizedTotal > 0 &&
+        progress.completedActivityIds.length >= normalizedTotal;
+    if (hasCompletedAll) {
+      progress
+        ..status = CategoryProgressStatus.completed
+        ..completedAt ??= DateTime.now();
+    } else if (progress.status == CategoryProgressStatus.completed) {
+      progress
+        ..status = CategoryProgressStatus.inProgress
+        ..completedAt = null;
+    }
+    progress.updatedAt = DateTime.now();
+    notifyListeners();
+  }
+
   Future<void> markTheoryPageViewed({
     required String categoryId,
     required String lessonId,
@@ -170,16 +197,7 @@ class CategoryProgressController extends ChangeNotifier {
   }) {
     final attemptId = _attemptIdGenerator();
     final now = DateTime.now();
-    final progress = _entryFor(categoryId)
-      ..activityTotal = totalActivities
-      ..status = CategoryProgressStatus.inProgress
-      ..completedAt = null
-      ..updatedAt = now;
-    progress.activityProgressFor(activityId)
-      ..status = ActivityProgressStatus.inProgress
-      ..attemptCount += 1
-      ..lastAttemptAt = now
-      ..updatedAt = now;
+    _entryFor(categoryId).activityTotal = totalActivities;
     _attemptsById[attemptId] = _MutableQuizAttempt(
       id: attemptId,
       type: QuizAttemptType.activity,
@@ -190,21 +208,6 @@ class CategoryProgressController extends ChangeNotifier {
       startedAt: now,
     );
     notifyListeners();
-
-    unawaited(
-      _persistForCurrentUser((uid) {
-        return _persistence!.startActivityAttempt(
-          uid: uid,
-          categoryId: categoryId,
-          lessonId: lessonId,
-          activityId: activityId,
-          attemptId: attemptId,
-          questionIds: questionIds,
-          totalLessonPages: progress.theoryTotal,
-          totalActivities: totalActivities,
-        );
-      }),
-    );
     return attemptId;
   }
 
@@ -217,17 +220,7 @@ class CategoryProgressController extends ChangeNotifier {
   }) {
     final attemptId = _attemptIdGenerator();
     final now = DateTime.now();
-    final progress = _entryFor(categoryId)
-      ..activityTotal = totalActivities
-      ..updatedAt = now;
-    if (progress.status != CategoryProgressStatus.completed) {
-      progress.status = CategoryProgressStatus.inProgress;
-    }
-    progress.examProgressFor(examId)
-      ..status = ActivityProgressStatus.inProgress
-      ..attemptCount += 1
-      ..lastAttemptAt = now
-      ..updatedAt = now;
+    _entryFor(categoryId).activityTotal = totalActivities;
     _attemptsById[attemptId] = _MutableQuizAttempt(
       id: attemptId,
       type: QuizAttemptType.exam,
@@ -238,22 +231,13 @@ class CategoryProgressController extends ChangeNotifier {
       startedAt: now,
     );
     notifyListeners();
-
-    unawaited(
-      _persistForCurrentUser((uid) {
-        return _persistence!.startExamAttempt(
-          uid: uid,
-          categoryId: categoryId,
-          lessonId: lessonId,
-          examId: examId,
-          attemptId: attemptId,
-          questionIds: questionIds,
-          totalLessonPages: progress.theoryTotal,
-          totalActivities: totalActivities,
-        );
-      }),
-    );
     return attemptId;
+  }
+
+  void discardAttempt(String attemptId) {
+    if (_attemptsById.remove(attemptId) != null) {
+      notifyListeners();
+    }
   }
 
   Future<void> recordAnswer({
@@ -282,21 +266,7 @@ class CategoryProgressController extends ChangeNotifier {
       isCorrect: isCorrect,
       answeredAt: answeredAt,
     );
-    _entryFor(categoryId).updatedAt = answeredAt;
     notifyListeners();
-
-    await _persistForCurrentUser((uid) {
-      return _persistence!.recordAttemptAnswer(
-        uid: uid,
-        categoryId: categoryId,
-        activityId: activityId,
-        examId: examId,
-        attemptId: attemptId,
-        questionId: questionId,
-        answer: answer,
-        isCorrect: isCorrect,
-      );
-    });
   }
 
   Future<void> completeActivityAttempt({
@@ -324,6 +294,7 @@ class CategoryProgressController extends ChangeNotifier {
     final shouldReplaceBest = result.percentage >= activity.bestPercentage;
     activity
       ..status = ActivityProgressStatus.completed
+      ..attemptCount += 1
       ..lastAttemptAt = now
       ..completedAt ??= now
       ..updatedAt = now;
@@ -346,17 +317,40 @@ class CategoryProgressController extends ChangeNotifier {
       ..updatedAt = now;
     notifyListeners();
 
-    await _persistForCurrentUser((uid) {
+    await _persistCompletedActivityAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      activityId: activityId,
+      attempt: attempt,
+      result: result,
+      totalLessonPages: progress.theoryTotal,
+      totalActivities: totalActivities,
+    );
+  }
+
+  Future<void> _persistCompletedActivityAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required _MutableQuizAttempt attempt,
+    required QuizResult result,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) {
+    return _persistForCurrentUser((uid) {
       return _persistence!.completeActivityAttempt(
         uid: uid,
         categoryId: categoryId,
         lessonId: lessonId,
         activityId: activityId,
-        attemptId: attemptId,
+        attemptId: attempt.id,
+        startedAt: attempt.startedAt,
+        questionIds: attempt.questionIds,
+        answers: attempt.answers.values,
         correctAnswers: result.correctAnswers,
         totalQuestions: result.totalQuestions,
         percentage: result.percentage,
-        totalLessonPages: progress.theoryTotal,
+        totalLessonPages: totalLessonPages,
         totalActivities: totalActivities,
       );
     });
@@ -390,6 +384,7 @@ class CategoryProgressController extends ChangeNotifier {
     final shouldReplaceBest = result.percentage >= exam.bestPercentage;
     exam
       ..status = ActivityProgressStatus.completed
+      ..attemptCount += 1
       ..lastAttemptAt = now
       ..completedAt ??= now
       ..updatedAt = now;
@@ -405,17 +400,40 @@ class CategoryProgressController extends ChangeNotifier {
       ..updatedAt = now;
     notifyListeners();
 
-    await _persistForCurrentUser((uid) {
+    await _persistCompletedExamAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      examId: examId,
+      attempt: attempt,
+      result: result,
+      totalLessonPages: progress.theoryTotal,
+      totalActivities: totalActivities,
+    );
+  }
+
+  Future<void> _persistCompletedExamAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required _MutableQuizAttempt attempt,
+    required QuizResult result,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) {
+    return _persistForCurrentUser((uid) {
       return _persistence!.completeExamAttempt(
         uid: uid,
         categoryId: categoryId,
         lessonId: lessonId,
         examId: examId,
-        attemptId: attemptId,
+        attemptId: attempt.id,
+        startedAt: attempt.startedAt,
+        questionIds: attempt.questionIds,
+        answers: attempt.answers.values,
         correctAnswers: result.correctAnswers,
         totalQuestions: result.totalQuestions,
         percentage: result.percentage,
-        totalLessonPages: progress.theoryTotal,
+        totalLessonPages: totalLessonPages,
         totalActivities: totalActivities,
       );
     });

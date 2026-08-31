@@ -55,6 +55,9 @@ abstract class CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
@@ -68,6 +71,9 @@ abstract class CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
@@ -373,6 +379,9 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
@@ -407,17 +416,24 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           final bestPercentage = _existingBestPercentage(activitySnapshot);
           final shouldReplaceBest = percentage >= bestPercentage;
 
-          transaction.update(attemptDocument, {
+          transaction.set(attemptDocument, {
+            'type': QuizAttemptType.activity.firestoreValue,
+            'categoryId': categoryId,
+            'activityId': activityId,
+            'examId': null,
+            'questionIds': questionIds,
+            'answers': _answersByQuestionId(answers),
             'correctAnswers': correctAnswers,
             'totalQuestions': totalQuestions,
             'percentage': percentage,
+            'startedAt': Timestamp.fromDate(startedAt),
             'completedAt': FieldValue.serverTimestamp(),
           });
 
           transaction.set(activityDocument, {
             'activityId': activityId,
             'status': ActivityProgressStatus.completed.firestoreValue,
-            'attemptCount': _existingActivityAttemptCount(activitySnapshot),
+            'attemptCount': _existingActivityAttemptCount(activitySnapshot) + 1,
             'bestCorrectAnswers': shouldReplaceBest
                 ? correctAnswers
                 : _existingBestCorrectAnswers(activitySnapshot),
@@ -480,6 +496,9 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
@@ -505,17 +524,24 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           final bestPercentage = _existingExamBestPercentage(examSnapshot);
           final shouldReplaceBest = percentage >= bestPercentage;
 
-          transaction.update(attemptDocument, {
+          transaction.set(attemptDocument, {
+            'type': QuizAttemptType.exam.firestoreValue,
+            'categoryId': categoryId,
+            'activityId': null,
+            'examId': examId,
+            'questionIds': questionIds,
+            'answers': _answersByQuestionId(answers),
             'correctAnswers': correctAnswers,
             'totalQuestions': totalQuestions,
             'percentage': percentage,
+            'startedAt': Timestamp.fromDate(startedAt),
             'completedAt': FieldValue.serverTimestamp(),
           });
 
           transaction.set(examDocument, {
             'examId': examId,
             'status': ActivityProgressStatus.completed.firestoreValue,
-            'attemptCount': _existingExamAttemptCount(examSnapshot),
+            'attemptCount': _existingExamAttemptCount(examSnapshot) + 1,
             'bestCorrectAnswers': shouldReplaceBest
                 ? correctAnswers
                 : _existingExamBestCorrectAnswers(examSnapshot),
@@ -784,6 +810,20 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     }
 
     return null;
+  }
+
+  Map<String, Map<String, dynamic>> _answersByQuestionId(
+    Iterable<CategoryProgressAnswer> answers,
+  ) {
+    return {
+      for (final answer in answers)
+        answer.questionId: {
+          'questionId': answer.questionId,
+          'answer': answer.answer,
+          'isCorrect': answer.isCorrect,
+          'answeredAt': Timestamp.fromDate(answer.answeredAt),
+        },
+    };
   }
 
   List<String> _existingCompletedActivityIds(
