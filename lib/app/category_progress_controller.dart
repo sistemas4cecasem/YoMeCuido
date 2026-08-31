@@ -161,6 +161,27 @@ class CategoryProgressController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTheoryTotal({
+    required String categoryId,
+    required int totalPages,
+  }) {
+    final normalizedTotal = totalPages < 0 ? 0 : totalPages;
+    final progress = _entryFor(categoryId);
+    if (progress.theoryTotal == normalizedTotal) {
+      return;
+    }
+
+    progress.theoryTotal = normalizedTotal;
+    if (progress.status == CategoryProgressStatus.completed &&
+        progress.viewedTheoryPageIds.length < normalizedTotal) {
+      progress
+        ..status = CategoryProgressStatus.inProgress
+        ..completedAt = null;
+    }
+    progress.updatedAt = DateTime.now();
+    notifyListeners();
+  }
+
   Future<void> markTheoryPageViewed({
     required String categoryId,
     required String lessonId,

@@ -80,6 +80,7 @@ class AppRouter {
           AppRoutes.quiz => _buildQuizScreen(settings),
           AppRoutes.categorySummary => CategorySummaryScreen(
             category: settings.arguments! as Category,
+            contentRepository: _contentRepository,
             progressController: _progressController,
           ),
           _ => const _UnknownRoute(),

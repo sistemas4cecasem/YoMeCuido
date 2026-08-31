@@ -291,6 +291,56 @@ void main() {
       ]);
     });
 
+    test('syncs stale theory totals with current local content', () {
+      final persistence = _FakeProgressPersistence();
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+      final now = DateTime.utc(2026, 8, 31, 18);
+
+      controller.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          CategoryProgressRecord(
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            status: CategoryProgressStatus.completed,
+            viewedLessonPageIds: const <String>[
+              'what_is_digital_violence',
+              'control_is_not_care',
+              'consent_and_intimate_content',
+              'how_to_act',
+            ],
+            completedActivityIds: const <String>[],
+            totalLessonPages: 4,
+            totalActivities: 12,
+            startedAt: now,
+            lastActivityAt: null,
+            completedAt: now,
+            updatedAt: now,
+            activities: const <String, ActivityProgressRecord>{},
+            exams: const <String, ExamProgressRecord>{},
+          ),
+        ],
+      );
+
+      controller.updateTheoryTotal(categoryId: _categoryId, totalPages: 6);
+      controller.updateActivityTotal(
+        categoryId: _categoryId,
+        totalActivities: 6,
+      );
+
+      final snapshot = controller.snapshotFor(_categoryId);
+      expect(snapshot.totalTheoryPages, 6);
+      expect(snapshot.viewedTheoryPages, 4);
+      expect(snapshot.hasCompletedTheory, isFalse);
+      expect(snapshot.totalActivities, 6);
+      expect(snapshot.status, CategoryProgressStatus.inProgress);
+      expect(snapshot.completedAt, isNull);
+    });
+
     test(
       'completes exam attempts without marking a new activity as completed',
       () async {

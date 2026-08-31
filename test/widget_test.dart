@@ -34,6 +34,17 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<void> advanceTheoryToActivities(WidgetTester tester) async {
+    while (find.text(AppStrings.startActivities).evaluate().isEmpty) {
+      await tester.ensureVisible(find.text(AppStrings.next));
+      await tester.tap(find.text(AppStrings.next));
+      await tester.pumpAndSettle();
+    }
+
+    await tester.tap(find.text(AppStrings.startActivities));
+    await tester.pumpAndSettle();
+  }
+
   Future<void> openQuiz(WidgetTester tester) async {
     await pumpApp(tester);
     await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
@@ -43,14 +54,7 @@ void main() {
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
     await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.startActivities));
-    await tester.pumpAndSettle();
+    await advanceTheoryToActivities(tester);
     await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
     await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
@@ -219,7 +223,7 @@ void main() {
     expect(find.text(AppStrings.summaryTitle), findsWidgets);
   });
 
-  testWidgets('el detalle corrige totales antiguos con actividades reales', (
+  testWidgets('el detalle corrige totales antiguos con contenido real', (
     tester,
   ) async {
     final progressController = CategoryProgressController();
@@ -257,8 +261,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('6 actividades'), findsOneWidget);
-    expect(find.text('0 de 6 actividades completadas'), findsOneWidget);
+    expect(find.text('4 de 6 cápsulas vistas'), findsOneWidget);
+    expect(find.text('4 de 4 cápsulas vistas'), findsNothing);
+    expect(find.text(AppStrings.activitiesLockedByTheory), findsOneWidget);
     expect(find.text('0 de 12 actividades completadas'), findsNothing);
+    expect(find.text('33%'), findsOneWidget);
+    expect(
+      progressController
+          .snapshotFor('relations_violence_digital')
+          .totalTheoryPages,
+      6,
+    );
     expect(
       progressController
           .snapshotFor('relations_violence_digital')
@@ -293,15 +306,15 @@ void main() {
     expect(find.text(AppStrings.objectivesTitle), findsNothing);
   });
 
-  testWidgets('navega entre las cuatro cápsulas teóricas', (tester) async {
+  testWidgets('navega entre las seis cápsulas teóricas', (tester) async {
     await openDetail(tester);
 
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
     await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
 
-    expect(repository.loadLessonPagesCalls, 1);
-    expect(find.text('1 de 4'), findsOneWidget);
+    expect(repository.loadLessonPagesCalls, 2);
+    expect(find.text('1 de 6'), findsOneWidget);
     expect(find.text('¿Qué es la violencia digital?'), findsOneWidget);
     expect(
       tester.widget<OutlinedButton>(find.byType(OutlinedButton)).enabled,
@@ -310,7 +323,7 @@ void main() {
 
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
-    expect(find.text('2 de 4'), findsOneWidget);
+    expect(find.text('2 de 6'), findsOneWidget);
     expect(
       find.text('El control no es una muestra de cuidado'),
       findsOneWidget,
@@ -322,19 +335,22 @@ void main() {
 
     await tester.tap(find.text(AppStrings.next));
     await tester.pumpAndSettle();
-    expect(find.text('3 de 4'), findsOneWidget);
+    expect(find.text('3 de 6'), findsOneWidget);
     expect(find.text('Consentimiento y contenido íntimo'), findsOneWidget);
 
     await tester.tap(find.text(AppStrings.previous));
     await tester.pumpAndSettle();
-    expect(find.text('2 de 4'), findsOneWidget);
+    expect(find.text('2 de 6'), findsOneWidget);
 
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    expect(find.text('4 de 4'), findsOneWidget);
-    expect(find.text('Cómo actuar'), findsOneWidget);
+    while (find.text(AppStrings.startActivities).evaluate().isEmpty) {
+      await tester.tap(find.text(AppStrings.next));
+      await tester.pumpAndSettle();
+    }
+    expect(find.text('6 de 6'), findsOneWidget);
+    expect(
+      find.text('Recuperación, apoyo y seguridad inmediata'),
+      findsOneWidget,
+    );
     expect(find.text(AppStrings.startActivities), findsOneWidget);
     expect(find.text(AppStrings.next), findsNothing);
   });
@@ -347,14 +363,7 @@ void main() {
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
     await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.startActivities));
-    await tester.pumpAndSettle();
+    await advanceTheoryToActivities(tester);
 
     expect(find.text(AppStrings.activitiesTitle), findsWidgets);
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
@@ -390,13 +399,7 @@ void main() {
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
     await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
-    for (var page = 0; page < 3; page += 1) {
-      await tester.ensureVisible(find.text(AppStrings.next));
-      await tester.tap(find.text(AppStrings.next));
-      await tester.pumpAndSettle();
-    }
-    await tester.tap(find.text(AppStrings.startActivities));
-    await tester.pumpAndSettle();
+    await advanceTheoryToActivities(tester);
 
     await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
 
@@ -481,14 +484,7 @@ void main() {
     await tester.ensureVisible(find.text(AppStrings.theoryTitle));
     await tester.tap(find.text(AppStrings.theoryTitle));
     await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.next));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.startActivities));
-    await tester.pumpAndSettle();
+    await advanceTheoryToActivities(tester);
 
     expect(find.text(AppStrings.firstActivityBlock), findsOneWidget);
 
@@ -600,9 +596,11 @@ CategoryProgressRecord _completedActivitiesRecord(
       'control_is_not_care',
       'consent_and_intimate_content',
       'how_to_act',
+      'threats_evidence_safe_response',
+      'recovery_support_immediate_safety',
     ],
     completedActivityIds: activities.map((activity) => activity.id).toList(),
-    totalLessonPages: 4,
+    totalLessonPages: 6,
     totalActivities: activities.length,
     startedAt: now,
     lastActivityAt: now,
@@ -798,6 +796,22 @@ class _FakeContentRepository implements ContentRepository {
       body:
           'Ante amenazas o acoso, conviene guardar evidencia, proteger las '
           'cuentas, bloquear o reportar cuando sea seguro y buscar apoyo.',
+    ),
+    LessonPage(
+      id: 'threats_evidence_safe_response',
+      order: 5,
+      title: 'Amenazas, evidencia y respuesta segura',
+      body:
+          'La evidencia digital puede incluir capturas completas, nombres de '
+          'usuario, enlaces, fechas y otros registros.',
+    ),
+    LessonPage(
+      id: 'recovery_support_immediate_safety',
+      order: 6,
+      title: 'Recuperación, apoyo y seguridad inmediata',
+      body:
+          'Después de una situación de control, revisa contraseñas, sesiones '
+          'abiertas, dispositivos vinculados y permisos de ubicación.',
     ),
   ];
 

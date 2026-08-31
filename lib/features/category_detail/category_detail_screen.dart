@@ -42,15 +42,25 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   }
 
   Future<_CategoryDetailData> _loadDetailData() async {
+    final lessonPages = await widget.contentRepository.loadLessonPages(
+      widget.category.id,
+    );
     final activities = await widget.contentRepository.loadActivities(
       widget.category.id,
+    );
+    widget.progressController.updateTheoryTotal(
+      categoryId: widget.category.id,
+      totalPages: lessonPages.length,
     );
     widget.progressController.updateActivityTotal(
       categoryId: widget.category.id,
       totalActivities: activities.length,
     );
 
-    return _CategoryDetailData(activityCount: activities.length);
+    return _CategoryDetailData(
+      theoryPageCount: lessonPages.length,
+      activityCount: activities.length,
+    );
   }
 
   @override
@@ -61,6 +71,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       child: FutureBuilder<_CategoryDetailData>(
         future: _detailDataFuture,
         builder: (context, detailSnapshot) {
+          if (detailSnapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (detailSnapshot.hasError || !detailSnapshot.hasData) {
+            return _CategoryDetailLoadError(onRetry: _retry);
+          }
+
           final detailData = detailSnapshot.data;
 
           return AnimatedBuilder(
@@ -69,7 +87,13 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
               final progress = widget.progressController.snapshotFor(
                 widget.category.id,
               );
+              final theoryPageCount = detailData?.theoryPageCount;
               final activityCount = detailData?.activityCount;
+              final displayProgress = _DisplayProgress(
+                progress: progress,
+                theoryPageCount: theoryPageCount,
+                activityCount: activityCount,
+              );
 
               return SingleChildScrollView(
                 child: Column(
@@ -77,18 +101,17 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   children: [
                     _Header(
                       category: widget.category,
-                      progress: progress,
+                      displayProgress: displayProgress,
                       activityCount: activityCount,
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     _LearningRoute(
                       category: widget.category,
-                      progress: progress,
-                      activityCount: activityCount,
+                      displayProgress: displayProgress,
                       onOpenTheory: () => Navigator.of(
                         context,
                       ).pushNamed(AppRoutes.lesson, arguments: widget.category),
-                      onOpenActivities: progress.hasCompletedTheory
+                      onOpenActivities: displayProgress.hasCompletedTheory
                           ? () => Navigator.of(context).pushNamed(
                               AppRoutes.activities,
                               arguments: widget.category,
@@ -118,19 +141,44 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       ),
     );
   }
+
+  void _retry() {
+    setState(() {
+      _detailDataFuture = _loadDetailData();
+    });
+  }
 }
 
 class _CategoryDetailData {
-  const _CategoryDetailData({required this.activityCount});
+  const _CategoryDetailData({
+    required this.theoryPageCount,
+    required this.activityCount,
+  });
 
+  final int theoryPageCount;
   final int activityCount;
 }
 
 class _DisplayProgress {
-  const _DisplayProgress({required this.progress, required this.activityCount});
+  const _DisplayProgress({
+    required this.progress,
+    required this.theoryPageCount,
+    required this.activityCount,
+  });
 
   final CategoryProgressSnapshot progress;
+  final int? theoryPageCount;
   final int? activityCount;
+
+  int get totalTheoryPages => theoryPageCount ?? progress.totalTheoryPages;
+
+  int get viewedTheoryPages {
+    return progress.viewedTheoryPages.clamp(0, totalTheoryPages);
+  }
+
+  bool get hasCompletedTheory {
+    return totalTheoryPages > 0 && viewedTheoryPages >= totalTheoryPages;
+  }
 
   int get totalActivities => activityCount ?? progress.totalActivities;
 
@@ -143,13 +191,12 @@ class _DisplayProgress {
   }
 
   int get overallPercentage {
-    final totalSteps = progress.totalTheoryPages + totalActivities;
+    final totalSteps = totalTheoryPages + totalActivities;
     if (totalSteps == 0) {
       return 0;
     }
 
-    return (((progress.viewedTheoryPages + completedActivities) / totalSteps) *
-            100)
+    return (((viewedTheoryPages + completedActivities) / totalSteps) * 100)
         .round()
         .clamp(0, 100);
   }
@@ -189,15 +236,46 @@ List<String> _indicatorsWithActivityCount(
   return indicators;
 }
 
+class _CategoryDetailLoadError extends StatelessWidget {
+  const _CategoryDetailLoadError({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppStrings.contentLoadError,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            FilledButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_outlined),
+              label: const Text(AppStrings.retry),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _Header extends StatelessWidget {
   const _Header({
     required this.category,
-    required this.progress,
+    required this.displayProgress,
     required this.activityCount,
   });
 
   final Category category;
-  final CategoryProgressSnapshot progress;
+  final _DisplayProgress displayProgress;
   final int? activityCount;
 
   @override
@@ -267,8 +345,7 @@ class _Header extends StatelessWidget {
                 const SizedBox(width: AppSpacing.sm),
                 _HeaderSidePanel(
                   objectives: category.objectives,
-                  progress: progress,
-                  activityCount: activityCount,
+                  displayProgress: displayProgress,
                 ),
               ],
             ],
@@ -282,13 +359,11 @@ class _Header extends StatelessWidget {
 class _HeaderSidePanel extends StatelessWidget {
   const _HeaderSidePanel({
     required this.objectives,
-    required this.progress,
-    required this.activityCount,
+    required this.displayProgress,
   });
 
   final List<String> objectives;
-  final CategoryProgressSnapshot progress;
-  final int? activityCount;
+  final _DisplayProgress displayProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -312,10 +387,7 @@ class _HeaderSidePanel extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: _ProgressPill(
-              progress: progress,
-              activityCount: activityCount,
-            ),
+            child: _ProgressPill(displayProgress: displayProgress),
           ),
         ],
       ),
@@ -448,18 +520,13 @@ class _ShiningInfoIcon extends StatelessWidget {
 }
 
 class _ProgressPill extends StatelessWidget {
-  const _ProgressPill({required this.progress, required this.activityCount});
+  const _ProgressPill({required this.displayProgress});
 
-  final CategoryProgressSnapshot progress;
-  final int? activityCount;
+  final _DisplayProgress displayProgress;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final displayProgress = _DisplayProgress(
-      progress: progress,
-      activityCount: activityCount,
-    );
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -494,16 +561,14 @@ class _ProgressPill extends StatelessWidget {
 class _LearningRoute extends StatelessWidget {
   const _LearningRoute({
     required this.category,
-    required this.progress,
-    required this.activityCount,
+    required this.displayProgress,
     required this.onOpenTheory,
     required this.onOpenActivities,
     required this.onOpenSummary,
   });
 
   final Category category;
-  final CategoryProgressSnapshot progress;
-  final int? activityCount;
+  final _DisplayProgress displayProgress;
   final VoidCallback onOpenTheory;
   final VoidCallback onOpenActivities;
   final VoidCallback onOpenSummary;
@@ -511,10 +576,6 @@ class _LearningRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final displayProgress = _DisplayProgress(
-      progress: progress,
-      activityCount: activityCount,
-    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -525,10 +586,10 @@ class _LearningRoute extends StatelessWidget {
           number: 1,
           title: AppStrings.theoryTitle,
           subtitle:
-              '${progress.viewedTheoryPages} de '
-              '${progress.totalTheoryPages} cápsulas vistas',
+              '${displayProgress.viewedTheoryPages} de '
+              '${displayProgress.totalTheoryPages} cápsulas vistas',
           icon: Icons.menu_book_outlined,
-          completed: progress.hasCompletedTheory,
+          completed: displayProgress.hasCompletedTheory,
           enabled: true,
           onTap: onOpenTheory,
         ),
@@ -536,13 +597,13 @@ class _LearningRoute extends StatelessWidget {
         _RouteStepCard(
           number: 2,
           title: AppStrings.activitiesTitle,
-          subtitle: progress.hasCompletedTheory
+          subtitle: displayProgress.hasCompletedTheory
               ? '${displayProgress.completedActivities} de '
                     '${displayProgress.totalActivities} actividades completadas'
               : AppStrings.activitiesLockedByTheory,
           icon: Icons.edit_outlined,
           completed: displayProgress.hasCompletedActivities,
-          enabled: progress.hasCompletedTheory,
+          enabled: displayProgress.hasCompletedTheory,
           onTap: onOpenActivities,
         ),
         const SizedBox(height: AppSpacing.sm),
@@ -551,7 +612,7 @@ class _LearningRoute extends StatelessWidget {
           title: AppStrings.summaryTitle,
           subtitle: 'Consulta tu avance y el resultado de la categoría',
           icon: Icons.insights_outlined,
-          completed: progress.hasResult,
+          completed: displayProgress.progress.hasResult,
           enabled: true,
           onTap: onOpenSummary,
         ),

@@ -6,46 +6,131 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/repositories/content_repository.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
 import '../../shared/widgets/demo_bottom_navigation_bar.dart';
 
-class CategorySummaryScreen extends StatelessWidget {
+class CategorySummaryScreen extends StatefulWidget {
   const CategorySummaryScreen({
     required this.category,
+    required this.contentRepository,
     required this.progressController,
     super.key,
   });
 
   final Category category;
+  final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+
+  @override
+  State<CategorySummaryScreen> createState() => _CategorySummaryScreenState();
+}
+
+class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
+  late Future<void> _contentTotalsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _contentTotalsFuture = _syncContentTotals();
+  }
+
+  Future<void> _syncContentTotals() async {
+    final lessonPages = await widget.contentRepository.loadLessonPages(
+      widget.category.id,
+    );
+    final activities = await widget.contentRepository.loadActivities(
+      widget.category.id,
+    );
+    widget.progressController.updateTheoryTotal(
+      categoryId: widget.category.id,
+      totalPages: lessonPages.length,
+    );
+    widget.progressController.updateActivityTotal(
+      categoryId: widget.category.id,
+      totalActivities: activities.length,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: category.title,
+      title: widget.category.title,
       bottomNavigationBar: DemoBottomNavigationBar(
         selectedItem: DemoNavItem.progress,
-        category: category,
+        category: widget.category,
       ),
-      child: AnimatedBuilder(
-        animation: progressController,
-        builder: (context, child) {
-          final progress = progressController.snapshotFor(category.id);
+      child: FutureBuilder<void>(
+        future: _contentTotalsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _OverallProgressCard(progress: progress),
-                const SizedBox(height: AppSpacing.md),
-                _ProgressStats(progress: progress),
-                const SizedBox(height: AppSpacing.md),
-                _EncouragementCard(progress: progress),
-              ],
-            ),
+          if (snapshot.hasError) {
+            return _CategorySummaryLoadError(onRetry: _retry);
+          }
+
+          return AnimatedBuilder(
+            animation: widget.progressController,
+            builder: (context, child) {
+              final progress = widget.progressController.snapshotFor(
+                widget.category.id,
+              );
+
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _OverallProgressCard(progress: progress),
+                    const SizedBox(height: AppSpacing.md),
+                    _ProgressStats(progress: progress),
+                    const SizedBox(height: AppSpacing.md),
+                    _EncouragementCard(progress: progress),
+                  ],
+                ),
+              );
+            },
           );
         },
+      ),
+    );
+  }
+
+  void _retry() {
+    setState(() {
+      _contentTotalsFuture = _syncContentTotals();
+    });
+  }
+}
+
+class _CategorySummaryLoadError extends StatelessWidget {
+  const _CategorySummaryLoadError({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              AppStrings.contentLoadError,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            FilledButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_outlined),
+              label: const Text(AppStrings.retry),
+            ),
+          ],
+        ),
       ),
     );
   }
