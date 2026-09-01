@@ -108,10 +108,10 @@ void main() {
   }
 
   Future<void> completeQuiz(WidgetTester tester) async {
-    for (var activity = 1; activity <= 12; activity += 1) {
+    for (var activity = 1; activity <= 10; activity += 1) {
       await answerCurrentCorrectly(tester, activity);
 
-      if (activity < 12) {
+      if (activity < 10) {
         await tester.tap(find.text(AppStrings.nextActivity));
       } else {
         await tester.tap(find.text(AppStrings.seeResult));
@@ -142,7 +142,7 @@ void main() {
     await pumpQuiz(tester);
 
     expect(find.text(AppStrings.submitAnswer), findsNothing);
-    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
   });
 
   testWidgets('muestra el total real con diez preguntas', (tester) async {
@@ -361,13 +361,13 @@ void main() {
     expect(find.text('Actividad 1 de 12'), findsNothing);
   });
 
-  testWidgets('llega al resultado después de 12 actividades', (tester) async {
+  testWidgets('llega al resultado después de 10 preguntas', (tester) async {
     await pumpQuiz(tester);
 
     await completeQuiz(tester);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('12 de 12'), findsOneWidget);
+    expect(find.text('10 de 10'), findsOneWidget);
     expect(find.text('100%'), findsOneWidget);
     expect(find.text('preguntas'), findsOneWidget);
     expect(find.text('correctas'), findsOneWidget);
@@ -420,7 +420,7 @@ void main() {
 }
 
 class _FakeQuizRepository implements ContentRepository {
-  List<QuizQuestion> quizQuestions = _buildQuizQuestions(12);
+  List<QuizQuestion> quizQuestions = _buildQuizQuestions(60);
 
   @override
   Future<List<Category>> loadCategories() {

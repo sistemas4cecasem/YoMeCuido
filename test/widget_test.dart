@@ -90,7 +90,7 @@ void main() {
     WidgetTester tester, {
     required int correctAnswers,
   }) async {
-    for (var activity = 1; activity <= 12; activity += 1) {
+    for (var activity = 1; activity <= 10; activity += 1) {
       await answerActivity(
         tester,
         activity,
@@ -98,7 +98,7 @@ void main() {
       );
 
       final nextButton = find.text(
-        activity == 12 ? AppStrings.seeResult : AppStrings.nextActivity,
+        activity == 10 ? AppStrings.seeResult : AppStrings.nextActivity,
       );
       await tester.ensureVisible(nextButton);
       await tester.tap(nextButton);
@@ -373,10 +373,10 @@ void main() {
     await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
 
-    expect(repository.loadQuizQuestionsCalls, 7);
+    expect(repository.loadQuizQuestionsCalls, 2);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsNothing);
-    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
   });
 
   testWidgets('el menú renderiza seis actividades reales del repositorio', (
@@ -457,13 +457,7 @@ void main() {
       await tester.tap(find.text(AppStrings.finalExamTitle));
       await tester.pumpAndSettle();
 
-      expect(
-        find.text(
-          'El banco actual tiene 12 preguntas. '
-          'El examen final necesita 15 para iniciar.',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('Pregunta 1 de 15'), findsOneWidget);
       expect(
         progressController
             .examProgressFor(
@@ -499,15 +493,15 @@ void main() {
     tester,
   ) async {
     await openQuiz(tester);
-    await completeActivities(tester, correctAnswers: 12);
+    await completeActivities(tester, correctAnswers: 10);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('12 de 12'), findsOneWidget);
+    expect(find.text('10 de 10'), findsOneWidget);
 
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pregunta 1 de 12'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
     expect(find.text(AppStrings.lessonCompleted), findsNothing);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text(AppStrings.submitAnswer), findsNothing);
@@ -515,7 +509,7 @@ void main() {
 
   testWidgets('repetir lecci\u00f3n reinicia el puntaje', (tester) async {
     await openQuiz(tester);
-    await completeActivities(tester, correctAnswers: 12);
+    await completeActivities(tester, correctAnswers: 10);
 
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
@@ -523,7 +517,7 @@ void main() {
     await completeActivities(tester, correctAnswers: 0);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('0 de 12'), findsOneWidget);
+    expect(find.text('0 de 10'), findsOneWidget);
     expect(find.text('0%'), findsOneWidget);
     expect(
       find.text(
@@ -934,7 +928,7 @@ List<QuizQuestion> _buildQuizQuestions() {
       capacity: 'responder',
       difficulty: 'básica',
     ),
-    for (var index = 3; index <= 12; index += 1)
+    for (var index = 3; index <= 60; index += 1)
       QuizQuestion(
         id: 'activity_$index',
         categoryId: 'relations_violence_digital',

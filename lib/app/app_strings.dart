@@ -119,7 +119,7 @@ abstract final class AppStrings {
   static const startActivities = 'Iniciar actividades';
   static const quizTitle = 'Actividades';
   static const submitAnswer = 'Responder';
-  static const nextActivity = 'Siguiente actividad';
+  static const nextActivity = 'Siguiente pregunta';
   static const seeResult = 'Ver resultado';
   static const correct = 'Correcto';
   static const reviewAnswer = 'Revisemos esta respuesta';

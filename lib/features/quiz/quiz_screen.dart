@@ -24,6 +24,7 @@ import '../../shared/widgets/lesson_progress_bar.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/result_summary_card.dart';
 import '../../shared/widgets/secondary_button.dart';
+import 'activity_question_selector.dart';
 import 'exam_question_selector.dart';
 import 'quiz_controller.dart';
 
@@ -93,9 +94,10 @@ class _QuizScreenState extends State<QuizScreen> {
           );
     }
 
-    return widget.contentRepository.loadQuizQuestions(
-      widget.category.id,
-      activityId: widget.activity!.id,
+    return const ActivityQuestionSelector().selectQuestions(
+      contentRepository: widget.contentRepository,
+      categoryId: widget.category.id,
+      activity: widget.activity!,
     );
   }
 

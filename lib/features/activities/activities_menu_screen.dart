@@ -14,6 +14,7 @@ import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
+import '../quiz/activity_question_selector.dart';
 
 class ActivitiesMenuScreen extends StatefulWidget {
   const ActivitiesMenuScreen({
@@ -56,15 +57,15 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
       categoryId: widget.category.id,
       totalActivities: sortedActivities.length,
     );
-    final questionCounts = <String, int>{};
-
-    for (final activity in sortedActivities) {
-      final questions = await widget.contentRepository.loadQuizQuestions(
-        widget.category.id,
-        activityId: activity.id,
-      );
-      questionCounts[activity.id] = questions.length;
-    }
+    final questions = await widget.contentRepository.loadQuizQuestions(
+      widget.category.id,
+    );
+    final questionCounts = const ActivityQuestionSelector()
+        .countQuestionsByActivity(
+          questions: questions,
+          categoryId: widget.category.id,
+          activities: sortedActivities,
+        );
     final exam = await widget.contentRepository.loadFinalExamConfig(
       widget.category.id,
     );
