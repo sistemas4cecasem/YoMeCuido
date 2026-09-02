@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Aumentar el volumen."
+        "text": "Aumentar el volumen"
       },
       {
         "id": "q01_o2",
-        "text": "Dificultar el acceso no autorizado al dispositivo."
+        "text": "Dificultar el acceso no autorizado al dispositivo"
       },
       {
         "id": "q01_o3",
-        "text": "Mejorar la señal móvil."
+        "text": "Mejorar la señal móvil"
       },
       {
         "id": "q01_o4",
-        "text": "Eliminar anuncios."
+        "text": "Eliminar anuncios"
       }
     ],
     "correctAnswer": "q01_o2",
@@ -56,7 +56,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_01",
     "type": "fillBlank",
-    "statement": "La medida que impide usar el dispositivo sin un PIN, patrón o biometría se llama __ de pantalla.",
+    "statement": "La medida que impide usar el dispositivo sin un PIN, patrón o biometría se llama _____ de pantalla.",
     "options": [],
     "correctAnswer": "bloqueo",
     "acceptedAnswers": [
@@ -75,19 +75,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Un código de desbloqueo sólido."
+        "text": "Un código de desbloqueo sólido"
       },
       {
         "id": "q04_o2",
-        "text": "Una contraseña pública."
+        "text": "Una contraseña pública"
       },
       {
         "id": "q04_o3",
-        "text": "Una conexión Wi-Fi abierta."
+        "text": "Una conexión Wi-Fi abierta"
       },
       {
         "id": "q04_o4",
-        "text": "Un perfil sin bloqueo."
+        "text": "Un perfil sin bloqueo"
       }
     ],
     "correctAnswer": "q04_o1",
@@ -127,19 +127,19 @@
     "options": [
       {
         "id": "q06_o1",
-        "text": "583194."
+        "text": "583194"
       },
       {
         "id": "q06_o2",
-        "text": "240899 si corresponde a tu fecha de nacimiento."
+        "text": "240899 si corresponde a tu fecha de nacimiento"
       },
       {
         "id": "q06_o3",
-        "text": "716305."
+        "text": "716305"
       },
       {
         "id": "q06_o4",
-        "text": "Un código no relacionado contigo."
+        "text": "Un código no relacionado contigo"
       }
     ],
     "correctAnswer": "q06_o2",
@@ -153,7 +153,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_01",
     "type": "fillBlank",
-    "statement": "El uso de huella o reconocimiento facial para desbloquear un dispositivo se conoce como __.",
+    "statement": "El uso de huella o reconocimiento facial para desbloquear un dispositivo se conoce como _____.",
     "options": [],
     "correctAnswer": "biometría",
     "acceptedAnswers": [
@@ -173,19 +173,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Que otra persona acceda directamente a aplicaciones y datos."
+        "text": "Que otra persona acceda directamente a aplicaciones y datos"
       },
       {
         "id": "q08_o2",
-        "text": "Que el teléfono cargue más rápido."
+        "text": "Que el teléfono cargue más rápido"
       },
       {
         "id": "q08_o3",
-        "text": "Que mejore la cámara."
+        "text": "Que mejore la cámara"
       },
       {
         "id": "q08_o4",
-        "text": "Que se actualicen las apps."
+        "text": "Que se actualicen las apps"
       }
     ],
     "correctAnswer": "q08_o1",
@@ -225,19 +225,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Sin bloqueo y con apps abiertas."
+        "text": "Sin bloqueo y con apps abiertas"
       },
       {
         "id": "q10_o2",
-        "text": "Biometría acompañada de un código sólido."
+        "text": "Biometría acompañada de un código sólido"
       },
       {
         "id": "q10_o3",
-        "text": "PIN igual al año de nacimiento."
+        "text": "PIN igual al año de nacimiento"
       },
       {
         "id": "q10_o4",
-        "text": "Desactivar el bloqueo para mayor comodidad."
+        "text": "Desactivar el bloqueo para mayor comodidad"
       }
     ],
     "correctAnswer": "q10_o2",
@@ -255,19 +255,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Porque corrigen errores y vulnerabilidades conocidas."
+        "text": "Porque corrigen errores y vulnerabilidades conocidas"
       },
       {
         "id": "q11_o2",
-        "text": "Porque siempre cambian el diseño."
+        "text": "Porque siempre cambian el diseño"
       },
       {
         "id": "q11_o3",
-        "text": "Porque eliminan la necesidad de contraseñas."
+        "text": "Porque eliminan la necesidad de contraseñas"
       },
       {
         "id": "q11_o4",
-        "text": "Porque vuelven legítimo cualquier sitio."
+        "text": "Porque vuelven legítimo cualquier sitio"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -303,7 +303,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_02",
     "type": "fillBlank",
-    "statement": "Los fallos de seguridad que pueden ser corregidos mediante actualizaciones se llaman __.",
+    "statement": "Los fallos de seguridad que pueden ser corregidos mediante actualizaciones se llaman _____.",
     "options": [],
     "correctAnswer": "vulnerabilidades",
     "acceptedAnswers": [
@@ -322,19 +322,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "Actualizaciones automáticas cuando estén disponibles."
+        "text": "Actualizaciones automáticas cuando estén disponibles"
       },
       {
         "id": "q14_o2",
-        "text": "Desactivar todos los avisos para siempre."
+        "text": "Desactivar todos los avisos para siempre"
       },
       {
         "id": "q14_o3",
-        "text": "Descargar archivos desde chats desconocidos."
+        "text": "Descargar archivos desde chats desconocidos"
       },
       {
         "id": "q14_o4",
-        "text": "Evitar actualizar aplicaciones."
+        "text": "Evitar actualizar aplicaciones"
       }
     ],
     "correctAnswer": "q14_o1",
@@ -352,19 +352,19 @@
     "options": [
       {
         "id": "q15_o1",
-        "text": "Desde la tienda oficial, el sistema o el sitio legítimo del desarrollador."
+        "text": "Desde la tienda oficial, el sistema o el sitio legítimo del desarrollador"
       },
       {
         "id": "q15_o2",
-        "text": "Desde un archivo reenviado por un desconocido."
+        "text": "Desde un archivo reenviado por un desconocido"
       },
       {
         "id": "q15_o3",
-        "text": "Desde cualquier anuncio emergente."
+        "text": "Desde cualquier anuncio emergente"
       },
       {
         "id": "q15_o4",
-        "text": "Desde un grupo anónimo."
+        "text": "Desde un grupo anónimo"
       }
     ],
     "correctAnswer": "q15_o1",
@@ -400,7 +400,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_02",
     "type": "fillBlank",
-    "statement": "Instalar una corrección oficial para un fallo de seguridad suele denominarse aplicar un __.",
+    "statement": "Instalar una corrección oficial para un fallo de seguridad suele denominarse aplicar un _____.",
     "options": [],
     "correctAnswer": "parche",
     "acceptedAnswers": [
@@ -419,19 +419,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Respaldar lo necesario e instalar la actualización oficial."
+        "text": "Respaldar lo necesario e instalar la actualización oficial"
       },
       {
         "id": "q18_o2",
-        "text": "Buscar una versión modificada en un chat."
+        "text": "Buscar una versión modificada en un chat"
       },
       {
         "id": "q18_o3",
-        "text": "Posponerla indefinidamente."
+        "text": "Posponerla indefinidamente"
       },
       {
         "id": "q18_o4",
-        "text": "Desactivar permanentemente las actualizaciones."
+        "text": "Desactivar permanentemente las actualizaciones"
       }
     ],
     "correctAnswer": "q18_o1",
@@ -471,19 +471,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Usar la tienda oficial."
+        "text": "Usar la tienda oficial"
       },
       {
         "id": "q20_o2",
-        "text": "Instalar un supuesto parche recibido como archivo desde una fuente desconocida."
+        "text": "Instalar un supuesto parche recibido como archivo desde una fuente desconocida"
       },
       {
         "id": "q20_o3",
-        "text": "Revisar que la actualización venga del desarrollador legítimo."
+        "text": "Revisar que la actualización venga del desarrollador legítimo"
       },
       {
         "id": "q20_o4",
-        "text": "Activar actualizaciones automáticas."
+        "text": "Activar actualizaciones automáticas"
       }
     ],
     "correctAnswer": "q20_o2",
@@ -501,19 +501,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Aceptar todo automáticamente."
+        "text": "Aceptar todo automáticamente"
       },
       {
         "id": "q21_o2",
-        "text": "Revisar y negar los permisos que no sean necesarios para su función."
+        "text": "Revisar y negar los permisos que no sean necesarios para su función"
       },
       {
         "id": "q21_o3",
-        "text": "Compartir también tus contraseñas."
+        "text": "Compartir también tus contraseñas"
       },
       {
         "id": "q21_o4",
-        "text": "Desactivar el bloqueo del teléfono."
+        "text": "Desactivar el bloqueo del teléfono"
       }
     ],
     "correctAnswer": "q21_o2",
@@ -527,7 +527,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_03",
     "type": "fillBlank",
-    "statement": "Los accesos a cámara, micrófono, ubicación o contactos se controlan mediante __.",
+    "statement": "Los accesos a cámara, micrófono, ubicación o contactos se controlan mediante _____.",
     "options": [],
     "correctAnswer": "permisos",
     "acceptedAnswers": [
@@ -568,19 +568,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Permitir siempre."
+        "text": "Permitir siempre"
       },
       {
         "id": "q24_o2",
-        "text": "Permitir solo mientras se usa la aplicación."
+        "text": "Permitir solo mientras se usa la aplicación"
       },
       {
         "id": "q24_o3",
-        "text": "Publicar la ubicación."
+        "text": "Publicar la ubicación"
       },
       {
         "id": "q24_o4",
-        "text": "Compartirla con todos los contactos."
+        "text": "Compartirla con todos los contactos"
       }
     ],
     "correctAnswer": "q24_o2",
@@ -598,19 +598,19 @@
     "options": [
       {
         "id": "q25_o1",
-        "text": "Accesibilidad."
+        "text": "Accesibilidad"
       },
       {
         "id": "q25_o2",
-        "text": "Brillo."
+        "text": "Brillo"
       },
       {
         "id": "q25_o3",
-        "text": "Fondo de pantalla."
+        "text": "Fondo de pantalla"
       },
       {
         "id": "q25_o4",
-        "text": "Tamaño de letra."
+        "text": "Tamaño de letra"
       }
     ],
     "correctAnswer": "q25_o1",
@@ -646,7 +646,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_03",
     "type": "fillBlank",
-    "statement": "Conceder únicamente los accesos necesarios reduce la __ de datos y funciones del dispositivo.",
+    "statement": "Conceder únicamente los accesos necesarios reduce la _____ de datos y funciones del dispositivo.",
     "options": [],
     "correctAnswer": "exposición",
     "acceptedAnswers": [
@@ -666,19 +666,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Dar acceso a toda la galería sin necesidad."
+        "text": "Dar acceso a toda la galería sin necesidad"
       },
       {
         "id": "q28_o2",
-        "text": "Seleccionar únicamente las fotos necesarias."
+        "text": "Seleccionar únicamente las fotos necesarias"
       },
       {
         "id": "q28_o3",
-        "text": "Publicar todas las imágenes."
+        "text": "Publicar todas las imágenes"
       },
       {
         "id": "q28_o4",
-        "text": "Desactivar el bloqueo."
+        "text": "Desactivar el bloqueo"
       }
     ],
     "correctAnswer": "q28_o2",
@@ -748,19 +748,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Desarrollador, tienda y enlace oficial del banco."
+        "text": "Desarrollador, tienda y enlace oficial del banco"
       },
       {
         "id": "q31_o2",
-        "text": "Solo el color del ícono."
+        "text": "Solo el color del ícono"
       },
       {
         "id": "q31_o3",
-        "text": "Únicamente la cantidad de descargas."
+        "text": "Únicamente la cantidad de descargas"
       },
       {
         "id": "q31_o4",
-        "text": "Que alguien la haya reenviado."
+        "text": "Que alguien la haya reenviado"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -796,7 +796,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_04",
     "type": "fillBlank",
-    "statement": "La persona o empresa responsable de publicar una aplicación se identifica como su __.",
+    "statement": "La persona o empresa responsable de publicar una aplicación se identifica como su _____.",
     "options": [],
     "correctAnswer": "desarrollador",
     "acceptedAnswers": [
@@ -815,19 +815,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "Lo instalas de inmediato."
+        "text": "Lo instalas de inmediato"
       },
       {
         "id": "q34_o2",
-        "text": "Evitas instalarlo y buscas la versión oficial."
+        "text": "Evitas instalarlo y buscas la versión oficial"
       },
       {
         "id": "q34_o3",
-        "text": "Desactivas la seguridad del teléfono."
+        "text": "Desactivas la seguridad del teléfono"
       },
       {
         "id": "q34_o4",
-        "text": "Compartes el archivo con otras personas."
+        "text": "Compartes el archivo con otras personas"
       }
     ],
     "correctAnswer": "q34_o2",
@@ -867,19 +867,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Su procedencia no coincide con la tienda o sitio oficial."
+        "text": "Su procedencia no coincide con la tienda o sitio oficial"
       },
       {
         "id": "q36_o2",
-        "text": "El desarrollador coincide con el servicio legítimo."
+        "text": "El desarrollador coincide con el servicio legítimo"
       },
       {
         "id": "q36_o3",
-        "text": "Los permisos son coherentes con su función."
+        "text": "Los permisos son coherentes con su función"
       },
       {
         "id": "q36_o4",
-        "text": "Llegaste desde el sitio oficial."
+        "text": "Llegaste desde el sitio oficial"
       }
     ],
     "correctAnswer": "q36_o1",
@@ -893,7 +893,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_04",
     "type": "fillBlank",
-    "statement": "Una aplicación que copia nombre e imagen de un servicio legítimo para engañar puede ser una aplicación __.",
+    "statement": "Una aplicación que copia nombre e imagen de un servicio legítimo para engañar puede ser una aplicación _____.",
     "options": [],
     "correctAnswer": "falsa",
     "acceptedAnswers": [
@@ -912,19 +912,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Procedencia, desarrollador y permisos solicitados."
+        "text": "Procedencia, desarrollador y permisos solicitados"
       },
       {
         "id": "q38_o2",
-        "text": "Solo el ícono."
+        "text": "Solo el ícono"
       },
       {
         "id": "q38_o3",
-        "text": "Únicamente el número de comentarios."
+        "text": "Únicamente el número de comentarios"
       },
       {
         "id": "q38_o4",
-        "text": "El tamaño del anuncio."
+        "text": "El tamaño del anuncio"
       }
     ],
     "correctAnswer": "q38_o1",
@@ -964,19 +964,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Instalarla porque tiene el mismo logo."
+        "text": "Instalarla porque tiene el mismo logo"
       },
       {
         "id": "q40_o2",
-        "text": "Ignorar el archivo y actualizar desde el canal oficial."
+        "text": "Ignorar el archivo y actualizar desde el canal oficial"
       },
       {
         "id": "q40_o3",
-        "text": "Desactivar las verificaciones del sistema."
+        "text": "Desactivar las verificaciones del sistema"
       },
       {
         "id": "q40_o4",
-        "text": "Reenviar el archivo."
+        "text": "Reenviar el archivo"
       }
     ],
     "correctAnswer": "q40_o2",
@@ -994,19 +994,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Para recuperar información si el dispositivo se pierde, daña o debe restablecerse."
+        "text": "Para recuperar información si el dispositivo se pierde, daña o debe restablecerse"
       },
       {
         "id": "q41_o2",
-        "text": "Para eliminar la necesidad de bloqueo."
+        "text": "Para eliminar la necesidad de bloqueo"
       },
       {
         "id": "q41_o3",
-        "text": "Para compartir contraseñas."
+        "text": "Para compartir contraseñas"
       },
       {
         "id": "q41_o4",
-        "text": "Para evitar actualizaciones."
+        "text": "Para evitar actualizaciones"
       }
     ],
     "correctAnswer": "q41_o1",
@@ -1020,7 +1020,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_05",
     "type": "fillBlank",
-    "statement": "Una copia que permite restaurar información se llama copia de __.",
+    "statement": "Una copia que permite restaurar información se llama copia de _____.",
     "options": [],
     "correctAnswer": "seguridad",
     "acceptedAnswers": [
@@ -1061,19 +1061,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Cuentas importantes y medios de acceso asociados."
+        "text": "Cuentas importantes y medios de acceso asociados"
       },
       {
         "id": "q44_o2",
-        "text": "Solo el fondo de pantalla."
+        "text": "Solo el fondo de pantalla"
       },
       {
         "id": "q44_o3",
-        "text": "Los juegos instalados."
+        "text": "Los juegos instalados"
       },
       {
         "id": "q44_o4",
-        "text": "El volumen del teléfono."
+        "text": "El volumen del teléfono"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1091,19 +1091,19 @@
     "options": [
       {
         "id": "q45_o1",
-        "text": "Bloquearla mediante el operador cuando corresponda."
+        "text": "Bloquearla mediante el operador cuando corresponda"
       },
       {
         "id": "q45_o2",
-        "text": "Publicar el PIN."
+        "text": "Publicar el PIN"
       },
       {
         "id": "q45_o3",
-        "text": "Compartir códigos recibidos."
+        "text": "Compartir códigos recibidos"
       },
       {
         "id": "q45_o4",
-        "text": "Mantener todo sin revisar."
+        "text": "Mantener todo sin revisar"
       }
     ],
     "correctAnswer": "q45_o1",
@@ -1139,7 +1139,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_05",
     "type": "fillBlank",
-    "statement": "Eliminar los datos de un teléfono perdido mediante una herramienta oficial puede realizarse de forma __.",
+    "statement": "Eliminar los datos de un teléfono perdido mediante una herramienta oficial puede realizarse de forma _____.",
     "options": [],
     "correctAnswer": "remota",
     "acceptedAnswers": [
@@ -1158,19 +1158,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Que sea reciente y accesible de forma segura."
+        "text": "Que sea reciente y accesible de forma segura"
       },
       {
         "id": "q48_o2",
-        "text": "Que esté desactualizada por años."
+        "text": "Que esté desactualizada por años"
       },
       {
         "id": "q48_o3",
-        "text": "Que sea pública."
+        "text": "Que sea pública"
       },
       {
         "id": "q48_o4",
-        "text": "Que solo exista en el dispositivo perdido."
+        "text": "Que solo exista en el dispositivo perdido"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1210,19 +1210,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Proteger cuentas, considerar bloqueo de línea y usar herramientas oficiales de localización o borrado."
+        "text": "Proteger cuentas, considerar bloqueo de línea y usar herramientas oficiales de localización o borrado"
       },
       {
         "id": "q50_o2",
-        "text": "Esperar sin hacer nada."
+        "text": "Esperar sin hacer nada"
       },
       {
         "id": "q50_o3",
-        "text": "Publicar contraseñas para pedir ayuda."
+        "text": "Publicar contraseñas para pedir ayuda"
       },
       {
         "id": "q50_o4",
-        "text": "Instalar archivos enviados por desconocidos."
+        "text": "Instalar archivos enviados por desconocidos"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1262,19 +1262,19 @@
     "options": [
       {
         "id": "q52_o1",
-        "text": "Una red conocida o tus datos móviles."
+        "text": "Una red conocida o tus datos móviles"
       },
       {
         "id": "q52_o2",
-        "text": "Cualquier Wi-Fi abierto."
+        "text": "Cualquier Wi-Fi abierto"
       },
       {
         "id": "q52_o3",
-        "text": "Una red con nombre parecido al comercio sin verificar."
+        "text": "Una red con nombre parecido al comercio sin verificar"
       },
       {
         "id": "q52_o4",
-        "text": "Una conexión automática desconocida."
+        "text": "Una conexión automática desconocida"
       }
     ],
     "correctAnswer": "q52_o1",
@@ -1288,7 +1288,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_06",
     "type": "fillBlank",
-    "statement": "La conexión automática a redes abiertas desconocidas conviene mantenerla __.",
+    "statement": "La conexión automática a redes abiertas desconocidas conviene mantenerla _____.",
     "options": [],
     "correctAnswer": "desactivada",
     "acceptedAnswers": [
@@ -1307,19 +1307,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Lo instalas para tener más señal."
+        "text": "Lo instalas para tener más señal"
       },
       {
         "id": "q54_o2",
-        "text": "Lo rechazas y verificas la conexión por canales confiables."
+        "text": "Lo rechazas y verificas la conexión por canales confiables"
       },
       {
         "id": "q54_o3",
-        "text": "Desactivas el bloqueo del teléfono."
+        "text": "Desactivas el bloqueo del teléfono"
       },
       {
         "id": "q54_o4",
-        "text": "Compartes el archivo."
+        "text": "Compartes el archivo"
       }
     ],
     "correctAnswer": "q54_o2",
@@ -1359,19 +1359,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Conectarte a cualquiera."
+        "text": "Conectarte a cualquiera"
       },
       {
         "id": "q56_o2",
-        "text": "Confirmar cuál es la red correcta antes de conectarte."
+        "text": "Confirmar cuál es la red correcta antes de conectarte"
       },
       {
         "id": "q56_o3",
-        "text": "Compartir tus contraseñas."
+        "text": "Compartir tus contraseñas"
       },
       {
         "id": "q56_o4",
-        "text": "Desactivar el bloqueo."
+        "text": "Desactivar el bloqueo"
       }
     ],
     "correctAnswer": "q56_o2",
@@ -1385,7 +1385,7 @@
     "categoryId": "device_app_security",
     "activityId": "device_security_activity_06",
     "type": "fillBlank",
-    "statement": "Una red disponible para muchas personas en un espacio compartido suele denominarse Wi-Fi __.",
+    "statement": "Una red disponible para muchas personas en un espacio compartido suele denominarse Wi-Fi _____.",
     "options": [],
     "correctAnswer": "público",
     "acceptedAnswers": [
@@ -1427,19 +1427,19 @@
     "options": [
       {
         "id": "q59_o1",
-        "text": "La conexión está cifrada, pero aún debes verificar dominio y legitimidad del sitio."
+        "text": "La conexión está cifrada, pero aún debes verificar dominio y legitimidad del sitio"
       },
       {
         "id": "q59_o2",
-        "text": "El sitio nunca puede ser falso."
+        "text": "El sitio nunca puede ser falso"
       },
       {
         "id": "q59_o3",
-        "text": "Pertenece necesariamente a una institución pública."
+        "text": "Pertenece necesariamente a una institución pública"
       },
       {
         "id": "q59_o4",
-        "text": "Puedes compartir cualquier dato sin revisar."
+        "text": "Puedes compartir cualquier dato sin revisar"
       }
     ],
     "correctAnswer": "q59_o1",
@@ -1457,19 +1457,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Verificar la red, evitar operaciones sensibles en Wi-Fi desconocido y no instalar perfiles solicitados por terceros."
+        "text": "Verificar la red, evitar operaciones sensibles en Wi-Fi desconocido y no instalar perfiles solicitados por terceros"
       },
       {
         "id": "q60_o2",
-        "text": "Conectarse automáticamente a todo."
+        "text": "Conectarse automáticamente a todo"
       },
       {
         "id": "q60_o3",
-        "text": "Confiar solo por el nombre de la red."
+        "text": "Confiar solo por el nombre de la red"
       },
       {
         "id": "q60_o4",
-        "text": "Compartir códigos temporales."
+        "text": "Compartir códigos temporales"
       }
     ],
     "correctAnswer": "q60_o1",

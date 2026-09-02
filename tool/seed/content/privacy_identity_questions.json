@@ -34,7 +34,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_01",
     "type": "fillBlank",
-    "statement": "Compartir únicamente los datos necesarios aplica el principio de __.",
+    "statement": "Compartir únicamente los datos necesarios aplica el principio de _____.",
     "options": [],
     "correctAnswer": "minimización",
     "acceptedAnswers": [
@@ -78,19 +78,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Completar todo sin revisar."
+        "text": "Completar todo sin revisar"
       },
       {
         "id": "q04_o2",
-        "text": "Verificar la finalidad y entregar solo lo estrictamente necesario o no participar."
+        "text": "Verificar la finalidad y entregar solo lo estrictamente necesario o no participar"
       },
       {
         "id": "q04_o3",
-        "text": "Añadir también contraseñas."
+        "text": "Añadir también contraseñas"
       },
       {
         "id": "q04_o4",
-        "text": "Publicar la información."
+        "text": "Publicar la información"
       }
     ],
     "correctAnswer": "q04_o2",
@@ -126,7 +126,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_01",
     "type": "fillBlank",
-    "statement": "La información que permite reconocer directa o indirectamente a una persona es un dato __.",
+    "statement": "La información que permite reconocer directa o indirectamente a una persona es un dato _____.",
     "options": [],
     "correctAnswer": "personal",
     "acceptedAnswers": [
@@ -145,19 +145,19 @@
     "options": [
       {
         "id": "q07_o1",
-        "text": "Dar todos los datos por defecto."
+        "text": "Dar todos los datos por defecto"
       },
       {
         "id": "q07_o2",
-        "text": "Negar lo innecesario y compartir solo lo requerido para la función."
+        "text": "Negar lo innecesario y compartir solo lo requerido para la función"
       },
       {
         "id": "q07_o3",
-        "text": "Publicar la agenda."
+        "text": "Publicar la agenda"
       },
       {
         "id": "q07_o4",
-        "text": "Enviar también tu PIN."
+        "text": "Enviar también tu PIN"
       }
     ],
     "correctAnswer": "q07_o2",
@@ -175,19 +175,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "No queda claro quién la solicita ni para qué la usará."
+        "text": "No queda claro quién la solicita ni para qué la usará"
       },
       {
         "id": "q08_o2",
-        "text": "La institución explica la finalidad."
+        "text": "La institución explica la finalidad"
       },
       {
         "id": "q08_o3",
-        "text": "El canal es oficial y el dato es necesario."
+        "text": "El canal es oficial y el dato es necesario"
       },
       {
         "id": "q08_o4",
-        "text": "Puedes entregar menos información."
+        "text": "Puedes entregar menos información"
       }
     ],
     "correctAnswer": "q08_o1",
@@ -227,19 +227,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Compartir primero y preguntar después."
+        "text": "Compartir primero y preguntar después"
       },
       {
         "id": "q10_o2",
-        "text": "Evaluar quién los pide, para qué, si son necesarios y si puedes entregar menos."
+        "text": "Evaluar quién los pide, para qué, si son necesarios y si puedes entregar menos"
       },
       {
         "id": "q10_o3",
-        "text": "Confiar solo por la foto de perfil."
+        "text": "Confiar solo por la foto de perfil"
       },
       {
         "id": "q10_o4",
-        "text": "Enviar todos los datos para evitar demoras."
+        "text": "Enviar todos los datos para evitar demoras"
       }
     ],
     "correctAnswer": "q10_o2",
@@ -257,19 +257,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Facilitar suplantación o fraude."
+        "text": "Facilitar suplantación o fraude"
       },
       {
         "id": "q11_o2",
-        "text": "Mejorar automáticamente tu privacidad."
+        "text": "Mejorar automáticamente tu privacidad"
       },
       {
         "id": "q11_o3",
-        "text": "Impedir que alguien la copie."
+        "text": "Impedir que alguien la copie"
       },
       {
         "id": "q11_o4",
-        "text": "Solo ocupar espacio."
+        "text": "Solo ocupar espacio"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -305,7 +305,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_02",
     "type": "fillBlank",
-    "statement": "Antes de enviar una foto de un documento debes verificar la institución y el __ utilizado para recibirlo.",
+    "statement": "Antes de enviar una foto de un documento debes verificar la institución y el _____ utilizado para recibirlo.",
     "options": [],
     "correctAnswer": "canal",
     "acceptedAnswers": [
@@ -324,19 +324,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "La envías de inmediato."
+        "text": "La envías de inmediato"
       },
       {
         "id": "q14_o2",
-        "text": "Verificas identidad, finalidad y canal antes de decidir."
+        "text": "Verificas identidad, finalidad y canal antes de decidir"
       },
       {
         "id": "q14_o3",
-        "text": "Publicas ambas caras."
+        "text": "Publicas ambas caras"
       },
       {
         "id": "q14_o4",
-        "text": "Añades tu PIN para ayudar."
+        "text": "Añades tu PIN para ayudar"
       }
     ],
     "correctAnswer": "q14_o2",
@@ -376,19 +376,19 @@
     "options": [
       {
         "id": "q16_o1",
-        "text": "Ocultar datos no requeridos."
+        "text": "Ocultar datos no requeridos"
       },
       {
         "id": "q16_o2",
-        "text": "Publicar el documento completo."
+        "text": "Publicar el documento completo"
       },
       {
         "id": "q16_o3",
-        "text": "Enviarlo a varios chats."
+        "text": "Enviarlo a varios chats"
       },
       {
         "id": "q16_o4",
-        "text": "Añadir contraseñas."
+        "text": "Añadir contraseñas"
       }
     ],
     "correctAnswer": "q16_o1",
@@ -402,7 +402,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_02",
     "type": "fillBlank",
-    "statement": "Usar datos de un documento para hacerse pasar por otra persona puede facilitar una __ de identidad.",
+    "statement": "Usar datos de un documento para hacerse pasar por otra persona puede facilitar una _____ de identidad.",
     "options": [],
     "correctAnswer": "suplantación",
     "acceptedAnswers": [
@@ -424,19 +424,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Firma y número de identificación."
+        "text": "Firma y número de identificación"
       },
       {
         "id": "q18_o2",
-        "text": "Solo el color del fondo."
+        "text": "Solo el color del fondo"
       },
       {
         "id": "q18_o3",
-        "text": "El tamaño del archivo."
+        "text": "El tamaño del archivo"
       },
       {
         "id": "q18_o4",
-        "text": "La batería del celular."
+        "text": "La batería del celular"
       }
     ],
     "correctAnswer": "q18_o1",
@@ -476,19 +476,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Confirmar institución, finalidad, canal y datos realmente necesarios."
+        "text": "Confirmar institución, finalidad, canal y datos realmente necesarios"
       },
       {
         "id": "q20_o2",
-        "text": "Enviar todo y luego preguntar."
+        "text": "Enviar todo y luego preguntar"
       },
       {
         "id": "q20_o3",
-        "text": "Confiar únicamente en el logo."
+        "text": "Confiar únicamente en el logo"
       },
       {
         "id": "q20_o4",
-        "text": "Publicarlo para obtener opinión."
+        "text": "Publicarlo para obtener opinión"
       }
     ],
     "correctAnswer": "q20_o1",
@@ -506,19 +506,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Facilitar seguimiento o revelar dónde te encuentras."
+        "text": "Facilitar seguimiento o revelar dónde te encuentras"
       },
       {
         "id": "q21_o2",
-        "text": "Mejorar la batería."
+        "text": "Mejorar la batería"
       },
       {
         "id": "q21_o3",
-        "text": "Impedir que alguien conozca tus rutinas."
+        "text": "Impedir que alguien conozca tus rutinas"
       },
       {
         "id": "q21_o4",
-        "text": "Aumentar la privacidad automáticamente."
+        "text": "Aumentar la privacidad automáticamente"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -554,7 +554,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_03",
     "type": "fillBlank",
-    "statement": "Publicar dónde estás exactamente en ese momento expone tu ubicación en tiempo __.",
+    "statement": "Publicar dónde estás exactamente en ese momento expone tu ubicación en tiempo _____.",
     "options": [],
     "correctAnswer": "real",
     "acceptedAnswers": [
@@ -573,19 +573,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Publicar todos los horarios en tiempo real."
+        "text": "Publicar todos los horarios en tiempo real"
       },
       {
         "id": "q24_o2",
-        "text": "Considerar compartir las fotos después de abandonar el lugar o regresar."
+        "text": "Considerar compartir las fotos después de abandonar el lugar o regresar"
       },
       {
         "id": "q24_o3",
-        "text": "Publicar la dirección de tu vivienda."
+        "text": "Publicar la dirección de tu vivienda"
       },
       {
         "id": "q24_o4",
-        "text": "Hacer visible la ubicación a cualquier persona."
+        "text": "Hacer visible la ubicación a cualquier persona"
       }
     ],
     "correctAnswer": "q24_o2",
@@ -625,19 +625,19 @@
     "options": [
       {
         "id": "q26_o1",
-        "text": "Si revela dirección, placas, credenciales o ubicación innecesaria."
+        "text": "Si revela dirección, placas, credenciales o ubicación innecesaria"
       },
       {
         "id": "q26_o2",
-        "text": "Solo el filtro de color."
+        "text": "Solo el filtro de color"
       },
       {
         "id": "q26_o3",
-        "text": "La cantidad de emojis."
+        "text": "La cantidad de emojis"
       },
       {
         "id": "q26_o4",
-        "text": "El porcentaje de batería."
+        "text": "El porcentaje de batería"
       }
     ],
     "correctAnswer": "q26_o1",
@@ -651,7 +651,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_03",
     "type": "fillBlank",
-    "statement": "Revisar quién puede ver tus publicaciones forma parte de configurar la __ de la cuenta.",
+    "statement": "Revisar quién puede ver tus publicaciones forma parte de configurar la _____ de la cuenta.",
     "options": [],
     "correctAnswer": "privacidad",
     "acceptedAnswers": [
@@ -671,19 +671,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Permitir siempre sin revisar."
+        "text": "Permitir siempre sin revisar"
       },
       {
         "id": "q28_o2",
-        "text": "Limitar el permiso al uso de la aplicación si es suficiente."
+        "text": "Limitar el permiso al uso de la aplicación si es suficiente"
       },
       {
         "id": "q28_o3",
-        "text": "Publicar tu ubicación."
+        "text": "Publicar tu ubicación"
       },
       {
         "id": "q28_o4",
-        "text": "Compartir la contraseña."
+        "text": "Compartir la contraseña"
       }
     ],
     "correctAnswer": "q28_o2",
@@ -723,19 +723,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "Pensar quién verá la ubicación, cuándo la verá y si realmente necesitas compartirla."
+        "text": "Pensar quién verá la ubicación, cuándo la verá y si realmente necesitas compartirla"
       },
       {
         "id": "q30_o2",
-        "text": "Publicar siempre en tiempo real."
+        "text": "Publicar siempre en tiempo real"
       },
       {
         "id": "q30_o3",
-        "text": "Mantener todas las publicaciones públicas."
+        "text": "Mantener todas las publicaciones públicas"
       },
       {
         "id": "q30_o4",
-        "text": "Compartir rutas completas para demostrar transparencia."
+        "text": "Compartir rutas completas para demostrar transparencia"
       }
     ],
     "correctAnswer": "q30_o1",
@@ -753,19 +753,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Usar datos, fotografías o perfiles para hacerse pasar por otra persona."
+        "text": "Usar datos, fotografías o perfiles para hacerse pasar por otra persona"
       },
       {
         "id": "q31_o2",
-        "text": "Cambiar la foto de perfil propia."
+        "text": "Cambiar la foto de perfil propia"
       },
       {
         "id": "q31_o3",
-        "text": "Crear una copia de seguridad."
+        "text": "Crear una copia de seguridad"
       },
       {
         "id": "q31_o4",
-        "text": "Actualizar una aplicación."
+        "text": "Actualizar una aplicación"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -779,7 +779,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_04",
     "type": "fillBlank",
-    "statement": "Hacerse pasar por otra persona utilizando sus datos se llama __ de identidad.",
+    "statement": "Hacerse pasar por otra persona utilizando sus datos se llama _____ de identidad.",
     "options": [],
     "correctAnswer": "suplantación",
     "acceptedAnswers": [
@@ -823,19 +823,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "Guardar evidencia, reportarlo y avisar a tus contactos por otro canal."
+        "text": "Guardar evidencia, reportarlo y avisar a tus contactos por otro canal"
       },
       {
         "id": "q34_o2",
-        "text": "Enviarle más documentos."
+        "text": "Enviarle más documentos"
       },
       {
         "id": "q34_o3",
-        "text": "Pagar para que desaparezca."
+        "text": "Pagar para que desaparezca"
       },
       {
         "id": "q34_o4",
-        "text": "Compartir tu contraseña."
+        "text": "Compartir tu contraseña"
       }
     ],
     "correctAnswer": "q34_o1",
@@ -875,19 +875,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Pedir dinero a tus contactos haciéndose pasar por ti."
+        "text": "Pedir dinero a tus contactos haciéndose pasar por ti"
       },
       {
         "id": "q36_o2",
-        "text": "Mejorar tu privacidad."
+        "text": "Mejorar tu privacidad"
       },
       {
         "id": "q36_o3",
-        "text": "Actualizar tu teléfono."
+        "text": "Actualizar tu teléfono"
       },
       {
         "id": "q36_o4",
-        "text": "Crear copias de seguridad."
+        "text": "Crear copias de seguridad"
       }
     ],
     "correctAnswer": "q36_o1",
@@ -901,7 +901,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_04",
     "type": "fillBlank",
-    "statement": "Guardar capturas, enlaces y nombre de usuario de un perfil falso permite conservar __.",
+    "statement": "Guardar capturas, enlaces y nombre de usuario de un perfil falso permite conservar _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -922,19 +922,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Para que no confíen en solicitudes realizadas desde el perfil falso."
+        "text": "Para que no confíen en solicitudes realizadas desde el perfil falso"
       },
       {
         "id": "q38_o2",
-        "text": "Para que compartan más información con la cuenta falsa."
+        "text": "Para que compartan más información con la cuenta falsa"
       },
       {
         "id": "q38_o3",
-        "text": "Para publicar tu documento."
+        "text": "Para publicar tu documento"
       },
       {
         "id": "q38_o4",
-        "text": "Para desactivar tus medidas de seguridad."
+        "text": "Para desactivar tus medidas de seguridad"
       }
     ],
     "correctAnswer": "q38_o1",
@@ -974,19 +974,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Documentar, reportar, avisar contactos y revisar las cuentas originales."
+        "text": "Documentar, reportar, avisar contactos y revisar las cuentas originales"
       },
       {
         "id": "q40_o2",
-        "text": "Entregar documentos al perfil falso."
+        "text": "Entregar documentos al perfil falso"
       },
       {
         "id": "q40_o3",
-        "text": "Ignorar siempre la situación."
+        "text": "Ignorar siempre la situación"
       },
       {
         "id": "q40_o4",
-        "text": "Publicar contraseñas."
+        "text": "Publicar contraseñas"
       }
     ],
     "correctAnswer": "q40_o1",
@@ -1022,7 +1022,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_05",
     "type": "fillBlank",
-    "statement": "La autorización libre y específica para utilizar o compartir contenido se llama __.",
+    "statement": "La autorización libre y específica para utilizar o compartir contenido se llama _____.",
     "options": [],
     "correctAnswer": "consentimiento",
     "acceptedAnswers": [
@@ -1041,19 +1041,19 @@
     "options": [
       {
         "id": "q43_o1",
-        "text": "Que puedes publicarla en cualquier lugar."
+        "text": "Que puedes publicarla en cualquier lugar"
       },
       {
         "id": "q43_o2",
-        "text": "Que debes respetar el propósito para el que fue compartida y pedir permiso para otros usos."
+        "text": "Que debes respetar el propósito para el que fue compartida y pedir permiso para otros usos"
       },
       {
         "id": "q43_o3",
-        "text": "Que pasa a ser de dominio público."
+        "text": "Que pasa a ser de dominio público"
       },
       {
         "id": "q43_o4",
-        "text": "Que puedes venderla."
+        "text": "Que puedes venderla"
       }
     ],
     "correctAnswer": "q43_o2",
@@ -1093,19 +1093,19 @@
     "options": [
       {
         "id": "q45_o1",
-        "text": "La persona afectada por haber confiado."
+        "text": "La persona afectada por haber confiado"
       },
       {
         "id": "q45_o2",
-        "text": "Quien decidió compartirlo sin consentimiento."
+        "text": "Quien decidió compartirlo sin consentimiento"
       },
       {
         "id": "q45_o3",
-        "text": "Nadie porque estaba en internet."
+        "text": "Nadie porque estaba en internet"
       },
       {
         "id": "q45_o4",
-        "text": "Todas las personas por igual."
+        "text": "Todas las personas por igual"
       }
     ],
     "correctAnswer": "q45_o2",
@@ -1119,7 +1119,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_05",
     "type": "fillBlank",
-    "statement": "Una imagen enviada en privado no se vuelve automáticamente contenido __.",
+    "statement": "Una imagen enviada en privado no se vuelve automáticamente contenido _____.",
     "options": [],
     "correctAnswer": "público",
     "acceptedAnswers": [
@@ -1161,19 +1161,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Pedir autorización cuando el contenido no fue destinado a esa nueva audiencia."
+        "text": "Pedir autorización cuando el contenido no fue destinado a esa nueva audiencia"
       },
       {
         "id": "q48_o2",
-        "text": "Reenviarla porque ya la recibiste."
+        "text": "Reenviarla porque ya la recibiste"
       },
       {
         "id": "q48_o3",
-        "text": "Publicarla para pedir opiniones."
+        "text": "Publicarla para pedir opiniones"
       },
       {
         "id": "q48_o4",
-        "text": "Editarla y difundirla sin avisar."
+        "text": "Editarla y difundirla sin avisar"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1213,19 +1213,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Si lo recibí, puedo hacer cualquier cosa con él."
+        "text": "Si lo recibí, puedo hacer cualquier cosa con él"
       },
       {
         "id": "q50_o2",
-        "text": "Debo considerar consentimiento, finalidad y audiencia antes de compartirlo."
+        "text": "Debo considerar consentimiento, finalidad y audiencia antes de compartirlo"
       },
       {
         "id": "q50_o3",
-        "text": "Todo lo digital es público."
+        "text": "Todo lo digital es público"
       },
       {
         "id": "q50_o4",
-        "text": "Solo importa si la persona reclama después."
+        "text": "Solo importa si la persona reclama después"
       }
     ],
     "correctAnswer": "q50_o2",
@@ -1243,19 +1243,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "Identificar qué información se compartió y qué cuentas o servicios podrían verse afectados."
+        "text": "Identificar qué información se compartió y qué cuentas o servicios podrían verse afectados"
       },
       {
         "id": "q51_o2",
-        "text": "Publicar todavía más datos."
+        "text": "Publicar todavía más datos"
       },
       {
         "id": "q51_o3",
-        "text": "Ignorar siempre el problema."
+        "text": "Ignorar siempre el problema"
       },
       {
         "id": "q51_o4",
-        "text": "Compartir contraseñas."
+        "text": "Compartir contraseñas"
       }
     ],
     "correctAnswer": "q51_o1",
@@ -1291,7 +1291,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_06",
     "type": "fillBlank",
-    "statement": "Guardar registros de una exposición o suplantación permite conservar __.",
+    "statement": "Guardar registros de una exposición o suplantación permite conservar _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -1312,19 +1312,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Revisar privacidad y reducir la exposición del contenido cuando sea posible."
+        "text": "Revisar privacidad y reducir la exposición del contenido cuando sea posible"
       },
       {
         "id": "q54_o2",
-        "text": "Publicar una copia adicional."
+        "text": "Publicar una copia adicional"
       },
       {
         "id": "q54_o3",
-        "text": "Enviar más datos a desconocidos."
+        "text": "Enviar más datos a desconocidos"
       },
       {
         "id": "q54_o4",
-        "text": "Desactivar todas las medidas de seguridad."
+        "text": "Desactivar todas las medidas de seguridad"
       }
     ],
     "correctAnswer": "q54_o1",
@@ -1364,19 +1364,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Publicar más documentos y datos sensibles."
+        "text": "Publicar más documentos y datos sensibles"
       },
       {
         "id": "q56_o2",
-        "text": "Utilizar los mecanismos oficiales de reporte."
+        "text": "Utilizar los mecanismos oficiales de reporte"
       },
       {
         "id": "q56_o3",
-        "text": "Avisar a tus contactos."
+        "text": "Avisar a tus contactos"
       },
       {
         "id": "q56_o4",
-        "text": "Revisar la cuenta original."
+        "text": "Revisar la cuenta original"
       }
     ],
     "correctAnswer": "q56_o1",
@@ -1390,7 +1390,7 @@
     "categoryId": "personal_data_privacy_identity",
     "activityId": "privacy_identity_activity_06",
     "type": "fillBlank",
-    "statement": "Modificar quién puede ver tu información es revisar la configuración de __.",
+    "statement": "Modificar quién puede ver tu información es revisar la configuración de _____.",
     "options": [],
     "correctAnswer": "privacidad",
     "acceptedAnswers": [
@@ -1410,19 +1410,19 @@
     "options": [
       {
         "id": "q58_o1",
-        "text": "Las relacionadas con los datos expuestos y cualquier servicio que pueda verse afectado."
+        "text": "Las relacionadas con los datos expuestos y cualquier servicio que pueda verse afectado"
       },
       {
         "id": "q58_o2",
-        "text": "Ninguna."
+        "text": "Ninguna"
       },
       {
         "id": "q58_o3",
-        "text": "Solo las que tengan más seguidores."
+        "text": "Solo las que tengan más seguidores"
       },
       {
         "id": "q58_o4",
-        "text": "Únicamente juegos."
+        "text": "Únicamente juegos"
       }
     ],
     "correctAnswer": "q58_o1",
@@ -1462,19 +1462,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Identificar lo expuesto, proteger cuentas afectadas, revisar privacidad, guardar evidencia y alertar si existe riesgo de suplantación."
+        "text": "Identificar lo expuesto, proteger cuentas afectadas, revisar privacidad, guardar evidencia y alertar si existe riesgo de suplantación"
       },
       {
         "id": "q60_o2",
-        "text": "Publicar más datos y esperar."
+        "text": "Publicar más datos y esperar"
       },
       {
         "id": "q60_o3",
-        "text": "Pagar a cualquier persona que prometa eliminar internet."
+        "text": "Pagar a cualquier persona que prometa eliminar internet"
       },
       {
         "id": "q60_o4",
-        "text": "Compartir contraseñas para demostrar identidad."
+        "text": "Compartir contraseñas para demostrar identidad"
       }
     ],
     "correctAnswer": "q60_o1",

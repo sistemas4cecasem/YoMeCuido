@@ -391,6 +391,24 @@ class _ActivityBlockCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final foregroundColor = unlocked ? colors.textPrimary : colors.disabledText;
     final accentColor = completed ? colors.success : colors.orangeDark;
+    final completedSurface = Color.alphaBlend(
+      colors.success.withValues(alpha: 0.05),
+      colors.surface,
+    );
+    final completedIconSurface = Color.alphaBlend(
+      colors.success.withValues(alpha: 0.08),
+      colors.surfaceStrong,
+    );
+    final cardColor = !unlocked
+        ? colors.disabledSurface
+        : completed
+        ? completedSurface
+        : colors.surface;
+    final borderColor = !unlocked
+        ? colors.border
+        : completed
+        ? colors.success.withValues(alpha: 0.55)
+        : colors.orangePrimary;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
 
     return Semantics(
@@ -398,13 +416,10 @@ class _ActivityBlockCard extends StatelessWidget {
       enabled: unlocked,
       label: unlocked ? title : '$title, ${AppStrings.locked}',
       child: Card(
-        color: unlocked ? colors.surface : colors.disabledSurface,
+        color: cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadii.card),
-          side: BorderSide(
-            color: unlocked ? colors.orangePrimary : colors.border,
-            width: unlocked ? 1.5 : 1,
-          ),
+          side: BorderSide(color: borderColor, width: unlocked ? 1.5 : 1),
         ),
         child: InkWell(
           onTap: onTap,
@@ -419,11 +434,13 @@ class _ActivityBlockCard extends StatelessWidget {
                 width: AppSizing.minTouchTarget,
                 height: AppSizing.minTouchTarget,
                 decoration: BoxDecoration(
-                  color: unlocked ? colors.orangeSoft : colors.disabledSurface,
+                  color: !unlocked
+                      ? colors.disabledSurface
+                      : completed
+                      ? completedIconSurface
+                      : colors.orangeSoft,
                   borderRadius: BorderRadius.circular(AppRadii.sm),
-                  border: Border.all(
-                    color: unlocked ? colors.orangePrimary : colors.border,
-                  ),
+                  border: Border.all(color: borderColor),
                 ),
                 child: Icon(
                   completed ? Icons.check_outlined : icon,
@@ -443,9 +460,11 @@ class _ActivityBlockCard extends StatelessWidget {
                   Text(
                     progressLabel ?? subtitle,
                     style: textTheme.bodyMedium?.copyWith(
-                      color: unlocked
-                          ? colors.textSecondary
-                          : colors.disabledText,
+                      color: !unlocked
+                          ? colors.disabledText
+                          : completed
+                          ? colors.success
+                          : colors.textSecondary,
                     ),
                   ),
                 ],
@@ -467,7 +486,7 @@ class _ActivityBlockCard extends StatelessWidget {
                           leadingIcon,
                           const SizedBox(width: AppSpacing.md),
                           Expanded(child: textContent),
-                          if (showTrailingIcon) ...[
+                          if (showTrailingIcon && !completed) ...[
                             const SizedBox(width: AppSpacing.sm),
                             Icon(
                               unlocked

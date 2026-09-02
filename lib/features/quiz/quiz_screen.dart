@@ -462,12 +462,6 @@ class _ActivityView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'Pregunta ${controller.currentQuestionNumber} de '
-          '${controller.totalQuestions}',
-          style: textTheme.titleSmall,
-        ),
-        const SizedBox(height: AppSpacing.sm),
         LessonProgressBar(
           currentStep: controller.currentQuestionNumber,
           totalSteps: controller.totalQuestions,

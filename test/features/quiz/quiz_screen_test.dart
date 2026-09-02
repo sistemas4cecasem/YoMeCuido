@@ -142,7 +142,7 @@ void main() {
     await pumpQuiz(tester);
 
     expect(find.text(AppStrings.submitAnswer), findsNothing);
-    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsNothing);
   });
 
   testWidgets('muestra el total real con diez preguntas', (tester) async {
@@ -150,7 +150,7 @@ void main() {
 
     await pumpQuiz(tester);
 
-    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsNothing);
 
     for (var activity = 1; activity < 10; activity += 1) {
       await answerCurrentCorrectly(tester, activity);
@@ -158,7 +158,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    expect(find.text('Pregunta 10 de 10'), findsOneWidget);
+    expect(find.text('Pregunta 10 de 10'), findsNothing);
 
     await answerCurrentCorrectly(tester, 10);
     await tester.tap(find.text(AppStrings.seeResult));
@@ -204,7 +204,7 @@ void main() {
 
     await pumpExam(tester);
 
-    expect(find.text('Pregunta 1 de 15'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 15'), findsNothing);
 
     final examProgress = progressController.examProgressFor(
       categoryId: _category.id,
@@ -233,7 +233,7 @@ void main() {
     expect(secondAttempt?.questionIds, hasLength(15));
     expect(secondAttempt?.id, isNot(firstAttempt?.id));
     expect(secondAttempt?.questionIds, isNot(firstAttempt?.questionIds));
-    expect(find.text('Pregunta 1 de 15'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 15'), findsNothing);
   });
 
   testWidgets(

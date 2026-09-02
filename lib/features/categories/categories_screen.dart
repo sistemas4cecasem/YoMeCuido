@@ -96,6 +96,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         key: ValueKey(categories[index].id),
                         category: categories[index],
                         isUnlocked: _isCategoryUnlocked(categories, index),
+                        isCompleted: _hasCompletedCategory(categories[index]),
                         lockedLabel: _lockedLabelFor(categories[index]),
                         onTap: () => _openCategory(
                           categories[index],

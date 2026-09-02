@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "La desinformación implica intención de manipular, mientras la información errónea puede compartirse sin intención de engañar."
+        "text": "La desinformación implica intención de manipular, mientras la información errónea puede compartirse sin intención de engañar"
       },
       {
         "id": "q01_o2",
-        "text": "Son exactamente lo mismo en todos los casos."
+        "text": "Son exactamente lo mismo en todos los casos"
       },
       {
         "id": "q01_o3",
-        "text": "La información errónea siempre usa inteligencia artificial."
+        "text": "La información errónea siempre usa inteligencia artificial"
       },
       {
         "id": "q01_o4",
-        "text": "La desinformación solo existe en televisión."
+        "text": "La desinformación solo existe en televisión"
       }
     ],
     "correctAnswer": "q01_o1",
@@ -56,7 +56,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_01",
     "type": "fillBlank",
-    "statement": "La información creada o difundida deliberadamente para manipular se denomina __.",
+    "statement": "La información creada o difundida deliberadamente para manipular se denomina _____.",
     "options": [],
     "correctAnswer": "desinformación",
     "acceptedAnswers": [
@@ -76,19 +76,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Información errónea."
+        "text": "Información errónea"
       },
       {
         "id": "q04_o2",
-        "text": "Contraseña débil."
+        "text": "Contraseña débil"
       },
       {
         "id": "q04_o3",
-        "text": "Autenticación multifactor."
+        "text": "Autenticación multifactor"
       },
       {
         "id": "q04_o4",
-        "text": "Cifrado."
+        "text": "Cifrado"
       }
     ],
     "correctAnswer": "q04_o1",
@@ -128,19 +128,19 @@
     "options": [
       {
         "id": "q06_o1",
-        "text": "Revisar fuente y evidencia de la afirmación."
+        "text": "Revisar fuente y evidencia de la afirmación"
       },
       {
         "id": "q06_o2",
-        "text": "Mirar solo el diseño."
+        "text": "Mirar solo el diseño"
       },
       {
         "id": "q06_o3",
-        "text": "Contar emojis."
+        "text": "Contar emojis"
       },
       {
         "id": "q06_o4",
-        "text": "Ver si coincide con lo que ya pensabas."
+        "text": "Ver si coincide con lo que ya pensabas"
       }
     ],
     "correctAnswer": "q06_o1",
@@ -154,7 +154,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_01",
     "type": "fillBlank",
-    "statement": "Una afirmación respaldada por datos, documentos o pruebas presenta __.",
+    "statement": "Una afirmación respaldada por datos, documentos o pruebas presenta _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -175,19 +175,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Detenerte y verificar antes de difundirla."
+        "text": "Detenerte y verificar antes de difundirla"
       },
       {
         "id": "q08_o2",
-        "text": "Compartirla por emoción."
+        "text": "Compartirla por emoción"
       },
       {
         "id": "q08_o3",
-        "text": "Ignorar quién la publica."
+        "text": "Ignorar quién la publica"
       },
       {
         "id": "q08_o4",
-        "text": "Quitar la fecha."
+        "text": "Quitar la fecha"
       }
     ],
     "correctAnswer": "q08_o1",
@@ -227,19 +227,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Popularidad y apariencia no sustituyen la comprobación de fuente y evidencia."
+        "text": "Popularidad y apariencia no sustituyen la comprobación de fuente y evidencia"
       },
       {
         "id": "q10_o2",
-        "text": "Si muchos lo comparten debe ser verdad."
+        "text": "Si muchos lo comparten debe ser verdad"
       },
       {
         "id": "q10_o3",
-        "text": "Si coincide contigo no requiere revisión."
+        "text": "Si coincide contigo no requiere revisión"
       },
       {
         "id": "q10_o4",
-        "text": "Toda información falsa se creó con intención."
+        "text": "Toda información falsa se creó con intención"
       }
     ],
     "correctAnswer": "q10_o1",
@@ -257,19 +257,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Quién la publica, cuándo y en qué contexto."
+        "text": "Quién la publica, cuándo y en qué contexto"
       },
       {
         "id": "q11_o2",
-        "text": "Solo el color y tipografía."
+        "text": "Solo el color y tipografía"
       },
       {
         "id": "q11_o3",
-        "text": "La batería y el tamaño de imagen."
+        "text": "La batería y el tamaño de imagen"
       },
       {
         "id": "q11_o4",
-        "text": "Únicamente los comentarios."
+        "text": "Únicamente los comentarios"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -305,7 +305,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_02",
     "type": "fillBlank",
-    "statement": "El momento en que fue publicada una noticia se identifica mediante su __.",
+    "statement": "El momento en que fue publicada una noticia se identifica mediante su _____.",
     "options": [],
     "correctAnswer": "fecha",
     "acceptedAnswers": [
@@ -324,19 +324,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "Contexto falso."
+        "text": "Contexto falso"
       },
       {
         "id": "q14_o2",
-        "text": "Autenticación débil."
+        "text": "Autenticación débil"
       },
       {
         "id": "q14_o3",
-        "text": "Falta de copia de seguridad."
+        "text": "Falta de copia de seguridad"
       },
       {
         "id": "q14_o4",
-        "text": "Permiso excesivo."
+        "text": "Permiso excesivo"
       }
     ],
     "correctAnswer": "q14_o1",
@@ -372,7 +372,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_02",
     "type": "fillBlank",
-    "statement": "La información que rodea un hecho y permite interpretarlo correctamente se llama __.",
+    "statement": "La información que rodea un hecho y permite interpretarlo correctamente se llama _____.",
     "options": [],
     "correctAnswer": "contexto",
     "acceptedAnswers": [
@@ -391,19 +391,19 @@
     "options": [
       {
         "id": "q17_o1",
-        "text": "Fecha de publicación y fecha del evento."
+        "text": "Fecha de publicación y fecha del evento"
       },
       {
         "id": "q17_o2",
-        "text": "Solo los colores."
+        "text": "Solo los colores"
       },
       {
         "id": "q17_o3",
-        "text": "La cantidad de reacciones."
+        "text": "La cantidad de reacciones"
       },
       {
         "id": "q17_o4",
-        "text": "El tamaño del texto."
+        "text": "El tamaño del texto"
       }
     ],
     "correctAnswer": "q17_o1",
@@ -421,19 +421,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Leer el contenido completo y evaluar la afirmación real."
+        "text": "Leer el contenido completo y evaluar la afirmación real"
       },
       {
         "id": "q18_o2",
-        "text": "Compartir solo el titular."
+        "text": "Compartir solo el titular"
       },
       {
         "id": "q18_o3",
-        "text": "Ignorar el autor."
+        "text": "Ignorar el autor"
       },
       {
         "id": "q18_o4",
-        "text": "Añadir más mayúsculas."
+        "text": "Añadir más mayúsculas"
       }
     ],
     "correctAnswer": "q18_o1",
@@ -473,19 +473,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Identificar autor, fecha, lugar y hecho original antes de asumir que la publicación describe el presente."
+        "text": "Identificar autor, fecha, lugar y hecho original antes de asumir que la publicación describe el presente"
       },
       {
         "id": "q20_o2",
-        "text": "Confiar en la imagen."
+        "text": "Confiar en la imagen"
       },
       {
         "id": "q20_o3",
-        "text": "Mirar solo las reacciones."
+        "text": "Mirar solo las reacciones"
       },
       {
         "id": "q20_o4",
-        "text": "Compartir antes de leer."
+        "text": "Compartir antes de leer"
       }
     ],
     "correctAnswer": "q20_o1",
@@ -503,19 +503,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "El sitio o cuenta oficial de la institución responsable."
+        "text": "El sitio o cuenta oficial de la institución responsable"
       },
       {
         "id": "q21_o2",
-        "text": "Una cadena anónima."
+        "text": "Una cadena anónima"
       },
       {
         "id": "q21_o3",
-        "text": "Una captura sin enlace."
+        "text": "Una captura sin enlace"
       },
       {
         "id": "q21_o4",
-        "text": "Un comentario."
+        "text": "Un comentario"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -529,7 +529,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_03",
     "type": "fillBlank",
-    "statement": "El documento, declaración o publicación que originó una afirmación se denomina fuente __.",
+    "statement": "El documento, declaración o publicación que originó una afirmación se denomina fuente _____.",
     "options": [],
     "correctAnswer": "primaria",
     "acceptedAnswers": [
@@ -570,19 +570,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Buscar el estudio original y comprobar qué dice realmente."
+        "text": "Buscar el estudio original y comprobar qué dice realmente"
       },
       {
         "id": "q24_o2",
-        "text": "Confiar solo en el titular."
+        "text": "Confiar solo en el titular"
       },
       {
         "id": "q24_o3",
-        "text": "Ignorar el enlace a la fuente."
+        "text": "Ignorar el enlace a la fuente"
       },
       {
         "id": "q24_o4",
-        "text": "Compartir por el diseño."
+        "text": "Compartir por el diseño"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -618,7 +618,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_03",
     "type": "fillBlank",
-    "statement": "Comparar una afirmación con fuentes confiables es un proceso de __.",
+    "statement": "Comparar una afirmación con fuentes confiables es un proceso de _____.",
     "options": [],
     "correctAnswer": "verificación",
     "acceptedAnswers": [
@@ -640,19 +640,19 @@
     "options": [
       {
         "id": "q27_o1",
-        "text": "Confirmación independiente adicional."
+        "text": "Confirmación independiente adicional"
       },
       {
         "id": "q27_o2",
-        "text": "Garantía absoluta de que nunca habrá correcciones."
+        "text": "Garantía absoluta de que nunca habrá correcciones"
       },
       {
         "id": "q27_o3",
-        "text": "Prueba de que todo comentario es verdadero."
+        "text": "Prueba de que todo comentario es verdadero"
       },
       {
         "id": "q27_o4",
-        "text": "Eliminación de la necesidad de contexto."
+        "text": "Eliminación de la necesidad de contexto"
       }
     ],
     "correctAnswer": "q27_o1",
@@ -670,19 +670,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Considerar la afirmación dudosa y buscar evidencia adicional."
+        "text": "Considerar la afirmación dudosa y buscar evidencia adicional"
       },
       {
         "id": "q28_o2",
-        "text": "Compartirla igualmente."
+        "text": "Compartirla igualmente"
       },
       {
         "id": "q28_o3",
-        "text": "Inventar otra fuente."
+        "text": "Inventar otra fuente"
       },
       {
         "id": "q28_o4",
-        "text": "Eliminar el nombre del autor."
+        "text": "Eliminar el nombre del autor"
       }
     ],
     "correctAnswer": "q28_o1",
@@ -722,19 +722,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "Identificar la afirmación, buscar fuente primaria y contrastarla con otras fuentes confiables."
+        "text": "Identificar la afirmación, buscar fuente primaria y contrastarla con otras fuentes confiables"
       },
       {
         "id": "q30_o2",
-        "text": "Leer el titular y compartir."
+        "text": "Leer el titular y compartir"
       },
       {
         "id": "q30_o3",
-        "text": "Confiar en seguidores."
+        "text": "Confiar en seguidores"
       },
       {
         "id": "q30_o4",
-        "text": "Usar una sola captura como prueba."
+        "text": "Usar una sola captura como prueba"
       }
     ],
     "correctAnswer": "q30_o1",
@@ -770,7 +770,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_04",
     "type": "fillBlank",
-    "statement": "Un audio, imagen o video sintético que imita convincentemente a una persona puede denominarse __.",
+    "statement": "Un audio, imagen o video sintético que imita convincentemente a una persona puede denominarse _____.",
     "options": [],
     "correctAnswer": "deepfake",
     "acceptedAnswers": [
@@ -790,19 +790,19 @@
     "options": [
       {
         "id": "q33_o1",
-        "text": "Verificas por otro canal antes de transferir."
+        "text": "Verificas por otro canal antes de transferir"
       },
       {
         "id": "q33_o2",
-        "text": "Pagas porque la voz parece real."
+        "text": "Pagas porque la voz parece real"
       },
       {
         "id": "q33_o3",
-        "text": "Compartes un código."
+        "text": "Compartes un código"
       },
       {
         "id": "q33_o4",
-        "text": "Mantienes secreto el pedido."
+        "text": "Mantienes secreto el pedido"
       }
     ],
     "correctAnswer": "q33_o1",
@@ -842,19 +842,19 @@
     "options": [
       {
         "id": "q35_o1",
-        "text": "Procedencia, fuente original, fecha y contexto."
+        "text": "Procedencia, fuente original, fecha y contexto"
       },
       {
         "id": "q35_o2",
-        "text": "Solo la resolución."
+        "text": "Solo la resolución"
       },
       {
         "id": "q35_o3",
-        "text": "La cantidad de reacciones."
+        "text": "La cantidad de reacciones"
       },
       {
         "id": "q35_o4",
-        "text": "Si parece profesional."
+        "text": "Si parece profesional"
       }
     ],
     "correctAnswer": "q35_o1",
@@ -868,7 +868,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_04",
     "type": "fillBlank",
-    "statement": "Una imagen o audio creado artificialmente puede considerarse contenido __.",
+    "statement": "Una imagen o audio creado artificialmente puede considerarse contenido _____.",
     "options": [],
     "correctAnswer": "sintético",
     "acceptedAnswers": [
@@ -888,19 +888,19 @@
     "options": [
       {
         "id": "q37_o1",
-        "text": "Buscar la publicación original y su contexto."
+        "text": "Buscar la publicación original y su contexto"
       },
       {
         "id": "q37_o2",
-        "text": "Confiar solo en la captura."
+        "text": "Confiar solo en la captura"
       },
       {
         "id": "q37_o3",
-        "text": "Compartirla de inmediato."
+        "text": "Compartirla de inmediato"
       },
       {
         "id": "q37_o4",
-        "text": "Ignorar la fecha."
+        "text": "Ignorar la fecha"
       }
     ],
     "correctAnswer": "q37_o1",
@@ -940,19 +940,19 @@
     "options": [
       {
         "id": "q39_o1",
-        "text": "Verificar su fuente original y buscar confirmaciones independientes."
+        "text": "Verificar su fuente original y buscar confirmaciones independientes"
       },
       {
         "id": "q39_o2",
-        "text": "Confiar si no notas errores."
+        "text": "Confiar si no notas errores"
       },
       {
         "id": "q39_o3",
-        "text": "Mirar si está en alta resolución."
+        "text": "Mirar si está en alta resolución"
       },
       {
         "id": "q39_o4",
-        "text": "Contar comentarios."
+        "text": "Contar comentarios"
       }
     ],
     "correctAnswer": "q39_o1",
@@ -970,19 +970,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "No confiar solo en lo realista que parece; comprobar origen, contexto y confirmaciones externas."
+        "text": "No confiar solo en lo realista que parece; comprobar origen, contexto y confirmaciones externas"
       },
       {
         "id": "q40_o2",
-        "text": "Si tiene voz conocida debe ser real."
+        "text": "Si tiene voz conocida debe ser real"
       },
       {
         "id": "q40_o3",
-        "text": "Si no hay errores visuales no puede ser falso."
+        "text": "Si no hay errores visuales no puede ser falso"
       },
       {
         "id": "q40_o4",
-        "text": "Las imágenes nunca se manipulan."
+        "text": "Las imágenes nunca se manipulan"
       }
     ],
     "correctAnswer": "q40_o1",
@@ -1000,19 +1000,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Buscas la información en el canal oficial correspondiente."
+        "text": "Buscas la información en el canal oficial correspondiente"
       },
       {
         "id": "q41_o2",
-        "text": "La reenvías por solidaridad."
+        "text": "La reenvías por solidaridad"
       },
       {
         "id": "q41_o3",
-        "text": "Añades más urgencia."
+        "text": "Añades más urgencia"
       },
       {
         "id": "q41_o4",
-        "text": "Eliminas la fecha."
+        "text": "Eliminas la fecha"
       }
     ],
     "correctAnswer": "q41_o1",
@@ -1048,7 +1048,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_05",
     "type": "fillBlank",
-    "statement": "Un mensaje copiado y reenviado repetidamente entre personas suele conocerse como una __.",
+    "statement": "Un mensaje copiado y reenviado repetidamente entre personas suele conocerse como una _____.",
     "options": [],
     "correctAnswer": "cadena",
     "acceptedAnswers": [
@@ -1067,19 +1067,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Verificar con fuentes oficiales antes de difundirla."
+        "text": "Verificar con fuentes oficiales antes de difundirla"
       },
       {
         "id": "q44_o2",
-        "text": "Compartirla “por si acaso”."
+        "text": "Compartirla “por si acaso”"
       },
       {
         "id": "q44_o3",
-        "text": "Añadir nombres no confirmados."
+        "text": "Añadir nombres no confirmados"
       },
       {
         "id": "q44_o4",
-        "text": "Publicarla como un hecho."
+        "text": "Publicarla como un hecho"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1119,19 +1119,19 @@
     "options": [
       {
         "id": "q46_o1",
-        "text": "El hospital o autoridad sanitaria oficial."
+        "text": "El hospital o autoridad sanitaria oficial"
       },
       {
         "id": "q46_o2",
-        "text": "El último contacto que la reenvió."
+        "text": "El último contacto que la reenvió"
       },
       {
         "id": "q46_o3",
-        "text": "Un comentario anónimo."
+        "text": "Un comentario anónimo"
       },
       {
         "id": "q46_o4",
-        "text": "La cantidad de veces compartida."
+        "text": "La cantidad de veces compartida"
       }
     ],
     "correctAnswer": "q46_o1",
@@ -1145,7 +1145,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_05",
     "type": "fillBlank",
-    "statement": "El acto de enviar nuevamente un mensaje a otras personas se denomina __.",
+    "statement": "El acto de enviar nuevamente un mensaje a otras personas se denomina _____.",
     "options": [],
     "correctAnswer": "reenviar",
     "acceptedAnswers": [
@@ -1164,19 +1164,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Urgencia, petición de reenviar y ausencia de fuente verificable."
+        "text": "Urgencia, petición de reenviar y ausencia de fuente verificable"
       },
       {
         "id": "q48_o2",
-        "text": "Enlace a una institución oficial y fecha clara."
+        "text": "Enlace a una institución oficial y fecha clara"
       },
       {
         "id": "q48_o3",
-        "text": "Documento original disponible."
+        "text": "Documento original disponible"
       },
       {
         "id": "q48_o4",
-        "text": "Información confirmada en varios canales."
+        "text": "Información confirmada en varios canales"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1216,19 +1216,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Buscar la fuente oficial, comprobar fecha y contexto y solo después decidir si compartir."
+        "text": "Buscar la fuente oficial, comprobar fecha y contexto y solo después decidir si compartir"
       },
       {
         "id": "q50_o2",
-        "text": "Reenviar primero para advertir."
+        "text": "Reenviar primero para advertir"
       },
       {
         "id": "q50_o3",
-        "text": "Confiar en mayúsculas y emojis."
+        "text": "Confiar en mayúsculas y emojis"
       },
       {
         "id": "q50_o4",
-        "text": "Ignorar el país de origen."
+        "text": "Ignorar el país de origen"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1268,19 +1268,19 @@
     "options": [
       {
         "id": "q52_o1",
-        "text": "Verificarlo con fuentes confiables antes de tomar decisiones relevantes."
+        "text": "Verificarlo con fuentes confiables antes de tomar decisiones relevantes"
       },
       {
         "id": "q52_o2",
-        "text": "Asumir que siempre es correcto."
+        "text": "Asumir que siempre es correcto"
       },
       {
         "id": "q52_o3",
-        "text": "Usarlo como única fuente médica o legal."
+        "text": "Usarlo como única fuente médica o legal"
       },
       {
         "id": "q52_o4",
-        "text": "Compartirlo sin leer."
+        "text": "Compartirlo sin leer"
       }
     ],
     "correctAnswer": "q52_o1",
@@ -1294,7 +1294,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_06",
     "type": "fillBlank",
-    "statement": "Cuando una IA inventa información presentada como si fuera cierta, la respuesta contiene un dato __.",
+    "statement": "Cuando una IA inventa información presentada como si fuera cierta, la respuesta contiene un dato _____.",
     "options": [],
     "correctAnswer": "falso",
     "acceptedAnswers": [
@@ -1313,19 +1313,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Contraseñas, documentos o datos confidenciales."
+        "text": "Contraseñas, documentos o datos confidenciales"
       },
       {
         "id": "q54_o2",
-        "text": "Una pregunta general sin datos personales."
+        "text": "Una pregunta general sin datos personales"
       },
       {
         "id": "q54_o3",
-        "text": "Un ejemplo ficticio."
+        "text": "Un ejemplo ficticio"
       },
       {
         "id": "q54_o4",
-        "text": "Un concepto público."
+        "text": "Un concepto público"
       }
     ],
     "correctAnswer": "q54_o1",
@@ -1365,19 +1365,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Verificar información con fuentes fiables y, si corresponde, buscar asesoramiento adecuado."
+        "text": "Verificar información con fuentes fiables y, si corresponde, buscar asesoramiento adecuado"
       },
       {
         "id": "q56_o2",
-        "text": "Transferir dinero inmediatamente."
+        "text": "Transferir dinero inmediatamente"
       },
       {
         "id": "q56_o3",
-        "text": "Considerarla garantía de resultado."
+        "text": "Considerarla garantía de resultado"
       },
       {
         "id": "q56_o4",
-        "text": "Compartir tus claves bancarias para obtener más precisión."
+        "text": "Compartir tus claves bancarias para obtener más precisión"
       }
     ],
     "correctAnswer": "q56_o1",
@@ -1391,7 +1391,7 @@
     "categoryId": "information_misinformation_ai",
     "activityId": "information_ai_activity_06",
     "type": "fillBlank",
-    "statement": "Comprobar la exactitud de una respuesta de IA mediante fuentes externas es realizar una __.",
+    "statement": "Comprobar la exactitud de una respuesta de IA mediante fuentes externas es realizar una _____.",
     "options": [],
     "correctAnswer": "verificación",
     "acceptedAnswers": [
@@ -1435,19 +1435,19 @@
     "options": [
       {
         "id": "q59_o1",
-        "text": "Formular la consulta sin incluir datos personales o confidenciales innecesarios."
+        "text": "Formular la consulta sin incluir datos personales o confidenciales innecesarios"
       },
       {
         "id": "q59_o2",
-        "text": "Copiar documentos completos aunque no hagan falta."
+        "text": "Copiar documentos completos aunque no hagan falta"
       },
       {
         "id": "q59_o3",
-        "text": "Introducir contraseñas reales."
+        "text": "Introducir contraseñas reales"
       },
       {
         "id": "q59_o4",
-        "text": "Compartir códigos temporales."
+        "text": "Compartir códigos temporales"
       }
     ],
     "correctAnswer": "q59_o1",
@@ -1465,19 +1465,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "No compartir datos sensibles innecesarios, verificar información importante y reconocer que la herramienta puede equivocarse."
+        "text": "No compartir datos sensibles innecesarios, verificar información importante y reconocer que la herramienta puede equivocarse"
       },
       {
         "id": "q60_o2",
-        "text": "Tratar toda respuesta como verdad definitiva."
+        "text": "Tratar toda respuesta como verdad definitiva"
       },
       {
         "id": "q60_o3",
-        "text": "Usarla como única fuente para decisiones críticas."
+        "text": "Usarla como única fuente para decisiones críticas"
       },
       {
         "id": "q60_o4",
-        "text": "Introducir información confidencial para obtener respuestas mejores."
+        "text": "Introducir información confidencial para obtener respuestas mejores"
       }
     ],
     "correctAnswer": "q60_o1",

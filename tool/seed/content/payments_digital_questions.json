@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Beneficiario, entidad, monto y concepto."
+        "text": "Beneficiario, entidad, monto y concepto"
       },
       {
         "id": "q01_o2",
-        "text": "Solo el color del QR."
+        "text": "Solo el color del QR"
       },
       {
         "id": "q01_o3",
-        "text": "La batería del celular."
+        "text": "La batería del celular"
       },
       {
         "id": "q01_o4",
-        "text": "La cantidad de seguidores del comercio."
+        "text": "La cantidad de seguidores del comercio"
       }
     ],
     "correctAnswer": "q01_o1",
@@ -56,7 +56,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_01",
     "type": "fillBlank",
-    "statement": "La persona o cuenta que recibirá una transferencia se denomina __.",
+    "statement": "La persona o cuenta que recibirá una transferencia se denomina _____.",
     "options": [],
     "correctAnswer": "beneficiario",
     "acceptedAnswers": [
@@ -76,19 +76,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Pagas igual."
+        "text": "Pagas igual"
       },
       {
         "id": "q04_o2",
-        "text": "Cancelas y consultas al comercio antes de continuar."
+        "text": "Cancelas y consultas al comercio antes de continuar"
       },
       {
         "id": "q04_o3",
-        "text": "Aumentas el monto."
+        "text": "Aumentas el monto"
       },
       {
         "id": "q04_o4",
-        "text": "Compartes tu PIN."
+        "text": "Compartes tu PIN"
       }
     ],
     "correctAnswer": "q04_o2",
@@ -124,7 +124,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_01",
     "type": "fillBlank",
-    "statement": "La información que explica para qué se realiza una transferencia puede figurar como __ de la operación.",
+    "statement": "La información que explica para qué se realiza una transferencia puede figurar como _____ de la operación.",
     "options": [],
     "correctAnswer": "concepto",
     "acceptedAnswers": [
@@ -143,19 +143,19 @@
     "options": [
       {
         "id": "q07_o1",
-        "text": "Revisar en la app bancaria quién recibirá el dinero y confirmar la operación esperada."
+        "text": "Revisar en la app bancaria quién recibirá el dinero y confirmar la operación esperada"
       },
       {
         "id": "q07_o2",
-        "text": "Confiar porque el QR se ve profesional."
+        "text": "Confiar porque el QR se ve profesional"
       },
       {
         "id": "q07_o3",
-        "text": "Enviar primero el PIN."
+        "text": "Enviar primero el PIN"
       },
       {
         "id": "q07_o4",
-        "text": "Pagar una cantidad pequeña sin revisar."
+        "text": "Pagar una cantidad pequeña sin revisar"
       }
     ],
     "correctAnswer": "q07_o1",
@@ -195,19 +195,19 @@
     "options": [
       {
         "id": "q09_o1",
-        "text": "Antes de confirmar definitivamente en la app bancaria."
+        "text": "Antes de confirmar definitivamente en la app bancaria"
       },
       {
         "id": "q09_o2",
-        "text": "Después de enviar el dinero."
+        "text": "Después de enviar el dinero"
       },
       {
         "id": "q09_o3",
-        "text": "Cuando ya borraste el comprobante."
+        "text": "Cuando ya borraste el comprobante"
       },
       {
         "id": "q09_o4",
-        "text": "Nunca es necesario revisar."
+        "text": "Nunca es necesario revisar"
       }
     ],
     "correctAnswer": "q09_o1",
@@ -225,19 +225,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Confirmar únicamente cuando beneficiario, monto y operación coinciden con lo esperado."
+        "text": "Confirmar únicamente cuando beneficiario, monto y operación coinciden con lo esperado"
       },
       {
         "id": "q10_o2",
-        "text": "Pagar rápido para evitar demoras."
+        "text": "Pagar rápido para evitar demoras"
       },
       {
         "id": "q10_o3",
-        "text": "Confiar solo por el QR."
+        "text": "Confiar solo por el QR"
       },
       {
         "id": "q10_o4",
-        "text": "Compartir claves con el comercio."
+        "text": "Compartir claves con el comercio"
       }
     ],
     "correctAnswer": "q10_o1",
@@ -273,7 +273,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_02",
     "type": "fillBlank",
-    "statement": "El ingreso efectivo del dinero en la cuenta receptora se denomina __.",
+    "statement": "El ingreso efectivo del dinero en la cuenta receptora se denomina _____.",
     "options": [],
     "correctAnswer": "acreditación",
     "acceptedAnswers": [
@@ -294,19 +294,19 @@
     "options": [
       {
         "id": "q13_o1",
-        "text": "Entregas el producto por la captura."
+        "text": "Entregas el producto por la captura"
       },
       {
         "id": "q13_o2",
-        "text": "Esperas o verificas la acreditación en tu propia cuenta antes de entregar."
+        "text": "Esperas o verificas la acreditación en tu propia cuenta antes de entregar"
       },
       {
         "id": "q13_o3",
-        "text": "Le pides el PIN."
+        "text": "Le pides el PIN"
       },
       {
         "id": "q13_o4",
-        "text": "Confías por el logo del comprobante."
+        "text": "Confías por el logo del comprobante"
       }
     ],
     "correctAnswer": "q13_o2",
@@ -346,19 +346,19 @@
     "options": [
       {
         "id": "q15_o1",
-        "text": "No existe el movimiento correspondiente en tu cuenta."
+        "text": "No existe el movimiento correspondiente en tu cuenta"
       },
       {
         "id": "q15_o2",
-        "text": "El comprobante tiene colores."
+        "text": "El comprobante tiene colores"
       },
       {
         "id": "q15_o3",
-        "text": "El cliente usa teléfono."
+        "text": "El cliente usa teléfono"
       },
       {
         "id": "q15_o4",
-        "text": "El monto aparece escrito."
+        "text": "El monto aparece escrito"
       }
     ],
     "correctAnswer": "q15_o1",
@@ -372,7 +372,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_02",
     "type": "fillBlank",
-    "statement": "Una imagen de pago que ha sido modificada digitalmente es un comprobante __.",
+    "statement": "Una imagen de pago que ha sido modificada digitalmente es un comprobante _____.",
     "options": [],
     "correctAnswer": "alterado",
     "acceptedAnswers": [
@@ -391,19 +391,19 @@
     "options": [
       {
         "id": "q17_o1",
-        "text": "Verificar primero la acreditación en tu cuenta."
+        "text": "Verificar primero la acreditación en tu cuenta"
       },
       {
         "id": "q17_o2",
-        "text": "Entregar por presión."
+        "text": "Entregar por presión"
       },
       {
         "id": "q17_o3",
-        "text": "Compartir tu contraseña bancaria."
+        "text": "Compartir tu contraseña bancaria"
       },
       {
         "id": "q17_o4",
-        "text": "Desactivar las notificaciones."
+        "text": "Desactivar las notificaciones"
       }
     ],
     "correctAnswer": "q17_o1",
@@ -443,19 +443,19 @@
     "options": [
       {
         "id": "q19_o1",
-        "text": "Confirmar el abono en su propia cuenta."
+        "text": "Confirmar el abono en su propia cuenta"
       },
       {
         "id": "q19_o2",
-        "text": "Mirar solo la foto del comprobante."
+        "text": "Mirar solo la foto del comprobante"
       },
       {
         "id": "q19_o3",
-        "text": "Pedir el código de verificación del cliente."
+        "text": "Pedir el código de verificación del cliente"
       },
       {
         "id": "q19_o4",
-        "text": "Confiar por la urgencia."
+        "text": "Confiar por la urgencia"
       }
     ],
     "correctAnswer": "q19_o1",
@@ -473,19 +473,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Verifica siempre el movimiento en el canal oficial de tu entidad antes de entregar bienes o servicios."
+        "text": "Verifica siempre el movimiento en el canal oficial de tu entidad antes de entregar bienes o servicios"
       },
       {
         "id": "q20_o2",
-        "text": "Acepta cualquier captura."
+        "text": "Acepta cualquier captura"
       },
       {
         "id": "q20_o3",
-        "text": "Confía si aparece un logo bancario."
+        "text": "Confía si aparece un logo bancario"
       },
       {
         "id": "q20_o4",
-        "text": "Pide la contraseña del pagador."
+        "text": "Pide la contraseña del pagador"
       }
     ],
     "correctAnswer": "q20_o1",
@@ -503,19 +503,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Transferir rápido."
+        "text": "Transferir rápido"
       },
       {
         "id": "q21_o2",
-        "text": "Investigar al vendedor, condiciones y posibles reclamos antes de pagar."
+        "text": "Investigar al vendedor, condiciones y posibles reclamos antes de pagar"
       },
       {
         "id": "q21_o3",
-        "text": "Enviar la tarjeta completa."
+        "text": "Enviar la tarjeta completa"
       },
       {
         "id": "q21_o4",
-        "text": "Ignorar cualquier señal."
+        "text": "Ignorar cualquier señal"
       }
     ],
     "correctAnswer": "q21_o2",
@@ -551,7 +551,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_03",
     "type": "fillBlank",
-    "statement": "Pagar una parte del precio antes de recibir el producto se conoce como un __.",
+    "statement": "Pagar una parte del precio antes de recibir el producto se conoce como un _____.",
     "options": [],
     "correctAnswer": "adelanto",
     "acceptedAnswers": [
@@ -570,19 +570,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Precio irreal, presión urgente y pago por un canal extraño."
+        "text": "Precio irreal, presión urgente y pago por un canal extraño"
       },
       {
         "id": "q24_o2",
-        "text": "Reputación verificable y condiciones claras."
+        "text": "Reputación verificable y condiciones claras"
       },
       {
         "id": "q24_o3",
-        "text": "Encuentro en lugar seguro."
+        "text": "Encuentro en lugar seguro"
       },
       {
         "id": "q24_o4",
-        "text": "Método de pago con registro."
+        "text": "Método de pago con registro"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -622,19 +622,19 @@
     "options": [
       {
         "id": "q26_o1",
-        "text": "Elegir un lugar seguro y, cuando sea posible, ir acompañado."
+        "text": "Elegir un lugar seguro y, cuando sea posible, ir acompañado"
       },
       {
         "id": "q26_o2",
-        "text": "Ir a un lugar aislado."
+        "text": "Ir a un lugar aislado"
       },
       {
         "id": "q26_o3",
-        "text": "Compartir tus contraseñas antes de ir."
+        "text": "Compartir tus contraseñas antes de ir"
       },
       {
         "id": "q26_o4",
-        "text": "No informar a nadie."
+        "text": "No informar a nadie"
       }
     ],
     "correctAnswer": "q26_o1",
@@ -648,7 +648,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_03",
     "type": "fillBlank",
-    "statement": "Comprobar experiencias y referencias externas de un vendedor ayuda a revisar su __.",
+    "statement": "Comprobar experiencias y referencias externas de un vendedor ayuda a revisar su _____.",
     "options": [],
     "correctAnswer": "reputación",
     "acceptedAnswers": [
@@ -668,19 +668,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Consideras la señal de riesgo y buscas una opción más segura."
+        "text": "Consideras la señal de riesgo y buscas una opción más segura"
       },
       {
         "id": "q28_o2",
-        "text": "Aceptas porque será más rápido."
+        "text": "Aceptas porque será más rápido"
       },
       {
         "id": "q28_o3",
-        "text": "Envías documentos completos."
+        "text": "Envías documentos completos"
       },
       {
         "id": "q28_o4",
-        "text": "Compartes códigos de acceso."
+        "text": "Compartes códigos de acceso"
       }
     ],
     "correctAnswer": "q28_o1",
@@ -720,19 +720,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "Verificar al vendedor, evitar presión y adelantos dudosos, usar canales con registro y cuidar el encuentro físico."
+        "text": "Verificar al vendedor, evitar presión y adelantos dudosos, usar canales con registro y cuidar el encuentro físico"
       },
       {
         "id": "q30_o2",
-        "text": "Confiar solo en fotos."
+        "text": "Confiar solo en fotos"
       },
       {
         "id": "q30_o3",
-        "text": "Pagar siempre por adelantado."
+        "text": "Pagar siempre por adelantado"
       },
       {
         "id": "q30_o4",
-        "text": "Compartir códigos para demostrar confianza."
+        "text": "Compartir códigos para demostrar confianza"
       }
     ],
     "correctAnswer": "q30_o1",
@@ -750,19 +750,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Dominio, datos de contacto, políticas, reputación externa y método de pago."
+        "text": "Dominio, datos de contacto, políticas, reputación externa y método de pago"
       },
       {
         "id": "q31_o2",
-        "text": "Solo el diseño."
+        "text": "Solo el diseño"
       },
       {
         "id": "q31_o3",
-        "text": "Únicamente los anuncios."
+        "text": "Únicamente los anuncios"
       },
       {
         "id": "q31_o4",
-        "text": "La cantidad de emojis."
+        "text": "La cantidad de emojis"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -798,7 +798,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_04",
     "type": "fillBlank",
-    "statement": "La dirección principal que identifica la tienda en internet se llama __.",
+    "statement": "La dirección principal que identifica la tienda en internet se llama _____.",
     "options": [],
     "correctAnswer": "dominio",
     "acceptedAnswers": [
@@ -817,19 +817,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "Uno que permita reclamos o tenga protección al comprador."
+        "text": "Uno que permita reclamos o tenga protección al comprador"
       },
       {
         "id": "q34_o2",
-        "text": "Un envío irreversible a una cuenta desconocida."
+        "text": "Un envío irreversible a una cuenta desconocida"
       },
       {
         "id": "q34_o3",
-        "text": "Compartir la clave bancaria."
+        "text": "Compartir la clave bancaria"
       },
       {
         "id": "q34_o4",
-        "text": "Pagar mediante un enlace recibido al azar."
+        "text": "Pagar mediante un enlace recibido al azar"
       }
     ],
     "correctAnswer": "q34_o1",
@@ -869,19 +869,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Verificar el dominio y buscar la tienda desde el sitio oficial de la marca."
+        "text": "Verificar el dominio y buscar la tienda desde el sitio oficial de la marca"
       },
       {
         "id": "q36_o2",
-        "text": "Comprar por el logo."
+        "text": "Comprar por el logo"
       },
       {
         "id": "q36_o3",
-        "text": "Compartir la tarjeta completa por chat."
+        "text": "Compartir la tarjeta completa por chat"
       },
       {
         "id": "q36_o4",
-        "text": "Ignorar la dirección web."
+        "text": "Ignorar la dirección web"
       }
     ],
     "correctAnswer": "q36_o1",
@@ -895,7 +895,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_04",
     "type": "fillBlank",
-    "statement": "Las condiciones para devolver un producto forman parte de la política de __.",
+    "statement": "Las condiciones para devolver un producto forman parte de la política de _____.",
     "options": [],
     "correctAnswer": "devolución",
     "acceptedAnswers": [
@@ -915,19 +915,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Opiniones o referencias fuera del propio sitio y datos de contacto verificables."
+        "text": "Opiniones o referencias fuera del propio sitio y datos de contacto verificables"
       },
       {
         "id": "q38_o2",
-        "text": "Solo testimonios publicados por la tienda."
+        "text": "Solo testimonios publicados por la tienda"
       },
       {
         "id": "q38_o3",
-        "text": "El color de su logo."
+        "text": "El color de su logo"
       },
       {
         "id": "q38_o4",
-        "text": "Que muestre un descuento grande."
+        "text": "Que muestre un descuento grande"
       }
     ],
     "correctAnswer": "q38_o1",
@@ -967,19 +967,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Verificar sitio y políticas, contrastar reputación y priorizar medios de pago con protección."
+        "text": "Verificar sitio y políticas, contrastar reputación y priorizar medios de pago con protección"
       },
       {
         "id": "q40_o2",
-        "text": "Entrar desde cualquier anuncio y pagar rápido."
+        "text": "Entrar desde cualquier anuncio y pagar rápido"
       },
       {
         "id": "q40_o3",
-        "text": "Ignorar el dominio si hay HTTPS."
+        "text": "Ignorar el dominio si hay HTTPS"
       },
       {
         "id": "q40_o4",
-        "text": "Compartir códigos de verificación."
+        "text": "Compartir códigos de verificación"
       }
     ],
     "correctAnswer": "q40_o1",
@@ -997,19 +997,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Precio posterior, periodicidad del cobro y forma de cancelación."
+        "text": "Precio posterior, periodicidad del cobro y forma de cancelación"
       },
       {
         "id": "q41_o2",
-        "text": "Solo el botón grande."
+        "text": "Solo el botón grande"
       },
       {
         "id": "q41_o3",
-        "text": "El color de la página."
+        "text": "El color de la página"
       },
       {
         "id": "q41_o4",
-        "text": "La cantidad de seguidores."
+        "text": "La cantidad de seguidores"
       }
     ],
     "correctAnswer": "q41_o1",
@@ -1045,7 +1045,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_05",
     "type": "fillBlank",
-    "statement": "Un cobro que se repite cada cierto periodo se denomina cobro __.",
+    "statement": "Un cobro que se repite cada cierto periodo se denomina cobro _____.",
     "options": [],
     "correctAnswer": "recurrente",
     "acceptedAnswers": [
@@ -1064,19 +1064,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Un patrón oscuro."
+        "text": "Un patrón oscuro"
       },
       {
         "id": "q44_o2",
-        "text": "Una copia de seguridad."
+        "text": "Una copia de seguridad"
       },
       {
         "id": "q44_o3",
-        "text": "Una contraseña maestra."
+        "text": "Una contraseña maestra"
       },
       {
         "id": "q44_o4",
-        "text": "Una verificación independiente."
+        "text": "Una verificación independiente"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1116,19 +1116,19 @@
     "options": [
       {
         "id": "q46_o1",
-        "text": "El botón para rechazar está oculto o la cancelación usa pasos innecesariamente confusos."
+        "text": "El botón para rechazar está oculto o la cancelación usa pasos innecesariamente confusos"
       },
       {
         "id": "q46_o2",
-        "text": "Las condiciones son claras."
+        "text": "Las condiciones son claras"
       },
       {
         "id": "q46_o3",
-        "text": "El precio está visible."
+        "text": "El precio está visible"
       },
       {
         "id": "q46_o4",
-        "text": "Cancelar es sencillo."
+        "text": "Cancelar es sencillo"
       }
     ],
     "correctAnswer": "q46_o1",
@@ -1142,7 +1142,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_05",
     "type": "fillBlank",
-    "statement": "Terminar una suscripción para evitar nuevos cobros se denomina __.",
+    "statement": "Terminar una suscripción para evitar nuevos cobros se denomina _____.",
     "options": [],
     "correctAnswer": "cancelación",
     "acceptedAnswers": [
@@ -1214,19 +1214,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Revisar precio, frecuencia, renovación y cancelación antes de confirmar."
+        "text": "Revisar precio, frecuencia, renovación y cancelación antes de confirmar"
       },
       {
         "id": "q50_o2",
-        "text": "Aceptar cualquier prueba gratuita."
+        "text": "Aceptar cualquier prueba gratuita"
       },
       {
         "id": "q50_o3",
-        "text": "Ignorar cobros pequeños."
+        "text": "Ignorar cobros pequeños"
       },
       {
         "id": "q50_o4",
-        "text": "Compartir códigos bancarios para cancelar."
+        "text": "Compartir códigos bancarios para cancelar"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1244,19 +1244,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "A tu entidad financiera por su canal oficial."
+        "text": "A tu entidad financiera por su canal oficial"
       },
       {
         "id": "q51_o2",
-        "text": "Al estafador para negociar."
+        "text": "Al estafador para negociar"
       },
       {
         "id": "q51_o3",
-        "text": "A un grupo anónimo."
+        "text": "A un grupo anónimo"
       },
       {
         "id": "q51_o4",
-        "text": "A cualquier número recibido por mensaje."
+        "text": "A cualquier número recibido por mensaje"
       }
     ],
     "correctAnswer": "q51_o1",
@@ -1292,7 +1292,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_06",
     "type": "fillBlank",
-    "statement": "Capturas, chats, números y comprobantes relacionados con un fraude forman parte de la __.",
+    "statement": "Capturas, chats, números y comprobantes relacionados con un fraude forman parte de la _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -1313,19 +1313,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "No pagas y verificas cualquier gestión con la entidad correspondiente."
+        "text": "No pagas y verificas cualquier gestión con la entidad correspondiente"
       },
       {
         "id": "q54_o2",
-        "text": "Pagas para recuperar lo perdido."
+        "text": "Pagas para recuperar lo perdido"
       },
       {
         "id": "q54_o3",
-        "text": "Compartes tu PIN."
+        "text": "Compartes tu PIN"
       },
       {
         "id": "q54_o4",
-        "text": "Envías un código de verificación."
+        "text": "Envías un código de verificación"
       }
     ],
     "correctAnswer": "q54_o1",
@@ -1365,19 +1365,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Contactar cuanto antes a tu entidad financiera para recibir orientación."
+        "text": "Contactar cuanto antes a tu entidad financiera para recibir orientación"
       },
       {
         "id": "q56_o2",
-        "text": "Publicar tu PIN."
+        "text": "Publicar tu PIN"
       },
       {
         "id": "q56_o3",
-        "text": "Amenazar al receptor."
+        "text": "Amenazar al receptor"
       },
       {
         "id": "q56_o4",
-        "text": "Borrar la app."
+        "text": "Borrar la app"
       }
     ],
     "correctAnswer": "q56_o1",
@@ -1391,7 +1391,7 @@
     "categoryId": "digital_payments_consumption",
     "activityId": "payments_digital_activity_06",
     "type": "fillBlank",
-    "statement": "Solicitar formalmente la revisión de un cobro u operación puede formar parte de un __.",
+    "statement": "Solicitar formalmente la revisión de un cobro u operación puede formar parte de un _____.",
     "options": [],
     "correctAnswer": "reclamo",
     "acceptedAnswers": [
@@ -1412,19 +1412,19 @@
     "options": [
       {
         "id": "q58_o1",
-        "text": "Comprobantes, conversaciones, datos del perfil y detalles de la operación."
+        "text": "Comprobantes, conversaciones, datos del perfil y detalles de la operación"
       },
       {
         "id": "q58_o2",
-        "text": "Solo recuerdos."
+        "text": "Solo recuerdos"
       },
       {
         "id": "q58_o3",
-        "text": "Contraseñas en un chat."
+        "text": "Contraseñas en un chat"
       },
       {
         "id": "q58_o4",
-        "text": "Nada."
+        "text": "Nada"
       }
     ],
     "correctAnswer": "q58_o1",
@@ -1464,19 +1464,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Contactar a la entidad oficial, conservar evidencia, proteger credenciales relacionadas y evitar nuevos pagos a supuestos recuperadores."
+        "text": "Contactar a la entidad oficial, conservar evidencia, proteger credenciales relacionadas y evitar nuevos pagos a supuestos recuperadores"
       },
       {
         "id": "q60_o2",
-        "text": "Negociar con el estafador y pagar otra vez."
+        "text": "Negociar con el estafador y pagar otra vez"
       },
       {
         "id": "q60_o3",
-        "text": "Borrar toda evidencia."
+        "text": "Borrar toda evidencia"
       },
       {
         "id": "q60_o4",
-        "text": "Compartir claves con terceros."
+        "text": "Compartir claves con terceros"
       }
     ],
     "correctAnswer": "q60_o1",

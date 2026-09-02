@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Un engaño que imita a una persona o institución para obtener datos o provocar una acción."
+        "text": "Un engaño que imita a una persona o institución para obtener datos o provocar una acción"
       },
       {
         "id": "q01_o2",
-        "text": "Una actualización automática."
+        "text": "Una actualización automática"
       },
       {
         "id": "q01_o3",
-        "text": "Una copia de seguridad."
+        "text": "Una copia de seguridad"
       },
       {
         "id": "q01_o4",
-        "text": "Un bloqueo de pantalla."
+        "text": "Un bloqueo de pantalla"
       }
     ],
     "correctAnswer": "q01_o1",
@@ -34,7 +34,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_01",
     "type": "fillBlank",
-    "statement": "El phishing que llega principalmente por SMS o mensajería se conoce como __.",
+    "statement": "El phishing que llega principalmente por SMS o mensajería se conoce como _____.",
     "options": [],
     "correctAnswer": "smishing",
     "acceptedAnswers": [
@@ -51,7 +51,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_01",
     "type": "fillBlank",
-    "statement": "Una llamada fraudulenta que busca manipularte para obtener datos se conoce como __.",
+    "statement": "Una llamada fraudulenta que busca manipularte para obtener datos se conoce como _____.",
     "options": [],
     "correctAnswer": "vishing",
     "acceptedAnswers": [
@@ -94,19 +94,19 @@
     "options": [
       {
         "id": "q05_o1",
-        "text": "Que el enlace lleve a una página falsa para robar credenciales."
+        "text": "Que el enlace lleve a una página falsa para robar credenciales"
       },
       {
         "id": "q05_o2",
-        "text": "Que aumente la batería."
+        "text": "Que aumente la batería"
       },
       {
         "id": "q05_o3",
-        "text": "Que se cierre el Wi-Fi."
+        "text": "Que se cierre el Wi-Fi"
       },
       {
         "id": "q05_o4",
-        "text": "Que cambie el idioma."
+        "text": "Que cambie el idioma"
       }
     ],
     "correctAnswer": "q05_o1",
@@ -146,19 +146,19 @@
     "options": [
       {
         "id": "q07_o1",
-        "text": "Vishing."
+        "text": "Vishing"
       },
       {
         "id": "q07_o2",
-        "text": "Copia de seguridad."
+        "text": "Copia de seguridad"
       },
       {
         "id": "q07_o3",
-        "text": "Actualización."
+        "text": "Actualización"
       },
       {
         "id": "q07_o4",
-        "text": "Biometría."
+        "text": "Biometría"
       }
     ],
     "correctAnswer": "q07_o1",
@@ -176,19 +176,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Smishing."
+        "text": "Smishing"
       },
       {
         "id": "q08_o2",
-        "text": "Respaldo."
+        "text": "Respaldo"
       },
       {
         "id": "q08_o3",
-        "text": "Autenticación biométrica."
+        "text": "Autenticación biométrica"
       },
       {
         "id": "q08_o4",
-        "text": "Cifrado."
+        "text": "Cifrado"
       }
     ],
     "correctAnswer": "q08_o1",
@@ -202,7 +202,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_01",
     "type": "fillBlank",
-    "statement": "La técnica general de hacerse pasar por una entidad para robar datos se llama __.",
+    "statement": "La técnica general de hacerse pasar por una entidad para robar datos se llama _____.",
     "options": [],
     "correctAnswer": "phishing",
     "acceptedAnswers": [
@@ -223,19 +223,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Buscan manipular a la persona para que entregue información o realice una acción."
+        "text": "Buscan manipular a la persona para que entregue información o realice una acción"
       },
       {
         "id": "q10_o2",
-        "text": "Son mecanismos oficiales de seguridad."
+        "text": "Son mecanismos oficiales de seguridad"
       },
       {
         "id": "q10_o3",
-        "text": "Siempre requieren malware."
+        "text": "Siempre requieren malware"
       },
       {
         "id": "q10_o4",
-        "text": "Solo afectan computadoras."
+        "text": "Solo afectan computadoras"
       }
     ],
     "correctAnswer": "q10_o1",
@@ -253,19 +253,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Urgencia."
+        "text": "Urgencia"
       },
       {
         "id": "q11_o2",
-        "text": "Copia de seguridad."
+        "text": "Copia de seguridad"
       },
       {
         "id": "q11_o3",
-        "text": "Privacidad."
+        "text": "Privacidad"
       },
       {
         "id": "q11_o4",
-        "text": "Actualización normal."
+        "text": "Actualización normal"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -301,7 +301,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_02",
     "type": "fillBlank",
-    "statement": "La presión para actuar inmediatamente utiliza una sensación de __.",
+    "statement": "La presión para actuar inmediatamente utiliza una sensación de _____.",
     "options": [],
     "correctAnswer": "urgencia",
     "acceptedAnswers": [
@@ -320,19 +320,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "Urgencia, secreto y solicitud de dinero o códigos."
+        "text": "Urgencia, secreto y solicitud de dinero o códigos"
       },
       {
         "id": "q14_o2",
-        "text": "Información verificable en un canal oficial."
+        "text": "Información verificable en un canal oficial"
       },
       {
         "id": "q14_o3",
-        "text": "Un aviso esperado dentro de la aplicación oficial."
+        "text": "Un aviso esperado dentro de la aplicación oficial"
       },
       {
         "id": "q14_o4",
-        "text": "Una conversación normal sin solicitudes sensibles."
+        "text": "Una conversación normal sin solicitudes sensibles"
       }
     ],
     "correctAnswer": "q14_o1",
@@ -368,7 +368,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_02",
     "type": "fillBlank",
-    "statement": "Cuando un engaño intenta que no consultes a nadie utiliza la señal de __.",
+    "statement": "Cuando un engaño intenta que no consultes a nadie utiliza la señal de _____.",
     "options": [],
     "correctAnswer": "secreto",
     "acceptedAnswers": [
@@ -387,19 +387,19 @@
     "options": [
       {
         "id": "q17_o1",
-        "text": "Pedir contraseñas, PIN o códigos temporales."
+        "text": "Pedir contraseñas, PIN o códigos temporales"
       },
       {
         "id": "q17_o2",
-        "text": "Indicar el horario oficial de atención."
+        "text": "Indicar el horario oficial de atención"
       },
       {
         "id": "q17_o3",
-        "text": "Publicar una política de privacidad."
+        "text": "Publicar una política de privacidad"
       },
       {
         "id": "q17_o4",
-        "text": "Explicar un trámite sin pedir datos sensibles."
+        "text": "Explicar un trámite sin pedir datos sensibles"
       }
     ],
     "correctAnswer": "q17_o1",
@@ -417,19 +417,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Promesa demasiado favorable y presión para pagar."
+        "text": "Promesa demasiado favorable y presión para pagar"
       },
       {
         "id": "q18_o2",
-        "text": "Verificación independiente."
+        "text": "Verificación independiente"
       },
       {
         "id": "q18_o3",
-        "text": "Recuperación de cuenta."
+        "text": "Recuperación de cuenta"
       },
       {
         "id": "q18_o4",
-        "text": "Protección de datos."
+        "text": "Protección de datos"
       }
     ],
     "correctAnswer": "q18_o1",
@@ -469,19 +469,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Detenerte y verificar antes de actuar."
+        "text": "Detenerte y verificar antes de actuar"
       },
       {
         "id": "q20_o2",
-        "text": "Responder más rápido."
+        "text": "Responder más rápido"
       },
       {
         "id": "q20_o3",
-        "text": "Entregar un código para comprobar."
+        "text": "Entregar un código para comprobar"
       },
       {
         "id": "q20_o4",
-        "text": "Pagar una cantidad pequeña como prueba."
+        "text": "Pagar una cantidad pequeña como prueba"
       }
     ],
     "correctAnswer": "q20_o1",
@@ -499,19 +499,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Detener la acción y no entregar información."
+        "text": "Detener la acción y no entregar información"
       },
       {
         "id": "q21_o2",
-        "text": "Responder inmediatamente."
+        "text": "Responder inmediatamente"
       },
       {
         "id": "q21_o3",
-        "text": "Hacer un pago de prueba."
+        "text": "Hacer un pago de prueba"
       },
       {
         "id": "q21_o4",
-        "text": "Instalar cualquier archivo indicado."
+        "text": "Instalar cualquier archivo indicado"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -547,7 +547,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_03",
     "type": "fillBlank",
-    "statement": "Comprobar una solicitud utilizando otro número, sitio o aplicación conocida es una verificación __.",
+    "statement": "Comprobar una solicitud utilizando otro número, sitio o aplicación conocida es una verificación _____.",
     "options": [],
     "correctAnswer": "independiente",
     "acceptedAnswers": [
@@ -566,19 +566,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "El dominio completo y si coincide con el oficial."
+        "text": "El dominio completo y si coincide con el oficial"
       },
       {
         "id": "q24_o2",
-        "text": "Solo el color del texto."
+        "text": "Solo el color del texto"
       },
       {
         "id": "q24_o3",
-        "text": "La cantidad de emojis."
+        "text": "La cantidad de emojis"
       },
       {
         "id": "q24_o4",
-        "text": "La hora del mensaje."
+        "text": "La hora del mensaje"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -614,7 +614,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_03",
     "type": "fillBlank",
-    "statement": "La dirección principal que identifica a un sitio web se llama __.",
+    "statement": "La dirección principal que identifica a un sitio web se llama _____.",
     "options": [],
     "correctAnswer": "dominio",
     "acceptedAnswers": [
@@ -633,19 +633,19 @@
     "options": [
       {
         "id": "q27_o1",
-        "text": "Llamas al número que ya conocías o consultas a otra persona cercana."
+        "text": "Llamas al número que ya conocías o consultas a otra persona cercana"
       },
       {
         "id": "q27_o2",
-        "text": "Transfieres de inmediato."
+        "text": "Transfieres de inmediato"
       },
       {
         "id": "q27_o3",
-        "text": "Le envías tu contraseña."
+        "text": "Le envías tu contraseña"
       },
       {
         "id": "q27_o4",
-        "text": "Mantienes secreto el pedido."
+        "text": "Mantienes secreto el pedido"
       }
     ],
     "correctAnswer": "q27_o1",
@@ -663,19 +663,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Confirmar la solicitud mediante una fuente o canal oficial."
+        "text": "Confirmar la solicitud mediante una fuente o canal oficial"
       },
       {
         "id": "q28_o2",
-        "text": "Compartir primero tus datos."
+        "text": "Compartir primero tus datos"
       },
       {
         "id": "q28_o3",
-        "text": "Pagar para ganar tiempo."
+        "text": "Pagar para ganar tiempo"
       },
       {
         "id": "q28_o4",
-        "text": "Borrar el mensaje sin registrar nada."
+        "text": "Borrar el mensaje sin registrar nada"
       }
     ],
     "correctAnswer": "q28_o1",
@@ -715,19 +715,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "Detenerse, no entregar datos, abrir el canal oficial, comprobar y decidir después."
+        "text": "Detenerse, no entregar datos, abrir el canal oficial, comprobar y decidir después"
       },
       {
         "id": "q30_o2",
-        "text": "Abrir el enlace, enviar códigos y verificar luego."
+        "text": "Abrir el enlace, enviar códigos y verificar luego"
       },
       {
         "id": "q30_o3",
-        "text": "Pagar primero y preguntar después."
+        "text": "Pagar primero y preguntar después"
       },
       {
         "id": "q30_o4",
-        "text": "Confiar en logos y fotografías."
+        "text": "Confiar en logos y fotografías"
       }
     ],
     "correctAnswer": "q30_o1",
@@ -745,19 +745,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Una llave temporal para confirmar una acción."
+        "text": "Una llave temporal para confirmar una acción"
       },
       {
         "id": "q31_o2",
-        "text": "Un dato público."
+        "text": "Un dato público"
       },
       {
         "id": "q31_o3",
-        "text": "Un número para compartir con soporte."
+        "text": "Un número para compartir con soporte"
       },
       {
         "id": "q31_o4",
-        "text": "Un identificador sin importancia."
+        "text": "Un identificador sin importancia"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -793,7 +793,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_04",
     "type": "fillBlank",
-    "statement": "Un código que funciona durante poco tiempo puede considerarse una llave __.",
+    "statement": "Un código que funciona durante poco tiempo puede considerarse una llave _____.",
     "options": [],
     "correctAnswer": "temporal",
     "acceptedAnswers": [
@@ -812,19 +812,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "Lo dictas."
+        "text": "Lo dictas"
       },
       {
         "id": "q34_o2",
-        "text": "No lo compartes y contactas al banco por su canal oficial."
+        "text": "No lo compartes y contactas al banco por su canal oficial"
       },
       {
         "id": "q34_o3",
-        "text": "Envías una captura."
+        "text": "Envías una captura"
       },
       {
         "id": "q34_o4",
-        "text": "Lo publicas."
+        "text": "Lo publicas"
       }
     ],
     "correctAnswer": "q34_o2",
@@ -864,19 +864,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Que otra persona está intentando realizar una acción con tu cuenta."
+        "text": "Que otra persona está intentando realizar una acción con tu cuenta"
       },
       {
         "id": "q36_o2",
-        "text": "Que debes reenviar el código."
+        "text": "Que debes reenviar el código"
       },
       {
         "id": "q36_o3",
-        "text": "Que tu contraseña es pública."
+        "text": "Que tu contraseña es pública"
       },
       {
         "id": "q36_o4",
-        "text": "Que debes desactivar la seguridad."
+        "text": "Que debes desactivar la seguridad"
       }
     ],
     "correctAnswer": "q36_o1",
@@ -890,7 +890,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_04",
     "type": "fillBlank",
-    "statement": "Un código enviado para confirmar una acción no debe ser __ con otras personas.",
+    "statement": "Un código enviado para confirmar una acción no debe ser _____ con otras personas.",
     "options": [],
     "correctAnswer": "compartido",
     "acceptedAnswers": [
@@ -909,19 +909,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Entregarlo para cancelar."
+        "text": "Entregarlo para cancelar"
       },
       {
         "id": "q38_o2",
-        "text": "No compartirlo y consultar directamente a la entidad financiera."
+        "text": "No compartirlo y consultar directamente a la entidad financiera"
       },
       {
         "id": "q38_o3",
-        "text": "Publicarlo en redes."
+        "text": "Publicarlo en redes"
       },
       {
         "id": "q38_o4",
-        "text": "Enviar también el PIN."
+        "text": "Enviar también el PIN"
       }
     ],
     "correctAnswer": "q38_o2",
@@ -961,19 +961,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Usarlos solo en el proceso oficial que tú iniciaste y no reenviarlos."
+        "text": "Usarlos solo en el proceso oficial que tú iniciaste y no reenviarlos"
       },
       {
         "id": "q40_o2",
-        "text": "Compartirlos con cualquier soporte."
+        "text": "Compartirlos con cualquier soporte"
       },
       {
         "id": "q40_o3",
-        "text": "Dictarlos si conocen tu nombre."
+        "text": "Dictarlos si conocen tu nombre"
       },
       {
         "id": "q40_o4",
-        "text": "Publicarlos cuando no estés seguro."
+        "text": "Publicarlos cuando no estés seguro"
       }
     ],
     "correctAnswer": "q40_o1",
@@ -991,19 +991,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Transfieres inmediatamente."
+        "text": "Transfieres inmediatamente"
       },
       {
         "id": "q41_o2",
-        "text": "Verificas su identidad por el número conocido u otro canal."
+        "text": "Verificas su identidad por el número conocido u otro canal"
       },
       {
         "id": "q41_o3",
-        "text": "Le envías tu contraseña."
+        "text": "Le envías tu contraseña"
       },
       {
         "id": "q41_o4",
-        "text": "Mantienes todo en secreto."
+        "text": "Mantienes todo en secreto"
       }
     ],
     "correctAnswer": "q41_o2",
@@ -1039,7 +1039,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_05",
     "type": "fillBlank",
-    "statement": "Comprobar una identidad mediante un medio diferente al mensaje recibido es verificar por otro __.",
+    "statement": "Comprobar una identidad mediante un medio diferente al mensaje recibido es verificar por otro _____.",
     "options": [],
     "correctAnswer": "canal",
     "acceptedAnswers": [
@@ -1058,19 +1058,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "La instalas de inmediato."
+        "text": "La instalas de inmediato"
       },
       {
         "id": "q44_o2",
-        "text": "Cortas la comunicación y consultas a la institución por un canal oficial."
+        "text": "Cortas la comunicación y consultas a la institución por un canal oficial"
       },
       {
         "id": "q44_o3",
-        "text": "Le das acceso remoto."
+        "text": "Le das acceso remoto"
       },
       {
         "id": "q44_o4",
-        "text": "Compartes tus códigos."
+        "text": "Compartes tus códigos"
       }
     ],
     "correctAnswer": "q44_o2",
@@ -1110,19 +1110,19 @@
     "options": [
       {
         "id": "q46_o1",
-        "text": "Pagar por miedo."
+        "text": "Pagar por miedo"
       },
       {
         "id": "q46_o2",
-        "text": "Detener la acción y verificar con la institución mediante sus canales oficiales."
+        "text": "Detener la acción y verificar con la institución mediante sus canales oficiales"
       },
       {
         "id": "q46_o3",
-        "text": "Compartir el PIN."
+        "text": "Compartir el PIN"
       },
       {
         "id": "q46_o4",
-        "text": "Instalar un archivo enviado."
+        "text": "Instalar un archivo enviado"
       }
     ],
     "correctAnswer": "q46_o2",
@@ -1136,7 +1136,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_05",
     "type": "fillBlank",
-    "statement": "Usar el nombre de una institución o cargo para manipular se apoya en una falsa __.",
+    "statement": "Usar el nombre de una institución o cargo para manipular se apoya en una falsa _____.",
     "options": [],
     "correctAnswer": "autoridad",
     "acceptedAnswers": [
@@ -1155,19 +1155,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Llamarlo a un número previamente conocido o realizar una pregunta que el atacante no debería conocer."
+        "text": "Llamarlo a un número previamente conocido o realizar una pregunta que el atacante no debería conocer"
       },
       {
         "id": "q48_o2",
-        "text": "Confiar solo en su foto."
+        "text": "Confiar solo en su foto"
       },
       {
         "id": "q48_o3",
-        "text": "Enviar dinero pequeño como prueba."
+        "text": "Enviar dinero pequeño como prueba"
       },
       {
         "id": "q48_o4",
-        "text": "Compartir un código bancario."
+        "text": "Compartir un código bancario"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1207,19 +1207,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Verificar por otro canal antes de transferir, instalar o entregar documentos."
+        "text": "Verificar por otro canal antes de transferir, instalar o entregar documentos"
       },
       {
         "id": "q50_o2",
-        "text": "Confiar si conocen datos personales."
+        "text": "Confiar si conocen datos personales"
       },
       {
         "id": "q50_o3",
-        "text": "Actuar más rápido cuando existe miedo."
+        "text": "Actuar más rápido cuando existe miedo"
       },
       {
         "id": "q50_o4",
-        "text": "Mantener la conversación en secreto."
+        "text": "Mantener la conversación en secreto"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1237,19 +1237,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "Exigir un pago previo para “habilitar” el empleo."
+        "text": "Exigir un pago previo para “habilitar” el empleo"
       },
       {
         "id": "q51_o2",
-        "text": "Explicar un proceso verificable."
+        "text": "Explicar un proceso verificable"
       },
       {
         "id": "q51_o3",
-        "text": "Utilizar un correo corporativo comprobable."
+        "text": "Utilizar un correo corporativo comprobable"
       },
       {
         "id": "q51_o4",
-        "text": "Realizar una entrevista formal."
+        "text": "Realizar una entrevista formal"
       }
     ],
     "correctAnswer": "q51_o1",
@@ -1285,7 +1285,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_06",
     "type": "fillBlank",
-    "statement": "Investigar una organización antes de aceptar una oferta ayuda a comprobar su __.",
+    "statement": "Investigar una organización antes de aceptar una oferta ayuda a comprobar su _____.",
     "options": [],
     "correctAnswer": "legitimidad",
     "acceptedAnswers": [
@@ -1304,19 +1304,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Introduces tus datos inmediatamente."
+        "text": "Introduces tus datos inmediatamente"
       },
       {
         "id": "q54_o2",
-        "text": "Buscas el beneficio en el sitio o canal oficial de la institución."
+        "text": "Buscas el beneficio en el sitio o canal oficial de la institución"
       },
       {
         "id": "q54_o3",
-        "text": "Reenvías el mensaje a todos."
+        "text": "Reenvías el mensaje a todos"
       },
       {
         "id": "q54_o4",
-        "text": "Pagas para habilitarlo."
+        "text": "Pagas para habilitarlo"
       }
     ],
     "correctAnswer": "q54_o2",
@@ -1356,19 +1356,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Pagar de inmediato."
+        "text": "Pagar de inmediato"
       },
       {
         "id": "q56_o2",
-        "text": "Verificar empresa, dominio, dirección y condiciones antes de entregar dinero o documentos."
+        "text": "Verificar empresa, dominio, dirección y condiciones antes de entregar dinero o documentos"
       },
       {
         "id": "q56_o3",
-        "text": "Enviar tu contraseña."
+        "text": "Enviar tu contraseña"
       },
       {
         "id": "q56_o4",
-        "text": "Mantenerlo en secreto."
+        "text": "Mantenerlo en secreto"
       }
     ],
     "correctAnswer": "q56_o2",
@@ -1382,7 +1382,7 @@
     "categoryId": "phishing_social_engineering",
     "activityId": "phishing_social_activity_06",
     "type": "fillBlank",
-    "statement": "Una oferta que exige dinero antes de acceder al supuesto beneficio solicita un pago __.",
+    "statement": "Una oferta que exige dinero antes de acceder al supuesto beneficio solicita un pago _____.",
     "options": [],
     "correctAnswer": "anticipado",
     "acceptedAnswers": [
@@ -1401,19 +1401,19 @@
     "options": [
       {
         "id": "q58_o1",
-        "text": "La organización, su dominio, condiciones y datos de contacto verificables."
+        "text": "La organización, su dominio, condiciones y datos de contacto verificables"
       },
       {
         "id": "q58_o2",
-        "text": "Solo la foto de perfil del reclutador."
+        "text": "Solo la foto de perfil del reclutador"
       },
       {
         "id": "q58_o3",
-        "text": "La cantidad de emojis del mensaje."
+        "text": "La cantidad de emojis del mensaje"
       },
       {
         "id": "q58_o4",
-        "text": "Si promete empezar hoy mismo."
+        "text": "Si promete empezar hoy mismo"
       }
     ],
     "correctAnswer": "q58_o1",
@@ -1453,19 +1453,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "No pagar ni entregar documentos hasta verificar organización, condiciones y canal oficial."
+        "text": "No pagar ni entregar documentos hasta verificar organización, condiciones y canal oficial"
       },
       {
         "id": "q60_o2",
-        "text": "Actuar rápido para no perder la oportunidad."
+        "text": "Actuar rápido para no perder la oportunidad"
       },
       {
         "id": "q60_o3",
-        "text": "Confiar si el premio es grande."
+        "text": "Confiar si el premio es grande"
       },
       {
         "id": "q60_o4",
-        "text": "Compartir códigos de verificación para confirmar interés."
+        "text": "Compartir códigos de verificación para confirmar interés"
       }
     ],
     "correctAnswer": "q60_o1",

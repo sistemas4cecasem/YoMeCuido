@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Compartirla para evitar discusiones."
+        "text": "Compartirla para evitar discusiones"
       },
       {
         "id": "q01_o2",
-        "text": "Mantenerla privada y explicar que la confianza no exige acceso a las cuentas."
+        "text": "Mantenerla privada y explicar que la confianza no exige acceso a las cuentas"
       },
       {
         "id": "q01_o3",
-        "text": "Publicarla para demostrar transparencia."
+        "text": "Publicarla para demostrar transparencia"
       },
       {
         "id": "q01_o4",
-        "text": "Desactivar el bloqueo del teléfono."
+        "text": "Desactivar el bloqueo del teléfono"
       }
     ],
     "correctAnswer": "q01_o2",
@@ -60,19 +60,19 @@
     "options": [
       {
         "id": "q03_o1",
-        "text": "Exigir ubicación en tiempo real."
+        "text": "Exigir ubicación en tiempo real"
       },
       {
         "id": "q03_o2",
-        "text": "Pedir permiso antes de usar el dispositivo de otra persona."
+        "text": "Pedir permiso antes de usar el dispositivo de otra persona"
       },
       {
         "id": "q03_o3",
-        "text": "Revisar conversaciones mientras duerme."
+        "text": "Revisar conversaciones mientras duerme"
       },
       {
         "id": "q03_o4",
-        "text": "Pedir códigos de verificación."
+        "text": "Pedir códigos de verificación"
       }
     ],
     "correctAnswer": "q03_o2",
@@ -86,7 +86,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_01",
     "type": "fillBlank",
-    "statement": "El derecho de una persona a decidir quién puede acceder a sus mensajes, cuentas y datos personales forma parte de su __ digital.",
+    "statement": "El derecho de una persona a decidir quién puede acceder a sus mensajes, cuentas y datos personales forma parte de su _____ digital.",
     "options": [],
     "correctAnswer": "privacidad",
     "acceptedAnswers": [
@@ -106,19 +106,19 @@
     "options": [
       {
         "id": "q05_o1",
-        "text": "Mantener el permiso porque ya lo tuvo antes."
+        "text": "Mantener el permiso porque ya lo tuvo antes"
       },
       {
         "id": "q05_o2",
-        "text": "Revocar el acceso y revisar otros permisos compartidos."
+        "text": "Revocar el acceso y revisar otros permisos compartidos"
       },
       {
         "id": "q05_o3",
-        "text": "Publicar tu ubicación para que deje de preguntar."
+        "text": "Publicar tu ubicación para que deje de preguntar"
       },
       {
         "id": "q05_o4",
-        "text": "Ignorar la configuración."
+        "text": "Ignorar la configuración"
       }
     ],
     "correctAnswer": "q05_o2",
@@ -158,19 +158,19 @@
     "options": [
       {
         "id": "q07_o1",
-        "text": "Respetar tiempos de desconexión."
+        "text": "Respetar tiempos de desconexión"
       },
       {
         "id": "q07_o2",
-        "text": "Exigir respuesta inmediata y constante a todos los mensajes."
+        "text": "Exigir respuesta inmediata y constante a todos los mensajes"
       },
       {
         "id": "q07_o3",
-        "text": "Preguntar si se puede llamar."
+        "text": "Preguntar si se puede llamar"
       },
       {
         "id": "q07_o4",
-        "text": "Aceptar que la otra persona tenga cuentas privadas."
+        "text": "Aceptar que la otra persona tenga cuentas privadas"
       }
     ],
     "correctAnswer": "q07_o2",
@@ -188,19 +188,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Solo cambiar la foto de perfil."
+        "text": "Solo cambiar la foto de perfil"
       },
       {
         "id": "q08_o2",
-        "text": "Revisar sesiones abiertas, dispositivos vinculados, contraseñas y ubicación compartida."
+        "text": "Revisar sesiones abiertas, dispositivos vinculados, contraseñas y ubicación compartida"
       },
       {
         "id": "q08_o3",
-        "text": "Borrar todos los contactos."
+        "text": "Borrar todos los contactos"
       },
       {
         "id": "q08_o4",
-        "text": "Mantener accesos antiguos para evitar problemas."
+        "text": "Mantener accesos antiguos para evitar problemas"
       }
     ],
     "correctAnswer": "q08_o2",
@@ -214,7 +214,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_01",
     "type": "fillBlank",
-    "statement": "Decir claramente qué conductas digitales aceptas y cuáles no forma parte de establecer __.",
+    "statement": "Decir claramente qué conductas digitales aceptas y cuáles no forma parte de establecer _____.",
     "options": [],
     "correctAnswer": "límites",
     "acceptedAnswers": [
@@ -280,19 +280,19 @@
     "options": [
       {
         "id": "q12_o1",
-        "text": "Curiosidad."
+        "text": "Curiosidad"
       },
       {
         "id": "q12_o2",
-        "text": "Consentimiento claro y específico."
+        "text": "Consentimiento claro y específico"
       },
       {
         "id": "q12_o3",
-        "text": "Una relación sentimental previa."
+        "text": "Una relación sentimental previa"
       },
       {
         "id": "q12_o4",
-        "text": "Que el contenido ya esté en un teléfono."
+        "text": "Que el contenido ya esté en un teléfono"
       }
     ],
     "correctAnswer": "q12_o2",
@@ -306,7 +306,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_02",
     "type": "fillBlank",
-    "statement": "La autorización libre y clara para una acción específica se denomina __.",
+    "statement": "La autorización libre y clara para una acción específica se denomina _____.",
     "options": [],
     "correctAnswer": "consentimiento",
     "acceptedAnswers": [
@@ -325,19 +325,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "Una broma."
+        "text": "Una broma"
       },
       {
         "id": "q14_o2",
-        "text": "Sextorsión."
+        "text": "Sextorsión"
       },
       {
         "id": "q14_o3",
-        "text": "Una medida de seguridad."
+        "text": "Una medida de seguridad"
       },
       {
         "id": "q14_o4",
-        "text": "Un acuerdo de privacidad."
+        "text": "Un acuerdo de privacidad"
       }
     ],
     "correctAnswer": "q14_o2",
@@ -377,19 +377,19 @@
     "options": [
       {
         "id": "q16_o1",
-        "text": "Guardarla y reenviarla a amistades."
+        "text": "Guardarla y reenviarla a amistades"
       },
       {
         "id": "q16_o2",
-        "text": "Respetar el propósito para el que fue compartida y no difundirla sin permiso."
+        "text": "Respetar el propósito para el que fue compartida y no difundirla sin permiso"
       },
       {
         "id": "q16_o3",
-        "text": "Subirla a un grupo privado."
+        "text": "Subirla a un grupo privado"
       },
       {
         "id": "q16_o4",
-        "text": "Usarla para hacer bromas."
+        "text": "Usarla para hacer bromas"
       }
     ],
     "correctAnswer": "q16_o2",
@@ -407,19 +407,19 @@
     "options": [
       {
         "id": "q17_o1",
-        "text": "La persona que aparece en la foto por haber confiado."
+        "text": "La persona que aparece en la foto por haber confiado"
       },
       {
         "id": "q17_o2",
-        "text": "Quien decidió compartirla sin consentimiento."
+        "text": "Quien decidió compartirla sin consentimiento"
       },
       {
         "id": "q17_o3",
-        "text": "Todas las personas por igual."
+        "text": "Todas las personas por igual"
       },
       {
         "id": "q17_o4",
-        "text": "Nadie si fue enviada por internet."
+        "text": "Nadie si fue enviada por internet"
       }
     ],
     "correctAnswer": "q17_o2",
@@ -433,7 +433,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_02",
     "type": "fillBlank",
-    "statement": "Publicar o reenviar contenido íntimo de otra persona sin autorización vulnera su __.",
+    "statement": "Publicar o reenviar contenido íntimo de otra persona sin autorización vulnera su _____.",
     "options": [],
     "correctAnswer": "consentimiento",
     "acceptedAnswers": [
@@ -474,19 +474,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Ceder para que deje de insistir."
+        "text": "Ceder para que deje de insistir"
       },
       {
         "id": "q20_o2",
-        "text": "Expresar que no deseas hacerlo, cortar la interacción si continúa y buscar apoyo si existe presión o amenaza."
+        "text": "Expresar que no deseas hacerlo, cortar la interacción si continúa y buscar apoyo si existe presión o amenaza"
       },
       {
         "id": "q20_o3",
-        "text": "Enviar contenido de otra persona."
+        "text": "Enviar contenido de otra persona"
       },
       {
         "id": "q20_o4",
-        "text": "Compartir tus contraseñas."
+        "text": "Compartir tus contraseñas"
       }
     ],
     "correctAnswer": "q20_o2",
@@ -504,19 +504,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Acoso digital."
+        "text": "Acoso digital"
       },
       {
         "id": "q21_o2",
-        "text": "Una actualización de la plataforma."
+        "text": "Una actualización de la plataforma"
       },
       {
         "id": "q21_o3",
-        "text": "Una conversación normal."
+        "text": "Una conversación normal"
       },
       {
         "id": "q21_o4",
-        "text": "Una medida de privacidad."
+        "text": "Una medida de privacidad"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -552,7 +552,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_03",
     "type": "fillBlank",
-    "statement": "El envío repetido de mensajes ofensivos, intimidatorios o humillantes puede constituir __ digital.",
+    "statement": "El envío repetido de mensajes ofensivos, intimidatorios o humillantes puede constituir _____ digital.",
     "options": [],
     "correctAnswer": "acoso",
     "acceptedAnswers": [
@@ -572,19 +572,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Aislamiento y control digital."
+        "text": "Aislamiento y control digital"
       },
       {
         "id": "q24_o2",
-        "text": "Una mejora de privacidad."
+        "text": "Una mejora de privacidad"
       },
       {
         "id": "q24_o3",
-        "text": "Una actualización de seguridad."
+        "text": "Una actualización de seguridad"
       },
       {
         "id": "q24_o4",
-        "text": "Una regla normal de cualquier relación."
+        "text": "Una regla normal de cualquier relación"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -602,19 +602,19 @@
     "options": [
       {
         "id": "q25_o1",
-        "text": "Pedir permiso antes de etiquetar a alguien."
+        "text": "Pedir permiso antes de etiquetar a alguien"
       },
       {
         "id": "q25_o2",
-        "text": "Publicar de forma repetida contenido para ridiculizar o avergonzar a una persona."
+        "text": "Publicar de forma repetida contenido para ridiculizar o avergonzar a una persona"
       },
       {
         "id": "q25_o3",
-        "text": "Silenciar notificaciones propias."
+        "text": "Silenciar notificaciones propias"
       },
       {
         "id": "q25_o4",
-        "text": "Cambiar una contraseña personal."
+        "text": "Cambiar una contraseña personal"
       }
     ],
     "correctAnswer": "q25_o2",
@@ -650,7 +650,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_03",
     "type": "fillBlank",
-    "statement": "Intentar cortar a una persona de sus amistades, familiares o redes de ayuda mediante medios digitales puede ser una forma de __.",
+    "statement": "Intentar cortar a una persona de sus amistades, familiares o redes de ayuda mediante medios digitales puede ser una forma de _____.",
     "options": [],
     "correctAnswer": "aislamiento",
     "acceptedAnswers": [
@@ -670,19 +670,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Sumarse a las bromas para no quedar fuera."
+        "text": "Sumarse a las bromas para no quedar fuera"
       },
       {
         "id": "q28_o2",
-        "text": "Apoyarla, no difundir el contenido y animarla a utilizar herramientas de reporte o buscar ayuda."
+        "text": "Apoyarla, no difundir el contenido y animarla a utilizar herramientas de reporte o buscar ayuda"
       },
       {
         "id": "q28_o3",
-        "text": "Reenviar los mensajes para pedir opiniones."
+        "text": "Reenviar los mensajes para pedir opiniones"
       },
       {
         "id": "q28_o4",
-        "text": "Decirle que ignore todo y no se lo cuente a nadie."
+        "text": "Decirle que ignore todo y no se lo cuente a nadie"
       }
     ],
     "correctAnswer": "q28_o2",
@@ -700,19 +700,19 @@
     "options": [
       {
         "id": "q29_o1",
-        "text": "Una dinámica de acoso digital."
+        "text": "Una dinámica de acoso digital"
       },
       {
         "id": "q29_o2",
-        "text": "Una función normal de la plataforma."
+        "text": "Una función normal de la plataforma"
       },
       {
         "id": "q29_o3",
-        "text": "Una verificación de identidad."
+        "text": "Una verificación de identidad"
       },
       {
         "id": "q29_o4",
-        "text": "Una medida de seguridad."
+        "text": "Una medida de seguridad"
       }
     ],
     "correctAnswer": "q29_o1",
@@ -752,19 +752,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Grooming."
+        "text": "Grooming"
       },
       {
         "id": "q31_o2",
-        "text": "Una verificación de cuenta."
+        "text": "Una verificación de cuenta"
       },
       {
         "id": "q31_o3",
-        "text": "Una actualización de privacidad."
+        "text": "Una actualización de privacidad"
       },
       {
         "id": "q31_o4",
-        "text": "Una amistad digital segura."
+        "text": "Una amistad digital segura"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -800,7 +800,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_04",
     "type": "fillBlank",
-    "statement": "El acercamiento manipulador de una persona adulta hacia un menor mediante internet con fines de abuso puede denominarse __.",
+    "statement": "El acercamiento manipulador de una persona adulta hacia un menor mediante internet con fines de abuso puede denominarse _____.",
     "options": [],
     "correctAnswer": "grooming",
     "acceptedAnswers": [
@@ -819,19 +819,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "La insistencia en mantener secreto y pedir contenido íntimo."
+        "text": "La insistencia en mantener secreto y pedir contenido íntimo"
       },
       {
         "id": "q34_o2",
-        "text": "Que use una foto de perfil."
+        "text": "Que use una foto de perfil"
       },
       {
         "id": "q34_o3",
-        "text": "Que escriba a una hora diferente."
+        "text": "Que escriba a una hora diferente"
       },
       {
         "id": "q34_o4",
-        "text": "Que tenga seguidores."
+        "text": "Que tenga seguidores"
       }
     ],
     "correctAnswer": "q34_o1",
@@ -849,19 +849,19 @@
     "options": [
       {
         "id": "q35_o1",
-        "text": "Pedirle que continúe la conversación para obtener más información por su cuenta."
+        "text": "Pedirle que continúe la conversación para obtener más información por su cuenta"
       },
       {
         "id": "q35_o2",
-        "text": "Cortar el contacto, conservar evidencia disponible y buscar ayuda de una persona adulta de confianza o una institución competente."
+        "text": "Cortar el contacto, conservar evidencia disponible y buscar ayuda de una persona adulta de confianza o una institución competente"
       },
       {
         "id": "q35_o3",
-        "text": "Publicar los mensajes con todos sus datos personales."
+        "text": "Publicar los mensajes con todos sus datos personales"
       },
       {
         "id": "q35_o4",
-        "text": "Enviar más contenido para comprobar las intenciones."
+        "text": "Enviar más contenido para comprobar las intenciones"
       }
     ],
     "correctAnswer": "q35_o2",
@@ -901,19 +901,19 @@
     "options": [
       {
         "id": "q37_o1",
-        "text": "Suplantación de identidad."
+        "text": "Suplantación de identidad"
       },
       {
         "id": "q37_o2",
-        "text": "Una copia de seguridad."
+        "text": "Una copia de seguridad"
       },
       {
         "id": "q37_o3",
-        "text": "Una actualización automática."
+        "text": "Una actualización automática"
       },
       {
         "id": "q37_o4",
-        "text": "Un bloqueo temporal."
+        "text": "Un bloqueo temporal"
       }
     ],
     "correctAnswer": "q37_o1",
@@ -927,7 +927,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_04",
     "type": "fillBlank",
-    "statement": "Hacerse pasar por otra persona usando su nombre, imágenes o datos puede denominarse __ de identidad.",
+    "statement": "Hacerse pasar por otra persona usando su nombre, imágenes o datos puede denominarse _____ de identidad.",
     "options": [],
     "correctAnswer": "suplantación",
     "acceptedAnswers": [
@@ -949,19 +949,19 @@
     "options": [
       {
         "id": "q39_o1",
-        "text": "Confiar solo porque tiene la misma foto."
+        "text": "Confiar solo porque tiene la misma foto"
       },
       {
         "id": "q39_o2",
-        "text": "Confirmar por otro canal conocido antes de compartir información."
+        "text": "Confirmar por otro canal conocido antes de compartir información"
       },
       {
         "id": "q39_o3",
-        "text": "Enviar primero tu contraseña para comprobar."
+        "text": "Enviar primero tu contraseña para comprobar"
       },
       {
         "id": "q39_o4",
-        "text": "Aceptar cualquier explicación sin verificar."
+        "text": "Aceptar cualquier explicación sin verificar"
       }
     ],
     "correctAnswer": "q39_o2",
@@ -1001,19 +1001,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Responder con amenazas más fuertes."
+        "text": "Responder con amenazas más fuertes"
       },
       {
         "id": "q41_o2",
-        "text": "Guardar evidencia, reducir el contacto, reportar y buscar apoyo."
+        "text": "Guardar evidencia, reducir el contacto, reportar y buscar apoyo"
       },
       {
         "id": "q41_o3",
-        "text": "Entregar tus contraseñas para calmar a la persona."
+        "text": "Entregar tus contraseñas para calmar a la persona"
       },
       {
         "id": "q41_o4",
-        "text": "Borrar todo inmediatamente sin guardar ningún registro."
+        "text": "Borrar todo inmediatamente sin guardar ningún registro"
       }
     ],
     "correctAnswer": "q41_o2",
@@ -1049,7 +1049,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_05",
     "type": "fillBlank",
-    "statement": "Capturas, enlaces, fechas y mensajes guardados pueden servir como __ de una situación de violencia digital.",
+    "statement": "Capturas, enlaces, fechas y mensajes guardados pueden servir como _____ de una situación de violencia digital.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -1070,19 +1070,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Guardar capturas, enlaces y datos que permitan documentarlos."
+        "text": "Guardar capturas, enlaces y datos que permitan documentarlos"
       },
       {
         "id": "q44_o2",
-        "text": "Responder con información personal."
+        "text": "Responder con información personal"
       },
       {
         "id": "q44_o3",
-        "text": "Reenviarlos a todos tus contactos."
+        "text": "Reenviarlos a todos tus contactos"
       },
       {
         "id": "q44_o4",
-        "text": "Eliminar también las alertas de seguridad."
+        "text": "Eliminar también las alertas de seguridad"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1100,19 +1100,19 @@
     "options": [
       {
         "id": "q45_o1",
-        "text": "Pagar de inmediato para garantizar que lo borre."
+        "text": "Pagar de inmediato para garantizar que lo borre"
       },
       {
         "id": "q45_o2",
-        "text": "Guardar evidencia, no enviar más contenido ni dinero y buscar apoyo especializado."
+        "text": "Guardar evidencia, no enviar más contenido ni dinero y buscar apoyo especializado"
       },
       {
         "id": "q45_o3",
-        "text": "Entregar la contraseña de tus cuentas."
+        "text": "Entregar la contraseña de tus cuentas"
       },
       {
         "id": "q45_o4",
-        "text": "Amenazar con publicar información de la otra persona."
+        "text": "Amenazar con publicar información de la otra persona"
       }
     ],
     "correctAnswer": "q45_o2",
@@ -1152,19 +1152,19 @@
     "options": [
       {
         "id": "q47_o1",
-        "text": "Seguir discutiendo por mensajes."
+        "text": "Seguir discutiendo por mensajes"
       },
       {
         "id": "q47_o2",
-        "text": "Ir a un lugar seguro y contactar a personas de confianza o servicios de emergencia según el riesgo."
+        "text": "Ir a un lugar seguro y contactar a personas de confianza o servicios de emergencia según el riesgo"
       },
       {
         "id": "q47_o3",
-        "text": "Publicar tu ubicación en redes."
+        "text": "Publicar tu ubicación en redes"
       },
       {
         "id": "q47_o4",
-        "text": "Encontrarte a solas con la persona para aclarar la situación."
+        "text": "Encontrarte a solas con la persona para aclarar la situación"
       }
     ],
     "correctAnswer": "q47_o2",
@@ -1178,7 +1178,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_05",
     "type": "fillBlank",
-    "statement": "Usar las herramientas de una plataforma para informar una cuenta, mensaje o contenido abusivo se conoce como __.",
+    "statement": "Usar las herramientas de una plataforma para informar una cuenta, mensaje o contenido abusivo se conoce como _____.",
     "options": [],
     "correctAnswer": "reportar",
     "acceptedAnswers": [
@@ -1220,19 +1220,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Solo en el mismo chat con la persona agresora."
+        "text": "Solo en el mismo chat con la persona agresora"
       },
       {
         "id": "q50_o2",
-        "text": "En un lugar seguro al que la persona agresora no tenga acceso, o con una persona de confianza."
+        "text": "En un lugar seguro al que la persona agresora no tenga acceso, o con una persona de confianza"
       },
       {
         "id": "q50_o3",
-        "text": "En una publicación pública."
+        "text": "En una publicación pública"
       },
       {
         "id": "q50_o4",
-        "text": "En una cuenta cuya contraseña conoce la persona agresora."
+        "text": "En una cuenta cuya contraseña conoce la persona agresora"
       }
     ],
     "correctAnswer": "q50_o2",
@@ -1250,19 +1250,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "Mantener la misma contraseña para no olvidar."
+        "text": "Mantener la misma contraseña para no olvidar"
       },
       {
         "id": "q51_o2",
-        "text": "Cambiar la contraseña, cerrar sesiones desconocidas y revisar métodos de recuperación y verificación."
+        "text": "Cambiar la contraseña, cerrar sesiones desconocidas y revisar métodos de recuperación y verificación"
       },
       {
         "id": "q51_o3",
-        "text": "Compartir nuevamente los códigos de acceso."
+        "text": "Compartir nuevamente los códigos de acceso"
       },
       {
         "id": "q51_o4",
-        "text": "Desactivar todas las alertas."
+        "text": "Desactivar todas las alertas"
       }
     ],
     "correctAnswer": "q51_o2",
@@ -1298,7 +1298,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_06",
     "type": "fillBlank",
-    "statement": "Familia, amistades, profesionales o instituciones pueden formar una red de __.",
+    "statement": "Familia, amistades, profesionales o instituciones pueden formar una red de _____.",
     "options": [],
     "correctAnswer": "apoyo",
     "acceptedAnswers": [
@@ -1318,19 +1318,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Solo personas desconocidas de internet."
+        "text": "Solo personas desconocidas de internet"
       },
       {
         "id": "q54_o2",
-        "text": "Familiares, amistades, profesionales o instituciones de confianza."
+        "text": "Familiares, amistades, profesionales o instituciones de confianza"
       },
       {
         "id": "q54_o3",
-        "text": "Únicamente la persona agresora."
+        "text": "Únicamente la persona agresora"
       },
       {
         "id": "q54_o4",
-        "text": "Nadie, porque pedir ayuda empeora siempre la situación."
+        "text": "Nadie, porque pedir ayuda empeora siempre la situación"
       }
     ],
     "correctAnswer": "q54_o2",
@@ -1348,19 +1348,19 @@
     "options": [
       {
         "id": "q55_o1",
-        "text": "Quedarte para discutir el problema en línea."
+        "text": "Quedarte para discutir el problema en línea"
       },
       {
         "id": "q55_o2",
-        "text": "Buscar un lugar seguro y contactar apoyo o servicios de emergencia según la situación."
+        "text": "Buscar un lugar seguro y contactar apoyo o servicios de emergencia según la situación"
       },
       {
         "id": "q55_o3",
-        "text": "Publicar tu ubicación para pedir opiniones."
+        "text": "Publicar tu ubicación para pedir opiniones"
       },
       {
         "id": "q55_o4",
-        "text": "Ir a encontrarte a solas con la persona."
+        "text": "Ir a encontrarte a solas con la persona"
       }
     ],
     "correctAnswer": "q55_o2",
@@ -1396,7 +1396,7 @@
     "categoryId": "relations_violence_digital",
     "activityId": "relations_violence_activity_06",
     "type": "fillBlank",
-    "statement": "Volver a asegurar cuentas, reconstruir apoyos y retomar el control después de una situación de violencia forma parte de la __.",
+    "statement": "Volver a asegurar cuentas, reconstruir apoyos y retomar el control después de una situación de violencia forma parte de la _____.",
     "options": [],
     "correctAnswer": "recuperación",
     "acceptedAnswers": [
@@ -1418,19 +1418,19 @@
     "options": [
       {
         "id": "q58_o1",
-        "text": "Culparla por haber confiado."
+        "text": "Culparla por haber confiado"
       },
       {
         "id": "q58_o2",
-        "text": "Escuchar sin juzgar, respetar sus decisiones y ayudarla a buscar apoyo o recursos si lo desea."
+        "text": "Escuchar sin juzgar, respetar sus decisiones y ayudarla a buscar apoyo o recursos si lo desea"
       },
       {
         "id": "q58_o3",
-        "text": "Publicar su historia sin permiso."
+        "text": "Publicar su historia sin permiso"
       },
       {
         "id": "q58_o4",
-        "text": "Obligarla a enfrentar a la persona agresora."
+        "text": "Obligarla a enfrentar a la persona agresora"
       }
     ],
     "correctAnswer": "q58_o2",
@@ -1470,19 +1470,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Cambiar solo la foto de perfil."
+        "text": "Cambiar solo la foto de perfil"
       },
       {
         "id": "q60_o2",
-        "text": "Revisar contraseñas, sesiones, dispositivos vinculados, privacidad, contactos de apoyo y medidas de seguridad necesarias."
+        "text": "Revisar contraseñas, sesiones, dispositivos vinculados, privacidad, contactos de apoyo y medidas de seguridad necesarias"
       },
       {
         "id": "q60_o3",
-        "text": "Mantener todos los accesos compartidos."
+        "text": "Mantener todos los accesos compartidos"
       },
       {
         "id": "q60_o4",
-        "text": "Eliminar todas las cuentas sin evaluar otras opciones."
+        "text": "Eliminar todas las cuentas sin evaluar otras opciones"
       }
     ],
     "correctAnswer": "q60_o2",

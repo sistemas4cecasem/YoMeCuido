@@ -409,7 +409,7 @@ void main() {
     expect(repository.loadQuizQuestionsCalls, 2);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsNothing);
-    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsNothing);
   });
 
   testWidgets('el menú renderiza seis actividades reales del repositorio', (
@@ -490,7 +490,7 @@ void main() {
       await tester.tap(find.text(AppStrings.finalExamTitle));
       await tester.pumpAndSettle();
 
-      expect(find.text('Pregunta 1 de 15'), findsOneWidget);
+      expect(find.text('Pregunta 1 de 15'), findsNothing);
       expect(
         progressController
             .examProgressFor(
@@ -534,7 +534,7 @@ void main() {
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pregunta 1 de 10'), findsOneWidget);
+    expect(find.text('Pregunta 1 de 10'), findsNothing);
     expect(find.text(AppStrings.lessonCompleted), findsNothing);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text(AppStrings.submitAnswer), findsNothing);

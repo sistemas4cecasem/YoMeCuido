@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Limitar el daño y evitar que continúe."
+        "text": "Limitar el daño y evitar que continúe"
       },
       {
         "id": "q01_o2",
-        "text": "Publicar todo inmediatamente."
+        "text": "Publicar todo inmediatamente"
       },
       {
         "id": "q01_o3",
-        "text": "Borrar cualquier evidencia."
+        "text": "Borrar cualquier evidencia"
       },
       {
         "id": "q01_o4",
-        "text": "Responder impulsivamente."
+        "text": "Responder impulsivamente"
       }
     ],
     "correctAnswer": "q01_o1",
@@ -34,7 +34,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_01",
     "type": "fillBlank",
-    "statement": "La acción inicial destinada a limitar la expansión de un incidente se llama __.",
+    "statement": "La acción inicial destinada a limitar la expansión de un incidente se llama _____.",
     "options": [],
     "correctAnswer": "contención",
     "acceptedAnswers": [
@@ -76,19 +76,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Guardar capturas, enlaces, fechas y datos relevantes."
+        "text": "Guardar capturas, enlaces, fechas y datos relevantes"
       },
       {
         "id": "q04_o2",
-        "text": "Compartir contraseñas."
+        "text": "Compartir contraseñas"
       },
       {
         "id": "q04_o3",
-        "text": "Borrar conversaciones útiles."
+        "text": "Borrar conversaciones útiles"
       },
       {
         "id": "q04_o4",
-        "text": "Ignorar lo ocurrido."
+        "text": "Ignorar lo ocurrido"
       }
     ],
     "correctAnswer": "q04_o1",
@@ -102,7 +102,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_01",
     "type": "fillBlank",
-    "statement": "Capturas, enlaces, mensajes y fechas conservados sobre un incidente forman parte de la __.",
+    "statement": "Capturas, enlaces, mensajes y fechas conservados sobre un incidente forman parte de la _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -123,19 +123,19 @@
     "options": [
       {
         "id": "q06_o1",
-        "text": "Asegurar cuentas, dinero, dispositivo o integridad física que aún puedan estar en riesgo."
+        "text": "Asegurar cuentas, dinero, dispositivo o integridad física que aún puedan estar en riesgo"
       },
       {
         "id": "q06_o2",
-        "text": "Publicar credenciales."
+        "text": "Publicar credenciales"
       },
       {
         "id": "q06_o3",
-        "text": "Continuar interactuando con el atacante."
+        "text": "Continuar interactuando con el atacante"
       },
       {
         "id": "q06_o4",
-        "text": "Eliminar todas las medidas de seguridad."
+        "text": "Eliminar todas las medidas de seguridad"
       }
     ],
     "correctAnswer": "q06_o1",
@@ -175,19 +175,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Restablecer accesos y fortalecer las medidas que fallaron."
+        "text": "Restablecer accesos y fortalecer las medidas que fallaron"
       },
       {
         "id": "q08_o2",
-        "text": "Olvidar el incidente sin cambios."
+        "text": "Olvidar el incidente sin cambios"
       },
       {
         "id": "q08_o3",
-        "text": "Compartir nuevas contraseñas."
+        "text": "Compartir nuevas contraseñas"
       },
       {
         "id": "q08_o4",
-        "text": "Borrar toda evidencia antes de revisar."
+        "text": "Borrar toda evidencia antes de revisar"
       }
     ],
     "correctAnswer": "q08_o1",
@@ -201,7 +201,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_01",
     "type": "fillBlank",
-    "statement": "Contactar a las personas o entidades adecuadas forma parte de la etapa de __.",
+    "statement": "Contactar a las personas o entidades adecuadas forma parte de la etapa de _____.",
     "options": [],
     "correctAnswer": "informar",
     "acceptedAnswers": [
@@ -220,19 +220,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Contener, proteger, documentar, informar y recuperar."
+        "text": "Contener, proteger, documentar, informar y recuperar"
       },
       {
         "id": "q10_o2",
-        "text": "Publicar, borrar, esperar y olvidar."
+        "text": "Publicar, borrar, esperar y olvidar"
       },
       {
         "id": "q10_o3",
-        "text": "Responder, pagar, compartir y borrar."
+        "text": "Responder, pagar, compartir y borrar"
       },
       {
         "id": "q10_o4",
-        "text": "Ignorar, reenviar y continuar."
+        "text": "Ignorar, reenviar y continuar"
       }
     ],
     "correctAnswer": "q10_o1",
@@ -250,19 +250,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Iniciar la recuperación desde el servicio oficial, cerrar accesos desconocidos y avisar a tus contactos."
+        "text": "Iniciar la recuperación desde el servicio oficial, cerrar accesos desconocidos y avisar a tus contactos"
       },
       {
         "id": "q11_o2",
-        "text": "Esperar varios días."
+        "text": "Esperar varios días"
       },
       {
         "id": "q11_o3",
-        "text": "Negociar con quien tomó la cuenta."
+        "text": "Negociar con quien tomó la cuenta"
       },
       {
         "id": "q11_o4",
-        "text": "Enviar más datos personales."
+        "text": "Enviar más datos personales"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -298,7 +298,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_02",
     "type": "fillBlank",
-    "statement": "Expulsar accesos que no reconoces implica cerrar otras __.",
+    "statement": "Expulsar accesos que no reconoces implica cerrar otras _____.",
     "options": [],
     "correctAnswer": "sesiones",
     "acceptedAnswers": [
@@ -319,19 +319,19 @@
     "options": [
       {
         "id": "q14_o1",
-        "text": "El correo principal."
+        "text": "El correo principal"
       },
       {
         "id": "q14_o2",
-        "text": "Una cuenta de entretenimiento sin datos."
+        "text": "Una cuenta de entretenimiento sin datos"
       },
       {
         "id": "q14_o3",
-        "text": "El fondo de pantalla."
+        "text": "El fondo de pantalla"
       },
       {
         "id": "q14_o4",
-        "text": "Una aplicación sin inicio de sesión."
+        "text": "Una aplicación sin inicio de sesión"
       }
     ],
     "correctAnswer": "q14_o1",
@@ -371,19 +371,19 @@
     "options": [
       {
         "id": "q16_o1",
-        "text": "Correo, teléfono, métodos de autenticación, sesiones y dispositivos vinculados."
+        "text": "Correo, teléfono, métodos de autenticación, sesiones y dispositivos vinculados"
       },
       {
         "id": "q16_o2",
-        "text": "Solo la foto de perfil."
+        "text": "Solo la foto de perfil"
       },
       {
         "id": "q16_o3",
-        "text": "La cantidad de seguidores."
+        "text": "La cantidad de seguidores"
       },
       {
         "id": "q16_o4",
-        "text": "El tema visual."
+        "text": "El tema visual"
       }
     ],
     "correctAnswer": "q16_o1",
@@ -397,7 +397,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_02",
     "type": "fillBlank",
-    "statement": "Volver a obtener acceso mediante los mecanismos del propio servicio es una recuperación __.",
+    "statement": "Volver a obtener acceso mediante los mecanismos del propio servicio es una recuperación _____.",
     "options": [],
     "correctAnswer": "oficial",
     "acceptedAnswers": [
@@ -416,19 +416,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Avisar a tus contactos por otro canal."
+        "text": "Avisar a tus contactos por otro canal"
       },
       {
         "id": "q18_o2",
-        "text": "Mantenerlo en secreto siempre."
+        "text": "Mantenerlo en secreto siempre"
       },
       {
         "id": "q18_o3",
-        "text": "Compartir tu contraseña para demostrar identidad."
+        "text": "Compartir tu contraseña para demostrar identidad"
       },
       {
         "id": "q18_o4",
-        "text": "Seguir usando la cuenta sin revisar."
+        "text": "Seguir usando la cuenta sin revisar"
       }
     ],
     "correctAnswer": "q18_o1",
@@ -468,19 +468,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Usar el proceso oficial, proteger el correo principal, cambiar credenciales, cerrar sesiones y revisar mecanismos de recuperación."
+        "text": "Usar el proceso oficial, proteger el correo principal, cambiar credenciales, cerrar sesiones y revisar mecanismos de recuperación"
       },
       {
         "id": "q20_o2",
-        "text": "Pagar a quien tomó la cuenta."
+        "text": "Pagar a quien tomó la cuenta"
       },
       {
         "id": "q20_o3",
-        "text": "Compartir códigos con desconocidos."
+        "text": "Compartir códigos con desconocidos"
       },
       {
         "id": "q20_o4",
-        "text": "Crear una publicación con la contraseña."
+        "text": "Crear una publicación con la contraseña"
       }
     ],
     "correctAnswer": "q20_o1",
@@ -498,19 +498,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Contactar a la entidad financiera mediante un canal oficial."
+        "text": "Contactar a la entidad financiera mediante un canal oficial"
       },
       {
         "id": "q21_o2",
-        "text": "Negociar con un número desconocido."
+        "text": "Negociar con un número desconocido"
       },
       {
         "id": "q21_o3",
-        "text": "Publicar tu PIN."
+        "text": "Publicar tu PIN"
       },
       {
         "id": "q21_o4",
-        "text": "Esperar varios días sin revisar."
+        "text": "Esperar varios días sin revisar"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -546,7 +546,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_03",
     "type": "fillBlank",
-    "statement": "Comprobantes, conversaciones y datos relacionados con una operación deben conservarse como __.",
+    "statement": "Comprobantes, conversaciones y datos relacionados con una operación deben conservarse como _____.",
     "options": [],
     "correctAnswer": "evidencia",
     "acceptedAnswers": [
@@ -567,19 +567,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "No pagar y verificar cualquier gestión con la entidad correspondiente."
+        "text": "No pagar y verificar cualquier gestión con la entidad correspondiente"
       },
       {
         "id": "q24_o2",
-        "text": "Enviar dinero para acelerar la recuperación."
+        "text": "Enviar dinero para acelerar la recuperación"
       },
       {
         "id": "q24_o3",
-        "text": "Compartir el código de verificación."
+        "text": "Compartir el código de verificación"
       },
       {
         "id": "q24_o4",
-        "text": "Entregar el PIN bancario."
+        "text": "Entregar el PIN bancario"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -619,19 +619,19 @@
     "options": [
       {
         "id": "q26_o1",
-        "text": "Fecha, monto, destinatario, comprobantes y conversaciones relacionadas."
+        "text": "Fecha, monto, destinatario, comprobantes y conversaciones relacionadas"
       },
       {
         "id": "q26_o2",
-        "text": "Solo el color de la aplicación."
+        "text": "Solo el color de la aplicación"
       },
       {
         "id": "q26_o3",
-        "text": "Únicamente lo que recuerdes semanas después."
+        "text": "Únicamente lo que recuerdes semanas después"
       },
       {
         "id": "q26_o4",
-        "text": "Contraseñas completas."
+        "text": "Contraseñas completas"
       }
     ],
     "correctAnswer": "q26_o1",
@@ -645,7 +645,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_03",
     "type": "fillBlank",
-    "statement": "Solicitar formalmente la revisión de una operación ante la entidad puede formar parte de un __.",
+    "statement": "Solicitar formalmente la revisión de una operación ante la entidad puede formar parte de un _____.",
     "options": [],
     "correctAnswer": "reclamo",
     "acceptedAnswers": [
@@ -666,19 +666,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Proteger la cuenta y cambiar las credenciales por el canal oficial."
+        "text": "Proteger la cuenta y cambiar las credenciales por el canal oficial"
       },
       {
         "id": "q28_o2",
-        "text": "Mantener la misma contraseña."
+        "text": "Mantener la misma contraseña"
       },
       {
         "id": "q28_o3",
-        "text": "Publicarla para advertir a otros."
+        "text": "Publicarla para advertir a otros"
       },
       {
         "id": "q28_o4",
-        "text": "Enviarla al supuesto recuperador."
+        "text": "Enviarla al supuesto recuperador"
       }
     ],
     "correctAnswer": "q28_o1",
@@ -718,19 +718,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "Contactar a la entidad oficial, conservar evidencia, proteger credenciales relacionadas y evitar pagos adicionales."
+        "text": "Contactar a la entidad oficial, conservar evidencia, proteger credenciales relacionadas y evitar pagos adicionales"
       },
       {
         "id": "q30_o2",
-        "text": "Negociar con el estafador y pagar otra vez."
+        "text": "Negociar con el estafador y pagar otra vez"
       },
       {
         "id": "q30_o3",
-        "text": "Borrar todo y esperar."
+        "text": "Borrar todo y esperar"
       },
       {
         "id": "q30_o4",
-        "text": "Compartir códigos con terceros."
+        "text": "Compartir códigos con terceros"
       }
     ],
     "correctAnswer": "q30_o1",
@@ -748,19 +748,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "Limitar la conexión cuando sea apropiado, dejar de introducir credenciales y revisar la aplicación y sus permisos."
+        "text": "Limitar la conexión cuando sea apropiado, dejar de introducir credenciales y revisar la aplicación y sus permisos"
       },
       {
         "id": "q31_o2",
-        "text": "Darle más permisos."
+        "text": "Darle más permisos"
       },
       {
         "id": "q31_o3",
-        "text": "Compartir el archivo."
+        "text": "Compartir el archivo"
       },
       {
         "id": "q31_o4",
-        "text": "Ignorar cualquier señal."
+        "text": "Ignorar cualquier señal"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -796,7 +796,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_04",
     "type": "fillBlank",
-    "statement": "Restringir una situación para que no siga extendiéndose forma parte de la __ del incidente.",
+    "statement": "Restringir una situación para que no siga extendiéndose forma parte de la _____ del incidente.",
     "options": [],
     "correctAnswer": "contención",
     "acceptedAnswers": [
@@ -816,19 +816,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "Accesibilidad, administradores del dispositivo, cámara, micrófono y otros permisos sensibles."
+        "text": "Accesibilidad, administradores del dispositivo, cámara, micrófono y otros permisos sensibles"
       },
       {
         "id": "q34_o2",
-        "text": "Solo el color del icono."
+        "text": "Solo el color del icono"
       },
       {
         "id": "q34_o3",
-        "text": "El tamaño de letra."
+        "text": "El tamaño de letra"
       },
       {
         "id": "q34_o4",
-        "text": "El brillo."
+        "text": "El brillo"
       }
     ],
     "correctAnswer": "q34_o1",
@@ -868,19 +868,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Si persisten comportamientos extraños o la aplicación tuvo permisos críticos."
+        "text": "Si persisten comportamientos extraños o la aplicación tuvo permisos críticos"
       },
       {
         "id": "q36_o2",
-        "text": "Nunca."
+        "text": "Nunca"
       },
       {
         "id": "q36_o3",
-        "text": "Solo cuando baja la batería."
+        "text": "Solo cuando baja la batería"
       },
       {
         "id": "q36_o4",
-        "text": "Después de compartir todas las contraseñas."
+        "text": "Después de compartir todas las contraseñas"
       }
     ],
     "correctAnswer": "q36_o1",
@@ -894,7 +894,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_04",
     "type": "fillBlank",
-    "statement": "Volver el dispositivo a su estado inicial borrando configuraciones y datos se denomina restablecimiento de __.",
+    "statement": "Volver el dispositivo a su estado inicial borrando configuraciones y datos se denomina restablecimiento de _____.",
     "options": [],
     "correctAnswer": "fábrica",
     "acceptedAnswers": [
@@ -914,19 +914,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Proteger la evidencia y los archivos necesarios y contar con una copia segura cuando corresponda."
+        "text": "Proteger la evidencia y los archivos necesarios y contar con una copia segura cuando corresponda"
       },
       {
         "id": "q38_o2",
-        "text": "Borrar todo sin revisar."
+        "text": "Borrar todo sin revisar"
       },
       {
         "id": "q38_o3",
-        "text": "Compartir la app sospechosa."
+        "text": "Compartir la app sospechosa"
       },
       {
         "id": "q38_o4",
-        "text": "Desactivar las copias de seguridad para siempre."
+        "text": "Desactivar las copias de seguridad para siempre"
       }
     ],
     "correctAnswer": "q38_o1",
@@ -966,19 +966,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Contener, dejar de introducir credenciales, revisar permisos, eliminarla cuando sea seguro y proteger cuentas desde un equipo confiable."
+        "text": "Contener, dejar de introducir credenciales, revisar permisos, eliminarla cuando sea seguro y proteger cuentas desde un equipo confiable"
       },
       {
         "id": "q40_o2",
-        "text": "Darle permisos adicionales."
+        "text": "Darle permisos adicionales"
       },
       {
         "id": "q40_o3",
-        "text": "Compartir el archivo con contactos."
+        "text": "Compartir el archivo con contactos"
       },
       {
         "id": "q40_o4",
-        "text": "Ignorar síntomas persistentes."
+        "text": "Ignorar síntomas persistentes"
       }
     ],
     "correctAnswer": "q40_o1",
@@ -996,19 +996,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Tu seguridad física y buscar apoyo o un lugar seguro."
+        "text": "Tu seguridad física y buscar apoyo o un lugar seguro"
       },
       {
         "id": "q41_o2",
-        "text": "Mantener la conversación para obtener más mensajes."
+        "text": "Mantener la conversación para obtener más mensajes"
       },
       {
         "id": "q41_o3",
-        "text": "Confrontar a la persona a solas."
+        "text": "Confrontar a la persona a solas"
       },
       {
         "id": "q41_o4",
-        "text": "Conservar la cuenta a cualquier costo."
+        "text": "Conservar la cuenta a cualquier costo"
       }
     ],
     "correctAnswer": "q41_o1",
@@ -1044,7 +1044,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_05",
     "type": "fillBlank",
-    "statement": "Una persona cercana que puede acompañarte y ayudarte a decidir forma parte de tu red de __.",
+    "statement": "Una persona cercana que puede acompañarte y ayudarte a decidir forma parte de tu red de _____.",
     "options": [],
     "correctAnswer": "apoyo",
     "acceptedAnswers": [
@@ -1063,19 +1063,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Guardar capturas completas, enlaces, fechas y nombres de usuario."
+        "text": "Guardar capturas completas, enlaces, fechas y nombres de usuario"
       },
       {
         "id": "q44_o2",
-        "text": "Responder con amenazas mayores."
+        "text": "Responder con amenazas mayores"
       },
       {
         "id": "q44_o3",
-        "text": "Publicar contraseñas."
+        "text": "Publicar contraseñas"
       },
       {
         "id": "q44_o4",
-        "text": "Reenviar contenido íntimo como prueba."
+        "text": "Reenviar contenido íntimo como prueba"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1115,19 +1115,19 @@
     "options": [
       {
         "id": "q46_o1",
-        "text": "La seguridad de la persona."
+        "text": "La seguridad de la persona"
       },
       {
         "id": "q46_o2",
-        "text": "La cantidad de seguidores."
+        "text": "La cantidad de seguidores"
       },
       {
         "id": "q46_o3",
-        "text": "Mantener la cuenta abierta."
+        "text": "Mantener la cuenta abierta"
       },
       {
         "id": "q46_o4",
-        "text": "Ganar la discusión."
+        "text": "Ganar la discusión"
       }
     ],
     "correctAnswer": "q46_o1",
@@ -1141,7 +1141,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_05",
     "type": "fillBlank",
-    "statement": "Ante peligro inmediato puede ser necesario buscar ayuda de __ o acudir a un lugar seguro.",
+    "statement": "Ante peligro inmediato puede ser necesario buscar ayuda de _____ o acudir a un lugar seguro.",
     "options": [],
     "correctAnswer": "emergencia",
     "acceptedAnswers": [
@@ -1160,19 +1160,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Reenviarlo innecesariamente a otras personas."
+        "text": "Reenviarlo innecesariamente a otras personas"
       },
       {
         "id": "q48_o2",
-        "text": "Guardar los datos relevantes de forma segura."
+        "text": "Guardar los datos relevantes de forma segura"
       },
       {
         "id": "q48_o3",
-        "text": "Registrar enlaces o usuarios cuando sea posible."
+        "text": "Registrar enlaces o usuarios cuando sea posible"
       },
       {
         "id": "q48_o4",
-        "text": "Pedir apoyo a una persona de confianza."
+        "text": "Pedir apoyo a una persona de confianza"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1212,19 +1212,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Priorizar seguridad, evitar confrontaciones que aumenten el riesgo, conservar evidencia cuando sea seguro y buscar apoyo."
+        "text": "Priorizar seguridad, evitar confrontaciones que aumenten el riesgo, conservar evidencia cuando sea seguro y buscar apoyo"
       },
       {
         "id": "q50_o2",
-        "text": "Enfrentar siempre a la persona a solas."
+        "text": "Enfrentar siempre a la persona a solas"
       },
       {
         "id": "q50_o3",
-        "text": "Continuar la conversación hasta obtener muchas pruebas."
+        "text": "Continuar la conversación hasta obtener muchas pruebas"
       },
       {
         "id": "q50_o4",
-        "text": "Mantener secreto el problema."
+        "text": "Mantener secreto el problema"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1242,19 +1242,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "Qué permitió que ocurriera y qué medidas pueden fortalecerse."
+        "text": "Qué permitió que ocurriera y qué medidas pueden fortalecerse"
       },
       {
         "id": "q51_o2",
-        "text": "Solo cambiar la foto de perfil."
+        "text": "Solo cambiar la foto de perfil"
       },
       {
         "id": "q51_o3",
-        "text": "Olvidarlo sin revisar nada."
+        "text": "Olvidarlo sin revisar nada"
       },
       {
         "id": "q51_o4",
-        "text": "Desactivar actualizaciones."
+        "text": "Desactivar actualizaciones"
       }
     ],
     "correctAnswer": "q51_o1",
@@ -1290,7 +1290,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_06",
     "type": "fillBlank",
-    "statement": "Revisar lo ocurrido y fortalecer medidas ayuda a evitar la __ del incidente.",
+    "statement": "Revisar lo ocurrido y fortalecer medidas ayuda a evitar la _____ del incidente.",
     "options": [],
     "correctAnswer": "repetición",
     "acceptedAnswers": [
@@ -1310,19 +1310,19 @@
     "options": [
       {
         "id": "q54_o1",
-        "text": "Contraseñas, autenticación, permisos, copias de seguridad, privacidad o hábitos de verificación."
+        "text": "Contraseñas, autenticación, permisos, copias de seguridad, privacidad o hábitos de verificación"
       },
       {
         "id": "q54_o2",
-        "text": "Solo el fondo de pantalla."
+        "text": "Solo el fondo de pantalla"
       },
       {
         "id": "q54_o3",
-        "text": "Únicamente el nombre de usuario."
+        "text": "Únicamente el nombre de usuario"
       },
       {
         "id": "q54_o4",
-        "text": "La cantidad de aplicaciones instaladas sin revisarlas."
+        "text": "La cantidad de aplicaciones instaladas sin revisarlas"
       }
     ],
     "correctAnswer": "q54_o1",
@@ -1362,19 +1362,19 @@
     "options": [
       {
         "id": "q56_o1",
-        "text": "Ayuda a recordar qué ocurrió, qué acciones se tomaron y qué falta revisar."
+        "text": "Ayuda a recordar qué ocurrió, qué acciones se tomaron y qué falta revisar"
       },
       {
         "id": "q56_o2",
-        "text": "Reemplaza cualquier medida de seguridad."
+        "text": "Reemplaza cualquier medida de seguridad"
       },
       {
         "id": "q56_o3",
-        "text": "Sirve para publicar contraseñas."
+        "text": "Sirve para publicar contraseñas"
       },
       {
         "id": "q56_o4",
-        "text": "Hace innecesaria la recuperación."
+        "text": "Hace innecesaria la recuperación"
       }
     ],
     "correctAnswer": "q56_o1",
@@ -1388,7 +1388,7 @@
     "categoryId": "incident_response_recovery",
     "activityId": "incident_response_activity_06",
     "type": "fillBlank",
-    "statement": "Una copia actualizada que permite restaurar archivos después de una pérdida es una copia de __.",
+    "statement": "Una copia actualizada que permite restaurar archivos después de una pérdida es una copia de _____.",
     "options": [],
     "correctAnswer": "seguridad",
     "acceptedAnswers": [
@@ -1407,19 +1407,19 @@
     "options": [
       {
         "id": "q58_o1",
-        "text": "Acciones prioritarias, contactos oficiales y respaldos disponibles."
+        "text": "Acciones prioritarias, contactos oficiales y respaldos disponibles"
       },
       {
         "id": "q58_o2",
-        "text": "Contraseñas publicadas."
+        "text": "Contraseñas publicadas"
       },
       {
         "id": "q58_o3",
-        "text": "Ninguna evidencia."
+        "text": "Ninguna evidencia"
       },
       {
         "id": "q58_o4",
-        "text": "Solo una nueva foto de perfil."
+        "text": "Solo una nueva foto de perfil"
       }
     ],
     "correctAnswer": "q58_o1",
@@ -1459,19 +1459,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Confirmar que el riesgo terminó, fortalecer las medidas débiles y aplicar lo aprendido para prevenir repetición."
+        "text": "Confirmar que el riesgo terminó, fortalecer las medidas débiles y aplicar lo aprendido para prevenir repetición"
       },
       {
         "id": "q60_o2",
-        "text": "Volver al uso normal sin revisar nada."
+        "text": "Volver al uso normal sin revisar nada"
       },
       {
         "id": "q60_o3",
-        "text": "Compartir nuevas credenciales con terceros."
+        "text": "Compartir nuevas credenciales con terceros"
       },
       {
         "id": "q60_o4",
-        "text": "Desactivar protecciones para evitar problemas."
+        "text": "Desactivar protecciones para evitar problemas"
       }
     ],
     "correctAnswer": "q60_o1",

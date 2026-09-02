@@ -8,19 +8,19 @@
     "options": [
       {
         "id": "q01_o1",
-        "text": "Que sea corta y fácil de escribir."
+        "text": "Que sea corta y fácil de escribir"
       },
       {
         "id": "q01_o2",
-        "text": "Que sea larga, única y difícil de relacionar contigo."
+        "text": "Que sea larga, única y difícil de relacionar contigo"
       },
       {
         "id": "q01_o3",
-        "text": "Que use tu fecha de nacimiento."
+        "text": "Que use tu fecha de nacimiento"
       },
       {
         "id": "q01_o4",
-        "text": "Que sea igual en todas tus cuentas."
+        "text": "Que sea igual en todas tus cuentas"
       }
     ],
     "correctAnswer": "q01_o2",
@@ -56,7 +56,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_01",
     "type": "fillBlank",
-    "statement": "Una contraseña utilizada solamente en una cuenta es una contraseña __.",
+    "statement": "Una contraseña utilizada solamente en una cuenta es una contraseña _____.",
     "options": [],
     "correctAnswer": "única",
     "acceptedAnswers": [
@@ -76,19 +76,19 @@
     "options": [
       {
         "id": "q04_o1",
-        "text": "Palabras aleatorias."
+        "text": "Palabras aleatorias"
       },
       {
         "id": "q04_o2",
-        "text": "Tu fecha de nacimiento."
+        "text": "Tu fecha de nacimiento"
       },
       {
         "id": "q04_o3",
-        "text": "Una combinación larga que no uses en otro sitio."
+        "text": "Una combinación larga que no uses en otro sitio"
       },
       {
         "id": "q04_o4",
-        "text": "Una clave generada de forma aleatoria."
+        "text": "Una clave generada de forma aleatoria"
       }
     ],
     "correctAnswer": "q04_o2",
@@ -128,19 +128,19 @@
     "options": [
       {
         "id": "q06_o1",
-        "text": "Diego2002."
+        "text": "Diego2002"
       },
       {
         "id": "q06_o2",
-        "text": "Bolivia123."
+        "text": "Bolivia123"
       },
       {
         "id": "q06_o3",
-        "text": "123456789."
+        "text": "123456789"
       },
       {
         "id": "q06_o4",
-        "text": "Cumbre-Nube-Río-Camino-82."
+        "text": "Cumbre-Nube-Río-Camino-82"
       }
     ],
     "correctAnswer": "q06_o4",
@@ -154,7 +154,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_01",
     "type": "fillBlank",
-    "statement": "Usar la misma clave en diferentes servicios se conoce como __ de contraseñas.",
+    "statement": "Usar la misma clave en diferentes servicios se conoce como _____ de contraseñas.",
     "options": [],
     "correctAnswer": "reutilización",
     "acceptedAnswers": [
@@ -174,19 +174,19 @@
     "options": [
       {
         "id": "q08_o1",
-        "text": "Que cambie el color de la aplicación."
+        "text": "Que cambie el color de la aplicación"
       },
       {
         "id": "q08_o2",
-        "text": "Que prueben esa misma contraseña en otras cuentas donde la reutilizaste."
+        "text": "Que prueben esa misma contraseña en otras cuentas donde la reutilizaste"
       },
       {
         "id": "q08_o3",
-        "text": "Que se borre tu foto de perfil."
+        "text": "Que se borre tu foto de perfil"
       },
       {
         "id": "q08_o4",
-        "text": "Que aumente el brillo del celular."
+        "text": "Que aumente el brillo del celular"
       }
     ],
     "correctAnswer": "q08_o2",
@@ -226,19 +226,19 @@
     "options": [
       {
         "id": "q10_o1",
-        "text": "Reutilizar una sola contraseña compleja."
+        "text": "Reutilizar una sola contraseña compleja"
       },
       {
         "id": "q10_o2",
-        "text": "Usar claves diferentes, largas y no basadas en datos personales."
+        "text": "Usar claves diferentes, largas y no basadas en datos personales"
       },
       {
         "id": "q10_o3",
-        "text": "Usar siempre el nombre de la aplicación."
+        "text": "Usar siempre el nombre de la aplicación"
       },
       {
         "id": "q10_o4",
-        "text": "Compartirlas con una persona de confianza por chat."
+        "text": "Compartirlas con una persona de confianza por chat"
       }
     ],
     "correctAnswer": "q10_o2",
@@ -256,19 +256,19 @@
     "options": [
       {
         "id": "q11_o1",
-        "text": "Una clave formada por varias palabras que busca ser larga y memorable."
+        "text": "Una clave formada por varias palabras que busca ser larga y memorable"
       },
       {
         "id": "q11_o2",
-        "text": "Un código SMS de seis dígitos."
+        "text": "Un código SMS de seis dígitos"
       },
       {
         "id": "q11_o3",
-        "text": "Una pregunta de seguridad pública."
+        "text": "Una pregunta de seguridad pública"
       },
       {
         "id": "q11_o4",
-        "text": "El nombre del usuario."
+        "text": "El nombre del usuario"
       }
     ],
     "correctAnswer": "q11_o1",
@@ -282,7 +282,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_02",
     "type": "fillBlank",
-    "statement": "Una contraseña formada por varias palabras puede llamarse frase de __.",
+    "statement": "Una contraseña formada por varias palabras puede llamarse frase de _____.",
     "options": [],
     "correctAnswer": "acceso",
     "acceptedAnswers": [
@@ -301,19 +301,19 @@
     "options": [
       {
         "id": "q13_o1",
-        "text": "Un gestor de contraseñas."
+        "text": "Un gestor de contraseñas"
       },
       {
         "id": "q13_o2",
-        "text": "Un grupo público de mensajería."
+        "text": "Un grupo público de mensajería"
       },
       {
         "id": "q13_o3",
-        "text": "Una publicación en redes sociales."
+        "text": "Una publicación en redes sociales"
       },
       {
         "id": "q13_o4",
-        "text": "Una sola contraseña para todo."
+        "text": "Una sola contraseña para todo"
       }
     ],
     "correctAnswer": "q13_o1",
@@ -349,7 +349,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_02",
     "type": "fillBlank",
-    "statement": "La contraseña principal que protege un gestor de contraseñas se llama contraseña __.",
+    "statement": "La contraseña principal que protege un gestor de contraseñas se llama contraseña _____.",
     "options": [],
     "correctAnswer": "maestra",
     "acceptedAnswers": [
@@ -368,19 +368,19 @@
     "options": [
       {
         "id": "q16_o1",
-        "text": "Reutilizar la del correo."
+        "text": "Reutilizar la del correo"
       },
       {
         "id": "q16_o2",
-        "text": "Compartirla con amistades."
+        "text": "Compartirla con amistades"
       },
       {
         "id": "q16_o3",
-        "text": "Hacerla fuerte, única y no compartirla."
+        "text": "Hacerla fuerte, única y no compartirla"
       },
       {
         "id": "q16_o4",
-        "text": "Usar únicamente tu nombre."
+        "text": "Usar únicamente tu nombre"
       }
     ],
     "correctAnswer": "q16_o3",
@@ -420,19 +420,19 @@
     "options": [
       {
         "id": "q18_o1",
-        "text": "Generar claves distintas."
+        "text": "Generar claves distintas"
       },
       {
         "id": "q18_o2",
-        "text": "Proteger la contraseña maestra."
+        "text": "Proteger la contraseña maestra"
       },
       {
         "id": "q18_o3",
-        "text": "Copiar todas las contraseñas en un chat público."
+        "text": "Copiar todas las contraseñas en un chat público"
       },
       {
         "id": "q18_o4",
-        "text": "Usar el gestor para evitar reutilización."
+        "text": "Usar el gestor para evitar reutilización"
       }
     ],
     "correctAnswer": "q18_o3",
@@ -472,19 +472,19 @@
     "options": [
       {
         "id": "q20_o1",
-        "text": "Permite compartir cuentas más fácilmente."
+        "text": "Permite compartir cuentas más fácilmente"
       },
       {
         "id": "q20_o2",
-        "text": "Reduce la necesidad de reutilizar una misma clave."
+        "text": "Reduce la necesidad de reutilizar una misma clave"
       },
       {
         "id": "q20_o3",
-        "text": "Elimina la necesidad de proteger el dispositivo."
+        "text": "Elimina la necesidad de proteger el dispositivo"
       },
       {
         "id": "q20_o4",
-        "text": "Hace innecesaria cualquier otra medida de seguridad."
+        "text": "Hace innecesaria cualquier otra medida de seguridad"
       }
     ],
     "correctAnswer": "q20_o2",
@@ -502,19 +502,19 @@
     "options": [
       {
         "id": "q21_o1",
-        "text": "Para agregar una comprobación adicional al iniciar sesión."
+        "text": "Para agregar una comprobación adicional al iniciar sesión"
       },
       {
         "id": "q21_o2",
-        "text": "Para compartir una cuenta."
+        "text": "Para compartir una cuenta"
       },
       {
         "id": "q21_o3",
-        "text": "Para publicar la contraseña."
+        "text": "Para publicar la contraseña"
       },
       {
         "id": "q21_o4",
-        "text": "Para evitar actualizar datos de recuperación."
+        "text": "Para evitar actualizar datos de recuperación"
       }
     ],
     "correctAnswer": "q21_o1",
@@ -550,7 +550,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_03",
     "type": "fillBlank",
-    "statement": "La autenticación que combina más de una comprobación se denomina autenticación de múltiples __.",
+    "statement": "La autenticación que combina más de una comprobación se denomina autenticación de múltiples _____.",
     "options": [],
     "correctAnswer": "factores",
     "acceptedAnswers": [
@@ -569,19 +569,19 @@
     "options": [
       {
         "id": "q24_o1",
-        "text": "Una aplicación autenticadora."
+        "text": "Una aplicación autenticadora"
       },
       {
         "id": "q24_o2",
-        "text": "Tu foto de perfil."
+        "text": "Tu foto de perfil"
       },
       {
         "id": "q24_o3",
-        "text": "El color del sitio."
+        "text": "El color del sitio"
       },
       {
         "id": "q24_o4",
-        "text": "El nombre del servicio."
+        "text": "El nombre del servicio"
       }
     ],
     "correctAnswer": "q24_o1",
@@ -621,19 +621,19 @@
     "options": [
       {
         "id": "q26_o1",
-        "text": "La apruebas para que desaparezca."
+        "text": "La apruebas para que desaparezca"
       },
       {
         "id": "q26_o2",
-        "text": "La rechazas y revisas la seguridad de la cuenta."
+        "text": "La rechazas y revisas la seguridad de la cuenta"
       },
       {
         "id": "q26_o3",
-        "text": "Compartes tu contraseña."
+        "text": "Compartes tu contraseña"
       },
       {
         "id": "q26_o4",
-        "text": "Ignoras todas las alertas futuras."
+        "text": "Ignoras todas las alertas futuras"
       }
     ],
     "correctAnswer": "q26_o2",
@@ -647,7 +647,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_03",
     "type": "fillBlank",
-    "statement": "Una aplicación que genera códigos temporales para iniciar sesión puede llamarse aplicación __.",
+    "statement": "Una aplicación que genera códigos temporales para iniciar sesión puede llamarse aplicación _____.",
     "options": [],
     "correctAnswer": "autenticadora",
     "acceptedAnswers": [
@@ -668,19 +668,19 @@
     "options": [
       {
         "id": "q28_o1",
-        "text": "Dictárselo."
+        "text": "Dictárselo"
       },
       {
         "id": "q28_o2",
-        "text": "Enviarle una captura."
+        "text": "Enviarle una captura"
       },
       {
         "id": "q28_o3",
-        "text": "No compartirlo y contactar al soporte por el canal oficial."
+        "text": "No compartirlo y contactar al soporte por el canal oficial"
       },
       {
         "id": "q28_o4",
-        "text": "Publicarlo para preguntar si es legítimo."
+        "text": "Publicarlo para preguntar si es legítimo"
       }
     ],
     "correctAnswer": "q28_o3",
@@ -720,19 +720,19 @@
     "options": [
       {
         "id": "q30_o1",
-        "text": "En cualquier chat donde lo soliciten."
+        "text": "En cualquier chat donde lo soliciten"
       },
       {
         "id": "q30_o2",
-        "text": "Únicamente en la pantalla oficial de una acción que tú iniciaste."
+        "text": "Únicamente en la pantalla oficial de una acción que tú iniciaste"
       },
       {
         "id": "q30_o3",
-        "text": "En una publicación pública."
+        "text": "En una publicación pública"
       },
       {
         "id": "q30_o4",
-        "text": "En un formulario enviado por un desconocido."
+        "text": "En un formulario enviado por un desconocido"
       }
     ],
     "correctAnswer": "q30_o2",
@@ -750,19 +750,19 @@
     "options": [
       {
         "id": "q31_o1",
-        "text": "El correo y teléfono de recuperación."
+        "text": "El correo y teléfono de recuperación"
       },
       {
         "id": "q31_o2",
-        "text": "Tu equipo favorito."
+        "text": "Tu equipo favorito"
       },
       {
         "id": "q31_o3",
-        "text": "Tu foto de portada."
+        "text": "Tu foto de portada"
       },
       {
         "id": "q31_o4",
-        "text": "La cantidad de seguidores."
+        "text": "La cantidad de seguidores"
       }
     ],
     "correctAnswer": "q31_o1",
@@ -798,7 +798,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_04",
     "type": "fillBlank",
-    "statement": "Los códigos guardados para recuperar acceso cuando falla el segundo factor se llaman códigos de __.",
+    "statement": "Los códigos guardados para recuperar acceso cuando falla el segundo factor se llaman códigos de _____.",
     "options": [],
     "correctAnswer": "respaldo",
     "acceptedAnswers": [
@@ -820,19 +820,19 @@
     "options": [
       {
         "id": "q34_o1",
-        "text": "En una publicación pública."
+        "text": "En una publicación pública"
       },
       {
         "id": "q34_o2",
-        "text": "En un lugar seguro al que solo tú puedas acceder."
+        "text": "En un lugar seguro al que solo tú puedas acceder"
       },
       {
         "id": "q34_o3",
-        "text": "En el chat con desconocidos."
+        "text": "En el chat con desconocidos"
       },
       {
         "id": "q34_o4",
-        "text": "En el nombre de usuario."
+        "text": "En el nombre de usuario"
       }
     ],
     "correctAnswer": "q34_o2",
@@ -872,19 +872,19 @@
     "options": [
       {
         "id": "q36_o1",
-        "text": "Pulsas el botón inmediatamente."
+        "text": "Pulsas el botón inmediatamente"
       },
       {
         "id": "q36_o2",
-        "text": "Abres por tu cuenta la aplicación o sitio oficial y revisas desde allí."
+        "text": "Abres por tu cuenta la aplicación o sitio oficial y revisas desde allí"
       },
       {
         "id": "q36_o3",
-        "text": "Respondes con tu contraseña."
+        "text": "Respondes con tu contraseña"
       },
       {
         "id": "q36_o4",
-        "text": "Reenvías un código de respaldo."
+        "text": "Reenvías un código de respaldo"
       }
     ],
     "correctAnswer": "q36_o2",
@@ -898,7 +898,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_04",
     "type": "fillBlank",
-    "statement": "El proceso para volver a obtener acceso legítimo a una cuenta se denomina __.",
+    "statement": "El proceso para volver a obtener acceso legítimo a una cuenta se denomina _____.",
     "options": [],
     "correctAnswer": "recuperación",
     "acceptedAnswers": [
@@ -918,19 +918,19 @@
     "options": [
       {
         "id": "q38_o1",
-        "text": "Porque puede utilizarse para restablecer otras cuentas."
+        "text": "Porque puede utilizarse para restablecer otras cuentas"
       },
       {
         "id": "q38_o2",
-        "text": "Porque cambia el idioma del teléfono."
+        "text": "Porque cambia el idioma del teléfono"
       },
       {
         "id": "q38_o3",
-        "text": "Porque controla el brillo de la pantalla."
+        "text": "Porque controla el brillo de la pantalla"
       },
       {
         "id": "q38_o4",
-        "text": "Porque aumenta el almacenamiento."
+        "text": "Porque aumenta el almacenamiento"
       }
     ],
     "correctAnswer": "q38_o1",
@@ -970,19 +970,19 @@
     "options": [
       {
         "id": "q40_o1",
-        "text": "Guardarlo de forma privada."
+        "text": "Guardarlo de forma privada"
       },
       {
         "id": "q40_o2",
-        "text": "Mantenerlo disponible para una emergencia."
+        "text": "Mantenerlo disponible para una emergencia"
       },
       {
         "id": "q40_o3",
-        "text": "Enviarlo a una persona desconocida que ofrece recuperar tu cuenta."
+        "text": "Enviarlo a una persona desconocida que ofrece recuperar tu cuenta"
       },
       {
         "id": "q40_o4",
-        "text": "Revisar que puedas acceder a él cuando lo necesites."
+        "text": "Revisar que puedas acceder a él cuando lo necesites"
       }
     ],
     "correctAnswer": "q40_o3",
@@ -1000,19 +1000,19 @@
     "options": [
       {
         "id": "q41_o1",
-        "text": "Ignorarla siempre."
+        "text": "Ignorarla siempre"
       },
       {
         "id": "q41_o2",
-        "text": "Revisar la cuenta desde el canal oficial, dispositivos conectados y sesiones abiertas."
+        "text": "Revisar la cuenta desde el canal oficial, dispositivos conectados y sesiones abiertas"
       },
       {
         "id": "q41_o3",
-        "text": "Responder al mensaje con tu contraseña."
+        "text": "Responder al mensaje con tu contraseña"
       },
       {
         "id": "q41_o4",
-        "text": "Compartir el aviso en redes."
+        "text": "Compartir el aviso en redes"
       }
     ],
     "correctAnswer": "q41_o2",
@@ -1026,7 +1026,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_05",
     "type": "fillBlank",
-    "statement": "Los accesos que permanecen abiertos en distintos dispositivos se denominan __.",
+    "statement": "Los accesos que permanecen abiertos en distintos dispositivos se denominan _____.",
     "options": [],
     "correctAnswer": "sesiones",
     "acceptedAnswers": [
@@ -1069,19 +1069,19 @@
     "options": [
       {
         "id": "q44_o1",
-        "text": "Dispositivos vinculados y métodos de recuperación."
+        "text": "Dispositivos vinculados y métodos de recuperación"
       },
       {
         "id": "q44_o2",
-        "text": "Solo la foto de perfil."
+        "text": "Solo la foto de perfil"
       },
       {
         "id": "q44_o3",
-        "text": "El tema visual."
+        "text": "El tema visual"
       },
       {
         "id": "q44_o4",
-        "text": "Los emojis recientes."
+        "text": "Los emojis recientes"
       }
     ],
     "correctAnswer": "q44_o1",
@@ -1121,19 +1121,19 @@
     "options": [
       {
         "id": "q46_o1",
-        "text": "Mantener la sesión abierta."
+        "text": "Mantener la sesión abierta"
       },
       {
         "id": "q46_o2",
-        "text": "Revocar ese dispositivo desde la configuración de seguridad."
+        "text": "Revocar ese dispositivo desde la configuración de seguridad"
       },
       {
         "id": "q46_o3",
-        "text": "Publicar la contraseña."
+        "text": "Publicar la contraseña"
       },
       {
         "id": "q46_o4",
-        "text": "Desactivar todas las alertas."
+        "text": "Desactivar todas las alertas"
       }
     ],
     "correctAnswer": "q46_o2",
@@ -1147,7 +1147,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_05",
     "type": "fillBlank",
-    "statement": "Un aviso sobre un ingreso nuevo o desconocido es una __ de acceso.",
+    "statement": "Un aviso sobre un ingreso nuevo o desconocido es una _____ de acceso.",
     "options": [],
     "correctAnswer": "alerta",
     "acceptedAnswers": [
@@ -1166,19 +1166,19 @@
     "options": [
       {
         "id": "q48_o1",
-        "text": "Cerrar la sesión y revisar la seguridad de la cuenta."
+        "text": "Cerrar la sesión y revisar la seguridad de la cuenta"
       },
       {
         "id": "q48_o2",
-        "text": "Dejarla para observar qué hace."
+        "text": "Dejarla para observar qué hace"
       },
       {
         "id": "q48_o3",
-        "text": "Enviar un mensaje a la sesión."
+        "text": "Enviar un mensaje a la sesión"
       },
       {
         "id": "q48_o4",
-        "text": "Compartir el código de verificación."
+        "text": "Compartir el código de verificación"
       }
     ],
     "correctAnswer": "q48_o1",
@@ -1218,19 +1218,19 @@
     "options": [
       {
         "id": "q50_o1",
-        "text": "Revisar periódicamente sesiones y dispositivos vinculados."
+        "text": "Revisar periódicamente sesiones y dispositivos vinculados"
       },
       {
         "id": "q50_o2",
-        "text": "Desactivar la seguridad."
+        "text": "Desactivar la seguridad"
       },
       {
         "id": "q50_o3",
-        "text": "Usar la misma contraseña en todo."
+        "text": "Usar la misma contraseña en todo"
       },
       {
         "id": "q50_o4",
-        "text": "Aceptar todas las solicitudes de acceso."
+        "text": "Aceptar todas las solicitudes de acceso"
       }
     ],
     "correctAnswer": "q50_o1",
@@ -1248,19 +1248,19 @@
     "options": [
       {
         "id": "q51_o1",
-        "text": "Proteger el correo principal y los métodos de recuperación."
+        "text": "Proteger el correo principal y los métodos de recuperación"
       },
       {
         "id": "q51_o2",
-        "text": "Cambiar la foto de perfil."
+        "text": "Cambiar la foto de perfil"
       },
       {
         "id": "q51_o3",
-        "text": "Publicar el problema."
+        "text": "Publicar el problema"
       },
       {
         "id": "q51_o4",
-        "text": "Esperar varios días."
+        "text": "Esperar varios días"
       }
     ],
     "correctAnswer": "q51_o1",
@@ -1300,19 +1300,19 @@
     "options": [
       {
         "id": "q53_o1",
-        "text": "Desde un dispositivo confiable y el servicio oficial."
+        "text": "Desde un dispositivo confiable y el servicio oficial"
       },
       {
         "id": "q53_o2",
-        "text": "Desde un enlace enviado por el atacante."
+        "text": "Desde un enlace enviado por el atacante"
       },
       {
         "id": "q53_o3",
-        "text": "Desde un formulario desconocido."
+        "text": "Desde un formulario desconocido"
       },
       {
         "id": "q53_o4",
-        "text": "Desde un chat público."
+        "text": "Desde un chat público"
       }
     ],
     "correctAnswer": "q53_o1",
@@ -1326,7 +1326,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_06",
     "type": "fillBlank",
-    "statement": "Expulsar accesos que no reconoces implica cerrar otras __.",
+    "statement": "Expulsar accesos que no reconoces implica cerrar otras _____.",
     "options": [],
     "correctAnswer": "sesiones",
     "acceptedAnswers": [
@@ -1347,19 +1347,19 @@
     "options": [
       {
         "id": "q55_o1",
-        "text": "Avisar a tus contactos por otro canal."
+        "text": "Avisar a tus contactos por otro canal"
       },
       {
         "id": "q55_o2",
-        "text": "Ocultarlo siempre."
+        "text": "Ocultarlo siempre"
       },
       {
         "id": "q55_o3",
-        "text": "Enviar más mensajes desde la cuenta tomada."
+        "text": "Enviar más mensajes desde la cuenta tomada"
       },
       {
         "id": "q55_o4",
-        "text": "Compartir contraseñas para demostrar identidad."
+        "text": "Compartir contraseñas para demostrar identidad"
       }
     ],
     "correctAnswer": "q55_o1",
@@ -1399,19 +1399,19 @@
     "options": [
       {
         "id": "q57_o1",
-        "text": "Cambiarla también donde fue reutilizada."
+        "text": "Cambiarla también donde fue reutilizada"
       },
       {
         "id": "q57_o2",
-        "text": "Mantenerla en todas partes."
+        "text": "Mantenerla en todas partes"
       },
       {
         "id": "q57_o3",
-        "text": "Publicarla para avisar."
+        "text": "Publicarla para avisar"
       },
       {
         "id": "q57_o4",
-        "text": "Desactivar la autenticación adicional."
+        "text": "Desactivar la autenticación adicional"
       }
     ],
     "correctAnswer": "q57_o1",
@@ -1425,7 +1425,7 @@
     "categoryId": "account_protection_authentication",
     "activityId": "accounts_auth_activity_06",
     "type": "fillBlank",
-    "statement": "Informar a personas cercanas de que una cuenta fue usada para engañar ayuda a proteger a tus __.",
+    "statement": "Informar a personas cercanas de que una cuenta fue usada para engañar ayuda a proteger a tus _____.",
     "options": [],
     "correctAnswer": "contactos",
     "acceptedAnswers": [
@@ -1466,19 +1466,19 @@
     "options": [
       {
         "id": "q60_o1",
-        "text": "Proteger recuperación, cambiar contraseña, cerrar sesiones, revisar autenticación y avisar contactos si corresponde."
+        "text": "Proteger recuperación, cambiar contraseña, cerrar sesiones, revisar autenticación y avisar contactos si corresponde"
       },
       {
         "id": "q60_o2",
-        "text": "Esperar, publicar la contraseña y responder al atacante."
+        "text": "Esperar, publicar la contraseña y responder al atacante"
       },
       {
         "id": "q60_o3",
-        "text": "Borrar la aplicación sin revisar la cuenta."
+        "text": "Borrar la aplicación sin revisar la cuenta"
       },
       {
         "id": "q60_o4",
-        "text": "Compartir códigos con quien ofrezca ayuda."
+        "text": "Compartir códigos con quien ofrezca ayuda"
       }
     ],
     "correctAnswer": "q60_o1",

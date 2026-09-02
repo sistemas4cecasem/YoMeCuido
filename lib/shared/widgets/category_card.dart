@@ -10,6 +10,7 @@ class CategoryCard extends StatelessWidget {
     required this.category,
     required this.onTap,
     this.isUnlocked,
+    this.isCompleted = false,
     this.lockedLabel,
     super.key,
   });
@@ -17,6 +18,7 @@ class CategoryCard extends StatelessWidget {
   final Category category;
   final VoidCallback onTap;
   final bool? isUnlocked;
+  final bool isCompleted;
   final String? lockedLabel;
 
   @override
@@ -24,10 +26,36 @@ class CategoryCard extends StatelessWidget {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
     final enabled = isUnlocked ?? category.isEnabled;
+    final completed = enabled && isCompleted;
     final effectiveLockedLabel = lockedLabel ?? AppStrings.comingSoon;
-    final iconColor = enabled ? colors.orangeDark : colors.disabledText;
-    final iconBackground = enabled ? colors.orangeSoft : colors.disabledSurface;
-    final borderColor = enabled ? colors.orangePrimary : colors.border;
+    final completedSurface = Color.alphaBlend(
+      colors.success.withValues(alpha: 0.05),
+      colors.surface,
+    );
+    final completedIconSurface = Color.alphaBlend(
+      colors.success.withValues(alpha: 0.08),
+      colors.surfaceStrong,
+    );
+    final iconColor = !enabled
+        ? colors.disabledText
+        : completed
+        ? colors.success
+        : colors.orangeDark;
+    final iconBackground = !enabled
+        ? colors.disabledSurface
+        : completed
+        ? completedIconSurface
+        : colors.orangeSoft;
+    final borderColor = !enabled
+        ? colors.border
+        : completed
+        ? colors.success.withValues(alpha: 0.55)
+        : colors.orangePrimary;
+    final cardColor = !enabled
+        ? colors.disabledSurface
+        : completed
+        ? completedSurface
+        : colors.surface;
 
     return Semantics(
       button: true,
@@ -36,7 +64,7 @@ class CategoryCard extends StatelessWidget {
           ? category.title
           : '${category.title}, $effectiveLockedLabel',
       child: Card(
-        color: enabled ? colors.surface : colors.disabledSurface,
+        color: cardColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadii.card),
           side: BorderSide(color: borderColor, width: enabled ? 1.5 : 1),
@@ -58,7 +86,9 @@ class CategoryCard extends StatelessWidget {
                     border: Border.all(color: borderColor),
                   ),
                   child: Icon(
-                    categoryIconFromName(category.iconName),
+                    completed
+                        ? Icons.check_outlined
+                        : categoryIconFromName(category.iconName),
                     color: iconColor,
                   ),
                 ),
@@ -85,7 +115,14 @@ class CategoryCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (!enabled) ...[
+                if (enabled && !completed) ...[
+                  const SizedBox(width: AppSpacing.sm),
+                  Icon(
+                    Icons.chevron_right_outlined,
+                    color: colors.orangeDark,
+                    size: 24,
+                  ),
+                ] else if (!enabled) ...[
                   const SizedBox(width: AppSpacing.sm),
                   Tooltip(
                     message: effectiveLockedLabel,
