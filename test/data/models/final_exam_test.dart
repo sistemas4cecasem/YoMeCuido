@@ -25,5 +25,23 @@ void main() {
       );
       expect(FinalExamConfigs.forCategory('unknown_category'), isNull);
     });
+
+    test('builds a stable final exam config from category and lesson ids', () {
+      final exam = FinalExamConfigs.forCategoryLesson(
+        categoryId: 'account_protection_authentication',
+        lessonId: 'accounts_auth',
+      );
+
+      expect(exam.id, 'accounts_auth_final_exam');
+      expect(exam.categoryId, 'account_protection_authentication');
+      expect(
+        exam.questionCount,
+        FinalExamConfigs.relationsViolence.questionCount,
+      );
+      expect(
+        exam.minimumQuestionsPerActivity,
+        FinalExamConfigs.relationsViolence.minimumQuestionsPerActivity,
+      );
+    });
   });
 }

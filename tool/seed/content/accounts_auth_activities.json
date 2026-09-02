@@ -1,0 +1,38 @@
+[
+  {
+    "id": "accounts_auth_activity_01",
+    "categoryId": "account_protection_authentication",
+    "title": "Contraseñas largas, únicas y difíciles de adivinar",
+    "order": 1
+  },
+  {
+    "id": "accounts_auth_activity_02",
+    "categoryId": "account_protection_authentication",
+    "title": "Frases de acceso y gestores de contraseñas",
+    "order": 2
+  },
+  {
+    "id": "accounts_auth_activity_03",
+    "categoryId": "account_protection_authentication",
+    "title": "Verificación en dos pasos y autenticación multifactor",
+    "order": 3
+  },
+  {
+    "id": "accounts_auth_activity_04",
+    "categoryId": "account_protection_authentication",
+    "title": "Recuperación de cuentas",
+    "order": 4
+  },
+  {
+    "id": "accounts_auth_activity_05",
+    "categoryId": "account_protection_authentication",
+    "title": "Sesiones, dispositivos y alertas de acceso",
+    "order": 5
+  },
+  {
+    "id": "accounts_auth_activity_06",
+    "categoryId": "account_protection_authentication",
+    "title": "Respuesta ante una cuenta comprometida",
+    "order": 6
+  }
+]

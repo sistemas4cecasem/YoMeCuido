@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ActivityQuestionSelector', () {
-    test('selects consecutive blocks of ten questions by activity order', () {
+    test('selects the fixed bank of ten questions by activity id', () {
       final questions = _buildQuestions(60);
       const selector = ActivityQuestionSelector();
 
@@ -73,7 +73,8 @@ List<QuizQuestion> _buildQuestions(int count) {
       QuizQuestion(
         id: 'relations_violence_q${index.toString().padLeft(2, '0')}',
         categoryId: _categoryId,
-        activityId: 'legacy_activity_${index % 6}',
+        activityId:
+            'relations_violence_activity_${(((index - 1) ~/ 10) + 1).toString().padLeft(2, '0')}',
         type: QuestionType.multipleChoice,
         statement: 'Pregunta $index',
         options: <QuizOption>[

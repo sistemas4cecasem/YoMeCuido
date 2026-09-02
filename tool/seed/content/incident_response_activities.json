@@ -1,0 +1,38 @@
+[
+  {
+    "id": "incident_response_activity_01",
+    "categoryId": "incident_response_recovery",
+    "title": "Método de respuesta: contener, proteger, documentar, informar y recuperar",
+    "order": 1
+  },
+  {
+    "id": "incident_response_activity_02",
+    "categoryId": "incident_response_recovery",
+    "title": "Cuenta robada",
+    "order": 2
+  },
+  {
+    "id": "incident_response_activity_03",
+    "categoryId": "incident_response_recovery",
+    "title": "Transferencia o fraude financiero",
+    "order": 3
+  },
+  {
+    "id": "incident_response_activity_04",
+    "categoryId": "incident_response_recovery",
+    "title": "Malware o aplicación sospechosa",
+    "order": 4
+  },
+  {
+    "id": "incident_response_activity_05",
+    "categoryId": "incident_response_recovery",
+    "title": "Violencia, amenaza o riesgo físico",
+    "order": 5
+  },
+  {
+    "id": "incident_response_activity_06",
+    "categoryId": "incident_response_recovery",
+    "title": "Recuperación y prevención después del incidente",
+    "order": 6
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "privacy_identity_activity_01",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Compartir solo lo necesario",
+    "order": 1
+  },
+  {
+    "id": "privacy_identity_activity_02",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Fotografías de documentos",
+    "order": 2
+  },
+  {
+    "id": "privacy_identity_activity_03",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Ubicación, rutinas y exposición cotidiana",
+    "order": 3
+  },
+  {
+    "id": "privacy_identity_activity_04",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Suplantación de identidad",
+    "order": 4
+  },
+  {
+    "id": "privacy_identity_activity_05",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Consentimiento y contenido compartido",
+    "order": 5
+  },
+  {
+    "id": "privacy_identity_activity_06",
+    "categoryId": "personal_data_privacy_identity",
+    "title": "Recuperar control después de una exposición",
+    "order": 6
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "data_minimization",
+    "order": 1,
+    "title": "Compartir solo lo necesario",
+    "body": "La mejor protección para un dato que no necesitas entregar es no compartirlo. Antes de enviar información pregúntate quién la solicita, para qué la necesita, si es obligatorio entregarla y si puedes proporcionar menos.\n\nEste principio ayuda a reducir la cantidad de información disponible para fraudes, suplantaciones o perfiles no deseados."
+  },
+  {
+    "id": "document_photos",
+    "order": 2,
+    "title": "Fotografías de documentos",
+    "body": "Una fotografía de una cédula, licencia, tarjeta o factura puede revelar nombres, números, firmas, direcciones y otros datos importantes.\n\nNo envíes documentos por chats o formularios que no hayas verificado. Si un trámite realmente los requiere, confirma la institución y el canal antes de enviarlos."
+  },
+  {
+    "id": "location_routines_exposure",
+    "order": 3,
+    "title": "Ubicación, rutinas y exposición cotidiana",
+    "body": "Publicar ubicación en tiempo real, rutas frecuentes, horarios o información sobre la ausencia del domicilio puede facilitar seguimiento o acoso.\n\nNo se trata de dejar de compartir experiencias, sino de revisar quién puede verlas, evitar revelar información innecesaria y considerar publicar después de abandonar un lugar."
+  },
+  {
+    "id": "identity_impersonation",
+    "order": 4,
+    "title": "Suplantación de identidad",
+    "body": "La suplantación ocurre cuando alguien utiliza datos, fotografías o perfiles para hacerse pasar por otra persona. Puede buscar dinero, acceso a cuentas, daño reputacional o engañar a contactos.\n\nSi aparece un perfil falso, guarda evidencia, repórtalo, informa a tus contactos por otro medio y revisa si tus cuentas originales fueron comprometidas."
+  },
+  {
+    "id": "consent_shared_content",
+    "order": 5,
+    "title": "Consentimiento y contenido compartido",
+    "body": "Tener una fotografía, conversación o archivo no significa tener permiso para publicarlo o reenviarlo. El consentimiento debe ser libre, específico y puede retirarse.\n\nCuando una persona comparte una imagen de manera privada, eso no autoriza automáticamente otros usos. La responsabilidad de una difusión no consentida recae en quien comparte o amenaza, no en la víctima."
+  },
+  {
+    "id": "regain_control_after_exposure",
+    "order": 6,
+    "title": "Recuperar control después de una exposición",
+    "body": "Si datos personales quedaron expuestos, identifica qué información se compartió y qué cuentas o servicios podrían verse afectados. Cambia credenciales cuando corresponda, revisa privacidad, guarda evidencia y avisa a contactos si existe riesgo de suplantación.\n\nNo publiques más datos para intentar demostrar que un perfil falso es tuyo; utiliza canales oficiales de reporte y recuperación.\n\nAntes de compartir un dato, piensa no solo en quién lo recibe hoy, sino también en cómo podría utilizarse después."
+  }
+]

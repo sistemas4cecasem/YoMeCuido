@@ -1,0 +1,38 @@
+[
+  {
+    "id": "misinformation_disinformation",
+    "order": 1,
+    "title": "Información errónea y desinformación",
+    "body": "La información errónea puede compartirse sin intención de engañar. La desinformación se crea o difunde deliberadamente para manipular. En ambos casos, una publicación muy compartida no necesariamente es verdadera.\n\nNo utilices reacciones, cantidad de seguidores o apariencia profesional como única prueba de credibilidad."
+  },
+  {
+    "id": "author_date_context",
+    "order": 2,
+    "title": "Autor, fecha y contexto",
+    "body": "Antes de creer una publicación identifica qué afirma exactamente. Revisa quién la publica, cuándo fue creada y en qué contexto.\n\nUna noticia verdadera puede generar desinformación si se comparte años después o se presenta como si hubiera ocurrido en otro lugar."
+  },
+  {
+    "id": "cross_source_verification",
+    "order": 3,
+    "title": "Verificación con otras fuentes",
+    "body": "Busca la misma información en fuentes oficiales o en varios medios confiables. Cuando una publicación cita un documento, estudio o declaración, intenta llegar a la fuente original.\n\nDistingue entre una opinión, una publicidad y una afirmación respaldada por evidencia."
+  },
+  {
+    "id": "deepfakes_media_verification",
+    "order": 4,
+    "title": "Imágenes, audios, videos y deepfakes",
+    "body": "La inteligencia artificial facilita crear imágenes, voces y videos realistas. Los errores visuales pueden dar pistas, pero no son una prueba segura porque las herramientas mejoran constantemente.\n\nVerifica procedencia, fuente original, contexto, fecha y confirmaciones independientes. Un deepfake puede utilizarse para fraude, suplantación o violencia."
+  },
+  {
+    "id": "viral_chains_alerts",
+    "order": 5,
+    "title": "Cadenas, alertas y mensajes virales",
+    "body": "Los mensajes que piden “reenviar a todos” pueden aprovechar miedo, urgencia o solidaridad. Antes de compartir alertas sobre bonos, bloqueos, salud, secuestros o seguridad, busca la publicación en el canal oficial correspondiente.\n\nEl mensaje puede ser antiguo, pertenecer a otro país o ser completamente falso."
+  },
+  {
+    "id": "responsible_ai_use",
+    "order": 6,
+    "title": "Uso responsable de inteligencia artificial",
+    "body": "Las herramientas de IA pueden equivocarse, inventar fuentes o producir respuestas sesgadas. No introduzcas contraseñas, documentos, información confidencial o datos personales sin comprender cómo serán tratados.\n\nLas decisiones médicas, jurídicas o financieras requieren verificación con fuentes fiables y, cuando corresponda, profesionales adecuados.\n\nSi una información puede cambiar una decisión importante, verifica antes de actuar o compartir."
+  }
+]

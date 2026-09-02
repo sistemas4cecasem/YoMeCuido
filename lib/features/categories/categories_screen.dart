@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../../app/app_router.dart';
 import '../../app/app_strings.dart';
+import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/models/final_exam.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
@@ -12,9 +14,14 @@ import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/primary_button.dart';
 
 class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({required this.contentRepository, super.key});
+  const CategoriesScreen({
+    required this.contentRepository,
+    required this.progressController,
+    super.key,
+  });
 
   final ContentRepository contentRepository;
+  final CategoryProgressController progressController;
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -35,9 +42,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
   }
 
-  void _openCategory(Category category) {
+  void _openCategory(Category category, {required bool unlocked}) {
     if (!category.isEnabled) {
       AppToast.showInfo(context, AppStrings.comingSoonSnackBar);
+      return;
+    }
+
+    if (!unlocked) {
+      AppToast.showInfo(context, AppStrings.categoryLockedByProgressSnackBar);
       return;
     }
 
@@ -68,24 +80,74 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
           final categories = snapshot.data!;
 
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (final category in categories) ...[
-                  CategoryCard(
-                    key: ValueKey(category.id),
-                    category: category,
-                    onTap: () => _openCategory(category),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                ],
-              ],
-            ),
+          return AnimatedBuilder(
+            animation: widget.progressController,
+            builder: (context, child) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (
+                      var index = 0;
+                      index < categories.length;
+                      index += 1
+                    ) ...[
+                      CategoryCard(
+                        key: ValueKey(categories[index].id),
+                        category: categories[index],
+                        isUnlocked: _isCategoryUnlocked(categories, index),
+                        lockedLabel: _lockedLabelFor(categories[index]),
+                        onTap: () => _openCategory(
+                          categories[index],
+                          unlocked: _isCategoryUnlocked(categories, index),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                    ],
+                  ],
+                ),
+              );
+            },
           );
         },
       ),
     );
+  }
+
+  bool _isCategoryUnlocked(List<Category> categories, int index) {
+    final category = categories[index];
+    if (!category.isEnabled) {
+      return false;
+    }
+    if (index == 0) {
+      return true;
+    }
+
+    return _hasCompletedCategory(categories[index - 1]);
+  }
+
+  bool _hasCompletedCategory(Category category) {
+    final progress = widget.progressController.snapshotFor(category.id);
+    final exam = category.lessonId == null
+        ? null
+        : FinalExamConfigs.forCategoryLesson(
+            categoryId: category.id,
+            lessonId: category.lessonId!,
+          );
+    final completedActivities =
+        progress.totalActivities > 0 &&
+        progress.completedActivities >= progress.totalActivities;
+    final completedExam =
+        exam == null || progress.examProgress[exam.id]?.isCompleted == true;
+
+    return completedActivities && completedExam;
+  }
+
+  String _lockedLabelFor(Category category) {
+    if (!category.isEnabled) {
+      return AppStrings.comingSoon;
+    }
+    return AppStrings.categoryLockedByProgress;
   }
 }
 

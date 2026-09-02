@@ -9,11 +9,8 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 
 const _categoriesPath = 'tool/seed/content/categories.json';
-const _lessonPath = 'tool/seed/content/relations_violence_lesson.json';
-const _activitiesPath = 'tool/seed/content/relations_violence_activities.json';
-const _questionsPath = 'tool/seed/content/relations_violence_questions.json';
+const _contentDirectoryPath = 'tool/seed/content';
 const _defaultDatabaseId = '(default)';
-const _relationsViolenceCategoryId = 'relations_violence_digital';
 
 Future<void> main(List<String> arguments) async {
   try {
@@ -68,7 +65,7 @@ Future<void> main(List<String> arguments) async {
 
     final cleanupSummary = await client.deleteObsoleteEducationalDocuments(
       desiredPaths: plan.paths,
-      categoryId: _relationsViolenceCategoryId,
+      categoryIds: bundle.categories.map((category) => category.id).toList(),
     );
     _printCleanupSummary(cleanupSummary);
     await client.write(plan.documents);
@@ -90,18 +87,14 @@ Future<EducationalContentSeedBundle> _loadSeedBundle() async {
     listKey: 'categories',
     parser: Category.fromJson,
   );
-  final lessonPages = await _loadList(
-    path: _lessonPath,
-    listKey: 'lessonPages',
-    parser: LessonPage.fromJson,
-  );
-  final activities = await _loadList(
-    path: _activitiesPath,
+  final lessonPagesByLessonId = await _loadLessonPagesByLessonId();
+  final activities = await _loadSeedContentFiles(
+    suffix: '_activities.json',
     listKey: 'activities',
     parser: LearningActivity.fromJson,
   );
-  final questions = await _loadList(
-    path: _questionsPath,
+  final questions = await _loadSeedContentFiles(
+    suffix: '_questions.json',
     listKey: 'questions',
     parser: QuizQuestion.fromJson,
   );
@@ -109,15 +102,83 @@ Future<EducationalContentSeedBundle> _loadSeedBundle() async {
   return EducationalContentSeedBundle(
     categories: categories,
     lessonPagesByCategory: <String, List<LessonPage>>{
-      _relationsViolenceCategoryId: lessonPages,
+      for (final category in categories)
+        category.id: _lessonPagesForCategory(category, lessonPagesByLessonId),
     },
     activitiesByCategory: _groupByCategory(activities),
     questionsByCategory: _groupByCategory(questions),
     examConfigsByCategory: <String, FinalExamConfig>{
-      FinalExamConfigs.relationsViolence.categoryId:
-          FinalExamConfigs.relationsViolence,
+      for (final category in categories)
+        if (category.lessonId != null)
+          category.id: FinalExamConfigs.forCategoryLesson(
+            categoryId: category.id,
+            lessonId: category.lessonId!,
+          ),
     },
   );
+}
+
+Future<Map<String, List<LessonPage>>> _loadLessonPagesByLessonId() async {
+  final lessonPagesByLessonId = <String, List<LessonPage>>{};
+  for (final file in await _seedContentFiles('_lesson.json')) {
+    final lessonId = _contentFileStem(file, '_lesson.json');
+    lessonPagesByLessonId[lessonId] = await _loadList(
+      path: file.path,
+      listKey: 'lessonPages',
+      parser: LessonPage.fromJson,
+    );
+  }
+  return lessonPagesByLessonId;
+}
+
+List<LessonPage> _lessonPagesForCategory(
+  Category category,
+  Map<String, List<LessonPage>> lessonPagesByLessonId,
+) {
+  final lessonId = category.lessonId;
+  if (lessonId == null || lessonId.trim().isEmpty) {
+    return const <LessonPage>[];
+  }
+  final lessonPages = lessonPagesByLessonId[lessonId];
+  if (lessonPages == null) {
+    throw FormatException(
+      'Category ${category.id} references missing lesson "$lessonId".',
+    );
+  }
+  return lessonPages;
+}
+
+Future<List<T>> _loadSeedContentFiles<T>({
+  required String suffix,
+  required String listKey,
+  required T Function(Map<String, Object?> json) parser,
+}) async {
+  final items = <T>[];
+  for (final file in await _seedContentFiles(suffix)) {
+    items.addAll(
+      await _loadList(path: file.path, listKey: listKey, parser: parser),
+    );
+  }
+  return items;
+}
+
+Future<List<File>> _seedContentFiles(String suffix) async {
+  final directory = Directory(_contentDirectoryPath);
+  final files = await directory
+      .list()
+      .where((entity) => entity is File && entity.path.endsWith(suffix))
+      .cast<File>()
+      .toList();
+  files.sort((a, b) => a.path.compareTo(b.path));
+  return files;
+}
+
+String _contentFileStem(File file, String suffix) {
+  final filename = file.uri.pathSegments.last;
+  if (!filename.endsWith(suffix)) {
+    throw FormatException('$filename must end with $suffix.');
+  }
+  return filename.substring(0, filename.length - suffix.length);
 }
 
 Future<List<T>> _loadList<T>({
@@ -156,10 +217,14 @@ Future<List<T>> _loadList<T>({
 }
 
 void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
+  const expectedCategories = 8;
   const expectedLessonPages = 6;
   const expectedActivities = 6;
   const expectedQuestions = 60;
   const expectedQuestionsPerActivity = 10;
+  const expectedGlobalLessonPages = expectedCategories * expectedLessonPages;
+  const expectedGlobalActivities = expectedCategories * expectedActivities;
+  const expectedGlobalQuestions = expectedCategories * expectedQuestions;
   const validCapacities = <String>{
     'reconocer',
     'responder',
@@ -168,88 +233,166 @@ void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
   };
   const validDifficulties = <String>{'básica', 'intermedia', 'avanzada'};
 
-  final categories = bundle.categories
-      .where((category) => category.id == _relationsViolenceCategoryId)
-      .toList(growable: false);
-  if (categories.length != 1) {
-    throw FormatException(
-      'Expected exactly one $_relationsViolenceCategoryId category.',
+  _ensureExactCount(bundle.categories, expectedCategories, 'categories');
+  _ensureGloballyUnique(
+    bundle.categories.map((category) => category.id),
+    'category',
+  );
+  _ensureGloballyUnique(
+    bundle.categories.map((category) => category.lessonId).whereType<String>(),
+    'lesson',
+  );
+
+  final categoryIds = bundle.categories.map((category) => category.id).toSet();
+  final allLessonPages = <LessonPage>[];
+  final allActivities = <LearningActivity>[];
+  final allQuestions = <QuizQuestion>[];
+
+  for (final category in bundle.categories) {
+    final lessonPages =
+        bundle.lessonPagesByCategory[category.id] ?? const <LessonPage>[];
+    final activities =
+        bundle.activitiesByCategory[category.id] ?? const <LearningActivity>[];
+    final questions =
+        bundle.questionsByCategory[category.id] ?? const <QuizQuestion>[];
+    final examConfig = bundle.examConfigsByCategory[category.id];
+
+    _ensureExactCount(
+      lessonPages,
+      expectedLessonPages,
+      'lesson pages for ${category.id}',
     );
-  }
-
-  final lessonPages =
-      bundle.lessonPagesByCategory[_relationsViolenceCategoryId] ??
-      const <LessonPage>[];
-  final activities =
-      bundle.activitiesByCategory[_relationsViolenceCategoryId] ??
-      const <LearningActivity>[];
-  final questions =
-      bundle.questionsByCategory[_relationsViolenceCategoryId] ??
-      const <QuizQuestion>[];
-  final examConfig = bundle.examConfigsByCategory[_relationsViolenceCategoryId];
-
-  _ensureExactCount(lessonPages, expectedLessonPages, 'lesson pages');
-  _ensureExactCount(activities, expectedActivities, 'activities');
-  _ensureExactCount(questions, expectedQuestions, 'questions');
-  if (examConfig == null) {
-    throw const FormatException('Expected one exam config.');
-  }
-  if (examConfig.questionCount != 15) {
-    throw const FormatException('Exam config must select 15 questions.');
-  }
-
-  final activityIds = activities.map((activity) => activity.id).toSet();
-  if (activityIds.length != expectedActivities) {
-    throw const FormatException('Activity ids must be unique.');
-  }
-  final questionIds = questions.map((question) => question.id).toSet();
-  if (questionIds.length != expectedQuestions) {
-    throw const FormatException('Question ids must be unique.');
-  }
-
-  final questionsByActivity = <String, int>{};
-  for (final question in questions) {
-    if (question.categoryId != _relationsViolenceCategoryId) {
-      throw const FormatException('Question categoryId is invalid.');
-    }
-    if (!activityIds.contains(question.activityId)) {
-      throw FormatException(
-        'Question ${question.id} references an invalid activityId.',
-      );
-    }
-    if (!validCapacities.contains(question.capacity)) {
-      throw FormatException('Question ${question.id} has invalid capacity.');
-    }
-    if (!validDifficulties.contains(question.difficulty)) {
-      throw FormatException('Question ${question.id} has invalid difficulty.');
-    }
-    if (question.type == QuestionType.fillBlank &&
-        question.acceptedAnswers.isEmpty) {
-      throw FormatException(
-        'Fill blank question ${question.id} requires acceptedAnswers.',
-      );
-    }
-    questionsByActivity.update(
-      question.activityId,
-      (count) => count + 1,
-      ifAbsent: () => 1,
+    _ensureExactCount(
+      activities,
+      expectedActivities,
+      'activities for ${category.id}',
     );
-  }
-
-  for (final activityId in activityIds) {
-    if (questionsByActivity[activityId] != expectedQuestionsPerActivity) {
+    _ensureExactCount(
+      questions,
+      expectedQuestions,
+      'questions for ${category.id}',
+    );
+    if (examConfig == null) {
+      throw FormatException('Expected one exam config for ${category.id}.');
+    }
+    if (examConfig.questionCount != 15) {
       throw FormatException(
-        'Activity $activityId must have $expectedQuestionsPerActivity '
-        'questions.',
+        'Exam config for ${category.id} must select 15 questions.',
       );
     }
+
+    _ensureOrderedRange(
+      lessonPages.map((page) => page.order),
+      expectedLessonPages,
+      'lesson pages for ${category.id}',
+    );
+    _ensureOrderedRange(
+      activities.map((activity) => activity.order),
+      expectedActivities,
+      'activities for ${category.id}',
+    );
+
+    final activityIds = activities.map((activity) => activity.id).toSet();
+    if (activityIds.length != expectedActivities) {
+      throw FormatException('Activity ids for ${category.id} must be unique.');
+    }
+    final questionIds = questions.map((question) => question.id).toSet();
+    if (questionIds.length != expectedQuestions) {
+      throw FormatException('Question ids for ${category.id} must be unique.');
+    }
+
+    for (final activity in activities) {
+      if (activity.categoryId != category.id) {
+        throw FormatException(
+          'Activity ${activity.id} has invalid categoryId.',
+        );
+      }
+    }
+
+    final questionsByActivity = <String, int>{};
+    for (final question in questions) {
+      if (!categoryIds.contains(question.categoryId) ||
+          question.categoryId != category.id) {
+        throw FormatException('Question ${question.id} categoryId is invalid.');
+      }
+      if (!activityIds.contains(question.activityId)) {
+        throw FormatException(
+          'Question ${question.id} references an invalid activityId.',
+        );
+      }
+      if (!validCapacities.contains(question.capacity)) {
+        throw FormatException('Question ${question.id} has invalid capacity.');
+      }
+      if (!validDifficulties.contains(question.difficulty)) {
+        throw FormatException(
+          'Question ${question.id} has invalid difficulty.',
+        );
+      }
+      if (question.type == QuestionType.fillBlank &&
+          question.acceptedAnswers.isEmpty) {
+        throw FormatException(
+          'Fill blank question ${question.id} requires acceptedAnswers.',
+        );
+      }
+      questionsByActivity.update(
+        question.activityId,
+        (count) => count + 1,
+        ifAbsent: () => 1,
+      );
+    }
+
+    for (final activityId in activityIds) {
+      if (questionsByActivity[activityId] != expectedQuestionsPerActivity) {
+        throw FormatException(
+          'Activity $activityId must have $expectedQuestionsPerActivity '
+          'questions.',
+        );
+      }
+    }
+
+    allLessonPages.addAll(lessonPages);
+    allActivities.addAll(activities);
+    allQuestions.addAll(questions);
   }
+
+  _ensureExactCount(allLessonPages, expectedGlobalLessonPages, 'lesson pages');
+  _ensureExactCount(allActivities, expectedGlobalActivities, 'activities');
+  _ensureExactCount(allQuestions, expectedGlobalQuestions, 'questions');
+  _ensureGloballyUnique(allLessonPages.map((page) => page.id), 'lesson page');
+  _ensureGloballyUnique(
+    allActivities.map((activity) => activity.id),
+    'activity',
+  );
+  _ensureGloballyUnique(
+    allQuestions.map((question) => question.id),
+    'question',
+  );
 }
 
 void _ensureExactCount(Iterable<Object?> values, int expected, String label) {
   final actual = values.length;
   if (actual != expected) {
     throw FormatException('Expected $expected $label, found $actual.');
+  }
+}
+
+void _ensureOrderedRange(Iterable<int> values, int expected, String label) {
+  final sorted = values.toList()..sort();
+  final expectedOrders = <int>[
+    for (var order = 1; order <= expected; order += 1) order,
+  ];
+  if (sorted.length != expectedOrders.length ||
+      sorted.indexed.any((entry) => entry.$2 != expectedOrders[entry.$1])) {
+    throw FormatException('$label must have orders 1 to $expected.');
+  }
+}
+
+void _ensureGloballyUnique(Iterable<String> ids, String label) {
+  final seen = <String>{};
+  for (final id in ids) {
+    if (!seen.add(id)) {
+      throw FormatException('Duplicate global $label id "$id".');
+    }
   }
 }
 
@@ -315,29 +458,45 @@ Future<String> _readAccessToken() async {
     return envToken.trim();
   }
 
-  try {
-    final result = await Process.run('gcloud', <String>[
-      'auth',
-      'application-default',
-      'print-access-token',
-    ]);
-    if (result.exitCode == 0) {
-      final token = result.stdout.toString().trim();
-      if (token.isNotEmpty) {
-        return token;
-      }
-    }
-  } on ProcessException {
-    throw const FormatException(
-      'No access token available. Install gcloud, set FIRESTORE_ACCESS_TOKEN '
-      'or pass --access-token=<token>.',
-    );
+  final applicationDefaultToken = await _readGcloudAccessToken(<String>[
+    'auth',
+    'application-default',
+    'print-access-token',
+  ]);
+  if (applicationDefaultToken != null) {
+    return applicationDefaultToken;
+  }
+
+  final userToken = await _readGcloudAccessToken(<String>[
+    'auth',
+    'print-access-token',
+  ]);
+  if (userToken != null) {
+    return userToken;
   }
 
   throw const FormatException(
     'No access token available. Set FIRESTORE_ACCESS_TOKEN or run '
     'gcloud auth application-default login.',
   );
+}
+
+Future<String?> _readGcloudAccessToken(List<String> arguments) async {
+  for (final executable in const <String>['gcloud', 'gcloud.cmd']) {
+    try {
+      final result = await Process.run(executable, arguments);
+      if (result.exitCode != 0) {
+        continue;
+      }
+      final token = result.stdout.toString().trim();
+      if (token.isNotEmpty) {
+        return token;
+      }
+    } on ProcessException {
+      continue;
+    }
+  }
+  return null;
 }
 
 void _printPlanSummary(
@@ -498,14 +657,16 @@ class _FirestoreRestClient {
 
   Future<_FirestoreCleanupSummary> deleteObsoleteEducationalDocuments({
     required List<String> desiredPaths,
-    required String categoryId,
+    required List<String> categoryIds,
   }) async {
     final desiredPathSet = desiredPaths.toSet();
     final collectionPaths = <String>[
-      'categories/$categoryId/lessonPages',
-      'categories/$categoryId/activities',
-      'categories/$categoryId/questions',
-      'categories/$categoryId/examConfig',
+      for (final categoryId in categoryIds) ...[
+        'categories/$categoryId/lessonPages',
+        'categories/$categoryId/activities',
+        'categories/$categoryId/questions',
+        'categories/$categoryId/examConfig',
+      ],
     ];
     var found = 0;
     var deleted = 0;
@@ -611,7 +772,9 @@ class _FirestoreRestClient {
       );
       request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
       if (body != null) {
-        request.write(jsonEncode(body));
+        final encodedBody = utf8.encode(jsonEncode(body));
+        request.contentLength = encodedBody.length;
+        request.add(encodedBody);
       }
 
       final response = await request.close();

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "phishing_social_activity_01",
+    "categoryId": "phishing_social_engineering",
+    "title": "Phishing, smishing y vishing",
+    "order": 1
+  },
+  {
+    "id": "phishing_social_activity_02",
+    "categoryId": "phishing_social_engineering",
+    "title": "Señales frecuentes de engaño",
+    "order": 2
+  },
+  {
+    "id": "phishing_social_activity_03",
+    "categoryId": "phishing_social_engineering",
+    "title": "Método básico de verificación",
+    "order": 3
+  },
+  {
+    "id": "phishing_social_activity_04",
+    "categoryId": "phishing_social_engineering",
+    "title": "Códigos de verificación",
+    "order": 4
+  },
+  {
+    "id": "phishing_social_activity_05",
+    "categoryId": "phishing_social_engineering",
+    "title": "Falsos familiares y falsos funcionarios",
+    "order": 5
+  },
+  {
+    "id": "phishing_social_activity_06",
+    "categoryId": "phishing_social_engineering",
+    "title": "Empleos, premios, bonos y ofertas engañosas",
+    "order": 6
+  }
+]

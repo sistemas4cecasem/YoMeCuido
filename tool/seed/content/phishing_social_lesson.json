@@ -1,0 +1,38 @@
+[
+  {
+    "id": "phishing_smishing_vishing",
+    "order": 1,
+    "title": "Phishing, smishing y vishing",
+    "body": "El phishing imita a una persona o institución para obtener información o provocar una acción. Cuando llega por SMS o mensajería suele llamarse smishing; cuando utiliza llamadas o audios, vishing.\n\nEl objetivo puede ser robar contraseñas, datos bancarios, códigos de verificación o convencer a la persona de instalar una aplicación o realizar un pago."
+  },
+  {
+    "id": "scam_warning_signals",
+    "order": 2,
+    "title": "Señales frecuentes de engaño",
+    "body": "Presta atención cuando un mensaje utiliza urgencia, miedo, secreto o promesas demasiado favorables. También son señales de riesgo las solicitudes de contraseñas, PIN, códigos temporales, pagos anticipados, enlaces extraños o aplicaciones que deben instalarse para “verificar”.\n\nUna sola señal no demuestra un fraude, pero varias juntas justifican detenerse y comprobar."
+  },
+  {
+    "id": "basic_verification_method",
+    "order": 3,
+    "title": "Método básico de verificación",
+    "body": "Cuando algo genera duda:\n1. Detén la acción.\n2. No respondas con información personal.\n3. Abre por tu cuenta la aplicación o sitio oficial.\n4. Contacta a la persona o institución mediante un canal conocido.\n5. Revisa dominio, fecha y alertas oficiales.\n6. Decide solamente después de confirmar."
+  },
+  {
+    "id": "verification_codes",
+    "order": 4,
+    "title": "Códigos de verificación",
+    "body": "Un código de un solo uso funciona como una llave temporal. Si alguien lo pide, puede estar intentando completar un inicio de sesión, una transferencia o una recuperación de cuenta.\n\nEl código debe escribirse únicamente en la pantalla oficial que tú mismo abriste. Nunca se dicta ni se reenvía por chat o llamada."
+  },
+  {
+    "id": "fake_family_officials",
+    "order": 5,
+    "title": "Falsos familiares y falsos funcionarios",
+    "body": "Una persona puede afirmar que cambió de número, que es familiar, policía, banco, empresa o institución. Fotografías, logos o datos personales no bastan para comprobar identidad.\n\nVerifica por otro canal antes de transferir dinero, entregar documentos o seguir instrucciones."
+  },
+  {
+    "id": "fake_jobs_prizes_offers",
+    "order": 6,
+    "title": "Empleos, premios, bonos y ofertas engañosas",
+    "body": "Las ofertas falsas suelen prometer ingresos rápidos, premios, créditos o empleos y después solicitan pagos, documentos o datos personales. Investiga la organización, su dominio, dirección y condiciones.\n\nDesconfía especialmente cuando debes pagar para “habilitar” un premio, empleo o beneficio.\n\nLa mejor defensa frente a la ingeniería social es detenerse antes de actuar bajo presión."
+  }
+]

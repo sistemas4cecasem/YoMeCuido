@@ -1,0 +1,38 @@
+[
+  {
+    "id": "incident_response_method",
+    "order": 1,
+    "title": "Método de respuesta: contener, proteger, documentar, informar y recuperar",
+    "body": "Cuando ocurre un incidente, el objetivo principal es limitar el daño. Un orden sencillo ayuda a actuar bajo presión:\n1. Contener: detener la acción que está causando daño.\n2. Proteger: asegurar cuentas, dinero, dispositivo o integridad física.\n3. Documentar: conservar evidencia relevante.\n4. Informar: contactar a personas, plataformas, entidades o instituciones adecuadas.\n5. Recuperar: restablecer accesos y mejorar las medidas de protección.\n\nNo todos los incidentes requieren exactamente los mismos pasos ni el mismo orden. La seguridad física siempre tiene prioridad."
+  },
+  {
+    "id": "stolen_account_response",
+    "order": 2,
+    "title": "Cuenta robada",
+    "body": "Inicia la recuperación únicamente desde el servicio oficial. Protege primero el correo principal y número de recuperación, cambia la contraseña y cierra sesiones desconocidas.\n\nRevisa dispositivos conectados y datos modificados. Si la cuenta pudo utilizarse para engañar a otras personas, avisa a tus contactos por otro canal."
+  },
+  {
+    "id": "incident_response_financial_fraud_response",
+    "order": 3,
+    "title": "Transferencia o fraude financiero",
+    "body": "Contacta inmediatamente a la entidad financiera por un canal oficial. Pregunta qué medidas pueden aplicarse y guarda comprobantes, chats, números y datos relacionados con la operación.\n\nNo realices pagos adicionales a personas que prometen recuperar el dinero."
+  },
+  {
+    "id": "malware_suspicious_app",
+    "order": 4,
+    "title": "Malware o aplicación sospechosa",
+    "body": "Si sospechas que una aplicación es maliciosa, deja de introducir credenciales en el dispositivo. Revisa permisos, accesibilidad y administradores del dispositivo, y elimina la aplicación cuando sea seguro hacerlo.\n\nCambia credenciales importantes desde otro equipo confiable y considera un restablecimiento del dispositivo si el problema continúa, después de proteger evidencia y archivos necesarios."
+  },
+  {
+    "id": "threats_physical_risk",
+    "order": 5,
+    "title": "Violencia, amenaza o riesgo físico",
+    "body": "Prioriza la seguridad de la persona. No confrontes si puede aumentar el riesgo. Guarda evidencia cuando hacerlo sea seguro y evita reenviar contenido íntimo como forma de prueba.\n\nBloquea y reporta cuando corresponda e informa a una persona de confianza. Ante peligro inmediato busca ayuda de emergencia o un lugar seguro."
+  },
+  {
+    "id": "post_incident_recovery",
+    "order": 6,
+    "title": "Recuperación y prevención después del incidente",
+    "body": "Después de contener el problema, revisa qué permitió el incidente y qué puede fortalecerse: contraseñas, autenticación, permisos, copias de seguridad, privacidad o hábitos de verificación.\n\nRecuperarse no significa solamente volver a entrar a una cuenta. También implica comprobar que no queden accesos desconocidos, movimientos pendientes o riesgos para otras personas.\n\nUn incidente puede generar miedo o vergüenza. La respuesta debe centrarse en reducir el daño y recuperar control, no en culpar a la persona afectada."
+  }
+]

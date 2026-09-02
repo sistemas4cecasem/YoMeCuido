@@ -1,0 +1,38 @@
+[
+  {
+    "id": "transfers_qr_codes",
+    "order": 1,
+    "title": "Transferencias y códigos QR",
+    "body": "Antes de confirmar una transferencia revisa beneficiario, entidad, monto y concepto. Si un QR llegó por una imagen, chat o adhesivo, la revisión final en la aplicación bancaria es indispensable.\n\nPara recibir pagos, confirma la acreditación directamente en tu cuenta. No entregues productos únicamente porque alguien muestre una captura."
+  },
+  {
+    "id": "fake_payment_receipts",
+    "order": 2,
+    "title": "Comprobantes falsos",
+    "body": "Una imagen de un comprobante puede editarse. La confirmación real debe realizarse mediante el saldo, movimiento o notificación oficial de la entidad financiera.\n\nLa presión para entregar un producto antes de verificar es una señal de riesgo."
+  },
+  {
+    "id": "marketplace_person_to_person",
+    "order": 3,
+    "title": "Marketplace y compras entre particulares",
+    "body": "Precios extremadamente bajos, apuro, adelantos inesperados, enlaces de “pago” o negativa a utilizar opciones seguras pueden indicar fraude.\n\nPara encuentros presenciales elige lugares seguros y, cuando sea posible, ve acompañado. Nunca compartas códigos SMS para “confirmar una venta”."
+  },
+  {
+    "id": "online_stores_ecommerce",
+    "order": 4,
+    "title": "Tiendas y comercio electrónico",
+    "body": "Antes de comprar revisa dominio, datos de contacto, políticas, reputación externa y método de pago. Un sitio con HTTPS puede cifrar la conexión y aun así pertenecer a un comercio falso.\n\nCuando existan alternativas, prioriza métodos que permitan reclamar o tengan protección al comprador."
+  },
+  {
+    "id": "subscriptions_dark_patterns",
+    "order": 5,
+    "title": "Suscripciones, pruebas gratuitas y patrones oscuros",
+    "body": "Algunas pruebas gratuitas se convierten en cobros recurrentes. Antes de aceptar revisa precio, periodicidad y procedimiento de cancelación.\n\nLos patrones oscuros utilizan diseños confusos para empujar a aceptar, pagar o dificultar la cancelación. Leer antes de confirmar también es una habilidad de seguridad digital."
+  },
+  {
+    "id": "financial_fraud_response",
+    "order": 6,
+    "title": "Respuesta ante fraude financiero",
+    "body": "Contacta inmediatamente a la entidad financiera mediante un canal oficial. Pregunta por bloqueo, revisión o rastreo según el servicio y guarda comprobantes, chats, números y datos del destinatario.\n\nNo realices pagos adicionales a personas que prometen “recuperar” el dinero. Cuando corresponda, conserva la información necesaria para realizar un reporte o denuncia.\n\nUna captura no confirma un pago: verifica siempre dentro de la aplicación o canal oficial de la entidad."
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "strong_unique_passwords",
+    "order": 1,
+    "title": "Contraseñas largas, únicas y difíciles de adivinar",
+    "body": "Una contraseña protege una cuenta mientras no pueda adivinarse fácilmente ni haya sido obtenida por otra persona. Para las cuentas importantes conviene utilizar claves largas y diferentes para cada servicio. Reutilizar la misma contraseña hace que una filtración pueda afectar varias cuentas al mismo tiempo.\n\nEvita utilizar nombres, fechas de nacimiento, números de celular, equipos favoritos u otros datos fáciles de conocer. Cambiar letras por símbolos de forma predecible tampoco convierte una palabra común en una contraseña segura.\n\nIdea clave: es más importante una contraseña larga, única y no reutilizada que una clave corta llena de símbolos difíciles de recordar."
+  },
+  {
+    "id": "passphrases_password_managers",
+    "order": 2,
+    "title": "Frases de acceso y gestores de contraseñas",
+    "body": "Una frase de acceso combina varias palabras para crear una clave larga y más fácil de recordar. Para manejar muchas cuentas, un gestor de contraseñas puede generar y guardar claves distintas sin obligar a memorizar todas.\n\nLa contraseña maestra del gestor debe protegerse especialmente y no debe compartirse. YoMeCuido nunca debe solicitar contraseñas reales como parte de una actividad."
+  },
+  {
+    "id": "two_step_multifactor_authentication",
+    "order": 3,
+    "title": "Verificación en dos pasos y autenticación multifactor",
+    "body": "La verificación en dos pasos agrega una segunda comprobación además de la contraseña. Puede utilizar una aplicación autenticadora, una llave de seguridad, una notificación, una passkey o un código temporal.\n\nEsta protección reduce el riesgo de que una contraseña robada sea suficiente para entrar a una cuenta. Sin embargo, los códigos de verificación también son secretos: no deben dictarse, reenviarse ni compartirse por llamada o chat."
+  },
+  {
+    "id": "account_recovery",
+    "order": 4,
+    "title": "Recuperación de cuentas",
+    "body": "El correo, teléfono y métodos de recuperación forman parte de la seguridad de una cuenta. Deben mantenerse actualizados y bajo control de la persona propietaria.\n\nCuando un servicio ofrece códigos de respaldo, conviene guardarlos en un lugar seguro. La recuperación siempre debe iniciarse desde la aplicación o el sitio oficial, nunca desde enlaces enviados por personas desconocidas."
+  },
+  {
+    "id": "sessions_devices_access_alerts",
+    "order": 5,
+    "title": "Sesiones, dispositivos y alertas de acceso",
+    "body": "Muchas plataformas permiten revisar desde qué dispositivos o lugares se inició sesión. Una alerta desconocida puede indicar que otra persona obtuvo acceso.\n\nAnte una sesión que no reconoces, revisa los dispositivos conectados, cierra sesiones sospechosas y verifica si cambiaron el correo, teléfono u otros métodos de recuperación."
+  },
+  {
+    "id": "compromised_account_response",
+    "order": 6,
+    "title": "¿Qué hacer si una cuenta fue comprometida?",
+    "body": "Si sospechas que una cuenta fue robada, prioriza primero el correo principal y los métodos de recuperación. Después cambia la contraseña desde un dispositivo confiable, cierra otras sesiones y activa o revisa la verificación en dos pasos.\n\nTambién conviene avisar a tus contactos si la cuenta pudo utilizarse para enviar mensajes fraudulentos y conservar evidencia de accesos o cambios no reconocidos.\n\nRecuerda: nadie necesita conocer tu contraseña o código temporal para ayudarte a proteger una cuenta."
+  }
+]

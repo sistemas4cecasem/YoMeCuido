@@ -1,0 +1,38 @@
+[
+  {
+    "id": "information_ai_activity_01",
+    "categoryId": "information_misinformation_ai",
+    "title": "Información errónea y desinformación",
+    "order": 1
+  },
+  {
+    "id": "information_ai_activity_02",
+    "categoryId": "information_misinformation_ai",
+    "title": "Autor, fecha y contexto",
+    "order": 2
+  },
+  {
+    "id": "information_ai_activity_03",
+    "categoryId": "information_misinformation_ai",
+    "title": "Verificación con otras fuentes",
+    "order": 3
+  },
+  {
+    "id": "information_ai_activity_04",
+    "categoryId": "information_misinformation_ai",
+    "title": "Imágenes, audios, videos y deepfakes",
+    "order": 4
+  },
+  {
+    "id": "information_ai_activity_05",
+    "categoryId": "information_misinformation_ai",
+    "title": "Cadenas, alertas y mensajes virales",
+    "order": 5
+  },
+  {
+    "id": "information_ai_activity_06",
+    "categoryId": "information_misinformation_ai",
+    "title": "Uso responsable de inteligencia artificial",
+    "order": 6
+  }
+]

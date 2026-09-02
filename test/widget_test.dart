@@ -106,8 +106,11 @@ void main() {
     }
   }
 
-  Future<void> openCategories(WidgetTester tester) async {
-    await pumpApp(tester);
+  Future<void> openCategories(
+    WidgetTester tester, {
+    CategoryProgressController? progressController,
+  }) async {
+    await pumpApp(tester, progressController: progressController);
     await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
     await tester.pumpAndSettle();
   }
@@ -161,26 +164,24 @@ void main() {
     expect(find.text('Relaciones y violencia digital'), findsOneWidget);
   });
 
-  testWidgets('se muestran ocho categorías y solo una habilitada', (
-    tester,
-  ) async {
-    await openCategories(tester);
+  testWidgets(
+    'se muestran ocho categorías y solo la primera está desbloqueada',
+    (tester) async {
+      await openCategories(tester);
 
-    for (final category in repository.categories) {
-      expect(find.text(category.title), findsOneWidget);
-    }
+      for (final category in repository.categories) {
+        expect(find.text(category.title), findsOneWidget);
+      }
 
-    final enabled = repository.categories.where((category) {
-      return category.isEnabled;
-    });
-    final locked = repository.categories.where((category) {
-      return !category.isEnabled;
-    });
-
-    expect(enabled, hasLength(1));
-    expect(find.text(AppStrings.comingSoon), findsNWidgets(locked.length));
-    expect(find.byIcon(Icons.lock_outline), findsWidgets);
-  });
+      expect(repository.categories, everyElement(isA<Category>()));
+      expect(find.text(AppStrings.comingSoon), findsNothing);
+      expect(
+        find.text(AppStrings.categoryLockedByProgress),
+        findsNWidgets(repository.categories.length - 1),
+      );
+      expect(find.byIcon(Icons.lock_outline), findsWidgets);
+    },
+  );
 
   testWidgets('las categorías bloqueadas no navegan', (tester) async {
     await openCategories(tester);
@@ -190,8 +191,40 @@ void main() {
 
     expect(find.text(AppStrings.theoryTitle), findsNothing);
     expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
-    expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
+    expect(
+      find.text(AppStrings.categoryLockedByProgressSnackBar),
+      findsOneWidget,
+    );
   });
+
+  testWidgets(
+    'la siguiente categoría se desbloquea al completar categoría y examen',
+    (tester) async {
+      final progressController = CategoryProgressController();
+      progressController.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _completedActivitiesRecord(
+            repository.activities,
+            includeCompletedExam: true,
+          ),
+        ],
+      );
+
+      await openCategories(tester, progressController: progressController);
+
+      expect(
+        find.text(AppStrings.categoryLockedByProgress),
+        findsNWidgets(repository.categories.length - 2),
+      );
+
+      await tester.tap(find.text('Protección de cuentas y autenticación'));
+      await tester.pumpAndSettle();
+
+      expect(find.text(AppStrings.theoryTitle), findsOneWidget);
+      expect(find.text('Protección de cuentas y autenticación'), findsWidgets);
+    },
+  );
 
   testWidgets('abre el detalle desde la categoría habilitada', (tester) async {
     await openDetail(tester);
@@ -563,8 +596,9 @@ Finder _firstVisibleText(WidgetTester tester, List<Finder> candidates) {
 }
 
 CategoryProgressRecord _completedActivitiesRecord(
-  List<LearningActivity> activities,
-) {
+  List<LearningActivity> activities, {
+  bool includeCompletedExam = false,
+}) {
   final now = DateTime.utc(2026, 8, 27, 12);
   final activityRecords = <String, ActivityProgressRecord>{
     for (final activity in activities)
@@ -601,7 +635,21 @@ CategoryProgressRecord _completedActivitiesRecord(
     completedAt: now,
     updatedAt: now,
     activities: activityRecords,
-    exams: const <String, ExamProgressRecord>{},
+    exams: includeCompletedExam
+        ? <String, ExamProgressRecord>{
+            FinalExamConfigs.relationsViolence.id: ExamProgressRecord(
+              examId: FinalExamConfigs.relationsViolence.id,
+              status: ActivityProgressStatus.completed,
+              attemptCount: 1,
+              bestCorrectAnswers: 15,
+              bestTotalQuestions: 15,
+              bestPercentage: 100,
+              lastAttemptAt: now,
+              completedAt: now,
+              updatedAt: now,
+            ),
+          }
+        : const <String, ExamProgressRecord>{},
   );
 }
 
@@ -687,72 +735,79 @@ class _FakeContentRepository implements ContentRepository {
     Category(
       id: 'account_protection_authentication',
       title: 'Protección de cuentas y autenticación',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a proteger tus cuentas.',
       iconName: 'lock_outline',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Proteger cuentas.'],
+      lessonId: 'accounts_auth',
     ),
     Category(
       id: 'device_app_security',
       title: 'Seguridad de dispositivos y aplicaciones',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a proteger tus dispositivos.',
       iconName: 'phone_android_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Proteger dispositivos.'],
+      lessonId: 'device_security',
     ),
     Category(
       id: 'personal_data_privacy_identity',
       title: 'Datos personales, privacidad e identidad',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a cuidar tus datos.',
       iconName: 'badge_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Cuidar datos personales.'],
+      lessonId: 'privacy_identity',
     ),
     Category(
       id: 'phishing_social_engineering',
       title: 'Engaños, phishing e ingeniería social',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a reconocer engaños.',
       iconName: 'mark_email_unread_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Reconocer engaños.'],
+      lessonId: 'phishing_social',
     ),
     Category(
       id: 'digital_payments_consumption',
       title: 'Pagos, transferencias, compras y consumo digital',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a comprar y pagar con seguridad.',
       iconName: 'credit_card_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Proteger pagos digitales.'],
+      lessonId: 'payments_digital',
     ),
     Category(
       id: 'information_misinformation_ai',
       title: 'Información, desinformación e inteligencia artificial',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a verificar información.',
       iconName: 'fact_check_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Verificar información.'],
+      lessonId: 'information_ai',
     ),
     Category(
       id: 'incident_response_recovery',
       title: 'Respuesta y recuperación ante incidentes',
-      description: 'Esta categoría estará disponible próximamente.',
+      description: 'Aprende a responder ante incidentes.',
       iconName: 'health_and_safety_outlined',
-      status: CategoryStatus.comingSoon,
-      isEnabled: false,
-      indicators: <String>[],
-      objectives: <String>[],
+      status: CategoryStatus.available,
+      isEnabled: true,
+      indicators: <String>['6 actividades'],
+      objectives: <String>['Responder ante incidentes.'],
+      lessonId: 'incident_response',
     ),
   ];
 

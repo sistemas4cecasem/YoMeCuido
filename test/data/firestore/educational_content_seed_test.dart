@@ -16,18 +16,25 @@ void main() {
       final plan = EducationalContentSeedBuilder.build(bundle);
 
       expect(plan.categoryCount, 8);
-      expect(plan.lessonPageCount, 6);
-      expect(plan.activityCount, 6);
-      expect(plan.questionCount, 60);
-      expect(plan.examConfigCount, 1);
-      expect(plan.documents, hasLength(81));
+      expect(plan.lessonPageCount, 48);
+      expect(plan.activityCount, 48);
+      expect(plan.questionCount, 480);
+      expect(plan.examConfigCount, 8);
+      expect(plan.documents, hasLength(592));
+      expect(bundle.categories.map((category) => category.id), <String>[
+        'account_protection_authentication',
+        'device_app_security',
+        'personal_data_privacy_identity',
+        'phishing_social_engineering',
+        'information_misinformation_ai',
+        'digital_payments_consumption',
+        'relations_violence_digital',
+        'incident_response_recovery',
+      ]);
       expect(plan.paths, contains('categories/relations_violence_digital'));
       expect(
         plan.paths,
-        contains(
-          'categories/relations_violence_digital/'
-          'lessonPages/control_privacy_digital_boundaries',
-        ),
+        contains('categories/account_protection_authentication'),
       );
       expect(
         plan.paths,
@@ -46,6 +53,12 @@ void main() {
       expect(
         plan.paths,
         contains('categories/relations_violence_digital/examConfig/final'),
+      );
+      expect(
+        plan.paths,
+        contains(
+          'categories/account_protection_authentication/examConfig/final',
+        ),
       );
     });
 
@@ -202,33 +215,79 @@ Future<EducationalContentSeedBundle> _loadCurrentBundle() async {
     'categories',
     Category.fromJson,
   );
-  final lessonPages = await _loadList(
-    'tool/seed/content/relations_violence_lesson.json',
-    'lessonPages',
-    LessonPage.fromJson,
+  final lessonPagesByLessonId = <String, List<LessonPage>>{};
+  for (final file in await _seedContentFiles('_lesson.json')) {
+    lessonPagesByLessonId[_contentFileStem(file, '_lesson.json')] =
+        await _loadList(file.path, 'lessonPages', LessonPage.fromJson);
+  }
+  final activities = await _loadSeedContentFiles(
+    suffix: '_activities.json',
+    listKey: 'activities',
+    parser: LearningActivity.fromJson,
   );
-  final activities = await _loadList(
-    'tool/seed/content/relations_violence_activities.json',
-    'activities',
-    LearningActivity.fromJson,
-  );
-  final questions = await _loadList(
-    'tool/seed/content/relations_violence_questions.json',
-    'questions',
-    QuizQuestion.fromJson,
+  final questions = await _loadSeedContentFiles(
+    suffix: '_questions.json',
+    listKey: 'questions',
+    parser: QuizQuestion.fromJson,
   );
 
   return EducationalContentSeedBundle(
     categories: categories,
-    lessonPagesByCategory: <String, List<LessonPage>>{_categoryId: lessonPages},
-    activitiesByCategory: <String, List<LearningActivity>>{
-      _categoryId: activities,
+    lessonPagesByCategory: <String, List<LessonPage>>{
+      for (final category in categories)
+        category.id: lessonPagesByLessonId[category.lessonId] ?? const [],
     },
-    questionsByCategory: <String, List<QuizQuestion>>{_categoryId: questions},
+    activitiesByCategory: _groupByCategory(activities),
+    questionsByCategory: _groupByCategory(questions),
     examConfigsByCategory: <String, FinalExamConfig>{
-      _categoryId: FinalExamConfigs.relationsViolence,
+      for (final category in categories)
+        if (category.lessonId != null)
+          category.id: FinalExamConfigs.forCategoryLesson(
+            categoryId: category.id,
+            lessonId: category.lessonId!,
+          ),
     },
   );
+}
+
+Future<List<T>> _loadSeedContentFiles<T>({
+  required String suffix,
+  required String listKey,
+  required T Function(Map<String, Object?> json) parser,
+}) async {
+  final items = <T>[];
+  for (final file in await _seedContentFiles(suffix)) {
+    items.addAll(await _loadList(file.path, listKey, parser));
+  }
+  return items;
+}
+
+Future<List<File>> _seedContentFiles(String suffix) async {
+  final files = await Directory('tool/seed/content')
+      .list()
+      .where((entity) => entity is File && entity.path.endsWith(suffix))
+      .cast<File>()
+      .toList();
+  files.sort((a, b) => a.path.compareTo(b.path));
+  return files;
+}
+
+String _contentFileStem(File file, String suffix) {
+  final filename = file.uri.pathSegments.last;
+  return filename.substring(0, filename.length - suffix.length);
+}
+
+Map<String, List<T>> _groupByCategory<T>(Iterable<T> items) {
+  final grouped = <String, List<T>>{};
+  for (final item in items) {
+    final categoryId = switch (item) {
+      LearningActivity() => item.categoryId,
+      QuizQuestion() => item.categoryId,
+      _ => throw ArgumentError('Unsupported content item "$item".'),
+    };
+    grouped.putIfAbsent(categoryId, () => <T>[]).add(item);
+  }
+  return grouped;
 }
 
 Future<List<T>> _loadList<T>(

@@ -1,0 +1,1477 @@
+[
+  {
+    "id": "phishing_social_q01",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué describe mejor el phishing?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "Un engaño que imita a una persona o institución para obtener datos o provocar una acción."
+      },
+      {
+        "id": "q01_o2",
+        "text": "Una actualización automática."
+      },
+      {
+        "id": "q01_o3",
+        "text": "Una copia de seguridad."
+      },
+      {
+        "id": "q01_o4",
+        "text": "Un bloqueo de pantalla."
+      }
+    ],
+    "correctAnswer": "q01_o1",
+    "acceptedAnswers": [],
+    "feedback": "El phishing utiliza apariencia o mensajes de confianza para robar información, dinero o acceso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q02",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "fillBlank",
+    "statement": "El phishing que llega principalmente por SMS o mensajería se conoce como __.",
+    "options": [],
+    "correctAnswer": "smishing",
+    "acceptedAnswers": [
+      "smishing",
+      "phishing por sms",
+      "phishing por mensaje"
+    ],
+    "feedback": "El smishing adapta el engaño a mensajes de texto o aplicaciones de mensajería.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q03",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "fillBlank",
+    "statement": "Una llamada fraudulenta que busca manipularte para obtener datos se conoce como __.",
+    "options": [],
+    "correctAnswer": "vishing",
+    "acceptedAnswers": [
+      "vishing",
+      "phishing por voz",
+      "phishing por llamada"
+    ],
+    "feedback": "El vishing utiliza voz, llamadas o audios para generar confianza o presión.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q04",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "trueFalse",
+    "statement": "Un mensaje bien escrito y con el logo correcto puede seguir siendo phishing.",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q04_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q04_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los atacantes pueden copiar diseños y redactar mensajes convincentes.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q05",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "multipleChoice",
+    "statement": "Recibes un correo que imita a tu banco y pide iniciar sesión desde un enlace. ¿Qué riesgo principal existe?",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Que el enlace lleve a una página falsa para robar credenciales."
+      },
+      {
+        "id": "q05_o2",
+        "text": "Que aumente la batería."
+      },
+      {
+        "id": "q05_o3",
+        "text": "Que se cierre el Wi-Fi."
+      },
+      {
+        "id": "q05_o4",
+        "text": "Que cambie el idioma."
+      }
+    ],
+    "correctAnswer": "q05_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las páginas falsas pueden capturar contraseñas y otros datos de acceso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q06",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "trueFalse",
+    "statement": "El phishing solo puede llegar por correo electrónico.",
+    "options": [
+      {
+        "id": "q06_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q06_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q06_o2",
+    "acceptedAnswers": [],
+    "feedback": "Puede llegar por correo, chat, SMS, llamadas, audios, redes sociales y otros medios.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q07",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una llamada dice ser del banco y solicita tu contraseña para “validarte”. ¿Qué modalidad podría ser?",
+    "options": [
+      {
+        "id": "q07_o1",
+        "text": "Vishing."
+      },
+      {
+        "id": "q07_o2",
+        "text": "Copia de seguridad."
+      },
+      {
+        "id": "q07_o3",
+        "text": "Actualización."
+      },
+      {
+        "id": "q07_o4",
+        "text": "Biometría."
+      }
+    ],
+    "correctAnswer": "q07_o1",
+    "acceptedAnswers": [],
+    "feedback": "El vishing usa la voz para obtener datos o inducir acciones.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q08",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "multipleChoice",
+    "statement": "Un SMS afirma que debes pagar una deuda desde un enlace desconocido. ¿Qué modalidad puede estar usando?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Smishing."
+      },
+      {
+        "id": "q08_o2",
+        "text": "Respaldo."
+      },
+      {
+        "id": "q08_o3",
+        "text": "Autenticación biométrica."
+      },
+      {
+        "id": "q08_o4",
+        "text": "Cifrado."
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "El smishing utiliza mensajes para dirigir a sitios falsos o solicitar información.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q09",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "fillBlank",
+    "statement": "La técnica general de hacerse pasar por una entidad para robar datos se llama __.",
+    "options": [],
+    "correctAnswer": "phishing",
+    "acceptedAnswers": [
+      "phishing",
+      "suplantación fraudulenta",
+      "suplantacion fraudulenta"
+    ],
+    "feedback": "El phishing busca explotar la confianza de la persona en una identidad aparente.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q10",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué tienen en común phishing, smishing y vishing?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Buscan manipular a la persona para que entregue información o realice una acción."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Son mecanismos oficiales de seguridad."
+      },
+      {
+        "id": "q10_o3",
+        "text": "Siempre requieren malware."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Solo afectan computadoras."
+      }
+    ],
+    "correctAnswer": "q10_o1",
+    "acceptedAnswers": [],
+    "feedback": "El canal cambia, pero el objetivo de manipulación puede ser el mismo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q11",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "multipleChoice",
+    "statement": "Un mensaje dice: “Tu cuenta será bloqueada en cinco minutos; actúa ahora”. ¿Qué señal utiliza?",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Urgencia."
+      },
+      {
+        "id": "q11_o2",
+        "text": "Copia de seguridad."
+      },
+      {
+        "id": "q11_o3",
+        "text": "Privacidad."
+      },
+      {
+        "id": "q11_o4",
+        "text": "Actualización normal."
+      }
+    ],
+    "correctAnswer": "q11_o1",
+    "acceptedAnswers": [],
+    "feedback": "La urgencia busca reducir el tiempo disponible para pensar y verificar.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q12",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "trueFalse",
+    "statement": "Una sola señal extraña demuestra siempre que un mensaje es fraudulento.",
+    "options": [
+      {
+        "id": "q12_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q12_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q12_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una señal puede justificar precaución; varias señales juntas aumentan la sospecha.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q13",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "fillBlank",
+    "statement": "La presión para actuar inmediatamente utiliza una sensación de __.",
+    "options": [],
+    "correctAnswer": "urgencia",
+    "acceptedAnswers": [
+      "urgencia"
+    ],
+    "feedback": "Detenerse reduce el efecto de la presión emocional.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q14",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué combinación aumenta más la sospecha?",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "Urgencia, secreto y solicitud de dinero o códigos."
+      },
+      {
+        "id": "q14_o2",
+        "text": "Información verificable en un canal oficial."
+      },
+      {
+        "id": "q14_o3",
+        "text": "Un aviso esperado dentro de la aplicación oficial."
+      },
+      {
+        "id": "q14_o4",
+        "text": "Una conversación normal sin solicitudes sensibles."
+      }
+    ],
+    "correctAnswer": "q14_o1",
+    "acceptedAnswers": [],
+    "feedback": "La acumulación de presión, aislamiento y peticiones sensibles es una señal importante.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q15",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "trueFalse",
+    "statement": "Un mensaje que exige “no se lo cuentes a nadie” puede estar intentando aislarte para que no verifiques con otra persona.",
+    "options": [
+      {
+        "id": "q15_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q15_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q15_o1",
+    "acceptedAnswers": [],
+    "feedback": "El secreto reduce la posibilidad de consultar y detectar el engaño.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q16",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "fillBlank",
+    "statement": "Cuando un engaño intenta que no consultes a nadie utiliza la señal de __.",
+    "options": [],
+    "correctAnswer": "secreto",
+    "acceptedAnswers": [
+      "secreto"
+    ],
+    "feedback": "El aislamiento es una herramienta frecuente de manipulación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q17",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué solicitud debe despertar especial precaución?",
+    "options": [
+      {
+        "id": "q17_o1",
+        "text": "Pedir contraseñas, PIN o códigos temporales."
+      },
+      {
+        "id": "q17_o2",
+        "text": "Indicar el horario oficial de atención."
+      },
+      {
+        "id": "q17_o3",
+        "text": "Publicar una política de privacidad."
+      },
+      {
+        "id": "q17_o4",
+        "text": "Explicar un trámite sin pedir datos sensibles."
+      }
+    ],
+    "correctAnswer": "q17_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las credenciales y códigos pueden permitir accesos o movimientos no autorizados.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q18",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "multipleChoice",
+    "statement": "“Ganaste un premio enorme, pero paga ahora para no perderlo”. ¿Qué señales aparecen?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Promesa demasiado favorable y presión para pagar."
+      },
+      {
+        "id": "q18_o2",
+        "text": "Verificación independiente."
+      },
+      {
+        "id": "q18_o3",
+        "text": "Recuperación de cuenta."
+      },
+      {
+        "id": "q18_o4",
+        "text": "Protección de datos."
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las promesas extraordinarias combinadas con pagos urgentes son comunes en fraudes.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q19",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "trueFalse",
+    "statement": "Que el remitente conozca tu nombre o datos familiares garantiza que es quien dice ser.",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q19_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q19_o2",
+    "acceptedAnswers": [],
+    "feedback": "La información personal puede obtenerse de redes, filtraciones o fuentes públicas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q20",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes hacer cuando varias señales de engaño aparecen juntas?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Detenerte y verificar antes de actuar."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Responder más rápido."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Entregar un código para comprobar."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Pagar una cantidad pequeña como prueba."
+      }
+    ],
+    "correctAnswer": "q20_o1",
+    "acceptedAnswers": [],
+    "feedback": "La pausa permite recuperar control y comprobar la situación.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q21",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es el primer paso ante un mensaje que genera duda?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Detener la acción y no entregar información."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Responder inmediatamente."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Hacer un pago de prueba."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Instalar cualquier archivo indicado."
+      }
+    ],
+    "correctAnswer": "q21_o1",
+    "acceptedAnswers": [],
+    "feedback": "Pausar evita actuar únicamente por miedo, urgencia o presión.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q22",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "trueFalse",
+    "statement": "Para verificar un mensaje bancario sospechoso es preferible abrir por tu cuenta la app oficial en lugar de usar el enlace recibido.",
+    "options": [
+      {
+        "id": "q22_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q22_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q22_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un canal iniciado por ti evita depender del medio controlado por el posible atacante.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q23",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "fillBlank",
+    "statement": "Comprobar una solicitud utilizando otro número, sitio o aplicación conocida es una verificación __.",
+    "options": [],
+    "correctAnswer": "independiente",
+    "acceptedAnswers": [
+      "independiente"
+    ],
+    "feedback": "La verificación independiente utiliza un canal que no depende del mensaje sospechoso.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q24",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes revisar en un enlace antes de confiar?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "El dominio completo y si coincide con el oficial."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Solo el color del texto."
+      },
+      {
+        "id": "q24_o3",
+        "text": "La cantidad de emojis."
+      },
+      {
+        "id": "q24_o4",
+        "text": "La hora del mensaje."
+      }
+    ],
+    "correctAnswer": "q24_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los atacantes usan dominios parecidos para imitar servicios legítimos.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q25",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "trueFalse",
+    "statement": "Un enlace acortado puede ocultar el destino real al que conduce.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q25_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los enlaces acortados dificultan conocer la dirección antes de abrirla.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q26",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "fillBlank",
+    "statement": "La dirección principal que identifica a un sitio web se llama __.",
+    "options": [],
+    "correctAnswer": "dominio",
+    "acceptedAnswers": [
+      "dominio"
+    ],
+    "feedback": "El dominio debe coincidir con el servicio que esperas visitar.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q27",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "multipleChoice",
+    "statement": "Un familiar te escribe desde un número nuevo pidiendo dinero. ¿Cómo aplicas una verificación independiente?",
+    "options": [
+      {
+        "id": "q27_o1",
+        "text": "Llamas al número que ya conocías o consultas a otra persona cercana."
+      },
+      {
+        "id": "q27_o2",
+        "text": "Transfieres de inmediato."
+      },
+      {
+        "id": "q27_o3",
+        "text": "Le envías tu contraseña."
+      },
+      {
+        "id": "q27_o4",
+        "text": "Mantienes secreto el pedido."
+      }
+    ],
+    "correctAnswer": "q27_o1",
+    "acceptedAnswers": [],
+    "feedback": "La identidad debe confirmarse mediante un canal distinto al utilizado para pedir dinero.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q28",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué paso debe ocurrir antes de decidir si realizas una acción sensible?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Confirmar la solicitud mediante una fuente o canal oficial."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Compartir primero tus datos."
+      },
+      {
+        "id": "q28_o3",
+        "text": "Pagar para ganar tiempo."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Borrar el mensaje sin registrar nada."
+      }
+    ],
+    "correctAnswer": "q28_o1",
+    "acceptedAnswers": [],
+    "feedback": "La decisión debe basarse en una comprobación y no solo en la apariencia del mensaje.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q29",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "trueFalse",
+    "statement": "Si no puedes confirmar una solicitud sensible, lo más prudente es posponer la acción hasta poder verificarla.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "No existe obligación de actuar bajo presión cuando la autenticidad no está clara.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q30",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia resume el método básico de verificación?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "Detenerse, no entregar datos, abrir el canal oficial, comprobar y decidir después."
+      },
+      {
+        "id": "q30_o2",
+        "text": "Abrir el enlace, enviar códigos y verificar luego."
+      },
+      {
+        "id": "q30_o3",
+        "text": "Pagar primero y preguntar después."
+      },
+      {
+        "id": "q30_o4",
+        "text": "Confiar en logos y fotografías."
+      }
+    ],
+    "correctAnswer": "q30_o1",
+    "acceptedAnswers": [],
+    "feedback": "Verificar por un canal independiente rompe la presión del engaño.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q31",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué representa un código de verificación de un solo uso?",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "Una llave temporal para confirmar una acción."
+      },
+      {
+        "id": "q31_o2",
+        "text": "Un dato público."
+      },
+      {
+        "id": "q31_o3",
+        "text": "Un número para compartir con soporte."
+      },
+      {
+        "id": "q31_o4",
+        "text": "Un identificador sin importancia."
+      }
+    ],
+    "correctAnswer": "q31_o1",
+    "acceptedAnswers": [],
+    "feedback": "El código puede confirmar accesos, transferencias o recuperaciones.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q32",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "trueFalse",
+    "statement": "Un código temporal puede permitir que otra persona complete un inicio de sesión si se lo compartes.",
+    "options": [
+      {
+        "id": "q32_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q32_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q32_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos deben mantenerse bajo control de quien inició la acción legítima.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q33",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "fillBlank",
+    "statement": "Un código que funciona durante poco tiempo puede considerarse una llave __.",
+    "options": [],
+    "correctAnswer": "temporal",
+    "acceptedAnswers": [
+      "temporal"
+    ],
+    "feedback": "Su corta duración no lo vuelve seguro para compartir.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q34",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "multipleChoice",
+    "statement": "Un supuesto empleado del banco pide el código que acaba de llegar a tu celular. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "Lo dictas."
+      },
+      {
+        "id": "q34_o2",
+        "text": "No lo compartes y contactas al banco por su canal oficial."
+      },
+      {
+        "id": "q34_o3",
+        "text": "Envías una captura."
+      },
+      {
+        "id": "q34_o4",
+        "text": "Lo publicas."
+      }
+    ],
+    "correctAnswer": "q34_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las instituciones no necesitan que entregues códigos temporales por llamada o chat.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q35",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "trueFalse",
+    "statement": "Un código debe escribirse únicamente en una pantalla oficial correspondiente a una acción que tú mismo iniciaste.",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q35_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q35_o1",
+    "acceptedAnswers": [],
+    "feedback": "Esto reduce el riesgo de autorizar acciones iniciadas por otra persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q36",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "multipleChoice",
+    "statement": "Recibes un código sin haber intentado iniciar sesión. ¿Qué puede significar?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Que otra persona está intentando realizar una acción con tu cuenta."
+      },
+      {
+        "id": "q36_o2",
+        "text": "Que debes reenviar el código."
+      },
+      {
+        "id": "q36_o3",
+        "text": "Que tu contraseña es pública."
+      },
+      {
+        "id": "q36_o4",
+        "text": "Que debes desactivar la seguridad."
+      }
+    ],
+    "correctAnswer": "q36_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un código inesperado puede ser señal de un intento de acceso o recuperación.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q37",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "fillBlank",
+    "statement": "Un código enviado para confirmar una acción no debe ser __ con otras personas.",
+    "options": [],
+    "correctAnswer": "compartido",
+    "acceptedAnswers": [
+      "compartido"
+    ],
+    "feedback": "Compartirlo puede entregar la autorización temporal a otra persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q38",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "multipleChoice",
+    "statement": "Alguien afirma que necesita tu código para cancelar una transferencia. ¿Cuál es la conducta más segura?",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Entregarlo para cancelar."
+      },
+      {
+        "id": "q38_o2",
+        "text": "No compartirlo y consultar directamente a la entidad financiera."
+      },
+      {
+        "id": "q38_o3",
+        "text": "Publicarlo en redes."
+      },
+      {
+        "id": "q38_o4",
+        "text": "Enviar también el PIN."
+      }
+    ],
+    "correctAnswer": "q38_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las cancelaciones o revisiones deben gestionarse por canales oficiales sin entregar credenciales.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q39",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "trueFalse",
+    "statement": "Que un código caduque en pocos minutos significa que no puede causar daño si lo compartes durante ese tiempo.",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q39_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q39_o2",
+    "acceptedAnswers": [],
+    "feedback": "Precisamente durante su vigencia puede utilizarse para autorizar una acción.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q40",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es la regla más segura con códigos de verificación?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Usarlos solo en el proceso oficial que tú iniciaste y no reenviarlos."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Compartirlos con cualquier soporte."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Dictarlos si conocen tu nombre."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Publicarlos cuando no estés seguro."
+      }
+    ],
+    "correctAnswer": "q40_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos funcionan como secretos temporales y deben tratarse como tales.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q41",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "multipleChoice",
+    "statement": "Un familiar escribe desde un número nuevo y pide dinero urgente. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Transfieres inmediatamente."
+      },
+      {
+        "id": "q41_o2",
+        "text": "Verificas su identidad por el número conocido u otro canal."
+      },
+      {
+        "id": "q41_o3",
+        "text": "Le envías tu contraseña."
+      },
+      {
+        "id": "q41_o4",
+        "text": "Mantienes todo en secreto."
+      }
+    ],
+    "correctAnswer": "q41_o2",
+    "acceptedAnswers": [],
+    "feedback": "Un número nuevo no demuestra por sí mismo que la persona sea quien dice ser.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q42",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "trueFalse",
+    "statement": "Una fotografía de perfil familiar es prueba suficiente para confirmar la identidad de quien escribe.",
+    "options": [
+      {
+        "id": "q42_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q42_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q42_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las fotografías pueden copiarse y utilizarse en cuentas falsas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q43",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "fillBlank",
+    "statement": "Comprobar una identidad mediante un medio diferente al mensaje recibido es verificar por otro __.",
+    "options": [],
+    "correctAnswer": "canal",
+    "acceptedAnswers": [
+      "canal"
+    ],
+    "feedback": "Un canal independiente dificulta que el mismo atacante controle toda la verificación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q44",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "multipleChoice",
+    "statement": "Un supuesto funcionario dice que debes instalar una app para “verificar tu identidad”. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "La instalas de inmediato."
+      },
+      {
+        "id": "q44_o2",
+        "text": "Cortas la comunicación y consultas a la institución por un canal oficial."
+      },
+      {
+        "id": "q44_o3",
+        "text": "Le das acceso remoto."
+      },
+      {
+        "id": "q44_o4",
+        "text": "Compartes tus códigos."
+      }
+    ],
+    "correctAnswer": "q44_o2",
+    "acceptedAnswers": [],
+    "feedback": "La identidad del funcionario y la instrucción deben confirmarse independientemente.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q45",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "trueFalse",
+    "statement": "Que una persona conozca tu número de cédula o nombres de familiares demuestra que trabaja en una institución legítima.",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q45_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q45_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los datos personales pueden haberse filtrado o recopilado previamente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q46",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una persona dice ser policía y exige una transferencia inmediata para “resolver” un problema. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q46_o1",
+        "text": "Pagar por miedo."
+      },
+      {
+        "id": "q46_o2",
+        "text": "Detener la acción y verificar con la institución mediante sus canales oficiales."
+      },
+      {
+        "id": "q46_o3",
+        "text": "Compartir el PIN."
+      },
+      {
+        "id": "q46_o4",
+        "text": "Instalar un archivo enviado."
+      }
+    ],
+    "correctAnswer": "q46_o2",
+    "acceptedAnswers": [],
+    "feedback": "La autoridad aparente no reemplaza la necesidad de comprobar identidad y procedimiento.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q47",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "fillBlank",
+    "statement": "Usar el nombre de una institución o cargo para manipular se apoya en una falsa __.",
+    "options": [],
+    "correctAnswer": "autoridad",
+    "acceptedAnswers": [
+      "autoridad"
+    ],
+    "feedback": "Los engaños pueden explotar el respeto o miedo asociado a cargos e instituciones.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q48",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué puede ayudar a verificar a un familiar que pide dinero?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Llamarlo a un número previamente conocido o realizar una pregunta que el atacante no debería conocer."
+      },
+      {
+        "id": "q48_o2",
+        "text": "Confiar solo en su foto."
+      },
+      {
+        "id": "q48_o3",
+        "text": "Enviar dinero pequeño como prueba."
+      },
+      {
+        "id": "q48_o4",
+        "text": "Compartir un código bancario."
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación debe utilizar información o canales independientes de la conversación sospechosa.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q49",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "trueFalse",
+    "statement": "Un funcionario legítimo siempre debería aceptar que confirmes su solicitud por el canal oficial de la institución.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación institucional es una medida razonable ante solicitudes sensibles.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q50",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla protege mejor frente a identidades falsas?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Verificar por otro canal antes de transferir, instalar o entregar documentos."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Confiar si conocen datos personales."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Actuar más rápido cuando existe miedo."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Mantener la conversación en secreto."
+      }
+    ],
+    "correctAnswer": "q50_o1",
+    "acceptedAnswers": [],
+    "feedback": "La identidad debe comprobarse antes de ejecutar una acción difícil de revertir.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q51",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es una señal frecuente de una oferta laboral falsa?",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "Exigir un pago previo para “habilitar” el empleo."
+      },
+      {
+        "id": "q51_o2",
+        "text": "Explicar un proceso verificable."
+      },
+      {
+        "id": "q51_o3",
+        "text": "Utilizar un correo corporativo comprobable."
+      },
+      {
+        "id": "q51_o4",
+        "text": "Realizar una entrevista formal."
+      }
+    ],
+    "correctAnswer": "q51_o1",
+    "acceptedAnswers": [],
+    "feedback": "Pagar para acceder a un supuesto empleo es una señal importante de fraude.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q52",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "trueFalse",
+    "statement": "Un premio legítimo no debería depender de que pagues de inmediato una comisión inesperada antes de recibirlo.",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q52_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los pagos previos se utilizan frecuentemente para convertir una falsa promesa en una estafa.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q53",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "fillBlank",
+    "statement": "Investigar una organización antes de aceptar una oferta ayuda a comprobar su __.",
+    "options": [],
+    "correctAnswer": "legitimidad",
+    "acceptedAnswers": [
+      "legitimidad"
+    ],
+    "feedback": "Dominio, dirección, condiciones y presencia verificable ayudan a evaluar una oferta.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q54",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "multipleChoice",
+    "statement": "Recibes un mensaje sobre un bono estatal con un enlace. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q54_o1",
+        "text": "Introduces tus datos inmediatamente."
+      },
+      {
+        "id": "q54_o2",
+        "text": "Buscas el beneficio en el sitio o canal oficial de la institución."
+      },
+      {
+        "id": "q54_o3",
+        "text": "Reenvías el mensaje a todos."
+      },
+      {
+        "id": "q54_o4",
+        "text": "Pagas para habilitarlo."
+      }
+    ],
+    "correctAnswer": "q54_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los beneficios públicos deben confirmarse mediante fuentes oficiales.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q55",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "trueFalse",
+    "statement": "Una oferta demasiado favorable puede ser utilizada para que la persona actúe sin investigar las condiciones.",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q55_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q55_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las promesas extraordinarias pueden explotar emoción y expectativa.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q56",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una empresa desconocida ofrece trabajo remoto, pero pide comprar un “kit obligatorio” antes de la entrevista. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Pagar de inmediato."
+      },
+      {
+        "id": "q56_o2",
+        "text": "Verificar empresa, dominio, dirección y condiciones antes de entregar dinero o documentos."
+      },
+      {
+        "id": "q56_o3",
+        "text": "Enviar tu contraseña."
+      },
+      {
+        "id": "q56_o4",
+        "text": "Mantenerlo en secreto."
+      }
+    ],
+    "correctAnswer": "q56_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las ofertas laborales deben poder comprobarse antes de cualquier pago o entrega sensible.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q57",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "fillBlank",
+    "statement": "Una oferta que exige dinero antes de acceder al supuesto beneficio solicita un pago __.",
+    "options": [],
+    "correctAnswer": "anticipado",
+    "acceptedAnswers": [
+      "anticipado"
+    ],
+    "feedback": "Los pagos anticipados inesperados son una señal común de estafa.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q58",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes investigar antes de enviar documentos para una oportunidad?",
+    "options": [
+      {
+        "id": "q58_o1",
+        "text": "La organización, su dominio, condiciones y datos de contacto verificables."
+      },
+      {
+        "id": "q58_o2",
+        "text": "Solo la foto de perfil del reclutador."
+      },
+      {
+        "id": "q58_o3",
+        "text": "La cantidad de emojis del mensaje."
+      },
+      {
+        "id": "q58_o4",
+        "text": "Si promete empezar hoy mismo."
+      }
+    ],
+    "correctAnswer": "q58_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una organización legítima debería poder verificarse más allá del mensaje recibido.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "phishing_social_q59",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "trueFalse",
+    "statement": "Que una publicación tenga muchos comentarios positivos garantiza que la oferta sea legítima.",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q59_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q59_o2",
+    "acceptedAnswers": [],
+    "feedback": "Comentarios, seguidores y testimonios también pueden ser falsos o manipulados.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "phishing_social_q60",
+    "categoryId": "phishing_social_engineering",
+    "activityId": "phishing_social_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué respuesta resume mejor la protección frente a premios y ofertas engañosas?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "No pagar ni entregar documentos hasta verificar organización, condiciones y canal oficial."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Actuar rápido para no perder la oportunidad."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Confiar si el premio es grande."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Compartir códigos de verificación para confirmar interés."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación previa reduce el riesgo de perder dinero o exponer información.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  }
+]

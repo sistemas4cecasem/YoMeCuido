@@ -1,6 +1,126 @@
 {
   "categories": [
     {
+      "id": "account_protection_authentication",
+      "title": "Protección de cuentas y autenticación",
+      "description": "Aprende a proteger tus cuentas con contraseñas seguras, gestores, autenticación multifactor, recuperación y revisión de sesiones.",
+      "iconName": "lock_outline",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Crear y mantener contraseñas largas, únicas y difíciles de adivinar.",
+        "Comprender el uso de gestores, frases de acceso y autenticación multifactor.",
+        "Proteger los métodos de recuperación y reconocer accesos desconocidos.",
+        "Responder de forma segura cuando una cuenta ha sido comprometida."
+      ],
+      "lessonId": "accounts_auth"
+    },
+    {
+      "id": "device_app_security",
+      "title": "Seguridad de dispositivos y aplicaciones",
+      "description": "Aprende a proteger teléfonos, computadoras y aplicaciones mediante bloqueo, actualizaciones, permisos, instalaciones seguras, copias de seguridad y conexiones confiables.",
+      "iconName": "phone_android_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Configurar métodos de bloqueo y biometría de forma segura.",
+        "Mantener sistema y aplicaciones actualizados y revisar sus permisos.",
+        "Reconocer aplicaciones falsas o modificadas y evitar instalaciones riesgosas.",
+        "Reducir daños ante pérdida, robo o uso de redes públicas."
+      ],
+      "lessonId": "device_security"
+    },
+    {
+      "id": "personal_data_privacy_identity",
+      "title": "Datos personales, privacidad e identidad",
+      "description": "Aprende a compartir solo los datos necesarios, proteger documentos y ubicación, prevenir suplantaciones y recuperar control sobre tu identidad digital.",
+      "iconName": "badge_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Aplicar la minimización al compartir datos personales.",
+        "Proteger documentos, ubicación, rutinas y configuraciones de privacidad.",
+        "Reconocer y responder ante una suplantación de identidad.",
+        "Comprender el consentimiento y recuperar control después de una exposición."
+      ],
+      "lessonId": "privacy_identity"
+    },
+    {
+      "id": "phishing_social_engineering",
+      "title": "Engaños, phishing e ingeniería social",
+      "description": "Aprende a reconocer phishing, smishing, vishing y otras técnicas de manipulación, y a verificar identidades, enlaces, códigos y ofertas antes de actuar.",
+      "iconName": "mark_email_unread_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer modalidades y señales frecuentes de ingeniería social.",
+        "Aplicar un método de verificación independiente antes de actuar.",
+        "Proteger códigos de verificación y otros secretos temporales.",
+        "Detectar falsos familiares, funcionarios, empleos, premios y ofertas."
+      ],
+      "lessonId": "phishing_social"
+    },
+    {
+      "id": "information_misinformation_ai",
+      "title": "Información, desinformación e inteligencia artificial",
+      "description": "Aprende a verificar información, reconocer contenido fuera de contexto o manipulado y utilizar herramientas de inteligencia artificial con criterios de privacidad y comprobación.",
+      "iconName": "fact_check_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Distinguir información errónea de desinformación.",
+        "Evaluar autor, fecha, contexto, fuentes y evidencia.",
+        "Reconocer riesgos de imágenes, audios, videos y deepfakes.",
+        "Utilizar inteligencia artificial con pensamiento crítico y protección de datos."
+      ],
+      "lessonId": "information_ai"
+    },
+    {
+      "id": "digital_payments_consumption",
+      "title": "Pagos, transferencias, compras y consumo digital",
+      "description": "Aprende a realizar transferencias y compras con mayor seguridad, detectar comprobantes y comercios dudosos, revisar suscripciones y responder ante fraude financiero.",
+      "iconName": "credit_card_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Verificar beneficiario, monto y datos antes de confirmar transferencias.",
+        "Distinguir una acreditación real de un comprobante visual.",
+        "Evaluar vendedores, tiendas, medios de pago y suscripciones.",
+        "Actuar rápidamente y conservar evidencia ante un fraude financiero."
+      ],
+      "lessonId": "payments_digital"
+    },
+    {
       "id": "relations_violence_digital",
       "title": "Relaciones y violencia digital",
       "description": "Aprende a reconocer el control, el acoso, las amenazas y otras formas de violencia que pueden ocurrir mediante redes sociales, mensajería, cuentas y dispositivos.",
@@ -22,74 +142,25 @@
       "warning": "Algunos contenidos mencionan acoso, amenazas, grooming y difusión no consentida de contenido íntimo. Puedes salir de la lección cuando lo necesites."
     },
     {
-      "id": "account_protection_authentication",
-      "title": "Protección de cuentas y autenticación",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "lock_outline",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
-      "id": "device_app_security",
-      "title": "Seguridad de dispositivos y aplicaciones",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "phone_android_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
-      "id": "personal_data_privacy_identity",
-      "title": "Datos personales, privacidad e identidad",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "badge_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
-      "id": "phishing_social_engineering",
-      "title": "Engaños, phishing e ingeniería social",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "mark_email_unread_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
-      "id": "digital_payments_consumption",
-      "title": "Pagos, transferencias, compras y consumo digital",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "credit_card_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
-      "id": "information_misinformation_ai",
-      "title": "Información, desinformación e inteligencia artificial",
-      "description": "Esta categoría estará disponible próximamente.",
-      "iconName": "fact_check_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
-    },
-    {
       "id": "incident_response_recovery",
       "title": "Respuesta y recuperación ante incidentes",
-      "description": "Esta categoría estará disponible próximamente.",
+      "description": "Aprende a contener incidentes, proteger cuentas, dinero y dispositivos, conservar evidencia, pedir apoyo y recuperar el control después de un problema.",
       "iconName": "health_and_safety_outlined",
-      "status": "comingSoon",
-      "isEnabled": false,
-      "indicators": [],
-      "objectives": []
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Aplicar un orden básico para contener, proteger, documentar, informar y recuperar.",
+        "Responder ante cuentas robadas, fraude financiero y aplicaciones sospechosas.",
+        "Priorizar la seguridad personal ante amenazas o riesgo físico.",
+        "Fortalecer medidas y reducir la posibilidad de repetición después de un incidente."
+      ],
+      "lessonId": "incident_response",
+      "warning": "Algunos contenidos mencionan fraude, malware, amenazas y riesgo físico. Prioriza siempre tu seguridad y busca apoyo adecuado cuando sea necesario."
     }
   ]
 }

@@ -1,0 +1,1490 @@
+[
+  {
+    "id": "accounts_auth_q01",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué característica protege mejor una contraseña importante?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "Que sea corta y fácil de escribir."
+      },
+      {
+        "id": "q01_o2",
+        "text": "Que sea larga, única y difícil de relacionar contigo."
+      },
+      {
+        "id": "q01_o3",
+        "text": "Que use tu fecha de nacimiento."
+      },
+      {
+        "id": "q01_o4",
+        "text": "Que sea igual en todas tus cuentas."
+      }
+    ],
+    "correctAnswer": "q01_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las contraseñas largas, únicas y poco predecibles reducen el riesgo de adivinación y reutilización.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q02",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "trueFalse",
+    "statement": "Usar la misma contraseña en varias cuentas puede hacer que una sola filtración afecte a todas ellas.",
+    "options": [
+      {
+        "id": "q02_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q02_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q02_o1",
+    "acceptedAnswers": [],
+    "feedback": "Si una clave reutilizada se filtra, puede probarse en otros servicios.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q03",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "fillBlank",
+    "statement": "Una contraseña utilizada solamente en una cuenta es una contraseña __.",
+    "options": [],
+    "correctAnswer": "única",
+    "acceptedAnswers": [
+      "única",
+      "unica"
+    ],
+    "feedback": "La unicidad evita que una filtración abra el acceso a otras cuentas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q04",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué dato conviene evitar al crear una contraseña?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Palabras aleatorias."
+      },
+      {
+        "id": "q04_o2",
+        "text": "Tu fecha de nacimiento."
+      },
+      {
+        "id": "q04_o3",
+        "text": "Una combinación larga que no uses en otro sitio."
+      },
+      {
+        "id": "q04_o4",
+        "text": "Una clave generada de forma aleatoria."
+      }
+    ],
+    "correctAnswer": "q04_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los datos personales pueden ser conocidos o deducidos por otras personas.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q05",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "trueFalse",
+    "statement": "Cambiar letras por símbolos de manera predecible convierte automáticamente una palabra común en una contraseña segura.",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q05_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q05_o2",
+    "acceptedAnswers": [],
+    "feedback": "Transformaciones previsibles siguen siendo fáciles de probar; la longitud y unicidad son más importantes.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q06",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál de estas contraseñas es más recomendable?",
+    "options": [
+      {
+        "id": "q06_o1",
+        "text": "Diego2002."
+      },
+      {
+        "id": "q06_o2",
+        "text": "Bolivia123."
+      },
+      {
+        "id": "q06_o3",
+        "text": "123456789."
+      },
+      {
+        "id": "q06_o4",
+        "text": "Cumbre-Nube-Río-Camino-82."
+      }
+    ],
+    "correctAnswer": "q06_o4",
+    "acceptedAnswers": [],
+    "feedback": "Una combinación larga y poco relacionada con datos personales suele ser más resistente.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q07",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "fillBlank",
+    "statement": "Usar la misma clave en diferentes servicios se conoce como __ de contraseñas.",
+    "options": [],
+    "correctAnswer": "reutilización",
+    "acceptedAnswers": [
+      "reutilización",
+      "reutilizacion"
+    ],
+    "feedback": "La reutilización aumenta el impacto de cualquier filtración.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q08",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una contraseña de una de tus cuentas aparece en una filtración. ¿Qué riesgo debes considerar primero?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Que cambie el color de la aplicación."
+      },
+      {
+        "id": "q08_o2",
+        "text": "Que prueben esa misma contraseña en otras cuentas donde la reutilizaste."
+      },
+      {
+        "id": "q08_o3",
+        "text": "Que se borre tu foto de perfil."
+      },
+      {
+        "id": "q08_o4",
+        "text": "Que aumente el brillo del celular."
+      }
+    ],
+    "correctAnswer": "q08_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las credenciales filtradas suelen probarse en otros servicios.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q09",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "trueFalse",
+    "statement": "Una contraseña larga deja de ser recomendable si contiene varias palabras fáciles de recordar pero no relacionadas contigo.",
+    "options": [
+      {
+        "id": "q09_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q09_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q09_o2",
+    "acceptedAnswers": [],
+    "feedback": "La longitud y la baja predictibilidad pueden hacer más fuerte una clave.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q10",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es la mejor regla general al crear contraseñas para cuentas importantes?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Reutilizar una sola contraseña compleja."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Usar claves diferentes, largas y no basadas en datos personales."
+      },
+      {
+        "id": "q10_o3",
+        "text": "Usar siempre el nombre de la aplicación."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Compartirlas con una persona de confianza por chat."
+      }
+    ],
+    "correctAnswer": "q10_o2",
+    "acceptedAnswers": [],
+    "feedback": "Cada cuenta debe tener una clave propia y difícil de asociar con la persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q11",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué es una frase de acceso?",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Una clave formada por varias palabras que busca ser larga y memorable."
+      },
+      {
+        "id": "q11_o2",
+        "text": "Un código SMS de seis dígitos."
+      },
+      {
+        "id": "q11_o3",
+        "text": "Una pregunta de seguridad pública."
+      },
+      {
+        "id": "q11_o4",
+        "text": "El nombre del usuario."
+      }
+    ],
+    "correctAnswer": "q11_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las frases de acceso permiten construir claves largas sin depender de datos personales.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q12",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "fillBlank",
+    "statement": "Una contraseña formada por varias palabras puede llamarse frase de __.",
+    "options": [],
+    "correctAnswer": "acceso",
+    "acceptedAnswers": [
+      "acceso"
+    ],
+    "feedback": "Una frase de acceso puede ser larga y más sencilla de recordar.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q13",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "multipleChoice",
+    "statement": "Tienes muchas cuentas y te cuesta mantener contraseñas distintas. ¿Qué herramienta puede ayudarte?",
+    "options": [
+      {
+        "id": "q13_o1",
+        "text": "Un gestor de contraseñas."
+      },
+      {
+        "id": "q13_o2",
+        "text": "Un grupo público de mensajería."
+      },
+      {
+        "id": "q13_o3",
+        "text": "Una publicación en redes sociales."
+      },
+      {
+        "id": "q13_o4",
+        "text": "Una sola contraseña para todo."
+      }
+    ],
+    "correctAnswer": "q13_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un gestor puede generar y almacenar claves diferentes para cada servicio.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q14",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "trueFalse",
+    "statement": "Un gestor de contraseñas puede facilitar el uso de claves diferentes sin tener que memorizar cada una.",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q14_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q14_o1",
+    "acceptedAnswers": [],
+    "feedback": "El usuario debe proteger especialmente el acceso al gestor.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q15",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "fillBlank",
+    "statement": "La contraseña principal que protege un gestor de contraseñas se llama contraseña __.",
+    "options": [],
+    "correctAnswer": "maestra",
+    "acceptedAnswers": [
+      "maestra"
+    ],
+    "feedback": "La contraseña maestra merece una protección especial porque abre el gestor.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q16",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es la mejor práctica para la contraseña maestra?",
+    "options": [
+      {
+        "id": "q16_o1",
+        "text": "Reutilizar la del correo."
+      },
+      {
+        "id": "q16_o2",
+        "text": "Compartirla con amistades."
+      },
+      {
+        "id": "q16_o3",
+        "text": "Hacerla fuerte, única y no compartirla."
+      },
+      {
+        "id": "q16_o4",
+        "text": "Usar únicamente tu nombre."
+      }
+    ],
+    "correctAnswer": "q16_o3",
+    "acceptedAnswers": [],
+    "feedback": "La contraseña maestra no debe reutilizarse ni compartirse.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q17",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "trueFalse",
+    "statement": "YoMeCuido debería pedirte tu contraseña real para comprobar si aprendiste a crear claves seguras.",
+    "options": [
+      {
+        "id": "q17_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q17_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q17_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las actividades educativas nunca necesitan recopilar contraseñas reales.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q18",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué práctica anula parte de la utilidad de un gestor de contraseñas?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Generar claves distintas."
+      },
+      {
+        "id": "q18_o2",
+        "text": "Proteger la contraseña maestra."
+      },
+      {
+        "id": "q18_o3",
+        "text": "Copiar todas las contraseñas en un chat público."
+      },
+      {
+        "id": "q18_o4",
+        "text": "Usar el gestor para evitar reutilización."
+      }
+    ],
+    "correctAnswer": "q18_o3",
+    "acceptedAnswers": [],
+    "feedback": "Exponer las claves fuera del gestor vuelve a aumentar el riesgo.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q19",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "trueFalse",
+    "statement": "Una frase de acceso puede ser más fácil de recordar que una contraseña corta llena de cambios previsibles de letras por símbolos.",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q19_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q19_o1",
+    "acceptedAnswers": [],
+    "feedback": "Varias palabras pueden aportar longitud sin depender de reglas difíciles de recordar.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q20",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es el principal beneficio de combinar un gestor con contraseñas únicas?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Permite compartir cuentas más fácilmente."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Reduce la necesidad de reutilizar una misma clave."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Elimina la necesidad de proteger el dispositivo."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Hace innecesaria cualquier otra medida de seguridad."
+      }
+    ],
+    "correctAnswer": "q20_o2",
+    "acceptedAnswers": [],
+    "feedback": "El gestor facilita mantener claves diferentes para cada cuenta.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q21",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Para qué sirve la verificación en dos pasos?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Para agregar una comprobación adicional al iniciar sesión."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Para compartir una cuenta."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Para publicar la contraseña."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Para evitar actualizar datos de recuperación."
+      }
+    ],
+    "correctAnswer": "q21_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una segunda comprobación dificulta que una contraseña robada sea suficiente para entrar.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q22",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "trueFalse",
+    "statement": "Un código temporal de verificación debe mantenerse secreto aunque quien lo pida diga trabajar en soporte.",
+    "options": [
+      {
+        "id": "q22_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q22_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q22_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos temporales pueden permitir accesos o cambios sensibles.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q23",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "fillBlank",
+    "statement": "La autenticación que combina más de una comprobación se denomina autenticación de múltiples __.",
+    "options": [],
+    "correctAnswer": "factores",
+    "acceptedAnswers": [
+      "factores"
+    ],
+    "feedback": "La autenticación multifactor agrega barreras además de la contraseña.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q24",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Cuál puede ser un segundo factor de autenticación?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Una aplicación autenticadora."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Tu foto de perfil."
+      },
+      {
+        "id": "q24_o3",
+        "text": "El color del sitio."
+      },
+      {
+        "id": "q24_o4",
+        "text": "El nombre del servicio."
+      }
+    ],
+    "correctAnswer": "q24_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las aplicaciones autenticadoras pueden generar códigos temporales para confirmar el acceso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q25",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "trueFalse",
+    "statement": "Activar un segundo factor reduce el riesgo, pero no autoriza a compartir los códigos con otras personas.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q25_o1",
+    "acceptedAnswers": [],
+    "feedback": "La segunda comprobación solo funciona si el secreto temporal permanece bajo control del usuario.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q26",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "multipleChoice",
+    "statement": "Recibes una notificación para aprobar un inicio de sesión que tú no iniciaste. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q26_o1",
+        "text": "La apruebas para que desaparezca."
+      },
+      {
+        "id": "q26_o2",
+        "text": "La rechazas y revisas la seguridad de la cuenta."
+      },
+      {
+        "id": "q26_o3",
+        "text": "Compartes tu contraseña."
+      },
+      {
+        "id": "q26_o4",
+        "text": "Ignoras todas las alertas futuras."
+      }
+    ],
+    "correctAnswer": "q26_o2",
+    "acceptedAnswers": [],
+    "feedback": "No debe aprobarse una solicitud de acceso que no reconoces.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q27",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "fillBlank",
+    "statement": "Una aplicación que genera códigos temporales para iniciar sesión puede llamarse aplicación __.",
+    "options": [],
+    "correctAnswer": "autenticadora",
+    "acceptedAnswers": [
+      "autenticadora",
+      "aplicación autenticadora",
+      "aplicacion autenticadora"
+    ],
+    "feedback": "Las aplicaciones autenticadoras son una forma común de segundo factor.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q28",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "multipleChoice",
+    "statement": "Un supuesto técnico te pide el código que acaba de llegar a tu celular. ¿Qué respuesta es más segura?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Dictárselo."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Enviarle una captura."
+      },
+      {
+        "id": "q28_o3",
+        "text": "No compartirlo y contactar al soporte por el canal oficial."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Publicarlo para preguntar si es legítimo."
+      }
+    ],
+    "correctAnswer": "q28_o3",
+    "acceptedAnswers": [],
+    "feedback": "Un código de verificación es una llave temporal y no debe entregarse a terceros.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q29",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "trueFalse",
+    "statement": "Una passkey puede utilizarse como método de autenticación y reducir la dependencia de contraseñas tradicionales.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las passkeys son uno de los mecanismos modernos que pueden reforzar el acceso.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q30",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Dónde debe introducirse un código de verificación?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "En cualquier chat donde lo soliciten."
+      },
+      {
+        "id": "q30_o2",
+        "text": "Únicamente en la pantalla oficial de una acción que tú iniciaste."
+      },
+      {
+        "id": "q30_o3",
+        "text": "En una publicación pública."
+      },
+      {
+        "id": "q30_o4",
+        "text": "En un formulario enviado por un desconocido."
+      }
+    ],
+    "correctAnswer": "q30_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos deben utilizarse solo en el proceso oficial iniciado por la propia persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q31",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué datos conviene mantener actualizados para recuperar una cuenta?",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "El correo y teléfono de recuperación."
+      },
+      {
+        "id": "q31_o2",
+        "text": "Tu equipo favorito."
+      },
+      {
+        "id": "q31_o3",
+        "text": "Tu foto de portada."
+      },
+      {
+        "id": "q31_o4",
+        "text": "La cantidad de seguidores."
+      }
+    ],
+    "correctAnswer": "q31_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los canales de recuperación deben seguir perteneciendo al usuario y estar protegidos.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q32",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "trueFalse",
+    "statement": "Es seguro iniciar la recuperación de una cuenta desde cualquier enlace recibido por mensaje si incluye el logo del servicio.",
+    "options": [
+      {
+        "id": "q32_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q32_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q32_o2",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación debe iniciarse desde la aplicación o sitio oficial.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q33",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "fillBlank",
+    "statement": "Los códigos guardados para recuperar acceso cuando falla el segundo factor se llaman códigos de __.",
+    "options": [],
+    "correctAnswer": "respaldo",
+    "acceptedAnswers": [
+      "respaldo",
+      "copia de respaldo",
+      "código de respaldo",
+      "codigo de respaldo"
+    ],
+    "feedback": "Los códigos de respaldo deben conservarse en un lugar seguro.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q34",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Dónde conviene guardar los códigos de respaldo?",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "En una publicación pública."
+      },
+      {
+        "id": "q34_o2",
+        "text": "En un lugar seguro al que solo tú puedas acceder."
+      },
+      {
+        "id": "q34_o3",
+        "text": "En el chat con desconocidos."
+      },
+      {
+        "id": "q34_o4",
+        "text": "En el nombre de usuario."
+      }
+    ],
+    "correctAnswer": "q34_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos permiten recuperar acceso y deben protegerse como credenciales.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q35",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "trueFalse",
+    "statement": "Un número de teléfono antiguo que ya no controlas puede convertirse en un riesgo si sigue configurado para recuperación.",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q35_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q35_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los métodos de recuperación deben mantenerse bajo control de la persona propietaria.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q36",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "multipleChoice",
+    "statement": "Un mensaje dice que tu cuenta será cerrada y ofrece un botón para recuperarla. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Pulsas el botón inmediatamente."
+      },
+      {
+        "id": "q36_o2",
+        "text": "Abres por tu cuenta la aplicación o sitio oficial y revisas desde allí."
+      },
+      {
+        "id": "q36_o3",
+        "text": "Respondes con tu contraseña."
+      },
+      {
+        "id": "q36_o4",
+        "text": "Reenvías un código de respaldo."
+      }
+    ],
+    "correctAnswer": "q36_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los procesos sensibles deben iniciarse desde canales oficiales conocidos.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q37",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "fillBlank",
+    "statement": "El proceso para volver a obtener acceso legítimo a una cuenta se denomina __.",
+    "options": [],
+    "correctAnswer": "recuperación",
+    "acceptedAnswers": [
+      "recuperación",
+      "recuperacion"
+    ],
+    "feedback": "La recuperación debe utilizar los mecanismos oficiales del servicio.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q38",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Por qué también debe protegerse el correo de recuperación?",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Porque puede utilizarse para restablecer otras cuentas."
+      },
+      {
+        "id": "q38_o2",
+        "text": "Porque cambia el idioma del teléfono."
+      },
+      {
+        "id": "q38_o3",
+        "text": "Porque controla el brillo de la pantalla."
+      },
+      {
+        "id": "q38_o4",
+        "text": "Porque aumenta el almacenamiento."
+      }
+    ],
+    "correctAnswer": "q38_o1",
+    "acceptedAnswers": [],
+    "feedback": "Quien controla el correo de recuperación puede intentar restablecer servicios vinculados.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q39",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "trueFalse",
+    "statement": "Los métodos de recuperación forman parte de la seguridad de una cuenta, no solo de la comodidad del usuario.",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q39_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q39_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un método de recuperación débil puede permitir que otra persona tome control.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q40",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es una mala práctica con un código de respaldo?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Guardarlo de forma privada."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Mantenerlo disponible para una emergencia."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Enviarlo a una persona desconocida que ofrece recuperar tu cuenta."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Revisar que puedas acceder a él cuando lo necesites."
+      }
+    ],
+    "correctAnswer": "q40_o3",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos de respaldo no deben compartirse con terceros.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q41",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "multipleChoice",
+    "statement": "Recibes una alerta de inicio de sesión que no reconoces. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Ignorarla siempre."
+      },
+      {
+        "id": "q41_o2",
+        "text": "Revisar la cuenta desde el canal oficial, dispositivos conectados y sesiones abiertas."
+      },
+      {
+        "id": "q41_o3",
+        "text": "Responder al mensaje con tu contraseña."
+      },
+      {
+        "id": "q41_o4",
+        "text": "Compartir el aviso en redes."
+      }
+    ],
+    "correctAnswer": "q41_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una alerta desconocida puede indicar acceso no autorizado y debe verificarse desde la cuenta.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q42",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "fillBlank",
+    "statement": "Los accesos que permanecen abiertos en distintos dispositivos se denominan __.",
+    "options": [],
+    "correctAnswer": "sesiones",
+    "acceptedAnswers": [
+      "sesiones",
+      "sesión",
+      "sesion"
+    ],
+    "feedback": "Revisar sesiones permite detectar dispositivos o accesos que no reconoces.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q43",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "trueFalse",
+    "statement": "Cerrar una sesión desconocida puede ayudar a limitar el acceso de otra persona a tu cuenta.",
+    "options": [
+      {
+        "id": "q43_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q43_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q43_o1",
+    "acceptedAnswers": [],
+    "feedback": "Revocar accesos sospechosos forma parte de recuperar control.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q44",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué elementos conviene revisar junto con las sesiones abiertas?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Dispositivos vinculados y métodos de recuperación."
+      },
+      {
+        "id": "q44_o2",
+        "text": "Solo la foto de perfil."
+      },
+      {
+        "id": "q44_o3",
+        "text": "El tema visual."
+      },
+      {
+        "id": "q44_o4",
+        "text": "Los emojis recientes."
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un acceso no autorizado puede venir acompañado de cambios en dispositivos o recuperación.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q45",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "trueFalse",
+    "statement": "Que un dispositivo aparezca con un nombre conocido significa que nunca necesitas verificar si realmente es tuyo.",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q45_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q45_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los nombres de dispositivos pueden ser genéricos; debes comprobar si reconoces el acceso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q46",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "multipleChoice",
+    "statement": "Vendiste un dispositivo y olvidaste cerrar sesión en una cuenta. ¿Qué acción es recomendable?",
+    "options": [
+      {
+        "id": "q46_o1",
+        "text": "Mantener la sesión abierta."
+      },
+      {
+        "id": "q46_o2",
+        "text": "Revocar ese dispositivo desde la configuración de seguridad."
+      },
+      {
+        "id": "q46_o3",
+        "text": "Publicar la contraseña."
+      },
+      {
+        "id": "q46_o4",
+        "text": "Desactivar todas las alertas."
+      }
+    ],
+    "correctAnswer": "q46_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los dispositivos que ya no controlas no deberían conservar acceso a tus cuentas.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q47",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "fillBlank",
+    "statement": "Un aviso sobre un ingreso nuevo o desconocido es una __ de acceso.",
+    "options": [],
+    "correctAnswer": "alerta",
+    "acceptedAnswers": [
+      "alerta"
+    ],
+    "feedback": "Las alertas ayudan a detectar actividad que merece revisión.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q48",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una sesión desconocida aparece activa. ¿Cuál es la respuesta más segura?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Cerrar la sesión y revisar la seguridad de la cuenta."
+      },
+      {
+        "id": "q48_o2",
+        "text": "Dejarla para observar qué hace."
+      },
+      {
+        "id": "q48_o3",
+        "text": "Enviar un mensaje a la sesión."
+      },
+      {
+        "id": "q48_o4",
+        "text": "Compartir el código de verificación."
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "No conviene mantener abierto un acceso que no reconoces.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q49",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "trueFalse",
+    "statement": "Una alerta de acceso desconocido también justifica comprobar si cambiaron el correo o teléfono de recuperación.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o1",
+    "acceptedAnswers": [],
+    "feedback": "Quien obtiene acceso puede intentar modificar los mecanismos de recuperación.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q50",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué práctica ayuda a detectar accesos persistentes que ya olvidaste?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Revisar periódicamente sesiones y dispositivos vinculados."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Desactivar la seguridad."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Usar la misma contraseña en todo."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Aceptar todas las solicitudes de acceso."
+      }
+    ],
+    "correctAnswer": "q50_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las revisiones periódicas permiten revocar accesos innecesarios o desconocidos.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q51",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "multipleChoice",
+    "statement": "Sospechas que alguien tomó control de una cuenta importante. ¿Qué conviene priorizar?",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "Proteger el correo principal y los métodos de recuperación."
+      },
+      {
+        "id": "q51_o2",
+        "text": "Cambiar la foto de perfil."
+      },
+      {
+        "id": "q51_o3",
+        "text": "Publicar el problema."
+      },
+      {
+        "id": "q51_o4",
+        "text": "Esperar varios días."
+      }
+    ],
+    "correctAnswer": "q51_o1",
+    "acceptedAnswers": [],
+    "feedback": "El correo y los mecanismos de recuperación pueden permitir recuperar o perder otras cuentas.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q52",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "trueFalse",
+    "statement": "Después de recuperar una cuenta comprometida basta con cambiar la contraseña y no revisar nada más.",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q52_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q52_o2",
+    "acceptedAnswers": [],
+    "feedback": "También deben revisarse sesiones, dispositivos, recuperación y autenticación adicional.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q53",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Desde dónde conviene cambiar la contraseña después de un compromiso?",
+    "options": [
+      {
+        "id": "q53_o1",
+        "text": "Desde un dispositivo confiable y el servicio oficial."
+      },
+      {
+        "id": "q53_o2",
+        "text": "Desde un enlace enviado por el atacante."
+      },
+      {
+        "id": "q53_o3",
+        "text": "Desde un formulario desconocido."
+      },
+      {
+        "id": "q53_o4",
+        "text": "Desde un chat público."
+      }
+    ],
+    "correctAnswer": "q53_o1",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación debe realizarse en un entorno confiable y por canales oficiales.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q54",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "fillBlank",
+    "statement": "Expulsar accesos que no reconoces implica cerrar otras __.",
+    "options": [],
+    "correctAnswer": "sesiones",
+    "acceptedAnswers": [
+      "sesiones",
+      "sesión",
+      "sesion"
+    ],
+    "feedback": "Cerrar sesiones desconocidas reduce la permanencia de accesos ajenos.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q55",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "multipleChoice",
+    "statement": "La cuenta comprometida pudo enviar mensajes fraudulentos. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Avisar a tus contactos por otro canal."
+      },
+      {
+        "id": "q55_o2",
+        "text": "Ocultarlo siempre."
+      },
+      {
+        "id": "q55_o3",
+        "text": "Enviar más mensajes desde la cuenta tomada."
+      },
+      {
+        "id": "q55_o4",
+        "text": "Compartir contraseñas para demostrar identidad."
+      }
+    ],
+    "correctAnswer": "q55_o1",
+    "acceptedAnswers": [],
+    "feedback": "Advertir a los contactos puede impedir nuevas estafas o suplantaciones.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q56",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "trueFalse",
+    "statement": "Guardar evidencia de accesos o cambios no reconocidos puede ser útil después de recuperar la cuenta.",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q56_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q56_o1",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia ayuda a entender qué ocurrió y a realizar reportes si son necesarios.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q57",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "multipleChoice",
+    "statement": "Si reutilizabas la contraseña comprometida en otras cuentas, ¿qué debes considerar?",
+    "options": [
+      {
+        "id": "q57_o1",
+        "text": "Cambiarla también donde fue reutilizada."
+      },
+      {
+        "id": "q57_o2",
+        "text": "Mantenerla en todas partes."
+      },
+      {
+        "id": "q57_o3",
+        "text": "Publicarla para avisar."
+      },
+      {
+        "id": "q57_o4",
+        "text": "Desactivar la autenticación adicional."
+      }
+    ],
+    "correctAnswer": "q57_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una contraseña expuesta puede probarse en todos los servicios donde se reutilizó.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q58",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "fillBlank",
+    "statement": "Informar a personas cercanas de que una cuenta fue usada para engañar ayuda a proteger a tus __.",
+    "options": [],
+    "correctAnswer": "contactos",
+    "acceptedAnswers": [
+      "contactos"
+    ],
+    "feedback": "El aviso reduce la posibilidad de que otras personas confíen en mensajes fraudulentos.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "accounts_auth_q59",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "trueFalse",
+    "statement": "Después de recuperar una cuenta conviene revisar o activar nuevamente la verificación en dos pasos.",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q59_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q59_o1",
+    "acceptedAnswers": [],
+    "feedback": "La autenticación adicional debe quedar bajo control de la persona propietaria.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "accounts_auth_q60",
+    "categoryId": "account_protection_authentication",
+    "activityId": "accounts_auth_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia resume mejor una respuesta segura ante una cuenta comprometida?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "Proteger recuperación, cambiar contraseña, cerrar sesiones, revisar autenticación y avisar contactos si corresponde."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Esperar, publicar la contraseña y responder al atacante."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Borrar la aplicación sin revisar la cuenta."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Compartir códigos con quien ofrezca ayuda."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación efectiva requiere proteger los mecanismos de acceso y revisar que no queden puertas abiertas.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  }
+]

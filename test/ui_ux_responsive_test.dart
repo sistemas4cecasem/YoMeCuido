@@ -7,6 +7,7 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_colors.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
@@ -78,8 +79,6 @@ void main() {
 
       await _openCategories(tester);
       _expectNoFlutterException(tester);
-      expect(find.text(AppStrings.comingSoon), findsAtLeastNWidgets(7));
-      expect(find.byIcon(Icons.lock_outline), findsWidgets);
 
       await _openDetail(tester);
       _expectNoFlutterException(tester);
@@ -184,6 +183,14 @@ Future<void> _pumpDemo(
   WidgetTester tester,
   ContentRepository contentRepository,
 ) async {
+  final progressController = CategoryProgressController();
+  if (contentRepository is _CachedContentRepository) {
+    progressController.hydrateFromRecords(
+      uid: _SignedInAuthRepository._user.uid,
+      records: _completedRecordsBeforeRelations(contentRepository.categories),
+    );
+  }
+
   await tester.pumpWidget(const SizedBox.shrink());
   await tester.pump();
   await tester.pumpWidget(
@@ -191,7 +198,7 @@ Future<void> _pumpDemo(
       key: UniqueKey(),
       contentRepository: contentRepository,
       authRepository: const _SignedInAuthRepository(),
-      progressController: CategoryProgressController(),
+      progressController: progressController,
     ),
   );
   await _pumpRouteFrame(tester);
@@ -208,7 +215,10 @@ Future<void> _openCategories(WidgetTester tester) async {
 }
 
 Future<void> _openDetail(WidgetTester tester) async {
-  await tester.tap(find.text('Relaciones y violencia digital').first);
+  final relationsTitle = find.text('Relaciones y violencia digital').first;
+  await tester.ensureVisible(relationsTitle);
+  await _pumpRouteFrame(tester);
+  await tester.tap(relationsTitle);
   await _pumpUntilFound(tester, find.text(AppStrings.theoryTitle));
 }
 
@@ -312,6 +322,64 @@ Future<List<T>> _loadSeedList<T>(
   return list
       .map((item) => parser(item as Map<String, Object?>))
       .toList(growable: false);
+}
+
+List<CategoryProgressRecord> _completedRecordsBeforeRelations(
+  List<Category> categories,
+) {
+  final records = <CategoryProgressRecord>[];
+  for (final category in categories) {
+    if (category.id == 'relations_violence_digital') {
+      break;
+    }
+    if (!category.isEnabled) {
+      continue;
+    }
+    final lessonId = category.lessonId;
+    if (lessonId == null) {
+      continue;
+    }
+    final examConfig = FinalExamConfigs.forCategoryLesson(
+      categoryId: category.id,
+      lessonId: lessonId,
+    );
+    final now = DateTime.utc(2026, 9, 2, 12);
+    final completedActivityIds = List<String>.generate(
+      6,
+      (index) => '${category.id}_activity_${index + 1}',
+      growable: false,
+    );
+    records.add(
+      CategoryProgressRecord(
+        categoryId: category.id,
+        lessonId: lessonId,
+        status: CategoryProgressStatus.completed,
+        viewedLessonPageIds: const <String>[],
+        completedActivityIds: completedActivityIds,
+        totalLessonPages: 6,
+        totalActivities: completedActivityIds.length,
+        startedAt: now,
+        lastActivityAt: now,
+        completedAt: now,
+        updatedAt: now,
+        activities: const <String, ActivityProgressRecord>{},
+        exams: <String, ExamProgressRecord>{
+          examConfig.id: ExamProgressRecord(
+            examId: examConfig.id,
+            status: ActivityProgressStatus.completed,
+            attemptCount: 1,
+            bestCorrectAnswers: 15,
+            bestTotalQuestions: 15,
+            bestPercentage: 100,
+            lastAttemptAt: now,
+            completedAt: now,
+            updatedAt: now,
+          ),
+        },
+      ),
+    );
+  }
+  return records;
 }
 
 class _CachedContentRepository implements ContentRepository {

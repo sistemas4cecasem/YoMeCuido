@@ -1,0 +1,1486 @@
+[
+  {
+    "id": "privacy_identity_q01",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "multipleChoice",
+    "statement": "Antes de entregar un dato personal, ¿qué pregunta es más útil?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "¿Quién lo solicita, para qué lo necesita y si debo entregar todo?"
+      },
+      {
+        "id": "q01_o2",
+        "text": "¿Tiene un logo bonito?"
+      },
+      {
+        "id": "q01_o3",
+        "text": "¿Cuántos seguidores tiene?"
+      },
+      {
+        "id": "q01_o4",
+        "text": "¿Respondió rápido?"
+      }
+    ],
+    "correctAnswer": "q01_o1",
+    "acceptedAnswers": [],
+    "feedback": "Conocer identidad, finalidad y necesidad ayuda a decidir cuánto compartir.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q02",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "fillBlank",
+    "statement": "Compartir únicamente los datos necesarios aplica el principio de __.",
+    "options": [],
+    "correctAnswer": "minimización",
+    "acceptedAnswers": [
+      "minimización",
+      "minimizacion",
+      "minimización de datos",
+      "minimizacion de datos"
+    ],
+    "feedback": "La minimización reduce la cantidad de información expuesta.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q03",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "trueFalse",
+    "statement": "Si un formulario pide más información de la necesaria, conviene revisar si realmente debes entregarla toda.",
+    "options": [
+      {
+        "id": "q03_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q03_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q03_o1",
+    "acceptedAnswers": [],
+    "feedback": "No todo dato solicitado es necesariamente indispensable para la finalidad indicada.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q04",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "multipleChoice",
+    "statement": "Un sorteo pide nombre, cédula, dirección, lugar de trabajo y fotografías. ¿Qué conducta protege mejor tus datos?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Completar todo sin revisar."
+      },
+      {
+        "id": "q04_o2",
+        "text": "Verificar la finalidad y entregar solo lo estrictamente necesario o no participar."
+      },
+      {
+        "id": "q04_o3",
+        "text": "Añadir también contraseñas."
+      },
+      {
+        "id": "q04_o4",
+        "text": "Publicar la información."
+      }
+    ],
+    "correctAnswer": "q04_o2",
+    "acceptedAnswers": [],
+    "feedback": "La mejor protección para un dato innecesario es no entregarlo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q05",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "trueFalse",
+    "statement": "Entregar menos información puede reducir los posibles daños si el servicio sufre una filtración.",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q05_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q05_o1",
+    "acceptedAnswers": [],
+    "feedback": "Cuantos menos datos innecesarios existan, menor puede ser la exposición.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q06",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "fillBlank",
+    "statement": "La información que permite reconocer directa o indirectamente a una persona es un dato __.",
+    "options": [],
+    "correctAnswer": "personal",
+    "acceptedAnswers": [
+      "personal"
+    ],
+    "feedback": "Nombres, documentos, imágenes, ubicación y otros identificadores pueden ser datos personales.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q07",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una aplicación sencilla pide acceso a toda tu agenda de contactos. ¿Qué principio conviene aplicar?",
+    "options": [
+      {
+        "id": "q07_o1",
+        "text": "Dar todos los datos por defecto."
+      },
+      {
+        "id": "q07_o2",
+        "text": "Negar lo innecesario y compartir solo lo requerido para la función."
+      },
+      {
+        "id": "q07_o3",
+        "text": "Publicar la agenda."
+      },
+      {
+        "id": "q07_o4",
+        "text": "Enviar también tu PIN."
+      }
+    ],
+    "correctAnswer": "q07_o2",
+    "acceptedAnswers": [],
+    "feedback": "La función debería utilizar la menor cantidad posible de datos.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q08",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es una señal de que debes detenerte antes de compartir información?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "No queda claro quién la solicita ni para qué la usará."
+      },
+      {
+        "id": "q08_o2",
+        "text": "La institución explica la finalidad."
+      },
+      {
+        "id": "q08_o3",
+        "text": "El canal es oficial y el dato es necesario."
+      },
+      {
+        "id": "q08_o4",
+        "text": "Puedes entregar menos información."
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "Sin identidad y finalidad claras no puedes valorar adecuadamente el riesgo.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q09",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "trueFalse",
+    "statement": "Que un dato sea fácil de escribir significa que es seguro compartirlo con cualquier persona.",
+    "options": [
+      {
+        "id": "q09_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q09_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q09_o2",
+    "acceptedAnswers": [],
+    "feedback": "La sensibilidad de un dato no depende de lo sencillo que sea enviarlo.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q10",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál resume mejor una decisión responsable antes de compartir datos?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Compartir primero y preguntar después."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Evaluar quién los pide, para qué, si son necesarios y si puedes entregar menos."
+      },
+      {
+        "id": "q10_o3",
+        "text": "Confiar solo por la foto de perfil."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Enviar todos los datos para evitar demoras."
+      }
+    ],
+    "correctAnswer": "q10_o2",
+    "acceptedAnswers": [],
+    "feedback": "La minimización empieza antes de entregar la información.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q11",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué riesgo puede tener publicar una fotografía completa de tu cédula?",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Facilitar suplantación o fraude."
+      },
+      {
+        "id": "q11_o2",
+        "text": "Mejorar automáticamente tu privacidad."
+      },
+      {
+        "id": "q11_o3",
+        "text": "Impedir que alguien la copie."
+      },
+      {
+        "id": "q11_o4",
+        "text": "Solo ocupar espacio."
+      }
+    ],
+    "correctAnswer": "q11_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los documentos contienen datos que pueden utilizarse para hacerse pasar por una persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q12",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "trueFalse",
+    "statement": "Una fotografía de un documento puede revelar firmas, números, direcciones u otros datos sensibles.",
+    "options": [
+      {
+        "id": "q12_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q12_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q12_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una sola imagen puede concentrar varios identificadores importantes.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q13",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "fillBlank",
+    "statement": "Antes de enviar una foto de un documento debes verificar la institución y el __ utilizado para recibirlo.",
+    "options": [],
+    "correctAnswer": "canal",
+    "acceptedAnswers": [
+      "canal"
+    ],
+    "feedback": "El documento debe enviarse únicamente por un medio legítimo y necesario para el trámite.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q14",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "multipleChoice",
+    "statement": "Un desconocido por chat pide una foto de tu documento para “verificarte”. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "La envías de inmediato."
+      },
+      {
+        "id": "q14_o2",
+        "text": "Verificas identidad, finalidad y canal antes de decidir."
+      },
+      {
+        "id": "q14_o3",
+        "text": "Publicas ambas caras."
+      },
+      {
+        "id": "q14_o4",
+        "text": "Añades tu PIN para ayudar."
+      }
+    ],
+    "correctAnswer": "q14_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los documentos no deben enviarse por canales no verificados.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q15",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "trueFalse",
+    "statement": "Que un trámite realmente necesite un documento elimina la necesidad de comprobar quién lo recibe.",
+    "options": [
+      {
+        "id": "q15_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q15_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q15_o2",
+    "acceptedAnswers": [],
+    "feedback": "La legitimidad del receptor y del canal sigue siendo esencial.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q16",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "multipleChoice",
+    "statement": "Si un trámite requiere una copia de documento, ¿qué medida puede reducir exposición cuando el procedimiento lo permite?",
+    "options": [
+      {
+        "id": "q16_o1",
+        "text": "Ocultar datos no requeridos."
+      },
+      {
+        "id": "q16_o2",
+        "text": "Publicar el documento completo."
+      },
+      {
+        "id": "q16_o3",
+        "text": "Enviarlo a varios chats."
+      },
+      {
+        "id": "q16_o4",
+        "text": "Añadir contraseñas."
+      }
+    ],
+    "correctAnswer": "q16_o1",
+    "acceptedAnswers": [],
+    "feedback": "Reducir datos innecesarios limita posibles reutilizaciones.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q17",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "fillBlank",
+    "statement": "Usar datos de un documento para hacerse pasar por otra persona puede facilitar una __ de identidad.",
+    "options": [],
+    "correctAnswer": "suplantación",
+    "acceptedAnswers": [
+      "suplantación",
+      "suplantacion",
+      "suplantación de identidad",
+      "suplantacion de identidad"
+    ],
+    "feedback": "Los documentos contienen información útil para fraudes de identidad.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q18",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Cuál de estos elementos puede aparecer en una fotografía de documento y merecer protección?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Firma y número de identificación."
+      },
+      {
+        "id": "q18_o2",
+        "text": "Solo el color del fondo."
+      },
+      {
+        "id": "q18_o3",
+        "text": "El tamaño del archivo."
+      },
+      {
+        "id": "q18_o4",
+        "text": "La batería del celular."
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "Firmas y números de identificación pueden ser utilizados indebidamente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q19",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "trueFalse",
+    "statement": "Enviar una foto de documento a un formulario no verificado puede ser riesgoso aunque el sitio tenga apariencia profesional.",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q19_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q19_o1",
+    "acceptedAnswers": [],
+    "feedback": "La apariencia visual no confirma quién recibirá ni cómo utilizará la información.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q20",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia es más segura antes de enviar un documento?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Confirmar institución, finalidad, canal y datos realmente necesarios."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Enviar todo y luego preguntar."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Confiar únicamente en el logo."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Publicarlo para obtener opinión."
+      }
+    ],
+    "correctAnswer": "q20_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación debe ocurrir antes de compartir información documental.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q21",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué riesgo puede aumentar al publicar tu ubicación exacta en tiempo real?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Facilitar seguimiento o revelar dónde te encuentras."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Mejorar la batería."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Impedir que alguien conozca tus rutinas."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Aumentar la privacidad automáticamente."
+      }
+    ],
+    "correctAnswer": "q21_o1",
+    "acceptedAnswers": [],
+    "feedback": "La ubicación en tiempo real puede exponer movimientos y rutinas.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q22",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "trueFalse",
+    "statement": "Compartir repetidamente horarios y rutas puede permitir que otras personas identifiquen patrones de tu rutina.",
+    "options": [
+      {
+        "id": "q22_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q22_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q22_o1",
+    "acceptedAnswers": [],
+    "feedback": "La información cotidiana acumulada puede revelar hábitos y lugares frecuentes.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q23",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "fillBlank",
+    "statement": "Publicar dónde estás exactamente en ese momento expone tu ubicación en tiempo __.",
+    "options": [],
+    "correctAnswer": "real",
+    "acceptedAnswers": [
+      "real"
+    ],
+    "feedback": "Retrasar una publicación puede reducir la exposición inmediata de tu ubicación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q24",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "multipleChoice",
+    "statement": "Vas de viaje y tu casa queda vacía. ¿Qué práctica reduce mejor la exposición?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Publicar todos los horarios en tiempo real."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Considerar compartir las fotos después de abandonar el lugar o regresar."
+      },
+      {
+        "id": "q24_o3",
+        "text": "Publicar la dirección de tu vivienda."
+      },
+      {
+        "id": "q24_o4",
+        "text": "Hacer visible la ubicación a cualquier persona."
+      }
+    ],
+    "correctAnswer": "q24_o2",
+    "acceptedAnswers": [],
+    "feedback": "No es necesario dejar de compartir experiencias; se puede controlar cuándo y con quién se comparten.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q25",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "trueFalse",
+    "statement": "Una cuenta privada elimina completamente el riesgo de que un contacto copie o reenvíe una publicación.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q25_o2",
+    "acceptedAnswers": [],
+    "feedback": "El contenido puede capturarse, guardarse o reenviarse incluso en audiencias limitadas.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q26",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué conviene revisar antes de publicar una fotografía desde un lugar frecuente?",
+    "options": [
+      {
+        "id": "q26_o1",
+        "text": "Si revela dirección, placas, credenciales o ubicación innecesaria."
+      },
+      {
+        "id": "q26_o2",
+        "text": "Solo el filtro de color."
+      },
+      {
+        "id": "q26_o3",
+        "text": "La cantidad de emojis."
+      },
+      {
+        "id": "q26_o4",
+        "text": "El porcentaje de batería."
+      }
+    ],
+    "correctAnswer": "q26_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los detalles visibles pueden exponer identidad, ubicación o rutinas.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q27",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "fillBlank",
+    "statement": "Revisar quién puede ver tus publicaciones forma parte de configurar la __ de la cuenta.",
+    "options": [],
+    "correctAnswer": "privacidad",
+    "acceptedAnswers": [
+      "privacidad",
+      "privacidad digital"
+    ],
+    "feedback": "Controlar la audiencia ayuda a limitar exposiciones accidentales.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q28",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "multipleChoice",
+    "statement": "Una app solicita ubicación permanente aunque solo la necesita al mostrar un mapa. ¿Qué opción es más prudente?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Permitir siempre sin revisar."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Limitar el permiso al uso de la aplicación si es suficiente."
+      },
+      {
+        "id": "q28_o3",
+        "text": "Publicar tu ubicación."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Compartir la contraseña."
+      }
+    ],
+    "correctAnswer": "q28_o2",
+    "acceptedAnswers": [],
+    "feedback": "Reducir el acceso permanente evita exposición innecesaria de movimientos.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q29",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "trueFalse",
+    "statement": "La información de ubicación puede ser sensible aunque no incluya el nombre de la persona.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los lugares y patrones pueden ayudar a identificar o seguir a una persona.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q30",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume mejor esta actividad?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "Pensar quién verá la ubicación, cuándo la verá y si realmente necesitas compartirla."
+      },
+      {
+        "id": "q30_o2",
+        "text": "Publicar siempre en tiempo real."
+      },
+      {
+        "id": "q30_o3",
+        "text": "Mantener todas las publicaciones públicas."
+      },
+      {
+        "id": "q30_o4",
+        "text": "Compartir rutas completas para demostrar transparencia."
+      }
+    ],
+    "correctAnswer": "q30_o1",
+    "acceptedAnswers": [],
+    "feedback": "La privacidad cotidiana depende de controlar audiencia, momento y nivel de detalle.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q31",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué es la suplantación de identidad?",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "Usar datos, fotografías o perfiles para hacerse pasar por otra persona."
+      },
+      {
+        "id": "q31_o2",
+        "text": "Cambiar la foto de perfil propia."
+      },
+      {
+        "id": "q31_o3",
+        "text": "Crear una copia de seguridad."
+      },
+      {
+        "id": "q31_o4",
+        "text": "Actualizar una aplicación."
+      }
+    ],
+    "correctAnswer": "q31_o1",
+    "acceptedAnswers": [],
+    "feedback": "La suplantación busca engañar usando la identidad o apariencia de otra persona.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q32",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "fillBlank",
+    "statement": "Hacerse pasar por otra persona utilizando sus datos se llama __ de identidad.",
+    "options": [],
+    "correctAnswer": "suplantación",
+    "acceptedAnswers": [
+      "suplantación",
+      "suplantacion",
+      "suplantación de identidad",
+      "suplantacion de identidad"
+    ],
+    "feedback": "Puede utilizarse para obtener dinero, acceso o causar daño reputacional.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q33",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "trueFalse",
+    "statement": "Un perfil falso puede utilizar tus fotos sin que tus cuentas originales hayan sido necesariamente robadas.",
+    "options": [
+      {
+        "id": "q33_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q33_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q33_o1",
+    "acceptedAnswers": [],
+    "feedback": "La suplantación puede crearse copiando información pública sin acceder a la cuenta real.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q34",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "multipleChoice",
+    "statement": "Encuentras un perfil falso que usa tu nombre y fotografía. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "Guardar evidencia, reportarlo y avisar a tus contactos por otro canal."
+      },
+      {
+        "id": "q34_o2",
+        "text": "Enviarle más documentos."
+      },
+      {
+        "id": "q34_o3",
+        "text": "Pagar para que desaparezca."
+      },
+      {
+        "id": "q34_o4",
+        "text": "Compartir tu contraseña."
+      }
+    ],
+    "correctAnswer": "q34_o1",
+    "acceptedAnswers": [],
+    "feedback": "Documentar, reportar y avisar reduce la posibilidad de que otras personas sean engañadas.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q35",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "trueFalse",
+    "statement": "Responder a una cuenta falsa publicando más datos personales es una buena forma de demostrar quién eres.",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q35_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q35_o2",
+    "acceptedAnswers": [],
+    "feedback": "Exponer más datos puede aumentar el daño; deben utilizarse canales oficiales de reporte.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q36",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué objetivo puede tener una suplantación?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Pedir dinero a tus contactos haciéndose pasar por ti."
+      },
+      {
+        "id": "q36_o2",
+        "text": "Mejorar tu privacidad."
+      },
+      {
+        "id": "q36_o3",
+        "text": "Actualizar tu teléfono."
+      },
+      {
+        "id": "q36_o4",
+        "text": "Crear copias de seguridad."
+      }
+    ],
+    "correctAnswer": "q36_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las cuentas falsas pueden utilizar confianza y reputación para cometer fraude.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q37",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "fillBlank",
+    "statement": "Guardar capturas, enlaces y nombre de usuario de un perfil falso permite conservar __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia",
+      "prueba",
+      "pruebas"
+    ],
+    "feedback": "La evidencia facilita reportes y ayuda a explicar lo ocurrido.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q38",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Por qué conviene avisar a tus contactos por otro medio?",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Para que no confíen en solicitudes realizadas desde el perfil falso."
+      },
+      {
+        "id": "q38_o2",
+        "text": "Para que compartan más información con la cuenta falsa."
+      },
+      {
+        "id": "q38_o3",
+        "text": "Para publicar tu documento."
+      },
+      {
+        "id": "q38_o4",
+        "text": "Para desactivar tus medidas de seguridad."
+      }
+    ],
+    "correctAnswer": "q38_o1",
+    "acceptedAnswers": [],
+    "feedback": "El aviso independiente reduce el riesgo de nuevos engaños.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q39",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "trueFalse",
+    "statement": "Al detectar una suplantación también conviene revisar si tus cuentas originales presentan accesos desconocidos.",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q39_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q39_o1",
+    "acceptedAnswers": [],
+    "feedback": "La suplantación puede ser solo una copia o puede acompañar un compromiso real de cuenta.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q40",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué respuesta combina mejor protección y recuperación?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Documentar, reportar, avisar contactos y revisar las cuentas originales."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Entregar documentos al perfil falso."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Ignorar siempre la situación."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Publicar contraseñas."
+      }
+    ],
+    "correctAnswer": "q40_o1",
+    "acceptedAnswers": [],
+    "feedback": "La respuesta debe reducir el engaño y comprobar que la identidad digital legítima sigue bajo control.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q41",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "trueFalse",
+    "statement": "Tener una fotografía de otra persona significa que puedes publicarla o reenviarla sin pedir permiso.",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q41_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q41_o2",
+    "acceptedAnswers": [],
+    "feedback": "Poseer un archivo no equivale a tener autorización para cualquier uso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q42",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "fillBlank",
+    "statement": "La autorización libre y específica para utilizar o compartir contenido se llama __.",
+    "options": [],
+    "correctAnswer": "consentimiento",
+    "acceptedAnswers": [
+      "consentimiento"
+    ],
+    "feedback": "El consentimiento debe existir para el uso concreto que se quiere realizar.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q43",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una persona te envía una foto en privado. ¿Qué significa?",
+    "options": [
+      {
+        "id": "q43_o1",
+        "text": "Que puedes publicarla en cualquier lugar."
+      },
+      {
+        "id": "q43_o2",
+        "text": "Que debes respetar el propósito para el que fue compartida y pedir permiso para otros usos."
+      },
+      {
+        "id": "q43_o3",
+        "text": "Que pasa a ser de dominio público."
+      },
+      {
+        "id": "q43_o4",
+        "text": "Que puedes venderla."
+      }
+    ],
+    "correctAnswer": "q43_o2",
+    "acceptedAnswers": [],
+    "feedback": "Compartir de forma privada no autoriza automáticamente la difusión.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q44",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "trueFalse",
+    "statement": "El consentimiento puede retirarse y no debe interpretarse como permanente.",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q44_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una autorización previa no obliga a mantenerla indefinidamente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q45",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Quién es responsable de difundir contenido íntimo sin permiso?",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "La persona afectada por haber confiado."
+      },
+      {
+        "id": "q45_o2",
+        "text": "Quien decidió compartirlo sin consentimiento."
+      },
+      {
+        "id": "q45_o3",
+        "text": "Nadie porque estaba en internet."
+      },
+      {
+        "id": "q45_o4",
+        "text": "Todas las personas por igual."
+      }
+    ],
+    "correctAnswer": "q45_o2",
+    "acceptedAnswers": [],
+    "feedback": "La responsabilidad recae en quien vulnera el consentimiento, no en la víctima.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q46",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "fillBlank",
+    "statement": "Una imagen enviada en privado no se vuelve automáticamente contenido __.",
+    "options": [],
+    "correctAnswer": "público",
+    "acceptedAnswers": [
+      "público",
+      "publico"
+    ],
+    "feedback": "La audiencia y el uso siguen sujetos al consentimiento de la persona.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q47",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "trueFalse",
+    "statement": "La ausencia de respuesta puede asumirse como autorización para publicar una fotografía ajena.",
+    "options": [
+      {
+        "id": "q47_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q47_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q47_o2",
+    "acceptedAnswers": [],
+    "feedback": "No responder no equivale a dar permiso.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q48",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "multipleChoice",
+    "statement": "Quieres reenviar una conversación privada de otra persona. ¿Qué criterio es más respetuoso?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Pedir autorización cuando el contenido no fue destinado a esa nueva audiencia."
+      },
+      {
+        "id": "q48_o2",
+        "text": "Reenviarla porque ya la recibiste."
+      },
+      {
+        "id": "q48_o3",
+        "text": "Publicarla para pedir opiniones."
+      },
+      {
+        "id": "q48_o4",
+        "text": "Editarla y difundirla sin avisar."
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "Recibir contenido no otorga derecho automático a distribuirlo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q49",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "trueFalse",
+    "statement": "El consentimiento debe relacionarse con una acción específica, como publicar, reenviar o utilizar una imagen.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o1",
+    "acceptedAnswers": [],
+    "feedback": "Autorizar un uso no implica autorizar todos los demás.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q50",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume mejor el uso responsable de contenido ajeno?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Si lo recibí, puedo hacer cualquier cosa con él."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Debo considerar consentimiento, finalidad y audiencia antes de compartirlo."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Todo lo digital es público."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Solo importa si la persona reclama después."
+      }
+    ],
+    "correctAnswer": "q50_o2",
+    "acceptedAnswers": [],
+    "feedback": "El respeto a la privacidad continúa después de recibir un archivo o mensaje.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q51",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "multipleChoice",
+    "statement": "Descubres que varios datos personales quedaron expuestos. ¿Qué conviene hacer primero?",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "Identificar qué información se compartió y qué cuentas o servicios podrían verse afectados."
+      },
+      {
+        "id": "q51_o2",
+        "text": "Publicar todavía más datos."
+      },
+      {
+        "id": "q51_o3",
+        "text": "Ignorar siempre el problema."
+      },
+      {
+        "id": "q51_o4",
+        "text": "Compartir contraseñas."
+      }
+    ],
+    "correctAnswer": "q51_o1",
+    "acceptedAnswers": [],
+    "feedback": "Conocer el alcance permite decidir qué medidas de protección son necesarias.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q52",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "trueFalse",
+    "statement": "Después de una exposición de datos puede ser necesario cambiar credenciales si la información afecta el acceso a cuentas.",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q52_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "La respuesta depende del tipo de dato expuesto y de los servicios vinculados.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q53",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "fillBlank",
+    "statement": "Guardar registros de una exposición o suplantación permite conservar __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia",
+      "prueba",
+      "pruebas"
+    ],
+    "feedback": "La evidencia ayuda en reportes, reclamos y seguimiento del incidente.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q54",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una publicación antigua revela información que ya no quieres mostrar. ¿Qué acción puede ayudar?",
+    "options": [
+      {
+        "id": "q54_o1",
+        "text": "Revisar privacidad y reducir la exposición del contenido cuando sea posible."
+      },
+      {
+        "id": "q54_o2",
+        "text": "Publicar una copia adicional."
+      },
+      {
+        "id": "q54_o3",
+        "text": "Enviar más datos a desconocidos."
+      },
+      {
+        "id": "q54_o4",
+        "text": "Desactivar todas las medidas de seguridad."
+      }
+    ],
+    "correctAnswer": "q54_o1",
+    "acceptedAnswers": [],
+    "feedback": "Revisar audiencia y configuraciones ayuda a recuperar control sobre la exposición futura.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q55",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "trueFalse",
+    "statement": "Avisar a tus contactos puede ser útil si existe riesgo de que alguien utilice tus datos para suplantarte.",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q55_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q55_o1",
+    "acceptedAnswers": [],
+    "feedback": "El aviso permite que otras personas desconfíen de solicitudes inesperadas.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q56",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué no conviene hacer para demostrar que un perfil falso no eres tú?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Publicar más documentos y datos sensibles."
+      },
+      {
+        "id": "q56_o2",
+        "text": "Utilizar los mecanismos oficiales de reporte."
+      },
+      {
+        "id": "q56_o3",
+        "text": "Avisar a tus contactos."
+      },
+      {
+        "id": "q56_o4",
+        "text": "Revisar la cuenta original."
+      }
+    ],
+    "correctAnswer": "q56_o1",
+    "acceptedAnswers": [],
+    "feedback": "Exponer más información puede aumentar el material disponible para nuevas suplantaciones.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q57",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "fillBlank",
+    "statement": "Modificar quién puede ver tu información es revisar la configuración de __.",
+    "options": [],
+    "correctAnswer": "privacidad",
+    "acceptedAnswers": [
+      "privacidad",
+      "privacidad digital"
+    ],
+    "feedback": "La privacidad permite limitar la exposición futura de datos y publicaciones.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q58",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "multipleChoice",
+    "statement": "Tras una exposición, ¿qué cuentas conviene revisar?",
+    "options": [
+      {
+        "id": "q58_o1",
+        "text": "Las relacionadas con los datos expuestos y cualquier servicio que pueda verse afectado."
+      },
+      {
+        "id": "q58_o2",
+        "text": "Ninguna."
+      },
+      {
+        "id": "q58_o3",
+        "text": "Solo las que tengan más seguidores."
+      },
+      {
+        "id": "q58_o4",
+        "text": "Únicamente juegos."
+      }
+    ],
+    "correctAnswer": "q58_o1",
+    "acceptedAnswers": [],
+    "feedback": "El impacto debe evaluarse según la información que quedó disponible.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "privacy_identity_q59",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "trueFalse",
+    "statement": "Recuperar control puede incluir varias acciones: cambiar credenciales, revisar privacidad, documentar y avisar contactos.",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q59_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q59_o1",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación depende del tipo de exposición y no se limita a una sola medida.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "privacy_identity_q60",
+    "categoryId": "personal_data_privacy_identity",
+    "activityId": "privacy_identity_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia resume mejor una respuesta ante exposición de datos?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "Identificar lo expuesto, proteger cuentas afectadas, revisar privacidad, guardar evidencia y alertar si existe riesgo de suplantación."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Publicar más datos y esperar."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Pagar a cualquier persona que prometa eliminar internet."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Compartir contraseñas para demostrar identidad."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación busca reducir consecuencias y recuperar control de la identidad digital.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  }
+]

@@ -29,6 +29,27 @@ abstract final class FinalExamConfigs {
     order: 7,
   );
 
+  static FinalExamConfig forCategoryLesson({
+    required String categoryId,
+    required String lessonId,
+  }) {
+    if (categoryId == relationsViolence.categoryId &&
+        lessonId == 'relations_violence') {
+      return relationsViolence;
+    }
+
+    return FinalExamConfig(
+      id: '${lessonId}_final_exam',
+      categoryId: categoryId,
+      title: 'Examen final',
+      questionCount: relationsViolence.questionCount,
+      minimumQuestionsPerActivity:
+          relationsViolence.minimumQuestionsPerActivity,
+      targetDifficultyCounts: relationsViolence.targetDifficultyCounts,
+      order: relationsViolence.order,
+    );
+  }
+
   static FinalExamConfig? forCategory(String categoryId) {
     return switch (categoryId) {
       'relations_violence_digital' => relationsViolence,

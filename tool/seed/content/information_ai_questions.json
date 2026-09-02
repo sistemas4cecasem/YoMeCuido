@@ -1,0 +1,1489 @@
+[
+  {
+    "id": "information_ai_q01",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es una diferencia entre información errónea y desinformación?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "La desinformación implica intención de manipular, mientras la información errónea puede compartirse sin intención de engañar."
+      },
+      {
+        "id": "q01_o2",
+        "text": "Son exactamente lo mismo en todos los casos."
+      },
+      {
+        "id": "q01_o3",
+        "text": "La información errónea siempre usa inteligencia artificial."
+      },
+      {
+        "id": "q01_o4",
+        "text": "La desinformación solo existe en televisión."
+      }
+    ],
+    "correctAnswer": "q01_o1",
+    "acceptedAnswers": [],
+    "feedback": "La intención puede diferenciar un error compartido de contenido difundido deliberadamente para manipular.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q02",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "trueFalse",
+    "statement": "Una publicación muy compartida puede seguir siendo falsa o engañosa.",
+    "options": [
+      {
+        "id": "q02_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q02_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q02_o1",
+    "acceptedAnswers": [],
+    "feedback": "La popularidad no sustituye la evidencia ni la verificación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q03",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "fillBlank",
+    "statement": "La información creada o difundida deliberadamente para manipular se denomina __.",
+    "options": [],
+    "correctAnswer": "desinformación",
+    "acceptedAnswers": [
+      "desinformación",
+      "desinformacion"
+    ],
+    "feedback": "La desinformación busca producir una percepción o decisión engañosa.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q04",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una persona comparte un dato falso creyendo sinceramente que era correcto. ¿Qué describe mejor la situación?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Información errónea."
+      },
+      {
+        "id": "q04_o2",
+        "text": "Contraseña débil."
+      },
+      {
+        "id": "q04_o3",
+        "text": "Autenticación multifactor."
+      },
+      {
+        "id": "q04_o4",
+        "text": "Cifrado."
+      }
+    ],
+    "correctAnswer": "q04_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un error puede propagarse sin que exista intención de engañar.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q05",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "trueFalse",
+    "statement": "La cantidad de seguidores de una cuenta es suficiente para determinar si todo lo que publica es verdadero.",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q05_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q05_o2",
+    "acceptedAnswers": [],
+    "feedback": "La credibilidad debe evaluarse mediante fuente, evidencia y contexto.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q06",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué criterio es más útil que contar “me gusta”?",
+    "options": [
+      {
+        "id": "q06_o1",
+        "text": "Revisar fuente y evidencia de la afirmación."
+      },
+      {
+        "id": "q06_o2",
+        "text": "Mirar solo el diseño."
+      },
+      {
+        "id": "q06_o3",
+        "text": "Contar emojis."
+      },
+      {
+        "id": "q06_o4",
+        "text": "Ver si coincide con lo que ya pensabas."
+      }
+    ],
+    "correctAnswer": "q06_o1",
+    "acceptedAnswers": [],
+    "feedback": "La evidencia permite evaluar la afirmación más allá de su popularidad.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q07",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "fillBlank",
+    "statement": "Una afirmación respaldada por datos, documentos o pruebas presenta __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia",
+      "prueba",
+      "pruebas"
+    ],
+    "feedback": "La evidencia ayuda a distinguir afirmaciones verificables de simples opiniones o rumores.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q08",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "multipleChoice",
+    "statement": "Una noticia te produce enojo inmediato y te invita a compartirla. ¿Qué es más prudente?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Detenerte y verificar antes de difundirla."
+      },
+      {
+        "id": "q08_o2",
+        "text": "Compartirla por emoción."
+      },
+      {
+        "id": "q08_o3",
+        "text": "Ignorar quién la publica."
+      },
+      {
+        "id": "q08_o4",
+        "text": "Quitar la fecha."
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las reacciones emocionales pueden facilitar la difusión impulsiva de información falsa.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q09",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "trueFalse",
+    "statement": "Una apariencia profesional garantiza que un contenido no sea desinformación.",
+    "options": [
+      {
+        "id": "q09_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q09_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q09_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los diseños, logos y formatos pueden copiarse o crearse para parecer confiables.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q10",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume mejor esta actividad?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Popularidad y apariencia no sustituyen la comprobación de fuente y evidencia."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Si muchos lo comparten debe ser verdad."
+      },
+      {
+        "id": "q10_o3",
+        "text": "Si coincide contigo no requiere revisión."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Toda información falsa se creó con intención."
+      }
+    ],
+    "correctAnswer": "q10_o1",
+    "acceptedAnswers": [],
+    "feedback": "La veracidad debe evaluarse por su sustento y contexto, no por su alcance.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q11",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "multipleChoice",
+    "statement": "Antes de creer una publicación, ¿qué tres elementos conviene revisar?",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Quién la publica, cuándo y en qué contexto."
+      },
+      {
+        "id": "q11_o2",
+        "text": "Solo el color y tipografía."
+      },
+      {
+        "id": "q11_o3",
+        "text": "La batería y el tamaño de imagen."
+      },
+      {
+        "id": "q11_o4",
+        "text": "Únicamente los comentarios."
+      }
+    ],
+    "correctAnswer": "q11_o1",
+    "acceptedAnswers": [],
+    "feedback": "Autor, fecha y contexto ayudan a interpretar correctamente una afirmación.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q12",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "trueFalse",
+    "statement": "Una noticia verdadera de hace cinco años puede desinformar si se presenta como si hubiera ocurrido hoy.",
+    "options": [
+      {
+        "id": "q12_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q12_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q12_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un contenido real también puede engañar cuando se altera su contexto temporal.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q13",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "fillBlank",
+    "statement": "El momento en que fue publicada una noticia se identifica mediante su __.",
+    "options": [],
+    "correctAnswer": "fecha",
+    "acceptedAnswers": [
+      "fecha"
+    ],
+    "feedback": "La fecha de publicación debe compararse con la fecha del hecho descrito.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q14",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "multipleChoice",
+    "statement": "Una foto real de una protesta en otro país se publica como si fuera de tu ciudad. ¿Qué problema existe?",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "Contexto falso."
+      },
+      {
+        "id": "q14_o2",
+        "text": "Autenticación débil."
+      },
+      {
+        "id": "q14_o3",
+        "text": "Falta de copia de seguridad."
+      },
+      {
+        "id": "q14_o4",
+        "text": "Permiso excesivo."
+      }
+    ],
+    "correctAnswer": "q14_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un material auténtico puede utilizarse para describir un lugar o evento distinto.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q15",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "trueFalse",
+    "statement": "Revisar quién es el autor o la organización que publica ayuda a evaluar su responsabilidad y credibilidad.",
+    "options": [
+      {
+        "id": "q15_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q15_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q15_o1",
+    "acceptedAnswers": [],
+    "feedback": "Identificar la fuente permite buscar antecedentes y verificar lo que afirma.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q16",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "fillBlank",
+    "statement": "La información que rodea un hecho y permite interpretarlo correctamente se llama __.",
+    "options": [],
+    "correctAnswer": "contexto",
+    "acceptedAnswers": [
+      "contexto"
+    ],
+    "feedback": "Sin contexto, datos reales pueden producir una impresión engañosa.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q17",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "multipleChoice",
+    "statement": "Una publicación reciente describe un hecho antiguo. ¿Qué debes comparar?",
+    "options": [
+      {
+        "id": "q17_o1",
+        "text": "Fecha de publicación y fecha del evento."
+      },
+      {
+        "id": "q17_o2",
+        "text": "Solo los colores."
+      },
+      {
+        "id": "q17_o3",
+        "text": "La cantidad de reacciones."
+      },
+      {
+        "id": "q17_o4",
+        "text": "El tamaño del texto."
+      }
+    ],
+    "correctAnswer": "q17_o1",
+    "acceptedAnswers": [],
+    "feedback": "La diferencia entre ambas fechas puede revelar que el contenido se está presentando fuera de contexto.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q18",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "multipleChoice",
+    "statement": "El titular afirma algo alarmante, pero el artículo completo dice otra cosa. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Leer el contenido completo y evaluar la afirmación real."
+      },
+      {
+        "id": "q18_o2",
+        "text": "Compartir solo el titular."
+      },
+      {
+        "id": "q18_o3",
+        "text": "Ignorar el autor."
+      },
+      {
+        "id": "q18_o4",
+        "text": "Añadir más mayúsculas."
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los titulares pueden exagerar o simplificar para atraer atención.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q19",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "trueFalse",
+    "statement": "Una información puede incluir datos verdaderos y aun así inducir a error por omitir contexto importante.",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q19_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q19_o1",
+    "acceptedAnswers": [],
+    "feedback": "La selección parcial de hechos puede alterar la interpretación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q20",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla protege mejor frente a contenido fuera de contexto?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Identificar autor, fecha, lugar y hecho original antes de asumir que la publicación describe el presente."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Confiar en la imagen."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Mirar solo las reacciones."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Compartir antes de leer."
+      }
+    ],
+    "correctAnswer": "q20_o1",
+    "acceptedAnswers": [],
+    "feedback": "Reconstruir el contexto evita atribuir un material real al momento o lugar equivocado.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q21",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "multipleChoice",
+    "statement": "Una publicación anuncia una medida estatal. ¿Qué fuente es preferible para confirmarla?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "El sitio o cuenta oficial de la institución responsable."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Una cadena anónima."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Una captura sin enlace."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Un comentario."
+      }
+    ],
+    "correctAnswer": "q21_o1",
+    "acceptedAnswers": [],
+    "feedback": "La fuente primaria permite revisar el comunicado completo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q22",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "fillBlank",
+    "statement": "El documento, declaración o publicación que originó una afirmación se denomina fuente __.",
+    "options": [],
+    "correctAnswer": "primaria",
+    "acceptedAnswers": [
+      "primaria"
+    ],
+    "feedback": "Llegar al origen reduce la dependencia de interpretaciones o reenvíos.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q23",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "trueFalse",
+    "statement": "Comparar una afirmación con varias fuentes confiables puede ayudar a detectar errores o contradicciones.",
+    "options": [
+      {
+        "id": "q23_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q23_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q23_o1",
+    "acceptedAnswers": [],
+    "feedback": "La confirmación independiente fortalece la verificación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q24",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "multipleChoice",
+    "statement": "Una nota cita un estudio. ¿Qué práctica mejora la verificación?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Buscar el estudio original y comprobar qué dice realmente."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Confiar solo en el titular."
+      },
+      {
+        "id": "q24_o3",
+        "text": "Ignorar el enlace a la fuente."
+      },
+      {
+        "id": "q24_o4",
+        "text": "Compartir por el diseño."
+      }
+    ],
+    "correctAnswer": "q24_o1",
+    "acceptedAnswers": [],
+    "feedback": "La fuente original permite comprobar si la interpretación es fiel.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q25",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "trueFalse",
+    "statement": "Una opinión y una afirmación respaldada por evidencia deben evaluarse exactamente de la misma manera.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q25_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una afirmación factual debe poder contrastarse con fuentes y evidencia.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q26",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "fillBlank",
+    "statement": "Comparar una afirmación con fuentes confiables es un proceso de __.",
+    "options": [],
+    "correctAnswer": "verificación",
+    "acceptedAnswers": [
+      "verificación",
+      "verificacion",
+      "comprobación",
+      "comprobacion"
+    ],
+    "feedback": "Verificar consiste en comprobar antes de aceptar o compartir una afirmación.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q27",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "multipleChoice",
+    "statement": "Dos medios confiables y una institución oficial coinciden sobre un hecho. ¿Qué aporta esta coincidencia?",
+    "options": [
+      {
+        "id": "q27_o1",
+        "text": "Confirmación independiente adicional."
+      },
+      {
+        "id": "q27_o2",
+        "text": "Garantía absoluta de que nunca habrá correcciones."
+      },
+      {
+        "id": "q27_o3",
+        "text": "Prueba de que todo comentario es verdadero."
+      },
+      {
+        "id": "q27_o4",
+        "text": "Eliminación de la necesidad de contexto."
+      }
+    ],
+    "correctAnswer": "q27_o1",
+    "acceptedAnswers": [],
+    "feedback": "Varias fuentes independientes reducen la dependencia de una sola versión.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q28",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes hacer si una publicación cita una fuente que no existe o no respalda lo afirmado?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Considerar la afirmación dudosa y buscar evidencia adicional."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Compartirla igualmente."
+      },
+      {
+        "id": "q28_o3",
+        "text": "Inventar otra fuente."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Eliminar el nombre del autor."
+      }
+    ],
+    "correctAnswer": "q28_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una cita inexistente o mal utilizada debilita la confiabilidad del contenido.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q29",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "trueFalse",
+    "statement": "Si no puedes verificar una información sensible, es mejor no presentarla como un hecho confirmado.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "La incertidumbre debe comunicarse en lugar de convertirse en una falsa certeza.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q30",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia resume una buena verificación?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "Identificar la afirmación, buscar fuente primaria y contrastarla con otras fuentes confiables."
+      },
+      {
+        "id": "q30_o2",
+        "text": "Leer el titular y compartir."
+      },
+      {
+        "id": "q30_o3",
+        "text": "Confiar en seguidores."
+      },
+      {
+        "id": "q30_o4",
+        "text": "Usar una sola captura como prueba."
+      }
+    ],
+    "correctAnswer": "q30_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación busca evidencia y confirmación independiente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q31",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "trueFalse",
+    "statement": "Un video muy realista es prueba suficiente de que un hecho ocurrió exactamente como se muestra.",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q31_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q31_o2",
+    "acceptedAnswers": [],
+    "feedback": "El video puede estar editado, fuera de contexto o generado mediante inteligencia artificial.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q32",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "fillBlank",
+    "statement": "Un audio, imagen o video sintético que imita convincentemente a una persona puede denominarse __.",
+    "options": [],
+    "correctAnswer": "deepfake",
+    "acceptedAnswers": [
+      "deepfake",
+      "contenido deepfake"
+    ],
+    "feedback": "Los deepfakes pueden utilizarse para fraude, suplantación o manipulación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q33",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "multipleChoice",
+    "statement": "Recibes un audio con la voz de un familiar pidiendo dinero. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q33_o1",
+        "text": "Verificas por otro canal antes de transferir."
+      },
+      {
+        "id": "q33_o2",
+        "text": "Pagas porque la voz parece real."
+      },
+      {
+        "id": "q33_o3",
+        "text": "Compartes un código."
+      },
+      {
+        "id": "q33_o4",
+        "text": "Mantienes secreto el pedido."
+      }
+    ],
+    "correctAnswer": "q33_o1",
+    "acceptedAnswers": [],
+    "feedback": "La clonación de voz hace que reconocer una voz ya no sea prueba suficiente.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q34",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "trueFalse",
+    "statement": "Errores en labios, sombras o movimientos pueden ser pistas de manipulación, pero no una prueba definitiva.",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q34_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q34_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las herramientas mejoran y los indicios visuales deben complementarse con verificación de procedencia.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q35",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué debes comprobar ante una imagen impactante?",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Procedencia, fuente original, fecha y contexto."
+      },
+      {
+        "id": "q35_o2",
+        "text": "Solo la resolución."
+      },
+      {
+        "id": "q35_o3",
+        "text": "La cantidad de reacciones."
+      },
+      {
+        "id": "q35_o4",
+        "text": "Si parece profesional."
+      }
+    ],
+    "correctAnswer": "q35_o1",
+    "acceptedAnswers": [],
+    "feedback": "La procedencia ayuda a saber dónde apareció y qué representa realmente la imagen.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q36",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "fillBlank",
+    "statement": "Una imagen o audio creado artificialmente puede considerarse contenido __.",
+    "options": [],
+    "correctAnswer": "sintético",
+    "acceptedAnswers": [
+      "sintético",
+      "sintetico"
+    ],
+    "feedback": "El contenido sintético puede parecer real sin documentar un hecho auténtico.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q37",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "multipleChoice",
+    "statement": "Una captura de pantalla muestra una publicación polémica. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q37_o1",
+        "text": "Buscar la publicación original y su contexto."
+      },
+      {
+        "id": "q37_o2",
+        "text": "Confiar solo en la captura."
+      },
+      {
+        "id": "q37_o3",
+        "text": "Compartirla de inmediato."
+      },
+      {
+        "id": "q37_o4",
+        "text": "Ignorar la fecha."
+      }
+    ],
+    "correctAnswer": "q37_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las capturas pueden recortarse, editarse o atribuirse falsamente.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q38",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "trueFalse",
+    "statement": "Un deepfake puede utilizarse para suplantar a una persona y pedir dinero o causar daño.",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q38_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q38_o1",
+    "acceptedAnswers": [],
+    "feedback": "La síntesis de voz e imagen amplía las posibilidades de engaño.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q39",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué es más confiable que buscar únicamente “fallos visuales” en un video?",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verificar su fuente original y buscar confirmaciones independientes."
+      },
+      {
+        "id": "q39_o2",
+        "text": "Confiar si no notas errores."
+      },
+      {
+        "id": "q39_o3",
+        "text": "Mirar si está en alta resolución."
+      },
+      {
+        "id": "q39_o4",
+        "text": "Contar comentarios."
+      }
+    ],
+    "correctAnswer": "q39_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un contenido manipulado bien producido puede no mostrar señales visibles evidentes.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q40",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume la verificación de contenido audiovisual?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "No confiar solo en lo realista que parece; comprobar origen, contexto y confirmaciones externas."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Si tiene voz conocida debe ser real."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Si no hay errores visuales no puede ser falso."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Las imágenes nunca se manipulan."
+      }
+    ],
+    "correctAnswer": "q40_o1",
+    "acceptedAnswers": [],
+    "feedback": "La apariencia es una pista insuficiente ante las herramientas actuales de edición y generación.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q41",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una cadena dice “reenviar a todos” y anuncia un bono sin fuente. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Buscas la información en el canal oficial correspondiente."
+      },
+      {
+        "id": "q41_o2",
+        "text": "La reenvías por solidaridad."
+      },
+      {
+        "id": "q41_o3",
+        "text": "Añades más urgencia."
+      },
+      {
+        "id": "q41_o4",
+        "text": "Eliminas la fecha."
+      }
+    ],
+    "correctAnswer": "q41_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las alertas y beneficios deben confirmarse en la institución responsable.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q42",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "trueFalse",
+    "statement": "Un mensaje viral puede ser antiguo, pertenecer a otro país o ser completamente falso.",
+    "options": [
+      {
+        "id": "q42_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q42_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q42_o1",
+    "acceptedAnswers": [],
+    "feedback": "La viralidad no conserva necesariamente el contexto original.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q43",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "fillBlank",
+    "statement": "Un mensaje copiado y reenviado repetidamente entre personas suele conocerse como una __.",
+    "options": [],
+    "correctAnswer": "cadena",
+    "acceptedAnswers": [
+      "cadena"
+    ],
+    "feedback": "Las cadenas pueden perder fuente, fecha y contexto mientras circulan.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q44",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una alerta sobre secuestros circula sin fecha ni institución responsable. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Verificar con fuentes oficiales antes de difundirla."
+      },
+      {
+        "id": "q44_o2",
+        "text": "Compartirla “por si acaso”."
+      },
+      {
+        "id": "q44_o3",
+        "text": "Añadir nombres no confirmados."
+      },
+      {
+        "id": "q44_o4",
+        "text": "Publicarla como un hecho."
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "Compartir alertas no verificadas puede provocar miedo y desinformación.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q45",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "trueFalse",
+    "statement": "“Compartir por si acaso” puede contribuir a expandir información falsa.",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q45_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q45_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una buena intención no elimina las consecuencias de difundir un mensaje incorrecto.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q46",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una cadena sanitaria ofrece una cura urgente atribuida a un hospital. ¿Qué fuente conviene revisar?",
+    "options": [
+      {
+        "id": "q46_o1",
+        "text": "El hospital o autoridad sanitaria oficial."
+      },
+      {
+        "id": "q46_o2",
+        "text": "El último contacto que la reenvió."
+      },
+      {
+        "id": "q46_o3",
+        "text": "Un comentario anónimo."
+      },
+      {
+        "id": "q46_o4",
+        "text": "La cantidad de veces compartida."
+      }
+    ],
+    "correctAnswer": "q46_o1",
+    "acceptedAnswers": [],
+    "feedback": "La institución competente puede confirmar si realmente emitió la información.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q47",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "fillBlank",
+    "statement": "El acto de enviar nuevamente un mensaje a otras personas se denomina __.",
+    "options": [],
+    "correctAnswer": "reenviar",
+    "acceptedAnswers": [
+      "reenviar"
+    ],
+    "feedback": "Antes de reenviar información sensible conviene verificar su origen.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q48",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué señales justifican revisar una cadena antes de compartirla?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Urgencia, petición de reenviar y ausencia de fuente verificable."
+      },
+      {
+        "id": "q48_o2",
+        "text": "Enlace a una institución oficial y fecha clara."
+      },
+      {
+        "id": "q48_o3",
+        "text": "Documento original disponible."
+      },
+      {
+        "id": "q48_o4",
+        "text": "Información confirmada en varios canales."
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las cadenas suelen apelar a miedo o solidaridad para impulsar difusión rápida.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q49",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "trueFalse",
+    "statement": "Si una cadena no puede verificarse, es válido decidir no compartirla como verdadera.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o1",
+    "acceptedAnswers": [],
+    "feedback": "No difundir contenido no confirmado reduce la propagación de errores.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q50",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume una respuesta responsable ante mensajes virales?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Buscar la fuente oficial, comprobar fecha y contexto y solo después decidir si compartir."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Reenviar primero para advertir."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Confiar en mayúsculas y emojis."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Ignorar el país de origen."
+      }
+    ],
+    "correctAnswer": "q50_o1",
+    "acceptedAnswers": [],
+    "feedback": "La pausa antes de reenviar rompe la cadena de difusión automática.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q51",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "trueFalse",
+    "statement": "Una herramienta de inteligencia artificial puede producir una respuesta convincente y aun así equivocarse.",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q51_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q51_o1",
+    "acceptedAnswers": [],
+    "feedback": "La fluidez del texto no garantiza exactitud factual.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q52",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Cómo conviene utilizar un dato importante obtenido de una IA?",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Verificarlo con fuentes confiables antes de tomar decisiones relevantes."
+      },
+      {
+        "id": "q52_o2",
+        "text": "Asumir que siempre es correcto."
+      },
+      {
+        "id": "q52_o3",
+        "text": "Usarlo como única fuente médica o legal."
+      },
+      {
+        "id": "q52_o4",
+        "text": "Compartirlo sin leer."
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "La IA puede ser una herramienta de apoyo, pero la información crítica requiere comprobación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q53",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "fillBlank",
+    "statement": "Cuando una IA inventa información presentada como si fuera cierta, la respuesta contiene un dato __.",
+    "options": [],
+    "correctAnswer": "falso",
+    "acceptedAnswers": [
+      "falso"
+    ],
+    "feedback": "Una respuesta plausible puede incluir hechos o referencias inexistentes.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q54",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué información no conviene introducir en una herramienta de IA sin comprender cómo será tratada?",
+    "options": [
+      {
+        "id": "q54_o1",
+        "text": "Contraseñas, documentos o datos confidenciales."
+      },
+      {
+        "id": "q54_o2",
+        "text": "Una pregunta general sin datos personales."
+      },
+      {
+        "id": "q54_o3",
+        "text": "Un ejemplo ficticio."
+      },
+      {
+        "id": "q54_o4",
+        "text": "Un concepto público."
+      }
+    ],
+    "correctAnswer": "q54_o1",
+    "acceptedAnswers": [],
+    "feedback": "La privacidad debe considerarse antes de entregar información sensible a un servicio.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q55",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "trueFalse",
+    "statement": "Una IA siempre proporciona fuentes reales y correctamente relacionadas con sus afirmaciones.",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q55_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q55_o2",
+    "acceptedAnswers": [],
+    "feedback": "Puede inventar referencias o atribuir información incorrectamente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q56",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una IA te da una recomendación financiera específica. ¿Qué es responsable?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Verificar información con fuentes fiables y, si corresponde, buscar asesoramiento adecuado."
+      },
+      {
+        "id": "q56_o2",
+        "text": "Transferir dinero inmediatamente."
+      },
+      {
+        "id": "q56_o3",
+        "text": "Considerarla garantía de resultado."
+      },
+      {
+        "id": "q56_o4",
+        "text": "Compartir tus claves bancarias para obtener más precisión."
+      }
+    ],
+    "correctAnswer": "q56_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las decisiones de alto impacto requieren fuentes confiables y criterio profesional cuando corresponda.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q57",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "fillBlank",
+    "statement": "Comprobar la exactitud de una respuesta de IA mediante fuentes externas es realizar una __.",
+    "options": [],
+    "correctAnswer": "verificación",
+    "acceptedAnswers": [
+      "verificación",
+      "verificacion",
+      "comprobación",
+      "comprobacion"
+    ],
+    "feedback": "Las respuestas importantes no deben depender únicamente de la herramienta que las generó.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q58",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "trueFalse",
+    "statement": "La inteligencia artificial puede reflejar sesgos presentes en datos, instrucciones o procesos de generación.",
+    "options": [
+      {
+        "id": "q58_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q58_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q58_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las respuestas deben interpretarse críticamente y no como autoridad neutral absoluta.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "information_ai_q59",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué uso protege mejor la privacidad?",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "Formular la consulta sin incluir datos personales o confidenciales innecesarios."
+      },
+      {
+        "id": "q59_o2",
+        "text": "Copiar documentos completos aunque no hagan falta."
+      },
+      {
+        "id": "q59_o3",
+        "text": "Introducir contraseñas reales."
+      },
+      {
+        "id": "q59_o4",
+        "text": "Compartir códigos temporales."
+      }
+    ],
+    "correctAnswer": "q59_o1",
+    "acceptedAnswers": [],
+    "feedback": "Reducir los datos enviados limita la exposición innecesaria.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "information_ai_q60",
+    "categoryId": "information_misinformation_ai",
+    "activityId": "information_ai_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume un uso responsable de IA?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "No compartir datos sensibles innecesarios, verificar información importante y reconocer que la herramienta puede equivocarse."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Tratar toda respuesta como verdad definitiva."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Usarla como única fuente para decisiones críticas."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Introducir información confidencial para obtener respuestas mejores."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "El uso responsable combina pensamiento crítico, privacidad y verificación.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  }
+]

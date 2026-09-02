@@ -1,0 +1,1488 @@
+[
+  {
+    "id": "payments_digital_q01",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "multipleChoice",
+    "statement": "Antes de confirmar una transferencia mediante QR, ¿qué debes revisar?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "Beneficiario, entidad, monto y concepto."
+      },
+      {
+        "id": "q01_o2",
+        "text": "Solo el color del QR."
+      },
+      {
+        "id": "q01_o3",
+        "text": "La batería del celular."
+      },
+      {
+        "id": "q01_o4",
+        "text": "La cantidad de seguidores del comercio."
+      }
+    ],
+    "correctAnswer": "q01_o1",
+    "acceptedAnswers": [],
+    "feedback": "La pantalla final de la aplicación bancaria debe coincidir con la operación que esperas realizar.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q02",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "trueFalse",
+    "statement": "Escanear un QR no elimina la necesidad de revisar los datos antes de confirmar el pago.",
+    "options": [
+      {
+        "id": "q02_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q02_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q02_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un QR puede contener datos equivocados, alterados o pertenecientes a otra cuenta.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q03",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "fillBlank",
+    "statement": "La persona o cuenta que recibirá una transferencia se denomina __.",
+    "options": [],
+    "correctAnswer": "beneficiario",
+    "acceptedAnswers": [
+      "beneficiario",
+      "destinatario"
+    ],
+    "feedback": "El beneficiario debe coincidir con la persona o comercio esperado.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q04",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "multipleChoice",
+    "statement": "Escaneas un QR de una tienda, pero aparece un nombre de beneficiario diferente. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Pagas igual."
+      },
+      {
+        "id": "q04_o2",
+        "text": "Cancelas y consultas al comercio antes de continuar."
+      },
+      {
+        "id": "q04_o3",
+        "text": "Aumentas el monto."
+      },
+      {
+        "id": "q04_o4",
+        "text": "Compartes tu PIN."
+      }
+    ],
+    "correctAnswer": "q04_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una inconsistencia en el beneficiario puede indicar error o sustitución del QR.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q05",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "trueFalse",
+    "statement": "Un QR pegado encima de otro en un comercio puede ser señal de sustitución maliciosa.",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q05_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q05_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un código sustituido podría dirigir el dinero a una cuenta diferente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q06",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "fillBlank",
+    "statement": "La información que explica para qué se realiza una transferencia puede figurar como __ de la operación.",
+    "options": [],
+    "correctAnswer": "concepto",
+    "acceptedAnswers": [
+      "concepto"
+    ],
+    "feedback": "Revisar el concepto ayuda a confirmar que la operación corresponde a lo esperado.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q07",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "multipleChoice",
+    "statement": "Recibes un QR por chat de una persona que no conoces. ¿Qué es imprescindible antes de pagar?",
+    "options": [
+      {
+        "id": "q07_o1",
+        "text": "Revisar en la app bancaria quién recibirá el dinero y confirmar la operación esperada."
+      },
+      {
+        "id": "q07_o2",
+        "text": "Confiar porque el QR se ve profesional."
+      },
+      {
+        "id": "q07_o3",
+        "text": "Enviar primero el PIN."
+      },
+      {
+        "id": "q07_o4",
+        "text": "Pagar una cantidad pequeña sin revisar."
+      }
+    ],
+    "correctAnswer": "q07_o1",
+    "acceptedAnswers": [],
+    "feedback": "La información del QR debe comprobarse dentro del canal financiero oficial.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q08",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "trueFalse",
+    "statement": "Un código QR puede abrir un sitio web y no necesariamente representar un pago bancario.",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q08_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los QR pueden contener distintos tipos de enlaces o información.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q09",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es el mejor momento para detectar un error en monto o beneficiario?",
+    "options": [
+      {
+        "id": "q09_o1",
+        "text": "Antes de confirmar definitivamente en la app bancaria."
+      },
+      {
+        "id": "q09_o2",
+        "text": "Después de enviar el dinero."
+      },
+      {
+        "id": "q09_o3",
+        "text": "Cuando ya borraste el comprobante."
+      },
+      {
+        "id": "q09_o4",
+        "text": "Nunca es necesario revisar."
+      }
+    ],
+    "correctAnswer": "q09_o1",
+    "acceptedAnswers": [],
+    "feedback": "La pantalla de confirmación es una última oportunidad para detener una operación incorrecta.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q10",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume una transferencia segura?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Confirmar únicamente cuando beneficiario, monto y operación coinciden con lo esperado."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Pagar rápido para evitar demoras."
+      },
+      {
+        "id": "q10_o3",
+        "text": "Confiar solo por el QR."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Compartir claves con el comercio."
+      }
+    ],
+    "correctAnswer": "q10_o1",
+    "acceptedAnswers": [],
+    "feedback": "La revisión final reduce errores y sustituciones antes de que el dinero salga.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q11",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "trueFalse",
+    "statement": "Una captura de transferencia demuestra por sí sola que el dinero ya llegó a la cuenta receptora.",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q11_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q11_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las imágenes pueden editarse o corresponder a operaciones que no se completaron.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q12",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "fillBlank",
+    "statement": "El ingreso efectivo del dinero en la cuenta receptora se denomina __.",
+    "options": [],
+    "correctAnswer": "acreditación",
+    "acceptedAnswers": [
+      "acreditación",
+      "acreditacion",
+      "abono"
+    ],
+    "feedback": "La acreditación debe comprobarse directamente en la cuenta o canal oficial.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q13",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "multipleChoice",
+    "statement": "Un cliente muestra una captura de pago, pero no ves el movimiento en tu cuenta. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q13_o1",
+        "text": "Entregas el producto por la captura."
+      },
+      {
+        "id": "q13_o2",
+        "text": "Esperas o verificas la acreditación en tu propia cuenta antes de entregar."
+      },
+      {
+        "id": "q13_o3",
+        "text": "Le pides el PIN."
+      },
+      {
+        "id": "q13_o4",
+        "text": "Confías por el logo del comprobante."
+      }
+    ],
+    "correctAnswer": "q13_o2",
+    "acceptedAnswers": [],
+    "feedback": "El receptor debe comprobar que el dinero realmente fue acreditado.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q14",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "trueFalse",
+    "statement": "Una imagen de comprobante y una acreditación bancaria real son exactamente lo mismo.",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q14_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q14_o2",
+    "acceptedAnswers": [],
+    "feedback": "La imagen es solo una representación; el movimiento en la cuenta confirma la recepción.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q15",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué señal es decisiva para sospechar de un comprobante mostrado por otra persona?",
+    "options": [
+      {
+        "id": "q15_o1",
+        "text": "No existe el movimiento correspondiente en tu cuenta."
+      },
+      {
+        "id": "q15_o2",
+        "text": "El comprobante tiene colores."
+      },
+      {
+        "id": "q15_o3",
+        "text": "El cliente usa teléfono."
+      },
+      {
+        "id": "q15_o4",
+        "text": "El monto aparece escrito."
+      }
+    ],
+    "correctAnswer": "q15_o1",
+    "acceptedAnswers": [],
+    "feedback": "Si no hay acreditación en la cuenta receptora, la imagen no debe tomarse como prueba suficiente.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q16",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "fillBlank",
+    "statement": "Una imagen de pago que ha sido modificada digitalmente es un comprobante __.",
+    "options": [],
+    "correctAnswer": "alterado",
+    "acceptedAnswers": [
+      "alterado"
+    ],
+    "feedback": "Las capturas pueden manipularse para aparentar operaciones inexistentes.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q17",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "multipleChoice",
+    "statement": "Una persona te presiona para entregar un producto “porque ya te mandó la captura”. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q17_o1",
+        "text": "Verificar primero la acreditación en tu cuenta."
+      },
+      {
+        "id": "q17_o2",
+        "text": "Entregar por presión."
+      },
+      {
+        "id": "q17_o3",
+        "text": "Compartir tu contraseña bancaria."
+      },
+      {
+        "id": "q17_o4",
+        "text": "Desactivar las notificaciones."
+      }
+    ],
+    "correctAnswer": "q17_o1",
+    "acceptedAnswers": [],
+    "feedback": "La presión no reemplaza la comprobación de que el dinero fue recibido.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q18",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "trueFalse",
+    "statement": "La notificación o movimiento mostrado por tu propia entidad financiera es más confiable que una captura enviada por el pagador.",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q18_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "La confirmación debe provenir del canal bajo control del receptor.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q19",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué debe hacer un negocio antes de dar por finalizado un pago?",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Confirmar el abono en su propia cuenta."
+      },
+      {
+        "id": "q19_o2",
+        "text": "Mirar solo la foto del comprobante."
+      },
+      {
+        "id": "q19_o3",
+        "text": "Pedir el código de verificación del cliente."
+      },
+      {
+        "id": "q19_o4",
+        "text": "Confiar por la urgencia."
+      }
+    ],
+    "correctAnswer": "q19_o1",
+    "acceptedAnswers": [],
+    "feedback": "El pago se confirma por la acreditación, no por la imagen presentada.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q20",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume la prevención de comprobantes falsos?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Verifica siempre el movimiento en el canal oficial de tu entidad antes de entregar bienes o servicios."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Acepta cualquier captura."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Confía si aparece un logo bancario."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Pide la contraseña del pagador."
+      }
+    ],
+    "correctAnswer": "q20_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación directa elimina la dependencia de imágenes manipulables.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q21",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "multipleChoice",
+    "statement": "Un producto caro aparece a un precio extremadamente bajo en un perfil nuevo. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Transferir rápido."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Investigar al vendedor, condiciones y posibles reclamos antes de pagar."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Enviar la tarjeta completa."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Ignorar cualquier señal."
+      }
+    ],
+    "correctAnswer": "q21_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los precios irreales pueden utilizarse para atraer y presionar a compradores.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q22",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "trueFalse",
+    "statement": "Tener muchos seguidores garantiza que una cuenta de ventas sea legítima.",
+    "options": [
+      {
+        "id": "q22_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q22_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q22_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los seguidores pueden comprarse o una cuenta real puede haber sido robada.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q23",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "fillBlank",
+    "statement": "Pagar una parte del precio antes de recibir el producto se conoce como un __.",
+    "options": [],
+    "correctAnswer": "adelanto",
+    "acceptedAnswers": [
+      "adelanto"
+    ],
+    "feedback": "Los adelantos pueden aumentar el riesgo cuando el vendedor no ha sido verificado.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q24",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué combinación debe aumentar tu precaución en una compra entre particulares?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Precio irreal, presión urgente y pago por un canal extraño."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Reputación verificable y condiciones claras."
+      },
+      {
+        "id": "q24_o3",
+        "text": "Encuentro en lugar seguro."
+      },
+      {
+        "id": "q24_o4",
+        "text": "Método de pago con registro."
+      }
+    ],
+    "correctAnswer": "q24_o1",
+    "acceptedAnswers": [],
+    "feedback": "Varias señales de riesgo juntas justifican detenerse y verificar.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q25",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "trueFalse",
+    "statement": "Para una venta entre particulares, un desconocido no necesita tu código SMS para “confirmar la operación”.",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q25_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q25_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos pueden autorizar accesos o acciones ajenas a la venta.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q26",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "multipleChoice",
+    "statement": "Vas a encontrarte con una persona desconocida para comprar un producto. ¿Qué práctica es más segura?",
+    "options": [
+      {
+        "id": "q26_o1",
+        "text": "Elegir un lugar seguro y, cuando sea posible, ir acompañado."
+      },
+      {
+        "id": "q26_o2",
+        "text": "Ir a un lugar aislado."
+      },
+      {
+        "id": "q26_o3",
+        "text": "Compartir tus contraseñas antes de ir."
+      },
+      {
+        "id": "q26_o4",
+        "text": "No informar a nadie."
+      }
+    ],
+    "correctAnswer": "q26_o1",
+    "acceptedAnswers": [],
+    "feedback": "La seguridad física también forma parte de una compra entre particulares.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q27",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "fillBlank",
+    "statement": "Comprobar experiencias y referencias externas de un vendedor ayuda a revisar su __.",
+    "options": [],
+    "correctAnswer": "reputación",
+    "acceptedAnswers": [
+      "reputación",
+      "reputacion"
+    ],
+    "feedback": "La reputación debe evaluarse más allá de lo que el propio vendedor muestra.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q28",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "multipleChoice",
+    "statement": "Un vendedor insiste en salir de la plataforma y pagar por un medio sin registro. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Consideras la señal de riesgo y buscas una opción más segura."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Aceptas porque será más rápido."
+      },
+      {
+        "id": "q28_o3",
+        "text": "Envías documentos completos."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Compartes códigos de acceso."
+      }
+    ],
+    "correctAnswer": "q28_o1",
+    "acceptedAnswers": [],
+    "feedback": "Salir de mecanismos de protección puede dificultar reclamos y aumentar el riesgo.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q29",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "trueFalse",
+    "statement": "Revisar identidad, reputación, condiciones y medio de pago es útil antes de comprar en redes sociales.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "La verificación previa reduce el riesgo de perfiles y ofertas falsas.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q30",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume una compra segura entre particulares?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "Verificar al vendedor, evitar presión y adelantos dudosos, usar canales con registro y cuidar el encuentro físico."
+      },
+      {
+        "id": "q30_o2",
+        "text": "Confiar solo en fotos."
+      },
+      {
+        "id": "q30_o3",
+        "text": "Pagar siempre por adelantado."
+      },
+      {
+        "id": "q30_o4",
+        "text": "Compartir códigos para demostrar confianza."
+      }
+    ],
+    "correctAnswer": "q30_o1",
+    "acceptedAnswers": [],
+    "feedback": "La seguridad incluye tanto la operación digital como el posible encuentro presencial.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q31",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "multipleChoice",
+    "statement": "Antes de comprar en una tienda web desconocida, ¿qué conviene revisar?",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "Dominio, datos de contacto, políticas, reputación externa y método de pago."
+      },
+      {
+        "id": "q31_o2",
+        "text": "Solo el diseño."
+      },
+      {
+        "id": "q31_o3",
+        "text": "Únicamente los anuncios."
+      },
+      {
+        "id": "q31_o4",
+        "text": "La cantidad de emojis."
+      }
+    ],
+    "correctAnswer": "q31_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una tienda legítima debe poder evaluarse mediante varios elementos verificables.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q32",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "trueFalse",
+    "statement": "Que una tienda use HTTPS garantiza que el comercio es honesto y legítimo.",
+    "options": [
+      {
+        "id": "q32_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q32_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q32_o2",
+    "acceptedAnswers": [],
+    "feedback": "HTTPS cifra la conexión, pero un sitio fraudulento también puede utilizarlo.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q33",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "fillBlank",
+    "statement": "La dirección principal que identifica la tienda en internet se llama __.",
+    "options": [],
+    "correctAnswer": "dominio",
+    "acceptedAnswers": [
+      "dominio"
+    ],
+    "feedback": "El dominio debe revisarse para evitar imitaciones de sitios conocidos.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q34",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué método de pago es preferible cuando existen alternativas?",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "Uno que permita reclamos o tenga protección al comprador."
+      },
+      {
+        "id": "q34_o2",
+        "text": "Un envío irreversible a una cuenta desconocida."
+      },
+      {
+        "id": "q34_o3",
+        "text": "Compartir la clave bancaria."
+      },
+      {
+        "id": "q34_o4",
+        "text": "Pagar mediante un enlace recibido al azar."
+      }
+    ],
+    "correctAnswer": "q34_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las opciones con mecanismos de reclamo pueden ofrecer mayor protección ante problemas.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q35",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "trueFalse",
+    "statement": "Una tienda sin datos de contacto claros ni políticas visibles merece mayor precaución.",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q35_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q35_o1",
+    "acceptedAnswers": [],
+    "feedback": "La ausencia de información verificable dificulta reclamar y comprobar la existencia del comercio.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q36",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "multipleChoice",
+    "statement": "Un anuncio te lleva a una tienda que imita a una marca conocida. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Verificar el dominio y buscar la tienda desde el sitio oficial de la marca."
+      },
+      {
+        "id": "q36_o2",
+        "text": "Comprar por el logo."
+      },
+      {
+        "id": "q36_o3",
+        "text": "Compartir la tarjeta completa por chat."
+      },
+      {
+        "id": "q36_o4",
+        "text": "Ignorar la dirección web."
+      }
+    ],
+    "correctAnswer": "q36_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los anuncios también pueden dirigir a tiendas falsas o dominios parecidos.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q37",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "fillBlank",
+    "statement": "Las condiciones para devolver un producto forman parte de la política de __.",
+    "options": [],
+    "correctAnswer": "devolución",
+    "acceptedAnswers": [
+      "devolución",
+      "devolucion"
+    ],
+    "feedback": "Conocer las políticas ayuda a saber qué opciones existen si la compra sale mal.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q38",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué evidencia externa ayuda a evaluar una tienda?",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Opiniones o referencias fuera del propio sitio y datos de contacto verificables."
+      },
+      {
+        "id": "q38_o2",
+        "text": "Solo testimonios publicados por la tienda."
+      },
+      {
+        "id": "q38_o3",
+        "text": "El color de su logo."
+      },
+      {
+        "id": "q38_o4",
+        "text": "Que muestre un descuento grande."
+      }
+    ],
+    "correctAnswer": "q38_o1",
+    "acceptedAnswers": [],
+    "feedback": "La reputación externa permite contrastar lo que el comercio afirma sobre sí mismo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q39",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "trueFalse",
+    "statement": "Un descuento muy alto justifica saltarse la revisión del dominio y las condiciones de compra.",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q39_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q39_o2",
+    "acceptedAnswers": [],
+    "feedback": "La urgencia y el descuento no reemplazan la verificación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q40",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla resume una compra segura en comercio electrónico?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Verificar sitio y políticas, contrastar reputación y priorizar medios de pago con protección."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Entrar desde cualquier anuncio y pagar rápido."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Ignorar el dominio si hay HTTPS."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Compartir códigos de verificación."
+      }
+    ],
+    "correctAnswer": "q40_o1",
+    "acceptedAnswers": [],
+    "feedback": "La decisión de compra debe considerar tanto legitimidad del comercio como protección del pago.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q41",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "multipleChoice",
+    "statement": "Antes de aceptar una prueba gratuita, ¿qué conviene revisar?",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Precio posterior, periodicidad del cobro y forma de cancelación."
+      },
+      {
+        "id": "q41_o2",
+        "text": "Solo el botón grande."
+      },
+      {
+        "id": "q41_o3",
+        "text": "El color de la página."
+      },
+      {
+        "id": "q41_o4",
+        "text": "La cantidad de seguidores."
+      }
+    ],
+    "correctAnswer": "q41_o1",
+    "acceptedAnswers": [],
+    "feedback": "Muchas pruebas se convierten en pagos recurrentes si no se cancelan.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q42",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "trueFalse",
+    "statement": "Una prueba gratuita puede transformarse automáticamente en una suscripción de pago según sus condiciones.",
+    "options": [
+      {
+        "id": "q42_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q42_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q42_o1",
+    "acceptedAnswers": [],
+    "feedback": "Por eso deben revisarse los términos antes de confirmar.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q43",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "fillBlank",
+    "statement": "Un cobro que se repite cada cierto periodo se denomina cobro __.",
+    "options": [],
+    "correctAnswer": "recurrente",
+    "acceptedAnswers": [
+      "recurrente"
+    ],
+    "feedback": "Las suscripciones suelen generar cobros periódicos hasta que se cancelan.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q44",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una página facilita “Aceptar” pero esconde o complica “Cancelar”. ¿Qué puede estar utilizando?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Un patrón oscuro."
+      },
+      {
+        "id": "q44_o2",
+        "text": "Una copia de seguridad."
+      },
+      {
+        "id": "q44_o3",
+        "text": "Una contraseña maestra."
+      },
+      {
+        "id": "q44_o4",
+        "text": "Una verificación independiente."
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los patrones oscuros diseñan la interfaz para empujar decisiones que benefician al servicio.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q45",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "trueFalse",
+    "statement": "Leer antes de confirmar una compra o suscripción también forma parte de la seguridad digital.",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q45_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q45_o1",
+    "acceptedAnswers": [],
+    "feedback": "Comprender precio y condiciones evita aceptar cobros no deseados.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q46",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué señal puede indicar un patrón oscuro?",
+    "options": [
+      {
+        "id": "q46_o1",
+        "text": "El botón para rechazar está oculto o la cancelación usa pasos innecesariamente confusos."
+      },
+      {
+        "id": "q46_o2",
+        "text": "Las condiciones son claras."
+      },
+      {
+        "id": "q46_o3",
+        "text": "El precio está visible."
+      },
+      {
+        "id": "q46_o4",
+        "text": "Cancelar es sencillo."
+      }
+    ],
+    "correctAnswer": "q46_o1",
+    "acceptedAnswers": [],
+    "feedback": "El diseño manipulador intenta dificultar una decisión libre e informada.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q47",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "fillBlank",
+    "statement": "Terminar una suscripción para evitar nuevos cobros se denomina __.",
+    "options": [],
+    "correctAnswer": "cancelación",
+    "acceptedAnswers": [
+      "cancelación",
+      "cancelacion"
+    ],
+    "feedback": "Conviene conocer el procedimiento de cancelación antes de aceptar la suscripción.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q48",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "multipleChoice",
+    "statement": "Una app ofrece siete días gratis y pide tarjeta. ¿Qué pregunta es importante?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "¿Cuánto cobrará después y cuándo debo cancelar si no quiero continuar?"
+      },
+      {
+        "id": "q48_o2",
+        "text": "¿Qué color tiene el icono?"
+      },
+      {
+        "id": "q48_o3",
+        "text": "¿Cuántos emojis usa?"
+      },
+      {
+        "id": "q48_o4",
+        "text": "¿Puedo ignorar las condiciones?"
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "El usuario debe conocer qué ocurrirá al terminar el periodo gratuito.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q49",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "trueFalse",
+    "statement": "Si una interfaz intenta cansarte o confundirte para que aceptes un cobro, es válido detenerte y revisar antes de continuar.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o1",
+    "acceptedAnswers": [],
+    "feedback": "No hay obligación de completar una compra bajo presión o confusión.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q50",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué regla protege mejor frente a suscripciones no deseadas?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Revisar precio, frecuencia, renovación y cancelación antes de confirmar."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Aceptar cualquier prueba gratuita."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Ignorar cobros pequeños."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Compartir códigos bancarios para cancelar."
+      }
+    ],
+    "correctAnswer": "q50_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las condiciones de renovación deben conocerse antes de adquirir el servicio.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q51",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "multipleChoice",
+    "statement": "Detectas una transferencia fraudulenta. ¿A quién conviene contactar inmediatamente?",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "A tu entidad financiera por su canal oficial."
+      },
+      {
+        "id": "q51_o2",
+        "text": "Al estafador para negociar."
+      },
+      {
+        "id": "q51_o3",
+        "text": "A un grupo anónimo."
+      },
+      {
+        "id": "q51_o4",
+        "text": "A cualquier número recibido por mensaje."
+      }
+    ],
+    "correctAnswer": "q51_o1",
+    "acceptedAnswers": [],
+    "feedback": "La entidad puede orientar sobre bloqueo, revisión, rastreo o reclamo según el servicio.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q52",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "trueFalse",
+    "statement": "Actuar rápidamente puede mejorar las posibilidades de aplicar medidas sobre una operación fraudulenta.",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q52_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "El tiempo puede ser importante para notificar y revisar movimientos.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q53",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "fillBlank",
+    "statement": "Capturas, chats, números y comprobantes relacionados con un fraude forman parte de la __.",
+    "options": [],
+    "correctAnswer": "evidencia",
+    "acceptedAnswers": [
+      "evidencia",
+      "prueba",
+      "pruebas"
+    ],
+    "feedback": "Conservar información facilita reportes, reclamos y seguimiento.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q54",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una persona promete recuperar tu dinero si haces otro pago. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q54_o1",
+        "text": "No pagas y verificas cualquier gestión con la entidad correspondiente."
+      },
+      {
+        "id": "q54_o2",
+        "text": "Pagas para recuperar lo perdido."
+      },
+      {
+        "id": "q54_o3",
+        "text": "Compartes tu PIN."
+      },
+      {
+        "id": "q54_o4",
+        "text": "Envías un código de verificación."
+      }
+    ],
+    "correctAnswer": "q54_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las falsas recuperaciones pueden convertirse en una segunda estafa.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q55",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "trueFalse",
+    "statement": "Después de un fraude conviene revisar también las cuentas o credenciales que pudiste haber expuesto.",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q55_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q55_o1",
+    "acceptedAnswers": [],
+    "feedback": "El fraude puede haber incluido robo de datos además de la pérdida económica.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q56",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "multipleChoice",
+    "statement": "Realizaste una transferencia equivocada. ¿Qué acción es adecuada?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Contactar cuanto antes a tu entidad financiera para recibir orientación."
+      },
+      {
+        "id": "q56_o2",
+        "text": "Publicar tu PIN."
+      },
+      {
+        "id": "q56_o3",
+        "text": "Amenazar al receptor."
+      },
+      {
+        "id": "q56_o4",
+        "text": "Borrar la app."
+      }
+    ],
+    "correctAnswer": "q56_o1",
+    "acceptedAnswers": [],
+    "feedback": "La entidad puede indicar qué opciones existen según el tipo de transferencia.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q57",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "fillBlank",
+    "statement": "Solicitar formalmente la revisión de un cobro u operación puede formar parte de un __.",
+    "options": [],
+    "correctAnswer": "reclamo",
+    "acceptedAnswers": [
+      "reclamo",
+      "reclamación",
+      "reclamacion"
+    ],
+    "feedback": "Los canales oficiales permiten registrar la situación y recibir orientación.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q58",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué información conviene guardar después de una compra fraudulenta?",
+    "options": [
+      {
+        "id": "q58_o1",
+        "text": "Comprobantes, conversaciones, datos del perfil y detalles de la operación."
+      },
+      {
+        "id": "q58_o2",
+        "text": "Solo recuerdos."
+      },
+      {
+        "id": "q58_o3",
+        "text": "Contraseñas en un chat."
+      },
+      {
+        "id": "q58_o4",
+        "text": "Nada."
+      }
+    ],
+    "correctAnswer": "q58_o1",
+    "acceptedAnswers": [],
+    "feedback": "La documentación ayuda a explicar y respaldar lo ocurrido.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "payments_digital_q59",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "trueFalse",
+    "statement": "Una persona que sufrió fraude debe evitar entregar más códigos o datos a quien promete una solución no verificada.",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q59_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q59_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los atacantes pueden intentar continuar el engaño después del primer incidente.",
+    "capacity": "recuperar",
+    "difficulty": "básica"
+  },
+  {
+    "id": "payments_digital_q60",
+    "categoryId": "digital_payments_consumption",
+    "activityId": "payments_digital_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué secuencia resume mejor la respuesta ante fraude financiero?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "Contactar a la entidad oficial, conservar evidencia, proteger credenciales relacionadas y evitar nuevos pagos a supuestos recuperadores."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Negociar con el estafador y pagar otra vez."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Borrar toda evidencia."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Compartir claves con terceros."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "La recuperación debe reducir nuevas pérdidas y conservar información útil para gestiones posteriores.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  }
+]

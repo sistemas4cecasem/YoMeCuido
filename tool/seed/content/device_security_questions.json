@@ -1,0 +1,1481 @@
+[
+  {
+    "id": "device_security_q01",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál es la función principal del bloqueo de pantalla?",
+    "options": [
+      {
+        "id": "q01_o1",
+        "text": "Aumentar el volumen."
+      },
+      {
+        "id": "q01_o2",
+        "text": "Dificultar el acceso no autorizado al dispositivo."
+      },
+      {
+        "id": "q01_o3",
+        "text": "Mejorar la señal móvil."
+      },
+      {
+        "id": "q01_o4",
+        "text": "Eliminar anuncios."
+      }
+    ],
+    "correctAnswer": "q01_o2",
+    "acceptedAnswers": [],
+    "feedback": "El bloqueo protege la información cuando otra persona tiene físicamente el dispositivo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q02",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "trueFalse",
+    "statement": "Usar tu fecha de nacimiento como PIN puede facilitar que otra persona lo adivine.",
+    "options": [
+      {
+        "id": "q02_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q02_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q02_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los datos personales conocidos son malas opciones para códigos de desbloqueo.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q03",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "fillBlank",
+    "statement": "La medida que impide usar el dispositivo sin un PIN, patrón o biometría se llama __ de pantalla.",
+    "options": [],
+    "correctAnswer": "bloqueo",
+    "acceptedAnswers": [
+      "bloqueo"
+    ],
+    "feedback": "El bloqueo de pantalla es una barrera básica ante pérdida, robo o acceso físico.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q04",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué debe acompañar a la huella o reconocimiento facial?",
+    "options": [
+      {
+        "id": "q04_o1",
+        "text": "Un código de desbloqueo sólido."
+      },
+      {
+        "id": "q04_o2",
+        "text": "Una contraseña pública."
+      },
+      {
+        "id": "q04_o3",
+        "text": "Una conexión Wi-Fi abierta."
+      },
+      {
+        "id": "q04_o4",
+        "text": "Un perfil sin bloqueo."
+      }
+    ],
+    "correctAnswer": "q04_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los dispositivos mantienen un método alternativo de acceso que también debe ser seguro.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q05",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "trueFalse",
+    "statement": "Activar biometría hace innecesario proteger el PIN o código alternativo del dispositivo.",
+    "options": [
+      {
+        "id": "q05_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q05_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q05_o2",
+    "acceptedAnswers": [],
+    "feedback": "El código alternativo sigue siendo una vía de acceso y debe protegerse.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q06",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Cuál de estos PIN es menos recomendable?",
+    "options": [
+      {
+        "id": "q06_o1",
+        "text": "583194."
+      },
+      {
+        "id": "q06_o2",
+        "text": "240899 si corresponde a tu fecha de nacimiento."
+      },
+      {
+        "id": "q06_o3",
+        "text": "716305."
+      },
+      {
+        "id": "q06_o4",
+        "text": "Un código no relacionado contigo."
+      }
+    ],
+    "correctAnswer": "q06_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las fechas personales pueden ser conocidas por familiares, amistades o terceros.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q07",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "fillBlank",
+    "statement": "El uso de huella o reconocimiento facial para desbloquear un dispositivo se conoce como __.",
+    "options": [],
+    "correctAnswer": "biometría",
+    "acceptedAnswers": [
+      "biometría",
+      "biometria"
+    ],
+    "feedback": "La biometría facilita el acceso, pero debe acompañarse de un código seguro.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q08",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "multipleChoice",
+    "statement": "Si pierdes un teléfono sin bloqueo de pantalla, ¿qué riesgo aumenta?",
+    "options": [
+      {
+        "id": "q08_o1",
+        "text": "Que otra persona acceda directamente a aplicaciones y datos."
+      },
+      {
+        "id": "q08_o2",
+        "text": "Que el teléfono cargue más rápido."
+      },
+      {
+        "id": "q08_o3",
+        "text": "Que mejore la cámara."
+      },
+      {
+        "id": "q08_o4",
+        "text": "Que se actualicen las apps."
+      }
+    ],
+    "correctAnswer": "q08_o1",
+    "acceptedAnswers": [],
+    "feedback": "Sin bloqueo, quien encuentra el dispositivo puede tener acceso inmediato a su contenido.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q09",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "trueFalse",
+    "statement": "Un código de desbloqueo que no tiene relación con tus datos personales suele ser preferible a uno basado en cumpleaños o números conocidos.",
+    "options": [
+      {
+        "id": "q09_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q09_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q09_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los códigos poco predecibles reducen la posibilidad de adivinación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q10",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_01",
+    "type": "multipleChoice",
+    "statement": "¿Qué combinación ofrece una protección básica más adecuada?",
+    "options": [
+      {
+        "id": "q10_o1",
+        "text": "Sin bloqueo y con apps abiertas."
+      },
+      {
+        "id": "q10_o2",
+        "text": "Biometría acompañada de un código sólido."
+      },
+      {
+        "id": "q10_o3",
+        "text": "PIN igual al año de nacimiento."
+      },
+      {
+        "id": "q10_o4",
+        "text": "Desactivar el bloqueo para mayor comodidad."
+      }
+    ],
+    "correctAnswer": "q10_o2",
+    "acceptedAnswers": [],
+    "feedback": "La biometría y un código alternativo seguro se complementan.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q11",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Por qué son importantes las actualizaciones del sistema y aplicaciones?",
+    "options": [
+      {
+        "id": "q11_o1",
+        "text": "Porque corrigen errores y vulnerabilidades conocidas."
+      },
+      {
+        "id": "q11_o2",
+        "text": "Porque siempre cambian el diseño."
+      },
+      {
+        "id": "q11_o3",
+        "text": "Porque eliminan la necesidad de contraseñas."
+      },
+      {
+        "id": "q11_o4",
+        "text": "Porque vuelven legítimo cualquier sitio."
+      }
+    ],
+    "correctAnswer": "q11_o1",
+    "acceptedAnswers": [],
+    "feedback": "Actualizar permite instalar correcciones de seguridad ya disponibles.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q12",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "trueFalse",
+    "statement": "Postergar actualizaciones durante mucho tiempo puede mantener fallos de seguridad que ya fueron corregidos.",
+    "options": [
+      {
+        "id": "q12_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q12_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q12_o1",
+    "acceptedAnswers": [],
+    "feedback": "Una vulnerabilidad conocida sigue expuesta mientras no se instale la corrección.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q13",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "fillBlank",
+    "statement": "Los fallos de seguridad que pueden ser corregidos mediante actualizaciones se llaman __.",
+    "options": [],
+    "correctAnswer": "vulnerabilidades",
+    "acceptedAnswers": [
+      "vulnerabilidades"
+    ],
+    "feedback": "Las actualizaciones suelen incluir parches para vulnerabilidades conocidas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q14",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué configuración puede ayudar a no olvidar correcciones importantes?",
+    "options": [
+      {
+        "id": "q14_o1",
+        "text": "Actualizaciones automáticas cuando estén disponibles."
+      },
+      {
+        "id": "q14_o2",
+        "text": "Desactivar todos los avisos para siempre."
+      },
+      {
+        "id": "q14_o3",
+        "text": "Descargar archivos desde chats desconocidos."
+      },
+      {
+        "id": "q14_o4",
+        "text": "Evitar actualizar aplicaciones."
+      }
+    ],
+    "correctAnswer": "q14_o1",
+    "acceptedAnswers": [],
+    "feedback": "La actualización automática reduce retrasos innecesarios.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q15",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Desde dónde conviene descargar una actualización?",
+    "options": [
+      {
+        "id": "q15_o1",
+        "text": "Desde la tienda oficial, el sistema o el sitio legítimo del desarrollador."
+      },
+      {
+        "id": "q15_o2",
+        "text": "Desde un archivo reenviado por un desconocido."
+      },
+      {
+        "id": "q15_o3",
+        "text": "Desde cualquier anuncio emergente."
+      },
+      {
+        "id": "q15_o4",
+        "text": "Desde un grupo anónimo."
+      }
+    ],
+    "correctAnswer": "q15_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las fuentes oficiales reducen el riesgo de instalar software alterado.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q16",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "trueFalse",
+    "statement": "Una actualización puede mejorar la seguridad aunque no cambie nada visible en la aplicación.",
+    "options": [
+      {
+        "id": "q16_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q16_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q16_o1",
+    "acceptedAnswers": [],
+    "feedback": "Muchas correcciones de seguridad no producen cambios visuales.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q17",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "fillBlank",
+    "statement": "Instalar una corrección oficial para un fallo de seguridad suele denominarse aplicar un __.",
+    "options": [],
+    "correctAnswer": "parche",
+    "acceptedAnswers": [
+      "parche"
+    ],
+    "feedback": "Los parches corrigen fallos específicos del sistema o software.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q18",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "multipleChoice",
+    "statement": "Tu teléfono pide actualizarse desde la configuración oficial. ¿Qué práctica es más segura?",
+    "options": [
+      {
+        "id": "q18_o1",
+        "text": "Respaldar lo necesario e instalar la actualización oficial."
+      },
+      {
+        "id": "q18_o2",
+        "text": "Buscar una versión modificada en un chat."
+      },
+      {
+        "id": "q18_o3",
+        "text": "Posponerla indefinidamente."
+      },
+      {
+        "id": "q18_o4",
+        "text": "Desactivar permanentemente las actualizaciones."
+      }
+    ],
+    "correctAnswer": "q18_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las actualizaciones oficiales deben aplicarse razonablemente para reducir exposición.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q19",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "trueFalse",
+    "statement": "El sistema operativo y las aplicaciones pueden necesitar actualizaciones de seguridad por separado.",
+    "options": [
+      {
+        "id": "q19_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q19_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q19_o1",
+    "acceptedAnswers": [],
+    "feedback": "Ambos componentes reciben correcciones y deben mantenerse al día.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q20",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_02",
+    "type": "multipleChoice",
+    "statement": "¿Qué conducta aumenta el riesgo al actualizar?",
+    "options": [
+      {
+        "id": "q20_o1",
+        "text": "Usar la tienda oficial."
+      },
+      {
+        "id": "q20_o2",
+        "text": "Instalar un supuesto parche recibido como archivo desde una fuente desconocida."
+      },
+      {
+        "id": "q20_o3",
+        "text": "Revisar que la actualización venga del desarrollador legítimo."
+      },
+      {
+        "id": "q20_o4",
+        "text": "Activar actualizaciones automáticas."
+      }
+    ],
+    "correctAnswer": "q20_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los archivos no verificados pueden contener software malicioso.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q21",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "multipleChoice",
+    "statement": "Una aplicación de linterna solicita contactos y micrófono. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q21_o1",
+        "text": "Aceptar todo automáticamente."
+      },
+      {
+        "id": "q21_o2",
+        "text": "Revisar y negar los permisos que no sean necesarios para su función."
+      },
+      {
+        "id": "q21_o3",
+        "text": "Compartir también tus contraseñas."
+      },
+      {
+        "id": "q21_o4",
+        "text": "Desactivar el bloqueo del teléfono."
+      }
+    ],
+    "correctAnswer": "q21_o2",
+    "acceptedAnswers": [],
+    "feedback": "Los permisos deben guardar relación con la función real de la aplicación.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q22",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "fillBlank",
+    "statement": "Los accesos a cámara, micrófono, ubicación o contactos se controlan mediante __.",
+    "options": [],
+    "correctAnswer": "permisos",
+    "acceptedAnswers": [
+      "permisos"
+    ],
+    "feedback": "Los permisos determinan qué información y funciones puede utilizar una app.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q23",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "trueFalse",
+    "statement": "Es buena práctica conceder todos los permisos porque una aplicación podría necesitarlos algún día.",
+    "options": [
+      {
+        "id": "q23_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q23_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q23_o2",
+    "acceptedAnswers": [],
+    "feedback": "Debe concederse únicamente lo necesario para reducir exposición.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q24",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué opción limita mejor el acceso de una app a tu ubicación cuando no necesita usarla todo el tiempo?",
+    "options": [
+      {
+        "id": "q24_o1",
+        "text": "Permitir siempre."
+      },
+      {
+        "id": "q24_o2",
+        "text": "Permitir solo mientras se usa la aplicación."
+      },
+      {
+        "id": "q24_o3",
+        "text": "Publicar la ubicación."
+      },
+      {
+        "id": "q24_o4",
+        "text": "Compartirla con todos los contactos."
+      }
+    ],
+    "correctAnswer": "q24_o2",
+    "acceptedAnswers": [],
+    "feedback": "El acceso limitado reduce la recolección permanente e innecesaria.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q25",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué permiso merece especial atención porque puede permitir leer o controlar acciones en pantalla?",
+    "options": [
+      {
+        "id": "q25_o1",
+        "text": "Accesibilidad."
+      },
+      {
+        "id": "q25_o2",
+        "text": "Brillo."
+      },
+      {
+        "id": "q25_o3",
+        "text": "Fondo de pantalla."
+      },
+      {
+        "id": "q25_o4",
+        "text": "Tamaño de letra."
+      }
+    ],
+    "correctAnswer": "q25_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los permisos de accesibilidad pueden otorgar capacidades muy amplias.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q26",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "trueFalse",
+    "statement": "Si una aplicación ya no necesita un permiso, puedes revisarlo y revocarlo desde la configuración.",
+    "options": [
+      {
+        "id": "q26_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q26_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q26_o1",
+    "acceptedAnswers": [],
+    "feedback": "Los permisos no tienen que mantenerse indefinidamente.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q27",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "fillBlank",
+    "statement": "Conceder únicamente los accesos necesarios reduce la __ de datos y funciones del dispositivo.",
+    "options": [],
+    "correctAnswer": "exposición",
+    "acceptedAnswers": [
+      "exposición",
+      "exposicion"
+    ],
+    "feedback": "Menos permisos innecesarios significan menos información disponible para la aplicación.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q28",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "multipleChoice",
+    "statement": "Una app para editar una sola foto ofrece elegir archivos específicos. ¿Qué opción protege mejor tu privacidad?",
+    "options": [
+      {
+        "id": "q28_o1",
+        "text": "Dar acceso a toda la galería sin necesidad."
+      },
+      {
+        "id": "q28_o2",
+        "text": "Seleccionar únicamente las fotos necesarias."
+      },
+      {
+        "id": "q28_o3",
+        "text": "Publicar todas las imágenes."
+      },
+      {
+        "id": "q28_o4",
+        "text": "Desactivar el bloqueo."
+      }
+    ],
+    "correctAnswer": "q28_o2",
+    "acceptedAnswers": [],
+    "feedback": "Limitar el acceso a archivos concretos reduce información innecesariamente expuesta.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q29",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "trueFalse",
+    "statement": "Que una aplicación funcione no significa que todos los permisos que solicita sean indispensables.",
+    "options": [
+      {
+        "id": "q29_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q29_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q29_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las solicitudes deben evaluarse según la función que realmente ofrece la app.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q30",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_03",
+    "type": "multipleChoice",
+    "statement": "¿Qué pregunta es útil antes de aceptar un permiso?",
+    "options": [
+      {
+        "id": "q30_o1",
+        "text": "¿Esta aplicación necesita realmente este acceso para funcionar?"
+      },
+      {
+        "id": "q30_o2",
+        "text": "¿Tiene un ícono bonito?"
+      },
+      {
+        "id": "q30_o3",
+        "text": "¿Cuántos emojis usa?"
+      },
+      {
+        "id": "q30_o4",
+        "text": "¿Puedo aceptar todo más rápido?"
+      }
+    ],
+    "correctAnswer": "q30_o1",
+    "acceptedAnswers": [],
+    "feedback": "Relacionar permiso y función ayuda a tomar una decisión más segura.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q31",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "multipleChoice",
+    "statement": "Antes de instalar una aplicación bancaria, ¿qué conviene verificar?",
+    "options": [
+      {
+        "id": "q31_o1",
+        "text": "Desarrollador, tienda y enlace oficial del banco."
+      },
+      {
+        "id": "q31_o2",
+        "text": "Solo el color del ícono."
+      },
+      {
+        "id": "q31_o3",
+        "text": "Únicamente la cantidad de descargas."
+      },
+      {
+        "id": "q31_o4",
+        "text": "Que alguien la haya reenviado."
+      }
+    ],
+    "correctAnswer": "q31_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las aplicaciones falsas pueden copiar nombres y logotipos de servicios legítimos.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q32",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "trueFalse",
+    "statement": "Un archivo APK recibido por chat puede ser riesgoso aunque utilice el nombre de una aplicación conocida.",
+    "options": [
+      {
+        "id": "q32_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q32_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q32_o1",
+    "acceptedAnswers": [],
+    "feedback": "El archivo puede haber sido modificado o contener software dañino.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q33",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "fillBlank",
+    "statement": "La persona o empresa responsable de publicar una aplicación se identifica como su __.",
+    "options": [],
+    "correctAnswer": "desarrollador",
+    "acceptedAnswers": [
+      "desarrollador"
+    ],
+    "feedback": "Revisar el desarrollador ayuda a distinguir una app legítima de una imitación.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q34",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "multipleChoice",
+    "statement": "Una app promete funciones premium gratis, pero exige instalar un archivo desde un enlace desconocido. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q34_o1",
+        "text": "Lo instalas de inmediato."
+      },
+      {
+        "id": "q34_o2",
+        "text": "Evitas instalarlo y buscas la versión oficial."
+      },
+      {
+        "id": "q34_o3",
+        "text": "Desactivas la seguridad del teléfono."
+      },
+      {
+        "id": "q34_o4",
+        "text": "Compartes el archivo con otras personas."
+      }
+    ],
+    "correctAnswer": "q34_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las versiones modificadas distribuidas fuera de fuentes confiables pueden contener código malicioso.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q35",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "trueFalse",
+    "statement": "Tener muchas reseñas o descargas garantiza por sí solo que una aplicación es segura.",
+    "options": [
+      {
+        "id": "q35_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q35_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q35_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las métricas pueden manipularse y no sustituyen la verificación de procedencia.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q36",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué señal debe aumentar tu precaución antes de instalar una app?",
+    "options": [
+      {
+        "id": "q36_o1",
+        "text": "Su procedencia no coincide con la tienda o sitio oficial."
+      },
+      {
+        "id": "q36_o2",
+        "text": "El desarrollador coincide con el servicio legítimo."
+      },
+      {
+        "id": "q36_o3",
+        "text": "Los permisos son coherentes con su función."
+      },
+      {
+        "id": "q36_o4",
+        "text": "Llegaste desde el sitio oficial."
+      }
+    ],
+    "correctAnswer": "q36_o1",
+    "acceptedAnswers": [],
+    "feedback": "La procedencia desconocida aumenta el riesgo de una versión falsa o modificada.",
+    "capacity": "prevenir",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q37",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "fillBlank",
+    "statement": "Una aplicación que copia nombre e imagen de un servicio legítimo para engañar puede ser una aplicación __.",
+    "options": [],
+    "correctAnswer": "falsa",
+    "acceptedAnswers": [
+      "falsa"
+    ],
+    "feedback": "La apariencia por sí sola no confirma autenticidad.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q38",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "multipleChoice",
+    "statement": "¿Qué combinación es más útil antes de instalar?",
+    "options": [
+      {
+        "id": "q38_o1",
+        "text": "Procedencia, desarrollador y permisos solicitados."
+      },
+      {
+        "id": "q38_o2",
+        "text": "Solo el ícono."
+      },
+      {
+        "id": "q38_o3",
+        "text": "Únicamente el número de comentarios."
+      },
+      {
+        "id": "q38_o4",
+        "text": "El tamaño del anuncio."
+      }
+    ],
+    "correctAnswer": "q38_o1",
+    "acceptedAnswers": [],
+    "feedback": "Verificar varios elementos reduce la posibilidad de instalar una imitación.",
+    "capacity": "prevenir",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q39",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "trueFalse",
+    "statement": "Descargar desde una fuente oficial reduce el riesgo, aunque ninguna tienda elimina por completo todos los peligros.",
+    "options": [
+      {
+        "id": "q39_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q39_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q39_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las fuentes oficiales ofrecen más controles, pero sigue siendo útil revisar desarrollador y permisos.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q40",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_04",
+    "type": "multipleChoice",
+    "statement": "Un desconocido te envía una “actualización especial” de una app conocida. ¿Cuál es la respuesta más segura?",
+    "options": [
+      {
+        "id": "q40_o1",
+        "text": "Instalarla porque tiene el mismo logo."
+      },
+      {
+        "id": "q40_o2",
+        "text": "Ignorar el archivo y actualizar desde el canal oficial."
+      },
+      {
+        "id": "q40_o3",
+        "text": "Desactivar las verificaciones del sistema."
+      },
+      {
+        "id": "q40_o4",
+        "text": "Reenviar el archivo."
+      }
+    ],
+    "correctAnswer": "q40_o2",
+    "acceptedAnswers": [],
+    "feedback": "Las actualizaciones y aplicaciones deben obtenerse desde fuentes verificadas.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q41",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Para qué sirve una copia de seguridad?",
+    "options": [
+      {
+        "id": "q41_o1",
+        "text": "Para recuperar información si el dispositivo se pierde, daña o debe restablecerse."
+      },
+      {
+        "id": "q41_o2",
+        "text": "Para eliminar la necesidad de bloqueo."
+      },
+      {
+        "id": "q41_o3",
+        "text": "Para compartir contraseñas."
+      },
+      {
+        "id": "q41_o4",
+        "text": "Para evitar actualizaciones."
+      }
+    ],
+    "correctAnswer": "q41_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un respaldo permite restaurar datos cuando el original deja de estar disponible.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q42",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "fillBlank",
+    "statement": "Una copia que permite restaurar información se llama copia de __.",
+    "options": [],
+    "correctAnswer": "seguridad",
+    "acceptedAnswers": [
+      "seguridad"
+    ],
+    "feedback": "Las copias de seguridad reducen el impacto de pérdida o daño del dispositivo.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q43",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "trueFalse",
+    "statement": "Una copia de seguridad también debe protegerse porque puede contener fotos, documentos y otros datos personales.",
+    "options": [
+      {
+        "id": "q43_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q43_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q43_o1",
+    "acceptedAnswers": [],
+    "feedback": "El respaldo contiene información que puede ser tan sensible como la del dispositivo original.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q44",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "multipleChoice",
+    "statement": "Te roban el celular. ¿Qué conviene proteger con prioridad?",
+    "options": [
+      {
+        "id": "q44_o1",
+        "text": "Cuentas importantes y medios de acceso asociados."
+      },
+      {
+        "id": "q44_o2",
+        "text": "Solo el fondo de pantalla."
+      },
+      {
+        "id": "q44_o3",
+        "text": "Los juegos instalados."
+      },
+      {
+        "id": "q44_o4",
+        "text": "El volumen del teléfono."
+      }
+    ],
+    "correctAnswer": "q44_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las cuentas pueden dar acceso a correo, dinero, contactos y otros servicios.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q45",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué acción puede ser apropiada sobre la línea o SIM después de un robo?",
+    "options": [
+      {
+        "id": "q45_o1",
+        "text": "Bloquearla mediante el operador cuando corresponda."
+      },
+      {
+        "id": "q45_o2",
+        "text": "Publicar el PIN."
+      },
+      {
+        "id": "q45_o3",
+        "text": "Compartir códigos recibidos."
+      },
+      {
+        "id": "q45_o4",
+        "text": "Mantener todo sin revisar."
+      }
+    ],
+    "correctAnswer": "q45_o1",
+    "acceptedAnswers": [],
+    "feedback": "Bloquear la línea puede reducir el uso no autorizado del número.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q46",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "trueFalse",
+    "statement": "Las herramientas oficiales de localización o borrado remoto pueden ayudar ante pérdida o robo.",
+    "options": [
+      {
+        "id": "q46_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q46_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q46_o1",
+    "acceptedAnswers": [],
+    "feedback": "Estas funciones pueden permitir ubicar, bloquear o eliminar datos a distancia.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q47",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "fillBlank",
+    "statement": "Eliminar los datos de un teléfono perdido mediante una herramienta oficial puede realizarse de forma __.",
+    "options": [],
+    "correctAnswer": "remota",
+    "acceptedAnswers": [
+      "remota"
+    ],
+    "feedback": "El borrado remoto puede reducir la exposición si no es posible recuperar el equipo.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q48",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué característica vuelve más útil una copia de seguridad ante una pérdida?",
+    "options": [
+      {
+        "id": "q48_o1",
+        "text": "Que sea reciente y accesible de forma segura."
+      },
+      {
+        "id": "q48_o2",
+        "text": "Que esté desactualizada por años."
+      },
+      {
+        "id": "q48_o3",
+        "text": "Que sea pública."
+      },
+      {
+        "id": "q48_o4",
+        "text": "Que solo exista en el dispositivo perdido."
+      }
+    ],
+    "correctAnswer": "q48_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un respaldo reciente y separado permite recuperar más información.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q49",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "trueFalse",
+    "statement": "Guardar la única copia de tus datos dentro del mismo dispositivo protege frente al robo de ese equipo.",
+    "options": [
+      {
+        "id": "q49_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q49_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q49_o2",
+    "acceptedAnswers": [],
+    "feedback": "Si el dispositivo desaparece, también desaparece esa única copia.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q50",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_05",
+    "type": "multipleChoice",
+    "statement": "¿Qué combinación responde mejor a la pérdida de un teléfono?",
+    "options": [
+      {
+        "id": "q50_o1",
+        "text": "Proteger cuentas, considerar bloqueo de línea y usar herramientas oficiales de localización o borrado."
+      },
+      {
+        "id": "q50_o2",
+        "text": "Esperar sin hacer nada."
+      },
+      {
+        "id": "q50_o3",
+        "text": "Publicar contraseñas para pedir ayuda."
+      },
+      {
+        "id": "q50_o4",
+        "text": "Instalar archivos enviados por desconocidos."
+      }
+    ],
+    "correctAnswer": "q50_o1",
+    "acceptedAnswers": [],
+    "feedback": "La respuesta debe reducir el acceso a cuentas, línea y datos del dispositivo.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q51",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "trueFalse",
+    "statement": "Que una red Wi-Fi pública tenga contraseña significa que todos sus usuarios y administradores son confiables.",
+    "options": [
+      {
+        "id": "q51_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q51_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q51_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una contraseña compartida no confirma quién controla la red ni quién está conectado.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q52",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "multipleChoice",
+    "statement": "Necesitas realizar una operación bancaria sensible. ¿Qué conexión es preferible?",
+    "options": [
+      {
+        "id": "q52_o1",
+        "text": "Una red conocida o tus datos móviles."
+      },
+      {
+        "id": "q52_o2",
+        "text": "Cualquier Wi-Fi abierto."
+      },
+      {
+        "id": "q52_o3",
+        "text": "Una red con nombre parecido al comercio sin verificar."
+      },
+      {
+        "id": "q52_o4",
+        "text": "Una conexión automática desconocida."
+      }
+    ],
+    "correctAnswer": "q52_o1",
+    "acceptedAnswers": [],
+    "feedback": "Para operaciones sensibles conviene reducir la exposición a redes desconocidas.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q53",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "fillBlank",
+    "statement": "La conexión automática a redes abiertas desconocidas conviene mantenerla __.",
+    "options": [],
+    "correctAnswer": "desactivada",
+    "acceptedAnswers": [
+      "desactivada"
+    ],
+    "feedback": "Esto evita conexiones involuntarias a redes falsas o no confiables.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q54",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "multipleChoice",
+    "statement": "Una red pública te pide instalar un certificado o perfil enviado por un desconocido. ¿Qué haces?",
+    "options": [
+      {
+        "id": "q54_o1",
+        "text": "Lo instalas para tener más señal."
+      },
+      {
+        "id": "q54_o2",
+        "text": "Lo rechazas y verificas la conexión por canales confiables."
+      },
+      {
+        "id": "q54_o3",
+        "text": "Desactivas el bloqueo del teléfono."
+      },
+      {
+        "id": "q54_o4",
+        "text": "Compartes el archivo."
+      }
+    ],
+    "correctAnswer": "q54_o2",
+    "acceptedAnswers": [],
+    "feedback": "Certificados o perfiles pueden modificar cómo se gestiona el tráfico o la seguridad del dispositivo.",
+    "capacity": "responder",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q55",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "trueFalse",
+    "statement": "El candado HTTPS indica que la comunicación con el sitio está cifrada, pero no garantiza que el sitio sea legítimo.",
+    "options": [
+      {
+        "id": "q55_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q55_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q55_o1",
+    "acceptedAnswers": [],
+    "feedback": "Un sitio fraudulento también puede utilizar HTTPS.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q56",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "multipleChoice",
+    "statement": "Ves dos redes con nombres casi iguales en una cafetería. ¿Qué conviene hacer?",
+    "options": [
+      {
+        "id": "q56_o1",
+        "text": "Conectarte a cualquiera."
+      },
+      {
+        "id": "q56_o2",
+        "text": "Confirmar cuál es la red correcta antes de conectarte."
+      },
+      {
+        "id": "q56_o3",
+        "text": "Compartir tus contraseñas."
+      },
+      {
+        "id": "q56_o4",
+        "text": "Desactivar el bloqueo."
+      }
+    ],
+    "correctAnswer": "q56_o2",
+    "acceptedAnswers": [],
+    "feedback": "Una red falsa puede usar un nombre parecido para atraer conexiones.",
+    "capacity": "responder",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q57",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "fillBlank",
+    "statement": "Una red disponible para muchas personas en un espacio compartido suele denominarse Wi-Fi __.",
+    "options": [],
+    "correctAnswer": "público",
+    "acceptedAnswers": [
+      "público",
+      "publico"
+    ],
+    "feedback": "Las redes públicas requieren mayor precaución para operaciones sensibles.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q58",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "trueFalse",
+    "statement": "Es recomendable evitar recuperaciones de cuentas o cambios de contraseñas en una red pública cuando puedes usar una conexión más confiable.",
+    "options": [
+      {
+        "id": "q58_o1",
+        "text": "Verdadero"
+      },
+      {
+        "id": "q58_o2",
+        "text": "Falso"
+      }
+    ],
+    "correctAnswer": "q58_o1",
+    "acceptedAnswers": [],
+    "feedback": "Las operaciones sensibles conviene realizarlas sobre redes conocidas o datos móviles.",
+    "capacity": "recuperar",
+    "difficulty": "intermedia"
+  },
+  {
+    "id": "device_security_q59",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué conclusión es correcta al ver HTTPS en una página?",
+    "options": [
+      {
+        "id": "q59_o1",
+        "text": "La conexión está cifrada, pero aún debes verificar dominio y legitimidad del sitio."
+      },
+      {
+        "id": "q59_o2",
+        "text": "El sitio nunca puede ser falso."
+      },
+      {
+        "id": "q59_o3",
+        "text": "Pertenece necesariamente a una institución pública."
+      },
+      {
+        "id": "q59_o4",
+        "text": "Puedes compartir cualquier dato sin revisar."
+      }
+    ],
+    "correctAnswer": "q59_o1",
+    "acceptedAnswers": [],
+    "feedback": "HTTPS protege la comunicación, no certifica por sí solo la honestidad del sitio.",
+    "capacity": "reconocer",
+    "difficulty": "básica"
+  },
+  {
+    "id": "device_security_q60",
+    "categoryId": "device_app_security",
+    "activityId": "device_security_activity_06",
+    "type": "multipleChoice",
+    "statement": "¿Qué conjunto de hábitos protege mejor al usar conexiones fuera de casa?",
+    "options": [
+      {
+        "id": "q60_o1",
+        "text": "Verificar la red, evitar operaciones sensibles en Wi-Fi desconocido y no instalar perfiles solicitados por terceros."
+      },
+      {
+        "id": "q60_o2",
+        "text": "Conectarse automáticamente a todo."
+      },
+      {
+        "id": "q60_o3",
+        "text": "Confiar solo por el nombre de la red."
+      },
+      {
+        "id": "q60_o4",
+        "text": "Compartir códigos temporales."
+      }
+    ],
+    "correctAnswer": "q60_o1",
+    "acceptedAnswers": [],
+    "feedback": "La precaución con la red y las configuraciones evita exponer datos o modificar la seguridad del equipo.",
+    "capacity": "reconocer",
+    "difficulty": "intermedia"
+  }
+]

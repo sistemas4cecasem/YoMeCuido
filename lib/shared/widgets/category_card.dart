@@ -6,16 +6,25 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 
 class CategoryCard extends StatelessWidget {
-  const CategoryCard({required this.category, required this.onTap, super.key});
+  const CategoryCard({
+    required this.category,
+    required this.onTap,
+    this.isUnlocked,
+    this.lockedLabel,
+    super.key,
+  });
 
   final Category category;
   final VoidCallback onTap;
+  final bool? isUnlocked;
+  final String? lockedLabel;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final enabled = category.isEnabled;
+    final enabled = isUnlocked ?? category.isEnabled;
+    final effectiveLockedLabel = lockedLabel ?? AppStrings.comingSoon;
     final iconColor = enabled ? colors.orangeDark : colors.disabledText;
     final iconBackground = enabled ? colors.orangeSoft : colors.disabledSurface;
     final borderColor = enabled ? colors.orangePrimary : colors.border;
@@ -25,7 +34,7 @@ class CategoryCard extends StatelessWidget {
       enabled: enabled,
       label: enabled
           ? category.title
-          : '${category.title}, ${AppStrings.comingSoon}',
+          : '${category.title}, $effectiveLockedLabel',
       child: Card(
         color: enabled ? colors.surface : colors.disabledSurface,
         shape: RoundedRectangleBorder(
@@ -68,7 +77,10 @@ class CategoryCard extends StatelessWidget {
                       ),
                       if (!enabled) ...[
                         const SizedBox(height: AppSpacing.xs),
-                        _ComingSoonPill(colors: colors),
+                        _LockedPill(
+                          colors: colors,
+                          label: effectiveLockedLabel,
+                        ),
                       ],
                     ],
                   ),
@@ -76,9 +88,9 @@ class CategoryCard extends StatelessWidget {
                 if (!enabled) ...[
                   const SizedBox(width: AppSpacing.sm),
                   Tooltip(
-                    message: AppStrings.comingSoon,
+                    message: effectiveLockedLabel,
                     child: Semantics(
-                      label: AppStrings.comingSoon,
+                      label: effectiveLockedLabel,
                       child: Icon(
                         Icons.lock_outline,
                         color: colors.disabledText,
@@ -96,10 +108,11 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-class _ComingSoonPill extends StatelessWidget {
-  const _ComingSoonPill({required this.colors});
+class _LockedPill extends StatelessWidget {
+  const _LockedPill({required this.colors, required this.label});
 
   final AppColors colors;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +134,7 @@ class _ComingSoonPill extends StatelessWidget {
           children: [
             Icon(Icons.lock_outline, size: 14, color: colors.disabledText),
             Text(
-              AppStrings.comingSoon,
+              label,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: colors.disabledText),

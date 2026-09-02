@@ -43,25 +43,15 @@ class ActivityQuestionSelector {
     if (questionsPerActivity < 1) {
       throw const FormatException('Questions per activity must be positive.');
     }
+    final activityQuestions =
+        _uniqueCategoryQuestions(
+            questions,
+            categoryId,
+          ).where((question) => question.activityId == activity.id).toList()
+          ..sort(_compareByQuestionNumber);
 
-    final activityIndex = activity.order - 1;
-    if (activityIndex < 0) {
-      throw const FormatException('Activity order must be positive.');
-    }
-
-    final startIndex = activityIndex * questionsPerActivity;
-    final orderedQuestions = _uniqueCategoryQuestions(questions, categoryId)
-      ..sort(_compareByQuestionNumber);
-    if (startIndex >= orderedQuestions.length) {
-      return const <QuizQuestion>[];
-    }
-
-    final endIndex = (startIndex + questionsPerActivity).clamp(
-      0,
-      orderedQuestions.length,
-    );
     return List<QuizQuestion>.unmodifiable(
-      orderedQuestions.sublist(startIndex, endIndex),
+      activityQuestions.take(questionsPerActivity),
     );
   }
 

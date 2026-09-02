@@ -61,6 +61,7 @@ class AppRouter {
           AppRoutes.highLevelCategories => const HighLevelCategoriesScreen(),
           AppRoutes.categories => CategoriesScreen(
             contentRepository: _contentRepository,
+            progressController: _progressController,
           ),
           AppRoutes.categoryDetail => CategoryDetailScreen(
             category: settings.arguments! as Category,

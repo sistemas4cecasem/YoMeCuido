@@ -572,9 +572,11 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           transaction.update(categoryDocument, {
             'categoryId': categoryId,
             'lessonId': lessonId,
+            'status': CategoryProgressStatus.completed.firestoreValue,
             'totalLessonPages': totalLessonPages,
             'totalActivities': totalActivities,
             'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': FieldValue.serverTimestamp(),
             'updatedAt': FieldValue.serverTimestamp(),
           });
         });

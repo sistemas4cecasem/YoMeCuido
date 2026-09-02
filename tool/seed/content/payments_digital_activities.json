@@ -1,0 +1,38 @@
+[
+  {
+    "id": "payments_digital_activity_01",
+    "categoryId": "digital_payments_consumption",
+    "title": "Transferencias y códigos QR",
+    "order": 1
+  },
+  {
+    "id": "payments_digital_activity_02",
+    "categoryId": "digital_payments_consumption",
+    "title": "Comprobantes falsos",
+    "order": 2
+  },
+  {
+    "id": "payments_digital_activity_03",
+    "categoryId": "digital_payments_consumption",
+    "title": "Marketplace y compras entre particulares",
+    "order": 3
+  },
+  {
+    "id": "payments_digital_activity_04",
+    "categoryId": "digital_payments_consumption",
+    "title": "Tiendas y comercio electrónico",
+    "order": 4
+  },
+  {
+    "id": "payments_digital_activity_05",
+    "categoryId": "digital_payments_consumption",
+    "title": "Suscripciones, pruebas gratuitas y patrones oscuros",
+    "order": 5
+  },
+  {
+    "id": "payments_digital_activity_06",
+    "categoryId": "digital_payments_consumption",
+    "title": "Respuesta ante fraude financiero",
+    "order": 6
+  }
+]

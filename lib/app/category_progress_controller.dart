@@ -417,7 +417,9 @@ class CategoryProgressController extends ChangeNotifier {
     }
 
     progress
+      ..status = CategoryProgressStatus.completed
       ..lastActivityAt = now
+      ..completedAt = now
       ..updatedAt = now;
     notifyListeners();
 

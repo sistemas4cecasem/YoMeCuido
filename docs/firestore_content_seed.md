@@ -13,12 +13,17 @@ usar Firebase Console y sin ejecutarse desde la app Flutter.
 
 ## Fuente
 
-El seed lee los archivos actuales:
+El seed lee `categories.json` y descubre automáticamente todos los archivos de
+contenido bajo `tool/seed/content/`:
 
 - `tool/seed/content/categories.json`
-- `tool/seed/content/relations_violence_lesson.json`
-- `tool/seed/content/relations_violence_activities.json`
-- `tool/seed/content/relations_violence_questions.json`
+- `tool/seed/content/*_lesson.json`
+- `tool/seed/content/*_activities.json`
+- `tool/seed/content/*_questions.json`
+
+Las lecciones se relacionan con cada categoría mediante `lessonId`. Las
+actividades y preguntas se relacionan mediante `categoryId`, y cada pregunta
+conserva su `activityId`.
 
 ## Comandos
 
@@ -51,13 +56,17 @@ dart run tool/seed_educational_content.dart --write --project-id=yomecuido-1dc1a
 La ejecución prepara documentos solo bajo `categories/...`:
 
 - 8 categorías.
-- 4 páginas teóricas.
-- 6 actividades.
-- 12 preguntas existentes.
-- 1 configuración de examen final.
+- 48 páginas teóricas.
+- 48 actividades.
+- 480 preguntas.
+- 8 configuraciones de examen final.
 
 El script usa operaciones `set` mediante `batchWrite`, por lo que una segunda
 ejecución actualiza los mismos paths y no crea duplicados.
+
+Antes de escribir, valida localmente que cada categoría tenga 6 cápsulas, 6
+actividades, 60 preguntas, 10 preguntas por actividad, referencias válidas y
+respuestas correctas coherentes con el tipo de pregunta.
 
 ## Verificación
 

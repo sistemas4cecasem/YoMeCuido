@@ -58,6 +58,9 @@ abstract final class AppStrings {
   static const comingSoon = 'Próximamente';
   static const comingSoonSnackBar =
       'Esta categoría estará disponible próximamente';
+  static const categoryLockedByProgress = 'Completa la categoría anterior';
+  static const categoryLockedByProgressSnackBar =
+      'Completa la categoría anterior para desbloquear esta.';
   static const contentLoadError =
       'No pudimos cargar el contenido de la demo. Intenta nuevamente.';
   static const retry = 'Reintentar';

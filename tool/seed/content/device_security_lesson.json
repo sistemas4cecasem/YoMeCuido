@@ -1,0 +1,38 @@
+[
+  {
+    "id": "screen_lock_biometrics",
+    "order": 1,
+    "title": "Bloqueo de pantalla y biometría",
+    "body": "El bloqueo de pantalla dificulta que otra persona acceda a la información si el dispositivo se pierde o es robado. Un PIN demasiado corto o relacionado con fechas conocidas puede adivinarse con facilidad.\n\nLa huella o el reconocimiento facial facilitan el acceso, pero deben estar acompañados por un código de desbloqueo sólido."
+  },
+  {
+    "id": "updates_security_patches",
+    "order": 2,
+    "title": "Actualizaciones",
+    "body": "Las actualizaciones corrigen errores y vulnerabilidades conocidas. Postergarlas durante mucho tiempo puede mantener fallos que ya tienen solución.\n\nCuando sea posible, activa las actualizaciones automáticas del sistema y de las aplicaciones. Descarga software desde tiendas oficiales o desde el sitio legítimo del desarrollador."
+  },
+  {
+    "id": "app_permissions",
+    "order": 3,
+    "title": "Permisos de las aplicaciones",
+    "body": "Una aplicación debe pedir permisos relacionados con su función. Cámara, micrófono, ubicación, contactos, fotografías y accesibilidad merecen especial atención.\n\nAntes de aceptar un permiso pregúntate: ¿esta aplicación realmente necesita este acceso para funcionar? Cuando exista la opción, permite acceso solo mientras utilizas la aplicación o selecciona únicamente los archivos necesarios."
+  },
+  {
+    "id": "fake_modified_apps",
+    "order": 4,
+    "title": "Aplicaciones falsas o modificadas",
+    "body": "Una aplicación puede imitar el nombre y apariencia de un banco, juego o servicio conocido. Los archivos APK enviados por enlaces o chats también pueden contener software dañino.\n\nAntes de instalar, revisa desarrollador, tienda, permisos y procedencia. La cantidad de descargas o reseñas no garantiza por sí sola que una aplicación sea segura."
+  },
+  {
+    "id": "backups_loss_theft",
+    "order": 5,
+    "title": "Copias de seguridad, pérdida y robo",
+    "body": "Una copia de seguridad ayuda a recuperar información cuando el dispositivo se pierde, se daña o debe restablecerse. La copia también contiene datos personales, por lo que debe protegerse.\n\nAnte el robo de un teléfono, protege cuentas importantes, bloquea la línea o SIM cuando corresponda y utiliza las herramientas oficiales de localización o borrado remoto."
+  },
+  {
+    "id": "public_wifi_connections",
+    "order": 6,
+    "title": "Wi-Fi público y conexiones",
+    "body": "Una red pública no es confiable solo porque tenga contraseña. Para operaciones sensibles, como banca o recuperación de cuentas, es preferible utilizar una red conocida o datos móviles.\n\nEvita instalar certificados o perfiles solicitados por desconocidos y desactiva la conexión automática a redes abiertas. El candado HTTPS protege la comunicación, pero no demuestra que un sitio sea legítimo.\n\nMantener el dispositivo actualizado y revisar permisos reduce muchos riesgos sin necesidad de conocimientos técnicos avanzados."
+  }
+]
