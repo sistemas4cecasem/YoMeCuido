@@ -20,6 +20,10 @@ void main() {
     );
 
     await tester.enterText(
+      find.widgetWithText(TextField, AppStrings.usernameLabel),
+      ' DiegoNais ',
+    );
+    await tester.enterText(
       find.widgetWithText(TextField, AppStrings.emailLabel),
       ' persona@example.com ',
     );
@@ -38,6 +42,7 @@ void main() {
 
     expect(repository.registerCallCount, 1);
     expect(repository.sendVerificationCallCount, 1);
+    expect(repository.lastUsername, 'DiegoNais');
     expect(repository.lastEmail, 'persona@example.com');
     expect(find.text(AppStrings.registerSuccessMessage), findsOneWidget);
   });
@@ -46,6 +51,7 @@ void main() {
 class _FakeAuthRepository implements AuthRepository {
   int registerCallCount = 0;
   int sendVerificationCallCount = 0;
+  String? lastUsername;
   String? lastEmail;
 
   @override
@@ -56,10 +62,12 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) async {
     registerCallCount += 1;
+    lastUsername = username;
     lastEmail = email;
     return AuthUser(uid: 'uid-123', email: email);
   }

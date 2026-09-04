@@ -157,6 +157,7 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) {

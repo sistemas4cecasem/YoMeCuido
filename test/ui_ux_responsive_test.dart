@@ -12,8 +12,10 @@ import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -198,6 +200,7 @@ Future<void> _pumpDemo(
       key: UniqueKey(),
       contentRepository: contentRepository,
       authRepository: const _SignedInAuthRepository(),
+      userProfileRepository: _FakeUserProfileRepository(),
       progressController: progressController,
     ),
   );
@@ -448,6 +451,7 @@ class _SignedInAuthRepository implements AuthRepository {
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) {
@@ -473,4 +477,20 @@ class _SignedInAuthRepository implements AuthRepository {
 
   @override
   Future<void> signOut() async {}
+}
+
+class _FakeUserProfileRepository extends UserProfileRepository {
+  _FakeUserProfileRepository() : super.testing();
+
+  @override
+  Future<UserProfile?> fetchProfile(String uid) async {
+    return const UserProfile(
+      username: 'diegonais',
+      usernameNormalized: 'diegonais',
+      email: 'persona@example.com',
+      role: UserProfileRole.user,
+      createdAt: null,
+      updatedAt: null,
+    );
+  }
 }

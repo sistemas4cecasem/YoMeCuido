@@ -5,19 +5,24 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
+import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/user_profile_repository.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
+import 'complete_profile_screen.dart';
 import 'email_verification_screen.dart';
 import '../splash/welcome_screen.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({
     required this.authRepository,
+    required this.userProfileRepository,
     required this.progressController,
     super.key,
   });
 
   final AuthRepository authRepository;
+  final UserProfileRepository userProfileRepository;
   final CategoryProgressController progressController;
 
   @override
@@ -25,15 +30,32 @@ class AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<AuthGate> {
+  late Stream<AuthUser?> _authChanges;
   String? _lastUserUid;
   AuthUser? _checkedUser;
+  String? _profileLoadUid;
+  Future<UserProfile?>? _profileLoadFuture;
   String? _progressLoadUid;
   Future<void>? _progressLoadFuture;
 
   @override
+  void initState() {
+    super.initState();
+    _authChanges = widget.authRepository.authStateChanges();
+  }
+
+  @override
+  void didUpdateWidget(covariant AuthGate oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.authRepository != widget.authRepository) {
+      _authChanges = widget.authRepository.authStateChanges();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<AuthUser?>(
-      stream: widget.authRepository.authStateChanges(),
+      stream: _authChanges,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const _AuthLoadingView();
@@ -73,7 +95,17 @@ class _AuthGateState extends State<AuthGate> {
         _checkedUser = null;
         return _HydratedHome(
           user: user,
-          progressLoadFuture: _ensureProgressLoad(user),
+          profileLoadFuture: _ensureProfileLoad(user),
+          userProfileRepository: widget.userProfileRepository,
+          onProfileCompleted: _reloadProfile,
+          onProfileChanged: (profile) {
+            if (mounted && _lastUserUid == user.uid) {
+              setState(() {
+                _profileLoadFuture = Future.value(profile);
+              });
+            }
+          },
+          progressLoadProvider: _ensureProgressLoad,
           progressController: widget.progressController,
           authRepository: widget.authRepository,
         );
@@ -95,6 +127,22 @@ class _AuthGateState extends State<AuthGate> {
     return _progressLoadFuture!;
   }
 
+  Future<UserProfile?> _ensureProfileLoad(AuthUser user) {
+    if (_profileLoadUid != user.uid || _profileLoadFuture == null) {
+      _profileLoadUid = user.uid;
+      _profileLoadFuture = widget.userProfileRepository.fetchProfile(user.uid);
+    }
+
+    return _profileLoadFuture!;
+  }
+
+  void _reloadProfile() {
+    setState(() {
+      _profileLoadUid = null;
+      _profileLoadFuture = null;
+    });
+  }
+
   void _handleAuthState(AuthUser? user) {
     final previousUserUid = _lastUserUid;
     final nextUserUid = user?.uid;
@@ -106,6 +154,8 @@ class _AuthGateState extends State<AuthGate> {
 
     _progressLoadUid = null;
     _progressLoadFuture = null;
+    _profileLoadUid = null;
+    _profileLoadFuture = null;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final navigator = Navigator.maybeOf(context);
@@ -121,12 +171,71 @@ class _AuthGateState extends State<AuthGate> {
 class _HydratedHome extends StatelessWidget {
   const _HydratedHome({
     required this.user,
+    required this.profileLoadFuture,
+    required this.userProfileRepository,
+    required this.onProfileCompleted,
+    required this.onProfileChanged,
+    required this.progressLoadProvider,
+    required this.progressController,
+    required this.authRepository,
+  });
+
+  final AuthUser user;
+  final Future<UserProfile?> profileLoadFuture;
+  final UserProfileRepository userProfileRepository;
+  final VoidCallback onProfileCompleted;
+  final ValueChanged<UserProfile> onProfileChanged;
+  final Future<void> Function(AuthUser user) progressLoadProvider;
+  final CategoryProgressController progressController;
+  final AuthRepository authRepository;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<UserProfile?>(
+      future: profileLoadFuture,
+      builder: (context, profileSnapshot) {
+        if (profileSnapshot.connectionState != ConnectionState.done) {
+          return const _AuthLoadingView();
+        }
+
+        final profile = profileSnapshot.data;
+        if (profile == null || !profile.hasUsername) {
+          return CompleteProfileScreen(
+            user: user,
+            userProfileRepository: userProfileRepository,
+            onCompleted: onProfileCompleted,
+          );
+        }
+
+        return _ProgressHydratedHome(
+          user: user,
+          profile: profile,
+          userProfileRepository: userProfileRepository,
+          onProfileChanged: onProfileChanged,
+          progressLoadFuture: progressLoadProvider(user),
+          progressController: progressController,
+          authRepository: authRepository,
+        );
+      },
+    );
+  }
+}
+
+class _ProgressHydratedHome extends StatelessWidget {
+  const _ProgressHydratedHome({
+    required this.user,
+    required this.profile,
+    required this.userProfileRepository,
+    required this.onProfileChanged,
     required this.progressLoadFuture,
     required this.progressController,
     required this.authRepository,
   });
 
   final AuthUser user;
+  final UserProfile profile;
+  final UserProfileRepository userProfileRepository;
+  final ValueChanged<UserProfile> onProfileChanged;
   final Future<void> progressLoadFuture;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
@@ -136,6 +245,9 @@ class _HydratedHome extends StatelessWidget {
     if (progressController.hasResolvedProgressFor(user.uid)) {
       return HighLevelCategoriesScreen(
         authRepository: authRepository,
+        userProfile: profile,
+        userProfileRepository: userProfileRepository,
+        onProfileChanged: onProfileChanged,
         showBackButton: false,
       );
     }
@@ -149,6 +261,9 @@ class _HydratedHome extends StatelessWidget {
 
         return HighLevelCategoriesScreen(
           authRepository: authRepository,
+          userProfile: profile,
+          userProfileRepository: userProfileRepository,
+          onProfileChanged: onProfileChanged,
           showBackButton: false,
         );
       },

@@ -6,6 +6,7 @@ abstract class AuthRepository {
   Stream<AuthUser?> authStateChanges();
 
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   });
@@ -36,6 +37,8 @@ enum AuthFailureReason {
   tooManyRequests,
   networkRequestFailed,
   userProfileUnavailable,
+  usernameAlreadyInUse,
+  usernameInvalid,
   unknown,
 }
 
@@ -80,6 +83,9 @@ class AuthException implements Exception {
         'No pudimos conectar con el servicio. Revisa tu conexión.',
       AuthFailureReason.userProfileUnavailable =>
         'No pudimos preparar tu perfil. Intenta nuevamente.',
+      AuthFailureReason.usernameAlreadyInUse =>
+        'Este nombre de usuario ya está en uso.',
+      AuthFailureReason.usernameInvalid => 'El nombre de usuario no es válido.',
       AuthFailureReason.unknown =>
         'No pudimos completar la operación. Intenta nuevamente.',
     };

@@ -10,13 +10,87 @@ import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('renames own profile and preserves it when reopened', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final auth = _ControllableAuthRepository();
+    final profiles = _FakeUserProfileRepository();
+    await _pumpGate(tester, auth, userProfileRepository: profiles);
+    auth.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.viewProfile));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip(AppStrings.changeUsername));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'NuevoNombre');
+    await tester.tap(find.text(AppStrings.saveUsername));
+    await tester.pumpAndSettle();
+    expect(profiles.changedUid, 'uid-123');
+    expect(find.text('NuevoNombre'), findsOneWidget);
+    await tester.tap(find.text(AppStrings.close));
+    await tester.pumpAndSettle();
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.viewProfile));
+    await tester.pumpAndSettle();
+    expect(find.text('NuevoNombre'), findsOneWidget);
+    expect(find.text('diegonais'), findsNothing);
+  });
+
+  testWidgets('occupied username can be corrected and cancel keeps old name', (
+    tester,
+  ) async {
+    final auth = _ControllableAuthRepository();
+    final profiles = _FakeUserProfileRepository()..failRename = true;
+    await _pumpGate(tester, auth, userProfileRepository: profiles);
+    auth.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.viewProfile));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip(AppStrings.changeUsername));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'ocupado');
+    await tester.tap(find.text(AppStrings.saveUsername));
+    await tester.pumpAndSettle();
+    expect(find.text('Este nombre de usuario ya está en uso.'), findsOneWidget);
+    await tester.tap(find.text(AppStrings.cancel));
+    await tester.pumpAndSettle();
+    expect(find.text('diegonais'), findsOneWidget);
+    profiles.failRename = false;
+    await tester.tap(find.byTooltip(AppStrings.changeUsername));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'disponible');
+    await tester.tap(find.text(AppStrings.saveUsername));
+    await tester.pumpAndSettle();
+    expect(find.text('disponible'), findsOneWidget);
+  });
+
   testWidgets('shows access welcome when Authentication has no user', (
     tester,
   ) async {
@@ -195,7 +269,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(AppStrings.profileTitle), findsOneWidget);
+      expect(find.text(AppStrings.profileUsername), findsOneWidget);
+      expect(find.text('diegonais'), findsOneWidget);
       expect(find.text('persona@example.com'), findsOneWidget);
+      expect(find.text(AppStrings.profileRole), findsOneWidget);
+      expect(find.text(AppStrings.profileUserRole), findsOneWidget);
       expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);
 
       await tester.tap(find.text(AppStrings.close));
@@ -242,6 +320,78 @@ void main() {
     expect(find.text(AppStrings.emailVerificationTitle), findsNothing);
   });
 
+  testWidgets('asks verified legacy users to complete username', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final userProfileRepository = _FakeUserProfileRepository(
+      profile: const UserProfile(
+        username: null,
+        usernameNormalized: null,
+        email: 'persona@example.com',
+        role: UserProfileRole.user,
+        createdAt: null,
+        updatedAt: null,
+      ),
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: userProfileRepository,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.completeProfileTitle), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+  });
+
+  testWidgets('completes legacy profile and continues to app', (tester) async {
+    final authRepository = _ControllableAuthRepository();
+    final userProfileRepository = _FakeUserProfileRepository(
+      profile: const UserProfile(
+        username: null,
+        usernameNormalized: null,
+        email: 'persona@example.com',
+        role: UserProfileRole.user,
+        createdAt: null,
+        updatedAt: null,
+      ),
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: userProfileRepository,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.widgetWithText(TextField, AppStrings.usernameLabel),
+      'DiegoNais',
+    );
+    await tester.tap(find.text(AppStrings.saveUsername));
+    await tester.pumpAndSettle();
+
+    expect(userProfileRepository.completedUsername, 'DiegoNais');
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.completeProfileTitle), findsNothing);
+  });
+
   testWidgets(
     'shows a pending verification message when email is not verified',
     (tester) async {
@@ -276,8 +426,9 @@ Future<void> _openUserMenu(WidgetTester tester) async {
 
 Future<void> _pumpGate(
   WidgetTester tester,
-  _ControllableAuthRepository authRepository,
-) async {
+  _ControllableAuthRepository authRepository, {
+  UserProfileRepository? userProfileRepository,
+}) async {
   final router = AppRouter(
     contentRepository: const _EmptyContentRepository(),
     authRepository: authRepository,
@@ -289,6 +440,8 @@ Future<void> _pumpGate(
       theme: AppTheme.data(),
       home: AuthGate(
         authRepository: authRepository,
+        userProfileRepository:
+            userProfileRepository ?? _FakeUserProfileRepository(),
         progressController: CategoryProgressController(),
       ),
       onGenerateRoute: router.onGenerateRoute,
@@ -320,6 +473,7 @@ class _ControllableAuthRepository implements AuthRepository {
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) {
@@ -361,6 +515,62 @@ class _ControllableAuthRepository implements AuthRepository {
       throw const AuthException(AuthFailureReason.unknown);
     }
     emit(null);
+  }
+}
+
+class _FakeUserProfileRepository extends UserProfileRepository {
+  _FakeUserProfileRepository({this.profile}) : super.testing();
+
+  UserProfile? profile;
+  String? completedUsername;
+  String? changedUid;
+  bool failRename = false;
+
+  @override
+  Future<UserProfile> changeUsername({
+    required String uid,
+    required String? email,
+    required String username,
+  }) async {
+    changedUid = uid;
+    if (failRename) {
+      throw const UserProfileException(
+        UserProfileFailureReason.usernameAlreadyInUse,
+        operation: UserProfileFailureOperation.changeUsername,
+      );
+    }
+    return completeProfile(uid: uid, email: email, username: username);
+  }
+
+  @override
+  Future<UserProfile?> fetchProfile(String uid) async {
+    return profile ??
+        const UserProfile(
+          username: 'diegonais',
+          usernameNormalized: 'diegonais',
+          email: 'persona@example.com',
+          role: UserProfileRole.user,
+          createdAt: null,
+          updatedAt: null,
+        );
+  }
+
+  @override
+  Future<UserProfile> completeProfile({
+    required String uid,
+    required String? email,
+    required String username,
+  }) async {
+    completedUsername = username;
+    profile = UserProfile(
+      username: username,
+      usernameNormalized: username.toLowerCase(),
+      email: email ?? 'persona@example.com',
+      role: UserProfileRole.user,
+      createdAt: null,
+      updatedAt: null,
+    );
+    return profile!;
   }
 }
 

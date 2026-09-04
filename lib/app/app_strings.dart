@@ -1,4 +1,8 @@
 abstract final class AppStrings {
+  static const changeUsername = 'Cambiar nombre de usuario';
+  static const usernameUpdated = 'Nombre de usuario actualizado.';
+  static const usernameUpdateError =
+      'No pudimos cambiar tu nombre. Intenta nuevamente.';
   static const appName = 'YoMeCuido';
   static const appTagline = 'Aprende a protegerte en el mundo digital.';
   static const checkingSession = 'Verificando sesión...';
@@ -45,6 +49,13 @@ abstract final class AppStrings {
   static const emailLabel = 'Correo electrónico';
   static const passwordLabel = 'Contraseña';
   static const confirmPasswordLabel = 'Confirmar contraseña';
+  static const usernameLabel = 'Nombre de usuario';
+  static const completeProfileTitle = 'Completar perfil';
+  static const completeProfileIntroTitle = 'Elige tu nombre de usuario';
+  static const completeProfileIntroBody =
+      'Este nombre podrá identificarte públicamente dentro de YoMeCuido.';
+  static const saveUsername = 'Guardar nombre de usuario';
+  static const completeProfileSuccess = 'Perfil actualizado correctamente.';
   static const createAccount = 'Crear cuenta';
   static const showPassword = 'Mostrar contraseña';
   static const hidePassword = 'Ocultar contraseña';
@@ -73,7 +84,10 @@ abstract final class AppStrings {
   static const homeTitle = 'Inicio';
   static const profileTitle = 'Perfil';
   static const viewProfile = 'Ver perfil';
+  static const profileUsername = 'Nombre de usuario';
   static const profileEmail = 'Correo';
+  static const profileRole = 'Tipo de cuenta';
+  static const profileUserRole = 'Usuario';
   static const profileVerifiedEmail = 'Correo verificado';
   static const profileUnverifiedEmail = 'Correo pendiente de verificación';
   static const profileLockedSnackBar =

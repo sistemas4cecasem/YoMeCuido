@@ -19,6 +19,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   late final RegisterController _controller;
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -35,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -44,6 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> _submit() async {
     FocusManager.instance.primaryFocus?.unfocus();
     await _controller.submit(
+      username: _usernameController.text,
       email: _emailController.text,
       password: _passwordController.text,
       confirmPassword: _confirmPasswordController.text,
@@ -60,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           return AuthFormLayout(
             child: _RegisterFormCard(
               controller: _controller,
+              usernameController: _usernameController,
               emailController: _emailController,
               passwordController: _passwordController,
               confirmPasswordController: _confirmPasswordController,
@@ -87,6 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 class _RegisterFormCard extends StatelessWidget {
   const _RegisterFormCard({
     required this.controller,
+    required this.usernameController,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
@@ -98,6 +103,7 @@ class _RegisterFormCard extends StatelessWidget {
   });
 
   final RegisterController controller;
+  final TextEditingController usernameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
@@ -118,6 +124,22 @@ class _RegisterFormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            TextField(
+              controller: usernameController,
+              enabled:
+                  !controller.isLoading &&
+                  !controller.hasRegisteredSuccessfully,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              autofillHints: const [AutofillHints.username],
+              autocorrect: false,
+              decoration: InputDecoration(
+                labelText: AppStrings.usernameLabel,
+                prefixIcon: const Icon(Icons.alternate_email_outlined),
+                errorText: controller.usernameError,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
             TextField(
               controller: emailController,
               enabled:

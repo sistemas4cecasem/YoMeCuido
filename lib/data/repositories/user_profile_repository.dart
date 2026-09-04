@@ -1,18 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
+import '../models/username.dart';
 import '../models/user_profile.dart';
 
 class UserProfileRepository {
   UserProfileRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  static const usersCollection = 'users';
+  @protected
+  UserProfileRepository.testing() : _firestore = null;
 
-  final FirebaseFirestore _firestore;
+  static const usersCollection = 'users';
+  static const usernamesCollection = 'usernames';
+
+  final FirebaseFirestore? _firestore;
 
   CollectionReference<Map<String, dynamic>> get _users =>
-      _firestore.collection(usersCollection);
+      _requireFirestore.collection(usersCollection);
+
+  CollectionReference<Map<String, dynamic>> get _usernames =>
+      _requireFirestore.collection(usernamesCollection);
+
+  FirebaseFirestore get _requireFirestore {
+    final firestore = _firestore;
+    if (firestore == null) {
+      throw StateError('UserProfileRepository has no Firestore instance.');
+    }
+    return firestore;
+  }
 
   Future<UserProfile?> fetchProfile(String uid) async {
     try {
@@ -45,54 +61,166 @@ class UserProfileRepository {
     }
   }
 
-  Future<UserProfile> ensureProfile({
+  Future<UserProfile> createProfileForNewUser({
     required String uid,
     required String? email,
+    required String username,
   }) async {
-    if (uid.trim().isEmpty) {
-      throw const UserProfileException(
-        UserProfileFailureReason.unauthenticated,
-        operation: UserProfileFailureOperation.ensure,
+    return _reserveUsernameAndUpsertProfile(
+      uid: uid,
+      email: email,
+      username: username,
+      operation: UserProfileFailureOperation.create,
+      requireMissingCompleteProfile: true,
+    );
+  }
+
+  Future<UserProfile> completeProfile({
+    required String uid,
+    required String? email,
+    required String username,
+  }) {
+    return _reserveUsernameAndUpsertProfile(
+      uid: uid,
+      email: email,
+      username: username,
+      operation: UserProfileFailureOperation.complete,
+      requireMissingCompleteProfile: false,
+    );
+  }
+
+  Future<UserProfile> changeUsername({
+    required String uid,
+    required String? email,
+    required String username,
+  }) {
+    return _reserveUsernameAndUpsertProfile(
+      uid: uid,
+      email: email,
+      username: username,
+      operation: UserProfileFailureOperation.changeUsername,
+      requireMissingCompleteProfile: false,
+      allowUsernameChange: true,
+    );
+  }
+
+  Future<UserProfile> _reserveUsernameAndUpsertProfile({
+    required String uid,
+    required String? email,
+    required String username,
+    required UserProfileFailureOperation operation,
+    required bool requireMissingCompleteProfile,
+    bool allowUsernameChange = false,
+  }) async {
+    _validateUid(uid, operation);
+    final normalizedEmail = _normalizeEmail(email, operation);
+    final trimmedUsername = username.trim();
+    final usernameError = Username.validate(trimmedUsername);
+    if (usernameError != null) {
+      throw UserProfileException(
+        UserProfileFailureReason.invalidUsername,
+        operation: operation,
+        technicalMessage: usernameError.userMessage,
       );
     }
+    final usernameNormalized = Username.normalize(trimmedUsername);
+    final profileDocument = _users.doc(uid);
+    final usernameDocument = _usernames.doc(usernameNormalized);
 
-    final existingProfile = await fetchProfile(uid);
-    if (existingProfile != null) {
-      return existingProfile;
-    }
-
-    final normalizedEmail = email?.trim();
-    if (normalizedEmail == null || normalizedEmail.isEmpty) {
-      throw const UserProfileException(
-        UserProfileFailureReason.missingEmail,
-        operation: UserProfileFailureOperation.ensure,
-      );
-    }
-
-    final document = _users.doc(uid);
     try {
-      await _firestore.runTransaction<void>((transaction) async {
-        final snapshot = await transaction.get(document);
-        if (snapshot.exists) {
+      await _requireFirestore.runTransaction<void>((transaction) async {
+        final profileSnapshot = await transaction.get(profileDocument);
+        final usernameSnapshot = await transaction.get(usernameDocument);
+
+        if (usernameSnapshot.exists) {
+          final claimedUid = usernameSnapshot.data()?['uid'];
+          if (claimedUid != uid) {
+            throw const UserProfileException(
+              UserProfileFailureReason.usernameAlreadyInUse,
+              operation: UserProfileFailureOperation.reserveUsername,
+            );
+          }
+        }
+
+        if (profileSnapshot.exists) {
+          final profile = UserProfile.fromFirestore(profileSnapshot);
+          if (profile.hasUsername) {
+            if (allowUsernameChange) {
+              if (profile.username == trimmedUsername) return;
+              if (!usernameSnapshot.exists) {
+                transaction.set(usernameDocument, {'uid': uid});
+              }
+              transaction.update(profileDocument, {
+                'username': trimmedUsername,
+                'usernameNormalized': usernameNormalized,
+                'updatedAt': FieldValue.serverTimestamp(),
+              });
+              if (profile.usernameNormalized != usernameNormalized) {
+                transaction.delete(_usernames.doc(profile.usernameNormalized!));
+              }
+              return;
+            }
+            if (requireMissingCompleteProfile ||
+                profile.usernameNormalized != usernameNormalized) {
+              throw const UserProfileException(
+                UserProfileFailureReason.profileAlreadyComplete,
+                operation: UserProfileFailureOperation.create,
+              );
+            }
+            return;
+          }
+        }
+
+        if (allowUsernameChange) {
+          throw const UserProfileException(
+            UserProfileFailureReason.invalidDocument,
+            operation: UserProfileFailureOperation.changeUsername,
+          );
+        }
+
+        if (!usernameSnapshot.exists) {
+          transaction.set(usernameDocument, {'uid': uid});
+        }
+
+        if (profileSnapshot.exists) {
+          transaction.update(profileDocument, {
+            'username': trimmedUsername,
+            'usernameNormalized': usernameNormalized,
+            'email': normalizedEmail,
+            'role': UserProfileRole.user,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
           return;
         }
 
-        transaction.set(document, {
+        transaction.set(profileDocument, {
+          'username': trimmedUsername,
+          'usernameNormalized': usernameNormalized,
           'email': normalizedEmail,
+          'role': UserProfileRole.user,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         });
       });
     } on FirebaseException catch (exception, stackTrace) {
       throw UserProfileException.fromFirebaseException(
-        UserProfileFailureOperation.create,
+        operation,
         exception,
         stackTrace,
       );
+    } on FormatException catch (exception, stackTrace) {
+      throw UserProfileException(
+        UserProfileFailureReason.invalidDocument,
+        operation: operation,
+        technicalMessage: exception.message,
+        stackTrace: stackTrace,
+      );
+    } on UserProfileException {
+      rethrow;
     } catch (error, stackTrace) {
       throw UserProfileException(
         UserProfileFailureReason.unexpected,
-        operation: UserProfileFailureOperation.create,
+        operation: operation,
         technicalMessage: error.toString(),
         stackTrace: stackTrace,
       );
@@ -108,11 +236,34 @@ class UserProfileRepository {
 
     return createdProfile;
   }
+
+  void _validateUid(String uid, UserProfileFailureOperation operation) {
+    if (uid.trim().isEmpty) {
+      throw UserProfileException(
+        UserProfileFailureReason.unauthenticated,
+        operation: operation,
+      );
+    }
+  }
+
+  String _normalizeEmail(String? email, UserProfileFailureOperation operation) {
+    final normalizedEmail = email?.trim();
+    if (normalizedEmail == null || normalizedEmail.isEmpty) {
+      throw UserProfileException(
+        UserProfileFailureReason.missingEmail,
+        operation: operation,
+      );
+    }
+    return normalizedEmail;
+  }
 }
 
 enum UserProfileFailureReason {
   unauthenticated,
   missingEmail,
+  invalidUsername,
+  usernameAlreadyInUse,
+  profileAlreadyComplete,
   permissionDenied,
   notFound,
   invalidDocument,
@@ -121,7 +272,13 @@ enum UserProfileFailureReason {
   unexpected,
 }
 
-enum UserProfileFailureOperation { fetch, create, ensure }
+enum UserProfileFailureOperation {
+  fetch,
+  create,
+  complete,
+  reserveUsername,
+  changeUsername,
+}
 
 class UserProfileException implements Exception {
   const UserProfileException(
@@ -157,6 +314,22 @@ class UserProfileException implements Exception {
   final String? firebaseCode;
   final String? technicalMessage;
   final StackTrace? stackTrace;
+
+  String get userMessage {
+    return switch (reason) {
+      UserProfileFailureReason.invalidUsername =>
+        technicalMessage ?? 'El nombre de usuario no es válido.',
+      UserProfileFailureReason.usernameAlreadyInUse =>
+        'Este nombre de usuario ya está en uso.',
+      UserProfileFailureReason.missingEmail =>
+        'No pudimos confirmar el correo de tu cuenta.',
+      UserProfileFailureReason.permissionDenied =>
+        'No pudimos guardar tu perfil. Revisa tu sesión e intenta nuevamente.',
+      UserProfileFailureReason.unauthenticated =>
+        'Debes iniciar sesión para completar tu perfil.',
+      _ => 'No pudimos preparar tu perfil. Intenta nuevamente.',
+    };
+  }
 
   void logForDebug() {
     if (!kDebugMode) {

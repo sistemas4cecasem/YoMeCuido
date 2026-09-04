@@ -5,7 +5,10 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
+import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/user_profile_repository.dart';
+import '../auth/profile_username_editor.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_background.dart';
@@ -13,11 +16,17 @@ import '../../shared/widgets/app_background.dart';
 class HighLevelCategoriesScreen extends StatelessWidget {
   const HighLevelCategoriesScreen({
     this.authRepository,
+    this.userProfile,
+    this.userProfileRepository,
+    this.onProfileChanged,
     this.showBackButton = true,
     super.key,
   });
 
   final AuthRepository? authRepository;
+  final UserProfile? userProfile;
+  final UserProfileRepository? userProfileRepository;
+  final ValueChanged<UserProfile>? onProfileChanged;
   final bool showBackButton;
 
   void _openDigitalSecurity(BuildContext context) {
@@ -63,7 +72,12 @@ class HighLevelCategoriesScreen extends StatelessWidget {
                           ),
                         )
                       else if (authRepository != null)
-                        _UserAccountMenu(authRepository: authRepository!)
+                        _UserAccountMenu(
+                          authRepository: authRepository!,
+                          userProfile: userProfile,
+                          userProfileRepository: userProfileRepository,
+                          onProfileChanged: onProfileChanged,
+                        )
                       else
                         const SizedBox(width: AppSizing.minTouchTarget),
                       const Spacer(),
@@ -111,9 +125,17 @@ class HighLevelCategoriesScreen extends StatelessWidget {
 enum _UserMenuAction { profile, signOut }
 
 class _UserAccountMenu extends StatefulWidget {
-  const _UserAccountMenu({required this.authRepository});
+  const _UserAccountMenu({
+    required this.authRepository,
+    required this.userProfile,
+    required this.userProfileRepository,
+    required this.onProfileChanged,
+  });
 
   final AuthRepository authRepository;
+  final UserProfile? userProfile;
+  final UserProfileRepository? userProfileRepository;
+  final ValueChanged<UserProfile>? onProfileChanged;
 
   @override
   State<_UserAccountMenu> createState() => _UserAccountMenuState();
@@ -139,7 +161,23 @@ class _UserAccountMenuState extends State<_UserAccountMenu> {
       title: AppStrings.profileTitle,
       icon: Icons.person_outline,
       closeLabel: AppStrings.close,
-      content: _ProfileDetails(user: user),
+      content: _ProfileDetails(
+        user: user,
+        profile: widget.userProfile,
+        usernameEditor:
+            user != null &&
+                widget.userProfile != null &&
+                widget.userProfileRepository != null &&
+                widget.onProfileChanged != null
+            ? ProfileUsernameEditor(
+                uid: user.uid,
+                profile: widget.userProfile!,
+                authRepository: widget.authRepository,
+                repository: widget.userProfileRepository!,
+                onChanged: widget.onProfileChanged!,
+              )
+            : null,
+      ),
     );
   }
 
@@ -241,31 +279,38 @@ class _UserMenuItem extends StatelessWidget {
 }
 
 class _ProfileDetails extends StatelessWidget {
-  const _ProfileDetails({required this.user});
+  const _ProfileDetails({
+    required this.user,
+    required this.profile,
+    this.usernameEditor,
+  });
 
   final AuthUser? user;
+  final UserProfile? profile;
+  final Widget? usernameEditor;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final email = user?.email ?? '-';
+    final username = profile?.username ?? '-';
+    final email = profile?.email ?? user?.email ?? '-';
+    final role = profile?.role == UserProfileRole.user
+        ? AppStrings.profileUserRole
+        : profile?.role ?? '-';
     final verified = user?.isEmailVerified == true;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppStrings.profileEmail,
-          style: textTheme.bodySmall?.copyWith(
-            color: colors.textSecondary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xxs),
-        Text(email, style: textTheme.bodyLarge),
+        usernameEditor ??
+            _ProfileField(label: AppStrings.profileUsername, value: username),
         const SizedBox(height: AppSpacing.md),
+        _ProfileField(label: AppStrings.profileEmail, value: email),
+        const SizedBox(height: AppSpacing.md),
+        _ProfileField(label: AppStrings.profileRole, value: role),
+        const SizedBox(height: AppSpacing.lg),
         Row(
           children: [
             Icon(
@@ -285,6 +330,40 @@ class _ProfileDetails extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileField extends StatelessWidget {
+  const _ProfileField({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: textTheme.bodySmall?.copyWith(
+            color: colors.textSecondary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xxs),
+        Text(
+          value,
+          style: textTheme.bodyLarge?.copyWith(
+            color: colors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../data/models/auth_user.dart';
+import '../../data/models/username.dart';
 import '../../data/repositories/auth_repository.dart';
 import 'auth_email_validator.dart';
 
@@ -14,6 +15,7 @@ class RegisterController extends ChangeNotifier {
 
   bool _isLoading = false;
   AuthUser? _registeredUser;
+  String? _usernameError;
   String? _emailError;
   String? _passwordError;
   String? _confirmPasswordError;
@@ -25,6 +27,8 @@ class RegisterController extends ChangeNotifier {
 
   AuthUser? get registeredUser => _registeredUser;
 
+  String? get usernameError => _usernameError;
+
   String? get emailError => _emailError;
 
   String? get passwordError => _passwordError;
@@ -34,6 +38,7 @@ class RegisterController extends ChangeNotifier {
   String? get submitError => _submitError;
 
   Future<AuthUser?> submit({
+    required String username,
     required String email,
     required String password,
     required String confirmPassword,
@@ -45,6 +50,7 @@ class RegisterController extends ChangeNotifier {
     final normalizedEmail = email.trim();
     _clearFeedback();
     _validate(
+      username: username,
       email: normalizedEmail,
       password: password,
       confirmPassword: confirmPassword,
@@ -60,6 +66,7 @@ class RegisterController extends ChangeNotifier {
 
     try {
       final user = await _authRepository.registerWithEmailAndPassword(
+        username: username.trim(),
         email: normalizedEmail,
         password: password,
       );
@@ -82,6 +89,7 @@ class RegisterController extends ChangeNotifier {
   }
 
   void _clearFeedback() {
+    _usernameError = null;
     _emailError = null;
     _passwordError = null;
     _confirmPasswordError = null;
@@ -89,10 +97,16 @@ class RegisterController extends ChangeNotifier {
   }
 
   void _validate({
+    required String username,
     required String email,
     required String password,
     required String confirmPassword,
   }) {
+    final usernameError = Username.validate(username);
+    if (usernameError != null) {
+      _usernameError = usernameError.userMessage;
+    }
+
     if (email.isEmpty) {
       _emailError = 'Ingresa tu correo electrónico.';
     } else if (!AuthEmailValidator.hasReasonableFormat(email)) {
@@ -115,6 +129,7 @@ class RegisterController extends ChangeNotifier {
 
   bool get _hasValidationErrors {
     return _emailError != null ||
+        _usernameError != null ||
         _passwordError != null ||
         _confirmPasswordError != null;
   }

@@ -10,9 +10,17 @@ service cloud.firestore {
     // Collection: users
     // Document ID: Firebase Auth uid
     // Fields:
+    //   - username: string (required for new profiles, 3..20)
+    //   - usernameNormalized: string (3..20 lowercase, atomically reserved)
     //   - email: string (required, owner email, max 254)
+    //   - role: string (required for new profiles: user, immutable for clients)
     //   - createdAt: timestamp (required, immutable after create)
     //   - updatedAt: timestamp (required)
+    //
+    // Collection: usernames
+    // Document ID: usernameNormalized
+    // Fields:
+    //   - uid: string (required, owner Firebase Auth uid)
     //
     // Subcollection: users/{uid}/categoryProgress
     // Document ID: categoryId
@@ -162,6 +170,17 @@ service cloud.firestore {
     }
 
     function profileFields() {
+      return [
+        'username',
+        'usernameNormalized',
+        'email',
+        'role',
+        'createdAt',
+        'updatedAt',
+      ];
+    }
+
+    function legacyProfileFields() {
       return ['email', 'createdAt', 'updatedAt'];
     }
 
@@ -171,6 +190,32 @@ service cloud.firestore {
 
     function hasRequiredProfileFields() {
       return request.resource.data.keys().hasAll(profileFields());
+    }
+
+    function hasValidUsernameValue(username) {
+      return username is string
+        && username.size() >= 3
+        && username.size() <= 20
+        && username.matches('^[a-zA-Z0-9._]{3,20}$');
+    }
+
+    function hasValidUsernameNormalized(usernameNormalized) {
+      return usernameNormalized is string
+        && usernameNormalized.size() >= 3
+        && usernameNormalized.size() <= 20
+        && usernameNormalized.matches('^[a-z0-9._]{3,20}$');
+    }
+
+    function hasValidProfileUsername() {
+      return hasValidUsernameValue(request.resource.data.username)
+        && hasValidUsernameNormalized(request.resource.data.usernameNormalized)
+        && request.resource.data.username.lower() == request.resource.data.usernameNormalized;
+    }
+
+    function hasUsernameReservationForProfile(userId) {
+      return getAfter(
+        /databases/$(database)/documents/usernames/$(request.resource.data.usernameNormalized)
+      ).data.uid == userId;
     }
 
     function isValidProfileEmail() {
@@ -184,21 +229,65 @@ service cloud.firestore {
     function isValidUserProfile() {
       return hasOnlyProfileFields()
         && hasRequiredProfileFields()
+        && hasValidProfileUsername()
         && isValidProfileEmail()
+        && request.resource.data.role == 'user'
         && request.resource.data.createdAt is timestamp
         && request.resource.data.updatedAt is timestamp;
     }
 
-    function isValidNewUserProfile() {
+    function isValidNewUserProfile(userId) {
       return isValidUserProfile()
+        && hasUsernameReservationForProfile(userId)
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
     }
 
-    function isValidUpdatedUserProfile() {
+    function isLegacyUserProfile() {
+      return resource.data.keys().hasOnly(legacyProfileFields())
+        && resource.data.keys().hasAll(legacyProfileFields())
+        && resource.data.email is string
+        && resource.data.createdAt is timestamp
+        && resource.data.updatedAt is timestamp;
+    }
+
+    function isCompletingLegacyProfile(userId) {
       return isValidUserProfile()
+        && isLegacyUserProfile()
+        && hasUsernameReservationForProfile(userId)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.updatedAt == request.time;
+    }
+
+    function isValidUpdatedUserProfile(userId) {
+      return isValidUserProfile()
+        && !isLegacyUserProfile()
+        && hasUsernameReservationForProfile(userId)
+        && (
+          request.resource.data.usernameNormalized == resource.data.usernameNormalized
+          || !existsAfter(/databases/$(database)/documents/usernames/$(resource.data.usernameNormalized))
+        )
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function usernameReservationFields() {
+      return ['uid'];
+    }
+
+    function isValidUsernameReservation(usernameNormalized) {
+      return request.resource.data.keys().hasOnly(usernameReservationFields())
+        && request.resource.data.keys().hasAll(usernameReservationFields())
+        && hasValidUsernameNormalized(usernameNormalized)
+        && request.resource.data.uid is string
+        && request.resource.data.uid == request.auth.uid;
+    }
+
+    function reservationMatchesProfile(usernameNormalized) {
+      return getAfter(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data.usernameNormalized == usernameNormalized;
     }
 
     function progressFields() {
@@ -503,8 +592,12 @@ service cloud.firestore {
     match /users/{userId} {
       allow get: if isOwner(userId);
       allow list: if false;
-      allow create: if isOwner(userId) && isValidNewUserProfile();
-      allow update: if isOwner(userId) && isValidUpdatedUserProfile();
+      allow create: if isOwner(userId) && isValidNewUserProfile(userId);
+      allow update: if isOwner(userId)
+        && (
+          isCompletingLegacyProfile(userId)
+          || isValidUpdatedUserProfile(userId)
+        );
       allow delete: if false;
 
       match /categoryProgress/{categoryId} {
@@ -575,6 +668,19 @@ service cloud.firestore {
           }
         }
       }
+    }
+
+    match /usernames/{usernameNormalized} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create: if isSignedIn()
+        && isValidUsernameReservation(usernameNormalized)
+        && reservationMatchesProfile(usernameNormalized);
+      allow update: if false;
+      allow delete: if isSignedIn()
+        && resource.data.uid == request.auth.uid
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized == usernameNormalized
+        && getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized != usernameNormalized;
     }
 
     match /categories/{categoryId} {

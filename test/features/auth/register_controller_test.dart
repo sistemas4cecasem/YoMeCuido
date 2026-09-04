@@ -12,6 +12,7 @@ void main() {
       final controller = RegisterController(authRepository: repository);
 
       final user = await controller.submit(
+        username: 'diegonais',
         email: ' ',
         password: '123456',
         confirmPassword: '123456',
@@ -27,6 +28,7 @@ void main() {
       final controller = RegisterController(authRepository: repository);
 
       final user = await controller.submit(
+        username: 'diegonais',
         email: 'correo-invalido',
         password: '123456',
         confirmPassword: '123456',
@@ -42,6 +44,7 @@ void main() {
       final controller = RegisterController(authRepository: repository);
 
       final user = await controller.submit(
+        username: 'diegonais',
         email: 'persona@example.com',
         password: '',
         confirmPassword: '',
@@ -57,6 +60,7 @@ void main() {
       final controller = RegisterController(authRepository: repository);
 
       final user = await controller.submit(
+        username: 'diegonais',
         email: 'persona@example.com',
         password: '12345',
         confirmPassword: '12345',
@@ -77,6 +81,7 @@ void main() {
         final controller = RegisterController(authRepository: repository);
 
         final user = await controller.submit(
+          username: 'diegonais',
           email: 'persona@example.com',
           password: '123456',
           confirmPassword: '',
@@ -95,6 +100,7 @@ void main() {
         final controller = RegisterController(authRepository: repository);
 
         final user = await controller.submit(
+          username: 'diegonais',
           email: 'persona@example.com',
           password: '123456',
           confirmPassword: '654321',
@@ -117,12 +123,14 @@ void main() {
         final controller = RegisterController(authRepository: repository);
 
         final submitFuture = controller.submit(
+          username: ' DiegoNais ',
           email: ' persona@example.com ',
           password: '123456',
           confirmPassword: '123456',
         );
 
         expect(controller.isLoading, isTrue);
+        expect(repository.lastUsername, 'DiegoNais');
         expect(repository.lastEmail, 'persona@example.com');
 
         completer.complete(
@@ -146,6 +154,7 @@ void main() {
         final controller = RegisterController(authRepository: repository);
 
         await controller.submit(
+          username: 'diegonais',
           email: 'persona@example.com',
           password: '123456',
           confirmPassword: '123456',
@@ -165,6 +174,7 @@ void main() {
       final controller = RegisterController(authRepository: repository);
 
       final user = await controller.submit(
+        username: 'diegonais',
         email: 'persona@example.com',
         password: '123456',
         confirmPassword: '123456',
@@ -173,6 +183,45 @@ void main() {
       expect(user, isNull);
       expect(controller.isLoading, isFalse);
       expect(controller.submitError, 'Este correo ya está registrado.');
+    });
+
+    test(
+      'validates an invalid username before calling the repository',
+      () async {
+        final repository = _FakeAuthRepository();
+        final controller = RegisterController(authRepository: repository);
+
+        final user = await controller.submit(
+          username: 'diego nais',
+          email: 'persona@example.com',
+          password: '123456',
+          confirmPassword: '123456',
+        );
+
+        expect(user, isNull);
+        expect(
+          controller.usernameError,
+          'Solo puedes utilizar letras, números, punto y guion bajo.',
+        );
+        expect(repository.registerCallCount, 0);
+      },
+    );
+
+    test('shows username taken errors from the repository', () async {
+      final repository = _FakeAuthRepository(
+        exception: const AuthException(AuthFailureReason.usernameAlreadyInUse),
+      );
+      final controller = RegisterController(authRepository: repository);
+
+      final user = await controller.submit(
+        username: 'diegonais',
+        email: 'persona@example.com',
+        password: '123456',
+        confirmPassword: '123456',
+      );
+
+      expect(user, isNull);
+      expect(controller.submitError, 'Este nombre de usuario ya está en uso.');
     });
   });
 }
@@ -184,6 +233,7 @@ class _FakeAuthRepository implements AuthRepository {
   final AuthException? exception;
   int registerCallCount = 0;
   int sendVerificationCallCount = 0;
+  String? lastUsername;
   String? lastEmail;
 
   @override
@@ -194,10 +244,12 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) {
     registerCallCount += 1;
+    lastUsername = username;
     lastEmail = email;
     final exception = this.exception;
     if (exception != null) {

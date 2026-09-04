@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../models/auth_user.dart';
 import 'auth_repository.dart';
@@ -20,18 +21,18 @@ class FirebaseAuthRepository implements AuthRepository {
 
   @override
   Stream<AuthUser?> authStateChanges() {
-    return _firebaseAuth.userChanges().asyncMap((user) async {
+    return _firebaseAuth.userChanges().map((user) {
       if (user == null) {
         return null;
       }
 
-      await _ensureProfile(user);
       return user.toAuthUser();
     });
   }
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
     required String email,
     required String password,
   }) async {
@@ -42,7 +43,16 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       final user = _requireUser(credential.user);
-      await _ensureProfile(user);
+      try {
+        await _userProfileRepository.createProfileForNewUser(
+          uid: user.uid,
+          email: user.email,
+          username: username,
+        );
+      } on UserProfileException {
+        await _deleteNewlyCreatedUser(user);
+        rethrow;
+      }
       return user.toAuthUser();
     });
   }
@@ -59,7 +69,6 @@ class FirebaseAuthRepository implements AuthRepository {
       );
 
       final user = _requireUser(credential.user);
-      await _ensureProfile(user);
       return user.toAuthUser();
     });
   }
@@ -102,7 +111,6 @@ class FirebaseAuthRepository implements AuthRepository {
         return null;
       }
 
-      await _ensureProfile(reloadedUser);
       return reloadedUser.toAuthUser();
     });
   }
@@ -116,7 +124,7 @@ class FirebaseAuthRepository implements AuthRepository {
       throw AuthException.fromFirebaseCode(exception.code);
     } on UserProfileException catch (exception) {
       exception.logForDebug();
-      throw const AuthException(AuthFailureReason.userProfileUnavailable);
+      throw AuthException(_mapProfileFailure(exception.reason));
     } catch (_) {
       throw const AuthException(AuthFailureReason.unknown);
     }
@@ -130,11 +138,28 @@ class FirebaseAuthRepository implements AuthRepository {
     return user;
   }
 
-  Future<void> _ensureProfile(User user) {
-    return _userProfileRepository.ensureProfile(
-      uid: user.uid,
-      email: user.email,
-    );
+  Future<void> _deleteNewlyCreatedUser(User user) async {
+    try {
+      await user.delete();
+    } on FirebaseAuthException catch (exception) {
+      if (kDebugMode) {
+        debugPrint(
+          '[Auth] Could not delete partially initialized user '
+          '${user.uid}: ${exception.code}',
+        );
+      }
+      await _firebaseAuth.signOut();
+    }
+  }
+
+  AuthFailureReason _mapProfileFailure(UserProfileFailureReason reason) {
+    return switch (reason) {
+      UserProfileFailureReason.invalidUsername =>
+        AuthFailureReason.usernameInvalid,
+      UserProfileFailureReason.usernameAlreadyInUse =>
+        AuthFailureReason.usernameAlreadyInUse,
+      _ => AuthFailureReason.userProfileUnavailable,
+    };
   }
 }
 
