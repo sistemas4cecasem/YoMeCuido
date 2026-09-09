@@ -193,13 +193,13 @@ class _QuizFlow extends StatefulWidget {
 
 class _QuizFlowState extends State<_QuizFlow> {
   late final QuizController _controller;
-  String _attemptId = '';
   final TextEditingController _answerTextController = TextEditingController();
   final math.Random _characterRandom = math.Random();
   final Map<String, _ActivityCharacter> _activityCharacters =
       <String, _ActivityCharacter>{};
   bool _allowPop = false;
   bool _showResult = false;
+  bool _isCompletingAttempt = false;
 
   @override
   void initState() {
@@ -209,12 +209,6 @@ class _QuizFlowState extends State<_QuizFlow> {
       shuffleQuestions: widget.shuffleQuestions,
       shuffleOptions: widget.shuffleOptions,
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      _attemptId = _startAttempt();
-    });
   }
 
   @override
@@ -245,9 +239,6 @@ class _QuizFlowState extends State<_QuizFlow> {
     );
 
     if (mounted && shouldExit) {
-      if (_attemptId.isNotEmpty) {
-        widget.progressController.discardAttempt(_attemptId);
-      }
       _popQuizRoute();
     }
   }
@@ -265,79 +256,81 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _submitAnswer() {
     FocusManager.instance.primaryFocus?.unfocus();
-    if (_attemptId.isEmpty) {
-      _attemptId = _startAttempt();
-    }
-    final questionId = _controller.currentQuestionId;
-    final answer = _currentAnswerForPersistence();
-    final submitted = _controller.submitAnswer();
-    if (!submitted) {
-      return;
-    }
-
-    unawaited(
-      _recordAnswerAndCompleteIfNeeded(
-        questionId: questionId,
-        answer: answer,
-        isCorrect: _controller.isCurrentAnswerCorrect ?? false,
-      ),
-    );
+    _controller.submitAnswer();
   }
 
-  String _currentAnswerForPersistence() {
-    return switch (_controller.currentQuestionType) {
-      QuestionType.multipleChoice ||
-      QuestionType.trueFalse => _controller.selectedOptionId ?? '',
-      QuestionType.fillBlank => _controller.writtenAnswer.trim().toLowerCase(),
-    };
-  }
-
-  Future<void> _recordAnswerAndCompleteIfNeeded({
-    required String questionId,
-    required String answer,
-    required bool isCorrect,
-  }) async {
-    await widget.progressController.recordAnswer(
-      categoryId: widget.category.id,
-      activityId: widget.activity?.id,
-      examId: widget.exam?.id,
-      attemptId: _attemptId,
-      questionId: questionId,
-      answer: answer,
-      isCorrect: isCorrect,
-    );
-
+  Future<void> _completeAttemptAndShowResult() async {
     if (!_controller.isFinished) {
       return;
     }
+    if (_isCompletingAttempt || _showResult) {
+      return;
+    }
 
+    setState(() {
+      _isCompletingAttempt = true;
+    });
+
+    final attemptId = _startAttempt();
+    for (final answer in _controller.submittedAnswers) {
+      await widget.progressController.recordAnswer(
+        categoryId: widget.category.id,
+        activityId: widget.activity?.id,
+        examId: widget.exam?.id,
+        attemptId: attemptId,
+        questionId: answer.questionId,
+        answer: answer.answer,
+        isCorrect: answer.isCorrect,
+      );
+    }
+
+    final completed = await _completeStartedAttempt(attemptId);
+    if (!mounted) {
+      return;
+    }
+    if (!completed) {
+      widget.progressController.discardAttempt(attemptId);
+      setState(() {
+        _isCompletingAttempt = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.progressSaveError)),
+      );
+      return;
+    }
+
+    setState(() {
+      _isCompletingAttempt = false;
+      _showResult = true;
+    });
+    widget.onResultVisibilityChanged(true);
+  }
+
+  Future<bool> _completeStartedAttempt(String attemptId) {
     if (widget.exam != null) {
-      await widget.progressController.completeExamAttempt(
+      return widget.progressController.completeExamAttempt(
         categoryId: widget.category.id,
         lessonId: widget.category.lessonId ?? widget.category.id,
         examId: widget.exam!.id,
-        attemptId: _attemptId,
-        result: _controller.quizResult,
-        totalActivities: widget.totalActivities,
-      );
-    } else {
-      await widget.progressController.completeActivityAttempt(
-        categoryId: widget.category.id,
-        lessonId: widget.category.lessonId ?? widget.category.id,
-        activityId: widget.activity!.id,
-        attemptId: _attemptId,
+        attemptId: attemptId,
         result: _controller.quizResult,
         totalActivities: widget.totalActivities,
       );
     }
+
+    return widget.progressController.completeActivityAttempt(
+      categoryId: widget.category.id,
+      lessonId: widget.category.lessonId ?? widget.category.id,
+      activityId: widget.activity!.id,
+      attemptId: attemptId,
+      result: _controller.quizResult,
+      totalActivities: widget.totalActivities,
+    );
   }
 
   void _goForward() {
     if (_controller.isLastQuestion) {
-      setState(() {
-        _showResult = true;
-      });
-      widget.onResultVisibilityChanged(true);
+      unawaited(_completeAttemptAndShowResult());
       return;
     }
 
@@ -355,10 +348,10 @@ class _QuizFlowState extends State<_QuizFlow> {
     _answerTextController.clear();
     _activityCharacters.clear();
     _controller.reset();
-    _attemptId = _startAttempt();
     setState(() {
       _allowPop = false;
       _showResult = false;
+      _isCompletingAttempt = false;
     });
     widget.onResultVisibilityChanged(false);
   }
@@ -432,6 +425,7 @@ class _QuizFlowState extends State<_QuizFlow> {
             answerTextController: _answerTextController,
             onSubmitAnswer: _submitAnswer,
             onGoForward: _goForward,
+            isCompletingAttempt: _isCompletingAttempt,
           );
         },
       ),
@@ -446,6 +440,7 @@ class _ActivityView extends StatelessWidget {
     required this.answerTextController,
     required this.onSubmitAnswer,
     required this.onGoForward,
+    required this.isCompletingAttempt,
   });
 
   final QuizController controller;
@@ -453,6 +448,7 @@ class _ActivityView extends StatelessWidget {
   final TextEditingController answerTextController;
   final VoidCallback onSubmitAnswer;
   final VoidCallback onGoForward;
+  final bool isCompletingAttempt;
 
   @override
   Widget build(BuildContext context) {
@@ -502,7 +498,7 @@ class _ActivityView extends StatelessWidget {
             icon: controller.isLastQuestion
                 ? Icons.assessment_outlined
                 : Icons.arrow_forward_outlined,
-            onPressed: onGoForward,
+            onPressed: isCompletingAttempt ? null : onGoForward,
           )
         else if (controller.canSubmitAnswer)
           Align(

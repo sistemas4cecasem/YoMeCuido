@@ -139,6 +139,7 @@ void main() {
           totalActivities: 6,
         );
 
+        await _recordTwoActivityAnswers(controller, attemptId);
         await controller.completeActivityAttempt(
           categoryId: _categoryId,
           lessonId: _lessonId,
@@ -164,10 +165,14 @@ void main() {
         expect(attempt?.correctAnswers, 1);
         expect(attempt?.totalQuestions, 2);
         expect(attempt?.percentage, 50);
+        expect(attempt?.attemptNumber, 1);
+        expect(attempt?.earnedPoints, 0);
         expect(attempt?.isCompleted, isTrue);
         expect(persistence.startAttemptCalls, isEmpty);
         expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeCalls.single.activityId, _activityId);
+        expect(persistence.completeCalls.single.attemptNumber, 1);
+        expect(persistence.completeCalls.single.earnedPoints, 0);
       },
     );
 
@@ -185,6 +190,7 @@ void main() {
         questionIds: const <String>['question_01', 'question_02'],
         totalActivities: 6,
       );
+      await _recordTwoActivityAnswers(controller, firstAttemptId);
       await controller.completeActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
@@ -201,6 +207,7 @@ void main() {
         questionIds: const <String>['question_03', 'question_04'],
         totalActivities: 6,
       );
+      await _recordTwoActivityAnswers(controller, secondAttemptId);
       await controller.completeActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
@@ -220,8 +227,313 @@ void main() {
       expect(activityProgress.bestPercentage, 100);
       expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
       expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
+      expect(controller.attemptFor(firstAttemptId)?.attemptNumber, 1);
+      expect(controller.attemptFor(secondAttemptId)?.attemptNumber, 2);
       expect(persistence.startAttemptCalls, isEmpty);
       expect(persistence.completeCalls, hasLength(2));
+    });
+
+    test(
+      'keeps partial activity answers in memory without counting attempts',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await controller.recordAnswer(
+          categoryId: _categoryId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          questionId: 'question_01',
+          answer: 'safe_option',
+          isCorrect: true,
+        );
+
+        final activityProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(activityProgress.attemptCount, 0);
+        expect(activityProgress.lastAttemptAt, isNull);
+        expect(controller.attemptFor(attemptId)?.answers, hasLength(1));
+        expect(persistence.startAttemptCalls, isEmpty);
+        expect(persistence.answerCalls, isEmpty);
+      },
+    );
+
+    test('discarded activity attempts do not affect progress', () async {
+      final persistence = _FakeProgressPersistence();
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+
+      for (var index = 0; index < 3; index += 1) {
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await controller.recordAnswer(
+          categoryId: _categoryId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          questionId: 'question_01',
+          answer: 'safe_option',
+          isCorrect: true,
+        );
+        controller.discardAttempt(attemptId);
+      }
+
+      final finalAttemptId = controller.startActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        questionIds: const <String>['question_01', 'question_02'],
+        totalActivities: 6,
+      );
+      await _recordTwoActivityAnswers(controller, finalAttemptId);
+      final completed = await controller.completeActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        attemptId: finalAttemptId,
+        result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+        totalActivities: 6,
+      );
+
+      final activityProgress = controller.activityProgressFor(
+        categoryId: _categoryId,
+        activityId: _activityId,
+      );
+      expect(completed, isTrue);
+      expect(activityProgress.attemptCount, 1);
+      expect(controller.attemptFor(finalAttemptId)?.attemptNumber, 1);
+      expect(persistence.completeCalls, hasLength(1));
+    });
+
+    test(
+      'activity attempts remain unlimited and count completed attempts only',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        for (var index = 1; index <= 4; index += 1) {
+          final attemptId = controller.startActivityAttempt(
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            activityId: _activityId,
+            questionIds: const <String>['question_01', 'question_02'],
+            totalActivities: 6,
+          );
+          await _recordTwoActivityAnswers(controller, attemptId);
+          final completed = await controller.completeActivityAttempt(
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            activityId: _activityId,
+            attemptId: attemptId,
+            result: QuizResult.fromScore(
+              correctAnswers: index.isEven ? 2 : 1,
+              totalQuestions: 2,
+            ),
+            totalActivities: 6,
+          );
+
+          expect(completed, isTrue);
+          expect(controller.attemptFor(attemptId)?.attemptNumber, index);
+        }
+
+        final activityProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(activityProgress.attemptCount, 4);
+        expect(persistence.completeCalls.map((call) => call.attemptNumber), [
+          1,
+          2,
+          3,
+          4,
+        ]);
+      },
+    );
+
+    test(
+      'preserves first completion date and updates last attempt only on completion',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        final firstAttemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        expect(
+          controller
+              .activityProgressFor(
+                categoryId: _categoryId,
+                activityId: _activityId,
+              )
+              .lastAttemptAt,
+          isNull,
+        );
+        await _recordTwoActivityAnswers(controller, firstAttemptId);
+        await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: firstAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+        final firstProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        final firstCompletedAt = firstProgress.completedAt;
+        final firstLastAttemptAt = firstProgress.lastAttemptAt;
+
+        final secondAttemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        expect(
+          controller
+              .activityProgressFor(
+                categoryId: _categoryId,
+                activityId: _activityId,
+              )
+              .lastAttemptAt,
+          firstLastAttemptAt,
+        );
+        await _recordTwoActivityAnswers(controller, secondAttemptId);
+        await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: secondAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final secondProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(secondProgress.completedAt, firstCompletedAt);
+        expect(secondProgress.lastAttemptAt, isNotNull);
+        expect(secondProgress.attemptCount, 2);
+      },
+    );
+
+    test(
+      'does not duplicate progress when an attempt is finalized twice',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await _recordTwoActivityAnswers(controller, attemptId);
+
+        final first = await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+          totalActivities: 6,
+        );
+        final second = await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final activityProgress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(first, isTrue);
+        expect(second, isFalse);
+        expect(activityProgress.attemptCount, 1);
+        expect(persistence.completeCalls, hasLength(1));
+      },
+    );
+
+    test('does not complete local progress when persistence fails', () async {
+      final persistence = _FakeProgressPersistence()
+        ..failCompleteActivityAttempt = true;
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+      final attemptId = controller.startActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        questionIds: const <String>['question_01', 'question_02'],
+        totalActivities: 6,
+      );
+      await _recordTwoActivityAnswers(controller, attemptId);
+
+      final completed = await controller.completeActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        attemptId: attemptId,
+        result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+        totalActivities: 6,
+      );
+
+      final activityProgress = controller.activityProgressFor(
+        categoryId: _categoryId,
+        activityId: _activityId,
+      );
+      expect(completed, isFalse);
+      expect(activityProgress.status, ActivityProgressStatus.notStarted);
+      expect(activityProgress.attemptCount, 0);
+      expect(activityProgress.lastAttemptAt, isNull);
+      expect(controller.attemptFor(attemptId)?.isCompleted, isFalse);
+      expect(persistence.completeCalls, isEmpty);
     });
 
     test('hydrates persisted activity progress without writing it back', () {
@@ -358,13 +670,10 @@ void main() {
           totalActivities: 6,
         );
 
-        await controller.recordAnswer(
-          categoryId: _categoryId,
-          examId: FinalExamConfigs.relationsViolence.id,
-          attemptId: attemptId,
-          questionId: 'question_01',
-          answer: 'safe_option',
-          isCorrect: true,
+        await _recordTwoExamAnswers(
+          controller,
+          attemptId,
+          FinalExamConfigs.relationsViolence.id,
         );
         await controller.completeExamAttempt(
           categoryId: _categoryId,
@@ -389,9 +698,13 @@ void main() {
         expect(examProgress.status, ActivityProgressStatus.completed);
         expect(examProgress.attemptCount, 1);
         expect(examProgress.bestPercentage, 50);
+        expect(attempt?.attemptNumber, 1);
+        expect(attempt?.earnedPoints, 0);
         expect(persistence.startExamAttemptCalls, isEmpty);
         expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeExamCalls.single.examId, attempt?.examId);
+        expect(persistence.completeExamCalls.single.attemptNumber, 1);
+        expect(persistence.completeExamCalls.single.earnedPoints, 0);
       },
     );
 
@@ -411,6 +724,11 @@ void main() {
           questionIds: const <String>['question_01', 'question_02'],
           totalActivities: 6,
         );
+        await _recordTwoExamAnswers(
+          controller,
+          firstAttemptId,
+          FinalExamConfigs.relationsViolence.id,
+        );
         await controller.completeExamAttempt(
           categoryId: _categoryId,
           lessonId: _lessonId,
@@ -426,6 +744,11 @@ void main() {
           examId: FinalExamConfigs.relationsViolence.id,
           questionIds: const <String>['question_03', 'question_04'],
           totalActivities: 6,
+        );
+        await _recordTwoExamAnswers(
+          controller,
+          secondAttemptId,
+          FinalExamConfigs.relationsViolence.id,
         );
         await controller.completeExamAttempt(
           categoryId: _categoryId,
@@ -447,10 +770,48 @@ void main() {
         expect(examProgress.bestPercentage, 100);
         expect(controller.attemptFor(firstAttemptId)?.percentage, 50);
         expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
+        expect(controller.attemptFor(firstAttemptId)?.attemptNumber, 1);
+        expect(controller.attemptFor(secondAttemptId)?.attemptNumber, 2);
         expect(persistence.startExamAttemptCalls, isEmpty);
         expect(persistence.completeExamCalls, hasLength(2));
       },
     );
+
+    test('discarded exam attempts do not create academic attempts', () async {
+      final persistence = _FakeProgressPersistence();
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+      final examId = FinalExamConfigs.relationsViolence.id;
+
+      final abandonedAttemptId = controller.startExamAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        examId: examId,
+        questionIds: const <String>['question_01', 'question_02'],
+        totalActivities: 6,
+      );
+      await controller.recordAnswer(
+        categoryId: _categoryId,
+        examId: examId,
+        attemptId: abandonedAttemptId,
+        questionId: 'question_01',
+        answer: 'safe_option',
+        isCorrect: true,
+      );
+      controller.discardAttempt(abandonedAttemptId);
+
+      final examProgress = controller.examProgressFor(
+        categoryId: _categoryId,
+        examId: examId,
+      );
+      expect(examProgress.attemptCount, 0);
+      expect(examProgress.lastAttemptAt, isNull);
+      expect(controller.attemptFor(abandonedAttemptId), isNull);
+      expect(persistence.completeExamCalls, isEmpty);
+    });
 
     test(
       'empty persisted progress leaves controller empty but loaded',
@@ -562,6 +923,51 @@ void main() {
   });
 }
 
+Future<void> _recordTwoActivityAnswers(
+  CategoryProgressController controller,
+  String attemptId,
+) async {
+  await controller.recordAnswer(
+    categoryId: _categoryId,
+    activityId: _activityId,
+    attemptId: attemptId,
+    questionId: 'question_01',
+    answer: 'safe_option',
+    isCorrect: true,
+  );
+  await controller.recordAnswer(
+    categoryId: _categoryId,
+    activityId: _activityId,
+    attemptId: attemptId,
+    questionId: 'question_02',
+    answer: 'unsafe_option',
+    isCorrect: false,
+  );
+}
+
+Future<void> _recordTwoExamAnswers(
+  CategoryProgressController controller,
+  String attemptId,
+  String examId,
+) async {
+  await controller.recordAnswer(
+    categoryId: _categoryId,
+    examId: examId,
+    attemptId: attemptId,
+    questionId: 'question_01',
+    answer: 'safe_option',
+    isCorrect: true,
+  );
+  await controller.recordAnswer(
+    categoryId: _categoryId,
+    examId: examId,
+    attemptId: attemptId,
+    questionId: 'question_02',
+    answer: 'unsafe_option',
+    isCorrect: false,
+  );
+}
+
 const _categoryId = 'relations_violence_digital';
 const _lessonId = 'relations_violence';
 const _activityId = 'relations_violence_activity_01';
@@ -626,32 +1032,40 @@ class _CompleteCall {
   const _CompleteCall({
     required this.activityId,
     required this.attemptId,
+    required this.attemptNumber,
     required this.correctAnswers,
     required this.totalQuestions,
     required this.percentage,
+    required this.earnedPoints,
   });
 
   final String activityId;
   final String attemptId;
+  final int attemptNumber;
   final int correctAnswers;
   final int totalQuestions;
   final int percentage;
+  final int earnedPoints;
 }
 
 class _CompleteExamCall {
   const _CompleteExamCall({
     required this.examId,
     required this.attemptId,
+    required this.attemptNumber,
     required this.correctAnswers,
     required this.totalQuestions,
     required this.percentage,
+    required this.earnedPoints,
   });
 
   final String examId;
   final String attemptId;
+  final int attemptNumber;
   final int correctAnswers;
   final int totalQuestions;
   final int percentage;
+  final int earnedPoints;
 }
 
 class _FakeProgressPersistence implements CategoryProgressPersistence {
@@ -666,6 +1080,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   final pendingFetchUids = <String>{};
   final _pendingFetches =
       <String, List<Completer<List<CategoryProgressRecord>>>>{};
+  bool failCompleteActivityAttempt = false;
 
   int get writeCallCount =>
       theoryPageCalls.length +
@@ -784,22 +1199,33 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) async {
+    if (failCompleteActivityAttempt) {
+      throw const CategoryProgressException(
+        CategoryProgressFailureReason.unavailable,
+        operation: CategoryProgressFailureOperation.completeActivityAttempt,
+      );
+    }
+
     completeCalls.add(
       _CompleteCall(
         activityId: activityId,
         attemptId: attemptId,
+        attemptNumber: attemptNumber,
         correctAnswers: correctAnswers,
         totalQuestions: totalQuestions,
         percentage: percentage,
+        earnedPoints: earnedPoints,
       ),
     );
   }
@@ -811,12 +1237,14 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) async {
@@ -824,9 +1252,11 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       _CompleteExamCall(
         examId: examId,
         attemptId: attemptId,
+        attemptNumber: attemptNumber,
         correctAnswers: correctAnswers,
         totalQuestions: totalQuestions,
         percentage: percentage,
+        earnedPoints: earnedPoints,
       ),
     );
   }

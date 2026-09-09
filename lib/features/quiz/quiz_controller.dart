@@ -7,6 +7,18 @@ import '../../data/models/quiz_result.dart';
 
 typedef QuizShuffle = void Function<T>(List<T> items);
 
+class QuizAnswerSubmission {
+  const QuizAnswerSubmission({
+    required this.questionId,
+    required this.answer,
+    required this.isCorrect,
+  });
+
+  final String questionId;
+  final String answer;
+  final bool isCorrect;
+}
+
 class QuizController extends ChangeNotifier {
   QuizController({
     required List<QuizQuestion> questions,
@@ -38,6 +50,8 @@ class QuizController extends ChangeNotifier {
   int _correctAnswers = 0;
   bool _isFinished = false;
   QuizResult? _result;
+  final Map<String, QuizAnswerSubmission> _submittedAnswers =
+      <String, QuizAnswerSubmission>{};
 
   int get totalQuestions => _questions.length;
 
@@ -80,6 +94,10 @@ class QuizController extends ChangeNotifier {
   int get correctAnswers => _correctAnswers;
 
   bool get isFinished => _isFinished;
+
+  List<QuizAnswerSubmission> get submittedAnswers {
+    return List<QuizAnswerSubmission>.unmodifiable(_submittedAnswers.values);
+  }
 
   bool get isLastQuestion => _currentIndex == totalQuestions - 1;
 
@@ -163,6 +181,11 @@ class QuizController extends ChangeNotifier {
 
     _isAnswerConfirmed = true;
     _isCurrentAnswerCorrect = isCorrect;
+    _submittedAnswers[_currentQuestion.id] = QuizAnswerSubmission(
+      questionId: _currentQuestion.id,
+      answer: _answerForSubmission(_currentQuestion, answer),
+      isCorrect: isCorrect,
+    );
     if (isCorrect) {
       _correctAnswers += 1;
     }
@@ -199,6 +222,7 @@ class QuizController extends ChangeNotifier {
     _correctAnswers = 0;
     _isFinished = false;
     _result = null;
+    _submittedAnswers.clear();
 
     notifyListeners();
   }
@@ -236,6 +260,12 @@ class QuizController extends ChangeNotifier {
 
   String _normalizeFillBlankAnswer(String value) {
     return value.trim().toLowerCase();
+  }
+
+  String _answerForSubmission(QuizQuestion question, String answer) {
+    return question.type == QuestionType.fillBlank
+        ? _normalizeFillBlankAnswer(answer)
+        : answer;
   }
 
   String _removeSpanishDiacritics(String value) {

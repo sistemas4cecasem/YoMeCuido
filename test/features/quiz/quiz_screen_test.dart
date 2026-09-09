@@ -141,6 +141,7 @@ void main() {
   testWidgets('botón Responder no se muestra sin selección', (tester) async {
     await pumpQuiz(tester);
 
+    expect(progressController.attemptFor('attempt_1'), isNull);
     expect(find.text(AppStrings.submitAnswer), findsNothing);
     expect(find.text('Pregunta 1 de 10'), findsNothing);
   });
@@ -221,11 +222,14 @@ void main() {
     final selector = ExamQuestionSelector(random: math.Random(8));
 
     await pumpExam(tester, selector: selector);
-    final firstAttempt = progressController.attemptFor('attempt_1');
+    expect(progressController.attemptFor('attempt_1'), isNull);
 
     await completeVisibleQuiz(tester, totalQuestions: 15);
+    final firstAttempt = progressController.attemptFor('attempt_1');
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
+    expect(progressController.attemptFor('attempt_2'), isNull);
+    await completeVisibleQuiz(tester, totalQuestions: 15);
 
     final secondAttempt = progressController.attemptFor('attempt_2');
 

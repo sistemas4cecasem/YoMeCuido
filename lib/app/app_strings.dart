@@ -74,6 +74,8 @@ abstract final class AppStrings {
       'Completa la categoría anterior para desbloquear esta.';
   static const contentLoadError =
       'No pudimos cargar el contenido de la demo. Intenta nuevamente.';
+  static const progressSaveError =
+      'No pudimos guardar el resultado. Intenta nuevamente.';
   static const retry = 'Reintentar';
   static const categoryDetailTitle = 'Relaciones y violencia digital';
   static const learningRouteTitle = 'Ruta de aprendizaje';

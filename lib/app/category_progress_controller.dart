@@ -222,6 +222,7 @@ class CategoryProgressController extends ChangeNotifier {
     _attemptsById[attemptId] = _MutableQuizAttempt(
       id: attemptId,
       type: QuizAttemptType.activity,
+      attemptNumber: 1,
       categoryId: categoryId,
       activityId: activityId,
       examId: null,
@@ -245,6 +246,7 @@ class CategoryProgressController extends ChangeNotifier {
     _attemptsById[attemptId] = _MutableQuizAttempt(
       id: attemptId,
       type: QuizAttemptType.exam,
+      attemptNumber: 1,
       categoryId: categoryId,
       activityId: null,
       examId: examId,
@@ -290,7 +292,7 @@ class CategoryProgressController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> completeActivityAttempt({
+  Future<bool> completeActivityAttempt({
     required String categoryId,
     required String lessonId,
     required String activityId,
@@ -302,16 +304,44 @@ class CategoryProgressController extends ChangeNotifier {
     if (attempt == null) {
       throw StateError('Unknown attempt id "$attemptId".');
     }
+    if (attempt.completedAt != null) {
+      return false;
+    }
+    if (attempt.type != QuizAttemptType.activity ||
+        attempt.categoryId != categoryId ||
+        attempt.activityId != activityId) {
+      throw StateError('Attempt does not belong to the requested activity.');
+    }
+    if (attempt.answers.length != result.totalQuestions ||
+        attempt.questionIds.length != result.totalQuestions) {
+      throw StateError('Cannot complete an attempt with pending answers.');
+    }
 
     final now = DateTime.now();
+    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
+    final activity = progress.activityProgressFor(activityId);
+    attempt.attemptNumber = activity.attemptCount + 1;
     attempt
       ..correctAnswers = result.correctAnswers
       ..totalQuestions = result.totalQuestions
       ..percentage = result.percentage
-      ..completedAt = now;
+      ..earnedPoints = 0;
 
-    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
-    final activity = progress.activityProgressFor(activityId);
+    final didPersist = await _persistCompletedActivityAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      activityId: activityId,
+      attempt: attempt,
+      result: result,
+      totalLessonPages: progress.theoryTotal,
+      totalActivities: totalActivities,
+    );
+    if (!didPersist) {
+      return false;
+    }
+
+    attempt.completedAt = now;
+
     final shouldReplaceBest = result.percentage >= activity.bestPercentage;
     activity
       ..status = ActivityProgressStatus.completed
@@ -337,19 +367,10 @@ class CategoryProgressController extends ChangeNotifier {
           : null
       ..updatedAt = now;
     notifyListeners();
-
-    await _persistCompletedActivityAttempt(
-      categoryId: categoryId,
-      lessonId: lessonId,
-      activityId: activityId,
-      attempt: attempt,
-      result: result,
-      totalLessonPages: progress.theoryTotal,
-      totalActivities: totalActivities,
-    );
+    return true;
   }
 
-  Future<void> _persistCompletedActivityAttempt({
+  Future<bool> _persistCompletedActivityAttempt({
     required String categoryId,
     required String lessonId,
     required String activityId,
@@ -358,26 +379,28 @@ class CategoryProgressController extends ChangeNotifier {
     required int totalLessonPages,
     required int totalActivities,
   }) {
-    return _persistForCurrentUser((uid) {
+    return _requirePersistForCurrentUser((uid) {
       return _persistence!.completeActivityAttempt(
         uid: uid,
         categoryId: categoryId,
         lessonId: lessonId,
         activityId: activityId,
         attemptId: attempt.id,
+        attemptNumber: attempt.attemptNumber,
         startedAt: attempt.startedAt,
         questionIds: attempt.questionIds,
         answers: attempt.answers.values,
         correctAnswers: result.correctAnswers,
         totalQuestions: result.totalQuestions,
         percentage: result.percentage,
+        earnedPoints: attempt.earnedPoints,
         totalLessonPages: totalLessonPages,
         totalActivities: totalActivities,
       );
     });
   }
 
-  Future<void> completeExamAttempt({
+  Future<bool> completeExamAttempt({
     required String categoryId,
     required String lessonId,
     required String examId,
@@ -389,19 +412,44 @@ class CategoryProgressController extends ChangeNotifier {
     if (attempt == null) {
       throw StateError('Unknown attempt id "$attemptId".');
     }
-    if (attempt.type != QuizAttemptType.exam || attempt.examId != examId) {
+    if (attempt.completedAt != null) {
+      return false;
+    }
+    if (attempt.type != QuizAttemptType.exam ||
+        attempt.categoryId != categoryId ||
+        attempt.examId != examId) {
       throw StateError('Attempt does not belong to the requested exam.');
+    }
+    if (attempt.answers.length != result.totalQuestions ||
+        attempt.questionIds.length != result.totalQuestions) {
+      throw StateError('Cannot complete an attempt with pending answers.');
     }
 
     final now = DateTime.now();
+    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
+    final exam = progress.examProgressFor(examId);
+    attempt.attemptNumber = exam.attemptCount + 1;
     attempt
       ..correctAnswers = result.correctAnswers
       ..totalQuestions = result.totalQuestions
       ..percentage = result.percentage
-      ..completedAt = now;
+      ..earnedPoints = 0;
 
-    final progress = _entryFor(categoryId)..activityTotal = totalActivities;
-    final exam = progress.examProgressFor(examId);
+    final didPersist = await _persistCompletedExamAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      examId: examId,
+      attempt: attempt,
+      result: result,
+      totalLessonPages: progress.theoryTotal,
+      totalActivities: totalActivities,
+    );
+    if (!didPersist) {
+      return false;
+    }
+
+    attempt.completedAt = now;
+
     final shouldReplaceBest = result.percentage >= exam.bestPercentage;
     exam
       ..status = ActivityProgressStatus.completed
@@ -422,19 +470,10 @@ class CategoryProgressController extends ChangeNotifier {
       ..completedAt = now
       ..updatedAt = now;
     notifyListeners();
-
-    await _persistCompletedExamAttempt(
-      categoryId: categoryId,
-      lessonId: lessonId,
-      examId: examId,
-      attempt: attempt,
-      result: result,
-      totalLessonPages: progress.theoryTotal,
-      totalActivities: totalActivities,
-    );
+    return true;
   }
 
-  Future<void> _persistCompletedExamAttempt({
+  Future<bool> _persistCompletedExamAttempt({
     required String categoryId,
     required String lessonId,
     required String examId,
@@ -443,19 +482,21 @@ class CategoryProgressController extends ChangeNotifier {
     required int totalLessonPages,
     required int totalActivities,
   }) {
-    return _persistForCurrentUser((uid) {
+    return _requirePersistForCurrentUser((uid) {
       return _persistence!.completeExamAttempt(
         uid: uid,
         categoryId: categoryId,
         lessonId: lessonId,
         examId: examId,
         attemptId: attempt.id,
+        attemptNumber: attempt.attemptNumber,
         startedAt: attempt.startedAt,
         questionIds: attempt.questionIds,
         answers: attempt.answers.values,
         correctAnswers: result.correctAnswers,
         totalQuestions: result.totalQuestions,
         percentage: result.percentage,
+        earnedPoints: attempt.earnedPoints,
         totalLessonPages: totalLessonPages,
         totalActivities: totalActivities,
       );
@@ -506,6 +547,38 @@ class CategoryProgressController extends ChangeNotifier {
       }
       debugPrint('[CategoryProgress] Unexpected persistence error: $error');
       debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+    }
+  }
+
+  Future<bool> _requirePersistForCurrentUser(
+    Future<void> Function(String uid) operation,
+  ) async {
+    if (_persistence == null) {
+      return true;
+    }
+
+    final uid = _currentUserIdProvider?.call();
+    if (uid == null || uid.trim().isEmpty) {
+      if (kDebugMode) {
+        debugPrint(
+          '[CategoryProgress] Completion skipped: no authenticated user.',
+        );
+      }
+      return false;
+    }
+
+    try {
+      await operation(uid);
+      return true;
+    } on CategoryProgressException catch (exception) {
+      exception.logForDebug();
+      return false;
+    } catch (error, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('[CategoryProgress] Unexpected persistence error: $error');
+        debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+      }
+      return false;
     }
   }
 
@@ -934,6 +1007,7 @@ class _MutableQuizAttempt {
   _MutableQuizAttempt({
     required this.id,
     required this.type,
+    required this.attemptNumber,
     required this.categoryId,
     required this.activityId,
     required this.examId,
@@ -943,7 +1017,7 @@ class _MutableQuizAttempt {
        totalQuestions = questionIds.length;
 
   final String id;
-  final int attemptNumber = 1;
+  int attemptNumber;
   final QuizAttemptType type;
   final String categoryId;
   final String? activityId;

@@ -55,12 +55,14 @@ abstract class CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   });
@@ -71,12 +73,14 @@ abstract class CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   });
@@ -379,12 +383,14 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) {
@@ -404,6 +410,10 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         await _firestore.runTransaction<void>((transaction) async {
           final categorySnapshot = await transaction.get(categoryDocument);
           final activitySnapshot = await transaction.get(activityDocument);
+          final attemptSnapshot = await transaction.get(attemptDocument);
+          if (attemptSnapshot.exists) {
+            return;
+          }
           final completedActivityIds = _existingCompletedActivityIds(
             categorySnapshot,
           );
@@ -413,11 +423,14 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           final categoryCompleted =
               totalActivities > 0 &&
               completedActivityIds.length >= totalActivities;
+          final nextAttemptNumber =
+              _existingActivityAttemptCount(activitySnapshot) + 1;
           final bestPercentage = _existingBestPercentage(activitySnapshot);
           final shouldReplaceBest = percentage >= bestPercentage;
 
           transaction.set(attemptDocument, {
             'type': QuizAttemptType.activity.firestoreValue,
+            'attemptNumber': nextAttemptNumber,
             'categoryId': categoryId,
             'activityId': activityId,
             'examId': null,
@@ -426,6 +439,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             'correctAnswers': correctAnswers,
             'totalQuestions': totalQuestions,
             'percentage': percentage,
+            'earnedPoints': earnedPoints,
             'startedAt': Timestamp.fromDate(startedAt),
             'completedAt': FieldValue.serverTimestamp(),
           });
@@ -433,7 +447,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           transaction.set(activityDocument, {
             'activityId': activityId,
             'status': ActivityProgressStatus.completed.firestoreValue,
-            'attemptCount': _existingActivityAttemptCount(activitySnapshot) + 1,
+            'attemptCount': nextAttemptNumber,
             'bestCorrectAnswers': shouldReplaceBest
                 ? correctAnswers
                 : _existingBestCorrectAnswers(activitySnapshot),
@@ -496,15 +510,19 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
+    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) {
+    assert(attemptNumber > 0);
+    assert(earnedPoints == 0);
     return _runProgressOperation(
       CategoryProgressFailureOperation.completeExamAttempt,
       () async {
@@ -521,11 +539,17 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         await _firestore.runTransaction<void>((transaction) async {
           final categorySnapshot = await transaction.get(categoryDocument);
           final examSnapshot = await transaction.get(examDocument);
+          final attemptSnapshot = await transaction.get(attemptDocument);
+          if (attemptSnapshot.exists) {
+            return;
+          }
+          final nextAttemptNumber = _existingExamAttemptCount(examSnapshot) + 1;
           final bestPercentage = _existingExamBestPercentage(examSnapshot);
           final shouldReplaceBest = percentage >= bestPercentage;
 
           transaction.set(attemptDocument, {
             'type': QuizAttemptType.exam.firestoreValue,
+            'attemptNumber': nextAttemptNumber,
             'categoryId': categoryId,
             'activityId': null,
             'examId': examId,
@@ -534,6 +558,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             'correctAnswers': correctAnswers,
             'totalQuestions': totalQuestions,
             'percentage': percentage,
+            'earnedPoints': earnedPoints,
             'startedAt': Timestamp.fromDate(startedAt),
             'completedAt': FieldValue.serverTimestamp(),
           });
@@ -541,7 +566,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           transaction.set(examDocument, {
             'examId': examId,
             'status': ActivityProgressStatus.completed.firestoreValue,
-            'attemptCount': _existingExamAttemptCount(examSnapshot) + 1,
+            'attemptCount': nextAttemptNumber,
             'bestCorrectAnswers': shouldReplaceBest
                 ? correctAnswers
                 : _existingExamBestCorrectAnswers(examSnapshot),
