@@ -10,6 +10,7 @@ void main() {
         'usernameNormalized': 'diegonais',
         'email': 'persona@example.com',
         'role': UserProfileRole.user,
+        'totalPoints': 850,
         'createdAt': Timestamp.fromDate(DateTime(2026)),
         'updatedAt': Timestamp.fromDate(DateTime(2026, 1, 2)),
       });
@@ -18,6 +19,7 @@ void main() {
       expect(profile.usernameNormalized, 'diegonais');
       expect(profile.email, 'persona@example.com');
       expect(profile.role, UserProfileRole.user);
+      expect(profile.totalPoints, 850);
       expect(profile.hasUsername, isTrue);
     });
 
@@ -31,6 +33,7 @@ void main() {
       expect(profile.username, isNull);
       expect(profile.usernameNormalized, isNull);
       expect(profile.role, UserProfileRole.user);
+      expect(profile.totalPoints, 0);
       expect(profile.hasUsername, isFalse);
     });
 
@@ -40,6 +43,7 @@ void main() {
         usernameNormalized: 'diegonais',
         email: 'persona@example.com',
         role: UserProfileRole.user,
+        totalPoints: 850,
         createdAt: DateTime(2026),
         updatedAt: DateTime(2026, 1, 2),
       );
@@ -50,8 +54,44 @@ void main() {
       expect(data['usernameNormalized'], 'diegonais');
       expect(data['email'], 'persona@example.com');
       expect(data['role'], UserProfileRole.user);
+      expect(data['totalPoints'], 850);
       expect(data['createdAt'], isA<Timestamp>());
       expect(data['updatedAt'], isA<Timestamp>());
+    });
+
+    test('round-trips total points without losing profile fields', () {
+      final profile = UserProfile(
+        username: 'DiegoNais',
+        usernameNormalized: 'diegonais',
+        email: 'persona@example.com',
+        role: UserProfileRole.user,
+        totalPoints: 850,
+        createdAt: DateTime(2026),
+        updatedAt: DateTime(2026, 1, 2),
+      );
+
+      final rebuilt = UserProfile.fromMap(profile.toFirestore());
+
+      expect(rebuilt.username, profile.username);
+      expect(rebuilt.usernameNormalized, profile.usernameNormalized);
+      expect(rebuilt.email, profile.email);
+      expect(rebuilt.role, profile.role);
+      expect(rebuilt.totalPoints, profile.totalPoints);
+    });
+
+    test('rejects negative total points', () {
+      expect(
+        () => UserProfile.fromMap({
+          'username': 'DiegoNais',
+          'usernameNormalized': 'diegonais',
+          'email': 'persona@example.com',
+          'role': UserProfileRole.user,
+          'totalPoints': -100,
+          'createdAt': Timestamp.fromDate(DateTime(2026)),
+          'updatedAt': Timestamp.fromDate(DateTime(2026, 1, 2)),
+        }),
+        throwsFormatException,
+      );
     });
   });
 }

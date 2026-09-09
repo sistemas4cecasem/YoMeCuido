@@ -188,6 +188,7 @@ class UserProfileRepository {
             'usernameNormalized': usernameNormalized,
             'email': normalizedEmail,
             'role': UserProfileRole.user,
+            'totalPoints': profileSnapshot.data()?['totalPoints'] ?? 0,
             'updatedAt': FieldValue.serverTimestamp(),
           });
           return;
@@ -198,6 +199,7 @@ class UserProfileRepository {
           'usernameNormalized': usernameNormalized,
           'email': normalizedEmail,
           'role': UserProfileRole.user,
+          'totalPoints': 0,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         });

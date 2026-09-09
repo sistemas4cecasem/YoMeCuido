@@ -645,6 +645,8 @@ class ActivityProgressSnapshot {
     required this.activityId,
     required this.status,
     required this.attemptCount,
+    required this.activityPoints,
+    required this.questionScores,
     required this.bestCorrectAnswers,
     required this.bestTotalQuestions,
     required this.bestPercentage,
@@ -656,6 +658,8 @@ class ActivityProgressSnapshot {
   final String activityId;
   final ActivityProgressStatus status;
   final int attemptCount;
+  final int activityPoints;
+  final Map<String, QuestionScoreRecord> questionScores;
   final int bestCorrectAnswers;
   final int bestTotalQuestions;
   final int bestPercentage;
@@ -695,6 +699,7 @@ class ExamProgressSnapshot {
 class QuizAttemptSnapshot {
   const QuizAttemptSnapshot({
     required this.id,
+    required this.attemptNumber,
     required this.type,
     required this.categoryId,
     required this.activityId,
@@ -704,11 +709,13 @@ class QuizAttemptSnapshot {
     required this.correctAnswers,
     required this.totalQuestions,
     required this.percentage,
+    required this.earnedPoints,
     required this.startedAt,
     required this.completedAt,
   });
 
   final String id;
+  final int attemptNumber;
   final QuizAttemptType type;
   final String categoryId;
   final String? activityId;
@@ -718,6 +725,7 @@ class QuizAttemptSnapshot {
   final int correctAnswers;
   final int totalQuestions;
   final int percentage;
+  final int earnedPoints;
   final DateTime startedAt;
   final DateTime? completedAt;
 
@@ -840,6 +848,8 @@ class _MutableActivityProgress {
     return _MutableActivityProgress(record.activityId)
       ..status = record.status
       ..attemptCount = record.attemptCount
+      ..activityPoints = record.activityPoints
+      ..questionScores = record.questionScores
       ..bestCorrectAnswers = record.bestCorrectAnswers
       ..bestTotalQuestions = record.bestTotalQuestions
       ..bestPercentage = record.bestPercentage
@@ -851,6 +861,9 @@ class _MutableActivityProgress {
   final String activityId;
   ActivityProgressStatus status = ActivityProgressStatus.notStarted;
   int attemptCount = 0;
+  int activityPoints = 0;
+  Map<String, QuestionScoreRecord> questionScores =
+      const <String, QuestionScoreRecord>{};
   int bestCorrectAnswers = 0;
   int bestTotalQuestions = 0;
   int bestPercentage = 0;
@@ -863,6 +876,10 @@ class _MutableActivityProgress {
       activityId: activityId,
       status: status,
       attemptCount: attemptCount,
+      activityPoints: activityPoints,
+      questionScores: Map<String, QuestionScoreRecord>.unmodifiable(
+        questionScores,
+      ),
       bestCorrectAnswers: bestCorrectAnswers,
       bestTotalQuestions: bestTotalQuestions,
       bestPercentage: bestPercentage,
@@ -926,6 +943,7 @@ class _MutableQuizAttempt {
        totalQuestions = questionIds.length;
 
   final String id;
+  final int attemptNumber = 1;
   final QuizAttemptType type;
   final String categoryId;
   final String? activityId;
@@ -937,11 +955,13 @@ class _MutableQuizAttempt {
   int correctAnswers = 0;
   int totalQuestions;
   int percentage = 0;
+  int earnedPoints = 0;
   DateTime? completedAt;
 
   QuizAttemptSnapshot get snapshot {
     return QuizAttemptSnapshot(
       id: id,
+      attemptNumber: attemptNumber,
       type: type,
       categoryId: categoryId,
       activityId: activityId,
@@ -951,6 +971,7 @@ class _MutableQuizAttempt {
       correctAnswers: correctAnswers,
       totalQuestions: totalQuestions,
       percentage: percentage,
+      earnedPoints: earnedPoints,
       startedAt: startedAt,
       completedAt: completedAt,
     );

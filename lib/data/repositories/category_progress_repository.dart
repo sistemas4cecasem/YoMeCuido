@@ -823,6 +823,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           'questionId': answer.questionId,
           'answer': answer.answer,
           'isCorrect': answer.isCorrect,
+          'pointsEarned': answer.pointsEarned,
           'answeredAt': Timestamp.fromDate(answer.answeredAt),
         },
     };

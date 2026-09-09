@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'activity_scoring_policy.dart';
+
 enum CategoryProgressStatus {
   notStarted('notStarted'),
   inProgress('inProgress'),
@@ -60,14 +62,16 @@ class CategoryProgressAnswer {
     required this.questionId,
     required this.answer,
     required this.isCorrect,
+    this.pointsEarned = 0,
     required this.answeredAt,
-  });
+  }) : assert(pointsEarned >= 0, 'pointsEarned cannot be negative.');
 
   factory CategoryProgressAnswer.fromFirestore(Map<String, dynamic> data) {
     return CategoryProgressAnswer(
       questionId: _readString(data, 'questionId'),
       answer: _readString(data, 'answer'),
       isCorrect: _readBool(data, 'isCorrect'),
+      pointsEarned: _readOptionalNonNegativeInt(data, 'pointsEarned'),
       answeredAt: _readTimestamp(data, 'answeredAt'),
     );
   }
@@ -75,6 +79,7 @@ class CategoryProgressAnswer {
   final String questionId;
   final String answer;
   final bool isCorrect;
+  final int pointsEarned;
   final DateTime answeredAt;
 
   Map<String, dynamic> toFirestore() {
@@ -82,7 +87,64 @@ class CategoryProgressAnswer {
       'questionId': questionId,
       'answer': answer,
       'isCorrect': isCorrect,
+      'pointsEarned': pointsEarned,
       'answeredAt': Timestamp.fromDate(answeredAt),
+    };
+  }
+}
+
+class QuestionScoreRecord {
+  const QuestionScoreRecord({
+    required this.questionId,
+    required this.pointsAwarded,
+    required this.awardedAttempt,
+  }) : assert(pointsAwarded >= 0, 'pointsAwarded cannot be negative.'),
+       assert(
+         (pointsAwarded == 0 && awardedAttempt == null) ||
+             (pointsAwarded == ActivityScoringPolicy.firstAttemptPoints &&
+                 awardedAttempt == 1) ||
+             (pointsAwarded == ActivityScoringPolicy.secondAttemptPoints &&
+                 awardedAttempt == 2) ||
+             (pointsAwarded == ActivityScoringPolicy.thirdAttemptPoints &&
+                 awardedAttempt == 3),
+         'Question score does not match the scoring policy.',
+       );
+
+  const QuestionScoreRecord.notAwarded({required this.questionId})
+    : pointsAwarded = 0,
+      awardedAttempt = null;
+
+  factory QuestionScoreRecord.fromMap({
+    required String questionId,
+    required Map<String, dynamic> data,
+  }) {
+    final pointsAwarded = _readNonNegativeInt(data, 'pointsAwarded');
+    final awardedAttempt = _readOptionalAttemptNumber(data, 'awardedAttempt');
+    if (!ActivityScoringPolicy.isValidQuestionAward(
+      pointsAwarded: pointsAwarded,
+      awardedAttempt: awardedAttempt,
+    )) {
+      throw FormatException('Invalid question score "$questionId".');
+    }
+
+    return QuestionScoreRecord(
+      questionId: _readNullableString(data, 'questionId') ?? questionId,
+      pointsAwarded: pointsAwarded,
+      awardedAttempt: awardedAttempt,
+    );
+  }
+
+  final String questionId;
+  final int pointsAwarded;
+  final int? awardedAttempt;
+
+  bool get hasAwardedPoints => pointsAwarded > 0;
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      'questionId': questionId,
+      'pointsAwarded': pointsAwarded,
+      'awardedAttempt': awardedAttempt,
     };
   }
 }
@@ -92,13 +154,15 @@ class ActivityProgressRecord {
     required this.activityId,
     required this.status,
     required this.attemptCount,
+    this.activityPoints = 0,
+    this.questionScores = const <String, QuestionScoreRecord>{},
     required this.bestCorrectAnswers,
     required this.bestTotalQuestions,
     required this.bestPercentage,
     required this.lastAttemptAt,
     required this.completedAt,
     required this.updatedAt,
-  });
+  }) : assert(activityPoints >= 0, 'activityPoints cannot be negative.');
 
   factory ActivityProgressRecord.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -116,6 +180,8 @@ class ActivityProgressRecord {
       activityId: _readString(data, 'activityId'),
       status: ActivityProgressStatus.fromFirestore(_readString(data, 'status')),
       attemptCount: _readInt(data, 'attemptCount'),
+      activityPoints: _readOptionalNonNegativeInt(data, 'activityPoints'),
+      questionScores: _readQuestionScores(data, 'questionScores'),
       bestCorrectAnswers: _readInt(data, 'bestCorrectAnswers'),
       bestTotalQuestions: _readInt(data, 'bestTotalQuestions'),
       bestPercentage: _readInt(data, 'bestPercentage'),
@@ -128,6 +194,8 @@ class ActivityProgressRecord {
   final String activityId;
   final ActivityProgressStatus status;
   final int attemptCount;
+  final int activityPoints;
+  final Map<String, QuestionScoreRecord> questionScores;
   final int bestCorrectAnswers;
   final int bestTotalQuestions;
   final int bestPercentage;
@@ -140,6 +208,11 @@ class ActivityProgressRecord {
       'activityId': activityId,
       'status': status.firestoreValue,
       'attemptCount': attemptCount,
+      'activityPoints': activityPoints,
+      'questionScores': {
+        for (final score in questionScores.values)
+          score.questionId: score.toFirestore(),
+      },
       'bestCorrectAnswers': bestCorrectAnswers,
       'bestTotalQuestions': bestTotalQuestions,
       'bestPercentage': bestPercentage,
@@ -216,6 +289,7 @@ class ExamProgressRecord {
 class QuizAttempt {
   const QuizAttempt({
     required this.id,
+    this.attemptNumber = 1,
     required this.type,
     required this.categoryId,
     required this.activityId,
@@ -225,9 +299,11 @@ class QuizAttempt {
     required this.correctAnswers,
     required this.totalQuestions,
     required this.percentage,
+    this.earnedPoints = 0,
     required this.startedAt,
     required this.completedAt,
-  });
+  }) : assert(attemptNumber >= 1, 'attemptNumber must start at 1.'),
+       assert(earnedPoints >= 0, 'earnedPoints cannot be negative.');
 
   factory QuizAttempt.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -260,6 +336,7 @@ class QuizAttempt {
 
     return QuizAttempt(
       id: id,
+      attemptNumber: _readOptionalAttemptNumber(data, 'attemptNumber') ?? 1,
       type: QuizAttemptType.fromFirestore(_readString(data, 'type')),
       categoryId: _readString(data, 'categoryId'),
       activityId: _readNullableString(data, 'activityId'),
@@ -269,12 +346,14 @@ class QuizAttempt {
       correctAnswers: _readInt(data, 'correctAnswers'),
       totalQuestions: _readInt(data, 'totalQuestions'),
       percentage: _readInt(data, 'percentage'),
+      earnedPoints: _readOptionalNonNegativeInt(data, 'earnedPoints'),
       startedAt: _readTimestamp(data, 'startedAt'),
       completedAt: _readNullableTimestamp(data, 'completedAt'),
     );
   }
 
   final String id;
+  final int attemptNumber;
   final QuizAttemptType type;
   final String categoryId;
   final String? activityId;
@@ -284,11 +363,13 @@ class QuizAttempt {
   final int correctAnswers;
   final int totalQuestions;
   final int percentage;
+  final int earnedPoints;
   final DateTime startedAt;
   final DateTime? completedAt;
 
   Map<String, dynamic> toFirestore() {
     return {
+      'attemptNumber': attemptNumber,
       'type': type.firestoreValue,
       'categoryId': categoryId,
       'activityId': activityId,
@@ -300,6 +381,7 @@ class QuizAttempt {
       'correctAnswers': correctAnswers,
       'totalQuestions': totalQuestions,
       'percentage': percentage,
+      'earnedPoints': type == QuizAttemptType.exam ? 0 : earnedPoints,
       'startedAt': Timestamp.fromDate(startedAt),
       'completedAt': _nullableTimestamp(completedAt),
     };
@@ -436,6 +518,36 @@ int _readInt(Map<String, dynamic> data, String key) {
   throw FormatException('Invalid category progress "$key".');
 }
 
+int _readNonNegativeInt(Map<String, dynamic> data, String key) {
+  final value = _readInt(data, key);
+  if (value >= 0) {
+    return value;
+  }
+  throw FormatException('Invalid category progress "$key".');
+}
+
+int _readOptionalNonNegativeInt(Map<String, dynamic> data, String key) {
+  final value = data[key];
+  if (value == null) {
+    return 0;
+  }
+  if (value is int && value >= 0) {
+    return value;
+  }
+  throw FormatException('Invalid category progress "$key".');
+}
+
+int? _readOptionalAttemptNumber(Map<String, dynamic> data, String key) {
+  final value = data[key];
+  if (value == null) {
+    return null;
+  }
+  if (value is int && value >= 1) {
+    return value;
+  }
+  throw FormatException('Invalid category progress "$key".');
+}
+
 DateTime _readTimestamp(Map<String, dynamic> data, String key) {
   final value = data[key];
   if (value is Timestamp) {
@@ -477,4 +589,34 @@ Map<String, dynamic> _readMap(Map<String, dynamic> data, String key) {
     return Map<String, dynamic>.from(value);
   }
   throw FormatException('Invalid category progress "$key".');
+}
+
+Map<String, QuestionScoreRecord> _readQuestionScores(
+  Map<String, dynamic> data,
+  String key,
+) {
+  final value = data[key];
+  if (value == null) {
+    return const <String, QuestionScoreRecord>{};
+  }
+  if (value is! Map) {
+    throw FormatException('Invalid category progress "$key".');
+  }
+
+  return Map<String, QuestionScoreRecord>.unmodifiable(
+    value.map((questionId, scoreData) {
+      if (questionId is! String || questionId.trim().isEmpty) {
+        throw FormatException('Invalid category progress "$key" item.');
+      }
+      if (scoreData is! Map) {
+        throw FormatException('Invalid category progress "$key" item.');
+      }
+
+      final score = QuestionScoreRecord.fromMap(
+        questionId: questionId,
+        data: Map<String, dynamic>.from(scoreData),
+      );
+      return MapEntry(score.questionId, score);
+    }),
+  );
 }

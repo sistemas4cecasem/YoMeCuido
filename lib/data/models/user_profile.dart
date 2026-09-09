@@ -6,9 +6,10 @@ class UserProfile {
     required this.usernameNormalized,
     required this.email,
     required this.role,
+    this.totalPoints = 0,
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : assert(totalPoints >= 0, 'totalPoints cannot be negative.');
 
   factory UserProfile.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -27,6 +28,7 @@ class UserProfile {
       usernameNormalized: _readNullableString(data, 'usernameNormalized'),
       email: _readString(data, 'email'),
       role: _readNullableString(data, 'role') ?? UserProfileRole.user,
+      totalPoints: _readOptionalNonNegativeInt(data, 'totalPoints'),
       createdAt: _readTimestamp(data, 'createdAt'),
       updatedAt: _readTimestamp(data, 'updatedAt'),
     );
@@ -36,6 +38,7 @@ class UserProfile {
   final String? usernameNormalized;
   final String email;
   final String role;
+  final int totalPoints;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -52,6 +55,7 @@ class UserProfile {
       'usernameNormalized': usernameNormalized,
       'email': email,
       'role': role,
+      'totalPoints': totalPoints,
       'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
       'updatedAt': updatedAt == null ? null : Timestamp.fromDate(updatedAt!),
     };
@@ -85,6 +89,21 @@ class UserProfile {
     }
     if (value is Timestamp) {
       return value.toDate();
+    }
+
+    throw FormatException('Invalid user profile "$key".');
+  }
+
+  static int _readOptionalNonNegativeInt(
+    Map<String, dynamic> data,
+    String key,
+  ) {
+    final value = data[key];
+    if (value == null) {
+      return 0;
+    }
+    if (value is int && value >= 0) {
+      return value;
     }
 
     throw FormatException('Invalid user profile "$key".');
