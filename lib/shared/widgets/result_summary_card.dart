@@ -10,9 +10,16 @@ import '../../data/models/quiz_result.dart';
 import 'character_image.dart';
 
 class ResultSummaryCard extends StatelessWidget {
-  const ResultSummaryCard({required this.result, super.key});
+  const ResultSummaryCard({
+    required this.result,
+    this.earnedPoints,
+    this.totalPoints,
+    super.key,
+  });
 
   final QuizResult result;
+  final int? earnedPoints;
+  final int? totalPoints;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +35,13 @@ class ResultSummaryCard extends StatelessWidget {
             _ResultHero(result: result),
             const SizedBox(height: AppSpacing.lg),
             _MetricsPanel(result: result),
+            if (earnedPoints != null || totalPoints != null) ...[
+              const SizedBox(height: AppSpacing.lg),
+              _PointsPanel(
+                earnedPoints: earnedPoints,
+                totalPoints: totalPoints,
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             _ClosingMessageCard(
               message: result.closingMessage,
@@ -36,6 +50,71 @@ class ResultSummaryCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
             const _RemindersPanel(),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PointsPanel extends StatelessWidget {
+  const _PointsPanel({required this.earnedPoints, required this.totalPoints});
+
+  final int? earnedPoints;
+  final int? totalPoints;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.orangeSoft.withValues(alpha: 0.38),
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        border: Border.all(color: colors.border),
+      ),
+      child: Padding(
+        padding: AppInsets.card,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final tiles = <Widget>[
+              if (earnedPoints != null)
+                _MetricTile(
+                  icon: Icons.add_circle_outline,
+                  iconColor: colors.orangeDark,
+                  value: _formatEarnedPoints(earnedPoints!),
+                  label: AppStrings.earnedPoints.toLowerCase(),
+                  highlight: earnedPoints! > 0,
+                ),
+              if (totalPoints != null)
+                _MetricTile(
+                  icon: Icons.stacked_line_chart_outlined,
+                  iconColor: colors.purpleSecondary,
+                  value: _formatPoints(totalPoints!),
+                  label: AppStrings.totalPoints.toLowerCase(),
+                ),
+            ];
+
+            if (constraints.maxWidth < 380 || tiles.length == 1) {
+              return Column(
+                children: [
+                  for (final tile in tiles) ...[
+                    tile,
+                    if (tile != tiles.last)
+                      const SizedBox(height: AppSpacing.sm),
+                  ],
+                ],
+              );
+            }
+
+            return Row(
+              children: [
+                for (final tile in tiles) ...[
+                  Expanded(child: tile),
+                  if (tile != tiles.last) const SizedBox(width: AppSpacing.sm),
+                ],
+              ],
+            );
+          },
         ),
       ),
     );
@@ -535,4 +614,24 @@ class _Reminder extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatEarnedPoints(int value) {
+  if (value == 0) {
+    return '0';
+  }
+  return '+${_formatPoints(value)}';
+}
+
+String _formatPoints(int value) {
+  final text = value.toString();
+  final buffer = StringBuffer();
+  for (var index = 0; index < text.length; index += 1) {
+    final remaining = text.length - index;
+    buffer.write(text[index]);
+    if (remaining > 1 && remaining % 3 == 1) {
+      buffer.write('.');
+    }
+  }
+  return buffer.toString();
 }

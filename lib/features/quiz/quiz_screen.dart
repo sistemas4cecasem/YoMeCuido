@@ -200,6 +200,7 @@ class _QuizFlowState extends State<_QuizFlow> {
   bool _allowPop = false;
   bool _showResult = false;
   bool _isCompletingAttempt = false;
+  String? _completedAttemptId;
 
   @override
   void initState() {
@@ -302,6 +303,7 @@ class _QuizFlowState extends State<_QuizFlow> {
     setState(() {
       _isCompletingAttempt = false;
       _showResult = true;
+      _completedAttemptId = attemptId;
     });
     widget.onResultVisibilityChanged(true);
   }
@@ -352,6 +354,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       _allowPop = false;
       _showResult = false;
       _isCompletingAttempt = false;
+      _completedAttemptId = null;
     });
     widget.onResultVisibilityChanged(false);
   }
@@ -412,8 +415,13 @@ class _QuizFlowState extends State<_QuizFlow> {
         animation: _controller,
         builder: (context, child) {
           if (_showResult) {
+            final completedAttempt = _completedAttemptId == null
+                ? null
+                : widget.progressController.attemptFor(_completedAttemptId!);
             return _ResultView(
               result: _controller.generateResult(),
+              earnedPoints: completedAttempt?.earnedPoints,
+              totalPoints: widget.progressController.currentTotalPoints,
               onBackToActivities: _backToActivities,
               onRepeatLesson: _repeatLesson,
             );
@@ -947,11 +955,15 @@ class _FillBlankInput extends StatelessWidget {
 class _ResultView extends StatelessWidget {
   const _ResultView({
     required this.result,
+    required this.earnedPoints,
+    required this.totalPoints,
     required this.onBackToActivities,
     required this.onRepeatLesson,
   });
 
   final QuizResult result;
+  final int? earnedPoints;
+  final int? totalPoints;
   final VoidCallback onBackToActivities;
   final VoidCallback onRepeatLesson;
 
@@ -962,7 +974,11 @@ class _ResultView extends StatelessWidget {
       children: [
         Expanded(
           child: SingleChildScrollView(
-            child: ResultSummaryCard(result: result),
+            child: ResultSummaryCard(
+              result: result,
+              earnedPoints: earnedPoints,
+              totalPoints: totalPoints,
+            ),
           ),
         ),
         const SizedBox(height: AppSpacing.md),

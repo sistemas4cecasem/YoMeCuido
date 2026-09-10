@@ -134,7 +134,17 @@ class _AuthGateState extends State<AuthGate> {
   Future<UserProfile?> _ensureProfileLoad(AuthUser user) {
     if (_profileLoadUid != user.uid || _profileLoadFuture == null) {
       _profileLoadUid = user.uid;
-      _profileLoadFuture = widget.userProfileRepository.fetchProfile(user.uid);
+      _profileLoadFuture = widget.userProfileRepository
+          .fetchProfile(user.uid)
+          .then((profile) {
+            if (profile != null && profile.hasUsername) {
+              widget.progressController.hydrateTotalPointsFromProfile(
+                uid: user.uid,
+                totalPoints: profile.totalPoints,
+              );
+            }
+            return profile;
+          });
     }
 
     return _profileLoadFuture!;
@@ -160,6 +170,9 @@ class _AuthGateState extends State<AuthGate> {
     _progressLoadFuture = null;
     _profileLoadUid = null;
     _profileLoadFuture = null;
+    if (nextUserUid == null) {
+      widget.progressController.clearForSignedOutUser();
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final navigator = Navigator.maybeOf(context);
@@ -249,14 +262,32 @@ class _ProgressHydratedHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (progressController.hasResolvedProgressFor(user.uid)) {
-      return HighLevelCategoriesScreen(
-        authRepository: authRepository,
-        userProfile: profile,
-        userProfileRepository: userProfileRepository,
-        onProfileChanged: onProfileChanged,
-        showBackButton: false,
+    Widget home() {
+      return AnimatedBuilder(
+        animation: progressController,
+        builder: (context, child) {
+          return HighLevelCategoriesScreen(
+            authRepository: authRepository,
+            userProfile: profile,
+            personalTotalPoints:
+                progressController.totalPointsForUser(user.uid) ??
+                profile.totalPoints,
+            userProfileRepository: userProfileRepository,
+            onProfileChanged: (changedProfile) {
+              progressController.hydrateTotalPointsFromProfile(
+                uid: user.uid,
+                totalPoints: changedProfile.totalPoints,
+              );
+              onProfileChanged(changedProfile);
+            },
+            showBackButton: false,
+          );
+        },
       );
+    }
+
+    if (progressController.hasResolvedProgressFor(user.uid)) {
+      return home();
     }
 
     if (progressController.hydratedUserId == user.uid &&
@@ -277,13 +308,7 @@ class _ProgressHydratedHome extends StatelessWidget {
           return _ProgressLoadErrorView(onRetry: onProgressRetry);
         }
 
-        return HighLevelCategoriesScreen(
-          authRepository: authRepository,
-          userProfile: profile,
-          userProfileRepository: userProfileRepository,
-          onProfileChanged: onProfileChanged,
-          showBackButton: false,
-        );
+        return home();
       },
     );
   }

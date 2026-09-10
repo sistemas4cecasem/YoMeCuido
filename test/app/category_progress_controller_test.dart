@@ -862,6 +862,130 @@ void main() {
       },
     );
 
+    test('hydrates personal total points from the user profile', () {
+      final controller = CategoryProgressController();
+
+      expect(controller.currentTotalPoints, isNull);
+      expect(controller.hasResolvedTotalPointsFor('uid-123'), isFalse);
+
+      controller.hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 0);
+
+      expect(controller.currentTotalPoints, 0);
+      expect(controller.totalPointsForUser('uid-123'), 0);
+      expect(controller.hasResolvedTotalPointsFor('uid-123'), isTrue);
+    });
+
+    test(
+      'updates total points only after activity persistence succeeds',
+      () async {
+        final persistence = _FakeProgressPersistence()
+          ..nextActivityEarnedPoints = 50
+          ..nextTotalPoints = 50;
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        )..hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 0);
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+
+        await _recordTwoActivityAnswers(controller, attemptId);
+        final completed = await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        expect(completed, isTrue);
+        expect(controller.currentTotalPoints, 50);
+        expect(controller.attemptFor(attemptId)?.earnedPoints, 50);
+      },
+    );
+
+    test(
+      'does not consolidate total points when activity persistence fails',
+      () async {
+        final persistence = _FakeProgressPersistence()
+          ..failCompleteActivityAttempt = true
+          ..nextActivityEarnedPoints = 50
+          ..nextTotalPoints = 50;
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        )..hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 0);
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+
+        await _recordTwoActivityAnswers(controller, attemptId);
+        final completed = await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        expect(completed, isFalse);
+        expect(controller.currentTotalPoints, 0);
+        expect(controller.attemptFor(attemptId)?.completedAt, isNull);
+      },
+    );
+
+    test('logout clears local total points without remote writes', () {
+      final persistence = _FakeProgressPersistence();
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => null,
+      )..hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 241);
+
+      controller.clearForSignedOutUser();
+
+      expect(controller.currentTotalPoints, isNull);
+      expect(controller.totalPointsForUser('uid-123'), isNull);
+      expect(persistence.writeCallCount, 0);
+    });
+
+    test('switching users replaces personal total points', () {
+      final controller = CategoryProgressController()
+        ..hydrateTotalPointsFromProfile(uid: 'uid-a', totalPoints: 241)
+        ..hydrateTotalPointsFromProfile(uid: 'uid-b', totalPoints: 80);
+
+      expect(controller.totalPointsForUser('uid-a'), isNull);
+      expect(controller.totalPointsForUser('uid-b'), 80);
+      expect(controller.currentTotalPoints, 80);
+    });
+
+    test(
+      'new controller rehydrates the same user total points from profile',
+      () {
+        final firstController = CategoryProgressController()
+          ..hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 520);
+        final secondController = CategoryProgressController()
+          ..hydrateTotalPointsFromProfile(
+            uid: 'uid-123',
+            totalPoints: firstController.totalPointsForUser('uid-123')!,
+          );
+
+        expect(secondController.currentTotalPoints, 520);
+        expect(secondController.totalPointsForUser('uid-123'), 520);
+      },
+    );
+
     test('hydration error is not treated as loaded zero progress', () async {
       final persistence = _FakeProgressPersistence()..failFetch = true;
       final controller = CategoryProgressController(
@@ -1155,6 +1279,8 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   bool failFetch = false;
   bool failTheoryPage = false;
   bool failCompleteActivityAttempt = false;
+  int nextActivityEarnedPoints = 0;
+  int? nextTotalPoints;
 
   int get writeCallCount =>
       theoryPageCalls.length +
@@ -1302,10 +1428,9 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     final correctAnswers = answers.where((answer) => answer.isCorrect).length;
     final totalQuestions = questionIds.length;
     final percentage = ((correctAnswers / totalQuestions) * 100).round();
-    final earnedPoints = answers.fold<int>(
-      0,
-      (total, answer) => total + answer.pointsEarned,
-    );
+    final earnedPoints = nextActivityEarnedPoints > 0
+        ? nextActivityEarnedPoints
+        : answers.fold<int>(0, (total, answer) => total + answer.pointsEarned);
     completeCalls.add(
       _CompleteCall(
         activityId: activityId,
@@ -1326,6 +1451,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       earnedPoints: earnedPoints,
       activityPoints: earnedPoints,
       questionScores: const <String, QuestionScoreRecord>{},
+      totalPoints: nextTotalPoints ?? earnedPoints,
     );
   }
 
@@ -1366,6 +1492,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       earnedPoints: 0,
       activityPoints: null,
       questionScores: const <String, QuestionScoreRecord>{},
+      totalPoints: nextTotalPoints,
     );
   }
 }

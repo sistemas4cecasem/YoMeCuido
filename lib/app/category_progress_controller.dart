@@ -31,12 +31,46 @@ class CategoryProgressController extends ChangeNotifier {
   Object? _hydrationError;
   int _hydrationGeneration = 0;
   Future<void>? _activeHydration;
+  String? _totalPointsUserId;
+  int? _currentTotalPoints;
 
   ProgressHydrationStatus get hydrationStatus => _hydrationStatus;
 
   String? get hydratedUserId => _hydratedUserId;
 
   Object? get hydrationError => _hydrationError;
+
+  int? get currentTotalPoints => _currentTotalPoints;
+
+  String? get totalPointsUserId => _totalPointsUserId;
+
+  int? totalPointsForUser(String uid) {
+    return _totalPointsUserId == uid.trim() ? _currentTotalPoints : null;
+  }
+
+  bool hasResolvedTotalPointsFor(String uid) {
+    return totalPointsForUser(uid) != null;
+  }
+
+  void hydrateTotalPointsFromProfile({
+    required String uid,
+    required int totalPoints,
+  }) {
+    final normalizedUid = uid.trim();
+    if (normalizedUid.isEmpty) {
+      clearForSignedOutUser();
+      return;
+    }
+    final normalizedTotalPoints = totalPoints < 0 ? 0 : totalPoints;
+    if (_totalPointsUserId == normalizedUid &&
+        _currentTotalPoints == normalizedTotalPoints) {
+      return;
+    }
+
+    _totalPointsUserId = normalizedUid;
+    _currentTotalPoints = normalizedTotalPoints;
+    notifyListeners();
+  }
 
   bool hasResolvedProgressFor(String uid) {
     return _hydratedUserId == uid &&
@@ -104,7 +138,12 @@ class CategoryProgressController extends ChangeNotifier {
     _hydratedUserId = null;
     _hydrationStatus = ProgressHydrationStatus.notStarted;
     _hydrationError = null;
-    if (_progressByCategory.isEmpty && _attemptsById.isEmpty) {
+    final hadTotalPoints = _currentTotalPoints != null;
+    _totalPointsUserId = null;
+    _currentTotalPoints = null;
+    if (_progressByCategory.isEmpty &&
+        _attemptsById.isEmpty &&
+        !hadTotalPoints) {
       return;
     }
     _progressByCategory.clear();
@@ -363,6 +402,7 @@ class CategoryProgressController extends ChangeNotifier {
       ..addEntries(
         persisted.answers.map((answer) => MapEntry(answer.questionId, answer)),
       );
+    _applyPersistedTotalPoints(persisted.totalPoints);
 
     final shouldReplaceBest = persisted.percentage >= activity.bestPercentage;
     activity
@@ -474,6 +514,7 @@ class CategoryProgressController extends ChangeNotifier {
       ..attemptNumber = persisted.attemptNumber
       ..earnedPoints = persisted.earnedPoints
       ..completedAt = now;
+    _applyPersistedTotalPoints(persisted.totalPoints);
 
     final shouldReplaceBest = result.percentage >= exam.bestPercentage;
     exam
@@ -537,6 +578,7 @@ class CategoryProgressController extends ChangeNotifier {
           earnedPoints: 0,
           activityPoints: null,
           questionScores: const <String, QuestionScoreRecord>{},
+          totalPoints: _currentTotalPoints,
         );
       },
     );
@@ -590,7 +632,27 @@ class CategoryProgressController extends ChangeNotifier {
       questionScores: Map<String, QuestionScoreRecord>.unmodifiable(
         questionScores,
       ),
+      totalPoints: _currentTotalPoints == null
+          ? null
+          : _currentTotalPoints! + earnedPoints,
     );
+  }
+
+  void _applyPersistedTotalPoints(int? totalPoints) {
+    if (totalPoints == null) {
+      return;
+    }
+
+    final uid =
+        _currentUserIdProvider?.call()?.trim() ??
+        _hydratedUserId ??
+        _totalPointsUserId;
+    if (uid == null || uid.isEmpty) {
+      return;
+    }
+
+    _totalPointsUserId = uid;
+    _currentTotalPoints = totalPoints < 0 ? 0 : totalPoints;
   }
 
   void resetCategory(String categoryId) {

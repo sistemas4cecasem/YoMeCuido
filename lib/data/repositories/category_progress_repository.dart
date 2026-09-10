@@ -92,6 +92,7 @@ class CompletedQuizAttemptPersistenceResult {
     required this.earnedPoints,
     required this.activityPoints,
     required this.questionScores,
+    required this.totalPoints,
   });
 
   final int attemptNumber;
@@ -102,6 +103,7 @@ class CompletedQuizAttemptPersistenceResult {
   final int earnedPoints;
   final int? activityPoints;
   final Map<String, QuestionScoreRecord> questionScores;
+  final int? totalPoints;
 }
 
 class CategoryProgressRepository implements CategoryProgressPersistence {
@@ -430,13 +432,14 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             final categorySnapshot = await transaction.get(categoryDocument);
             final activitySnapshot = await transaction.get(activityDocument);
             final attemptSnapshot = await transaction.get(attemptDocument);
+            final userSnapshot = await transaction.get(userDocument);
             if (attemptSnapshot.exists) {
               return _completedAttemptResultFromSnapshots(
                 attemptSnapshot: attemptSnapshot,
                 activitySnapshot: activitySnapshot,
+                userSnapshot: userSnapshot,
               );
             }
-            final userSnapshot = await transaction.get(userDocument);
             final questionSnapshots =
                 <String, DocumentSnapshot<Map<String, dynamic>>>{};
             for (final questionId in questionIds) {
@@ -543,6 +546,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
               return scoringResult.toPersistenceResult(
                 attemptNumber: nextAttemptNumber,
                 activityPoints: nextActivityPoints,
+                totalPoints: nextTotalPoints,
               );
             }
 
@@ -564,6 +568,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             return scoringResult.toPersistenceResult(
               attemptNumber: nextAttemptNumber,
               activityPoints: nextActivityPoints,
+              totalPoints: nextTotalPoints,
             );
           },
         );
@@ -604,15 +609,19 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           examId,
           attemptId,
         );
+        final userDocument = _userDocument(uid);
 
         return _firestore.runTransaction<CompletedQuizAttemptPersistenceResult>(
           (transaction) async {
             final categorySnapshot = await transaction.get(categoryDocument);
             final examSnapshot = await transaction.get(examDocument);
             final attemptSnapshot = await transaction.get(attemptDocument);
+            final userSnapshot = await transaction.get(userDocument);
+            final existingTotalPoints = _existingUserTotalPoints(userSnapshot);
             if (attemptSnapshot.exists) {
               return _completedAttemptResultFromSnapshots(
                 attemptSnapshot: attemptSnapshot,
+                userSnapshot: userSnapshot,
               );
             }
             final nextAttemptNumber =
@@ -673,6 +682,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
                 earnedPoints: 0,
                 activityPoints: null,
                 questionScores: const <String, QuestionScoreRecord>{},
+                totalPoints: existingTotalPoints,
               );
             }
 
@@ -695,6 +705,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
               earnedPoints: 0,
               activityPoints: null,
               questionScores: const <String, QuestionScoreRecord>{},
+              totalPoints: existingTotalPoints,
             );
           },
         );
@@ -1159,6 +1170,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
   CompletedQuizAttemptPersistenceResult _completedAttemptResultFromSnapshots({
     required DocumentSnapshot<Map<String, dynamic>> attemptSnapshot,
     DocumentSnapshot<Map<String, dynamic>>? activitySnapshot,
+    DocumentSnapshot<Map<String, dynamic>>? userSnapshot,
   }) {
     final attempt = QuizAttempt.fromFirestore(attemptSnapshot);
     return CompletedQuizAttemptPersistenceResult(
@@ -1174,6 +1186,9 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
       questionScores: activitySnapshot == null
           ? const <String, QuestionScoreRecord>{}
           : _existingQuestionScores(activitySnapshot),
+      totalPoints: userSnapshot == null
+          ? null
+          : _existingUserTotalPoints(userSnapshot),
     );
   }
 
@@ -1257,6 +1272,7 @@ class _ActivityScoringResult {
   CompletedQuizAttemptPersistenceResult toPersistenceResult({
     required int attemptNumber,
     required int activityPoints,
+    required int totalPoints,
   }) {
     return CompletedQuizAttemptPersistenceResult(
       attemptNumber: attemptNumber,
@@ -1267,6 +1283,7 @@ class _ActivityScoringResult {
       earnedPoints: earnedPoints,
       activityPoints: activityPoints,
       questionScores: questionScores,
+      totalPoints: totalPoints,
     );
   }
 }

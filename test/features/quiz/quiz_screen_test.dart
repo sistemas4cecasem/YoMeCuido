@@ -382,6 +382,24 @@ void main() {
     expect(find.text(AppStrings.backToCategories), findsNothing);
   });
 
+  testWidgets('muestra puntos del intento separados del total personal', (
+    tester,
+  ) async {
+    progressController.hydrateTotalPointsFromProfile(
+      uid: 'uid-123',
+      totalPoints: 830,
+    );
+    await pumpQuiz(tester);
+
+    await completeQuiz(tester);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text(AppStrings.earnedPoints.toLowerCase()), findsOneWidget);
+    expect(find.text('+100'), findsOneWidget);
+    expect(find.text(AppStrings.totalPoints.toLowerCase()), findsOneWidget);
+    expect(find.text('930'), findsOneWidget);
+  });
+
   testWidgets('el resultado final bloquea volver atrás', (tester) async {
     await pumpQuiz(tester);
     await completeQuiz(tester);

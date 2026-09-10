@@ -17,6 +17,7 @@ class HighLevelCategoriesScreen extends StatelessWidget {
   const HighLevelCategoriesScreen({
     this.authRepository,
     this.userProfile,
+    this.personalTotalPoints,
     this.userProfileRepository,
     this.onProfileChanged,
     this.showBackButton = true,
@@ -25,6 +26,7 @@ class HighLevelCategoriesScreen extends StatelessWidget {
 
   final AuthRepository? authRepository;
   final UserProfile? userProfile;
+  final int? personalTotalPoints;
   final UserProfileRepository? userProfileRepository;
   final ValueChanged<UserProfile>? onProfileChanged;
   final bool showBackButton;
@@ -75,6 +77,7 @@ class HighLevelCategoriesScreen extends StatelessWidget {
                         _UserAccountMenu(
                           authRepository: authRepository!,
                           userProfile: userProfile,
+                          personalTotalPoints: personalTotalPoints,
                           userProfileRepository: userProfileRepository,
                           onProfileChanged: onProfileChanged,
                         )
@@ -128,12 +131,14 @@ class _UserAccountMenu extends StatefulWidget {
   const _UserAccountMenu({
     required this.authRepository,
     required this.userProfile,
+    required this.personalTotalPoints,
     required this.userProfileRepository,
     required this.onProfileChanged,
   });
 
   final AuthRepository authRepository;
   final UserProfile? userProfile;
+  final int? personalTotalPoints;
   final UserProfileRepository? userProfileRepository;
   final ValueChanged<UserProfile>? onProfileChanged;
 
@@ -164,6 +169,7 @@ class _UserAccountMenuState extends State<_UserAccountMenu> {
       content: _ProfileDetails(
         user: user,
         profile: widget.userProfile,
+        personalTotalPoints: widget.personalTotalPoints,
         usernameEditor:
             user != null &&
                 widget.userProfile != null &&
@@ -282,11 +288,13 @@ class _ProfileDetails extends StatelessWidget {
   const _ProfileDetails({
     required this.user,
     required this.profile,
+    required this.personalTotalPoints,
     this.usernameEditor,
   });
 
   final AuthUser? user;
   final UserProfile? profile;
+  final int? personalTotalPoints;
   final Widget? usernameEditor;
 
   @override
@@ -308,6 +316,13 @@ class _ProfileDetails extends StatelessWidget {
             _ProfileField(label: AppStrings.profileUsername, value: username),
         const SizedBox(height: AppSpacing.md),
         _ProfileField(label: AppStrings.profileEmail, value: email),
+        const SizedBox(height: AppSpacing.md),
+        _ProfileField(
+          label: AppStrings.profileTotalPoints,
+          value: personalTotalPoints == null
+              ? AppStrings.profileTotalPointsLoading
+              : _formatPoints(personalTotalPoints!),
+        ),
         const SizedBox(height: AppSpacing.md),
         _ProfileField(label: AppStrings.profileRole, value: role),
         const SizedBox(height: AppSpacing.lg),
@@ -334,6 +349,19 @@ class _ProfileDetails extends StatelessWidget {
       ],
     );
   }
+}
+
+String _formatPoints(int value) {
+  final text = value.toString();
+  final buffer = StringBuffer();
+  for (var index = 0; index < text.length; index += 1) {
+    final remaining = text.length - index;
+    buffer.write(text[index]);
+    if (remaining > 1 && remaining % 3 == 1) {
+      buffer.write('.');
+    }
+  }
+  return buffer.toString();
 }
 
 class _ProfileField extends StatelessWidget {

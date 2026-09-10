@@ -340,6 +340,8 @@ void main() {
       expect(find.text('persona@example.com'), findsOneWidget);
       expect(find.text(AppStrings.profileRole), findsOneWidget);
       expect(find.text(AppStrings.profileUserRole), findsOneWidget);
+      expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
+      expect(find.text('0'), findsOneWidget);
       expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);
 
       await tester.tap(find.text(AppStrings.close));
@@ -483,6 +485,168 @@ void main() {
       expect(find.text(AppStrings.emailVerificationPending), findsWidgets);
     },
   );
+
+  testWidgets('hydrates personal total points from profile after login', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressController = CategoryProgressController(
+      currentUserIdProvider: () => authRepository.currentUser?.uid,
+    );
+    final userProfileRepository = _FakeUserProfileRepository(
+      profilesByUid: {
+        'uid-123': const UserProfile(
+          username: 'diegonais',
+          usernameNormalized: 'diegonais',
+          email: 'persona@example.com',
+          role: UserProfileRole.user,
+          totalPoints: 241,
+          createdAt: null,
+          updatedAt: null,
+        ),
+      },
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: userProfileRepository,
+      progressController: progressController,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(progressController.totalPointsForUser('uid-123'), 241);
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.viewProfile));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
+    expect(find.text('241'), findsOneWidget);
+  });
+
+  testWidgets('sign out clears local total points but keeps remote value', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressController = CategoryProgressController(
+      currentUserIdProvider: () => authRepository.currentUser?.uid,
+    );
+    final userProfileRepository = _FakeUserProfileRepository(
+      profilesByUid: {
+        'uid-123': const UserProfile(
+          username: 'diegonais',
+          usernameNormalized: 'diegonais',
+          email: 'persona@example.com',
+          role: UserProfileRole.user,
+          totalPoints: 241,
+          createdAt: null,
+          updatedAt: null,
+        ),
+      },
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: userProfileRepository,
+      progressController: progressController,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(progressController.currentTotalPoints, 241);
+
+    authRepository.emit(null);
+    await tester.pumpAndSettle();
+    expect(progressController.currentTotalPoints, isNull);
+    expect(userProfileRepository.profilesByUid['uid-123']?.totalPoints, 241);
+
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(progressController.currentTotalPoints, 241);
+  });
+
+  testWidgets('switching users shows the active user total points', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressController = CategoryProgressController(
+      currentUserIdProvider: () => authRepository.currentUser?.uid,
+    );
+    final userProfileRepository = _FakeUserProfileRepository(
+      profilesByUid: {
+        'uid-a': const UserProfile(
+          username: 'usuarioa',
+          usernameNormalized: 'usuarioa',
+          email: 'a@example.com',
+          role: UserProfileRole.user,
+          totalPoints: 241,
+          createdAt: null,
+          updatedAt: null,
+        ),
+        'uid-b': const UserProfile(
+          username: 'usuariob',
+          usernameNormalized: 'usuariob',
+          email: 'b@example.com',
+          role: UserProfileRole.user,
+          totalPoints: 80,
+          createdAt: null,
+          updatedAt: null,
+        ),
+      },
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: userProfileRepository,
+      progressController: progressController,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-a',
+        email: 'a@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(progressController.currentTotalPoints, 241);
+
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-b',
+        email: 'b@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(progressController.totalPointsForUser('uid-a'), isNull);
+    expect(progressController.totalPointsForUser('uid-b'), 80);
+    await _openUserMenu(tester);
+    await tester.tap(find.text(AppStrings.viewProfile));
+    await tester.pumpAndSettle();
+
+    expect(find.text('80'), findsOneWidget);
+    expect(find.text('241'), findsNothing);
+  });
 }
 
 Future<void> _openUserMenu(WidgetTester tester) async {
@@ -588,9 +752,14 @@ class _ControllableAuthRepository implements AuthRepository {
 }
 
 class _FakeUserProfileRepository extends UserProfileRepository {
-  _FakeUserProfileRepository({this.profile}) : super.testing();
+  _FakeUserProfileRepository({
+    this.profile,
+    Map<String, UserProfile>? profilesByUid,
+  }) : profilesByUid = profilesByUid ?? <String, UserProfile>{},
+       super.testing();
 
   UserProfile? profile;
+  final Map<String, UserProfile> profilesByUid;
   String? completedUsername;
   String? changedUid;
   bool failRename = false;
@@ -613,6 +782,10 @@ class _FakeUserProfileRepository extends UserProfileRepository {
 
   @override
   Future<UserProfile?> fetchProfile(String uid) async {
+    final uidProfile = profilesByUid[uid];
+    if (uidProfile != null) {
+      return uidProfile;
+    }
     return profile ??
         const UserProfile(
           username: 'diegonais',
@@ -636,9 +809,11 @@ class _FakeUserProfileRepository extends UserProfileRepository {
       usernameNormalized: username.toLowerCase(),
       email: email ?? 'persona@example.com',
       role: UserProfileRole.user,
+      totalPoints: profile?.totalPoints ?? profilesByUid[uid]?.totalPoints ?? 0,
       createdAt: null,
       updatedAt: null,
     );
+    profilesByUid[uid] = profile!;
     return profile!;
   }
 }

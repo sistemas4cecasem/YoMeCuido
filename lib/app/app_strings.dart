@@ -91,6 +91,8 @@ abstract final class AppStrings {
   static const profileUsername = 'Nombre de usuario';
   static const profileEmail = 'Correo';
   static const profileRole = 'Tipo de cuenta';
+  static const profileTotalPoints = 'Puntuación personal';
+  static const profileTotalPointsLoading = 'Cargando puntuación';
   static const profileUserRole = 'Usuario';
   static const profileVerifiedEmail = 'Correo verificado';
   static const profileUnverifiedEmail = 'Correo pendiente de verificación';
@@ -151,6 +153,8 @@ abstract final class AppStrings {
   static const keepLearning = 'Continuar aprendiendo';
   static const exit = 'Salir';
   static const lessonCompleted = 'Lección completada';
+  static const earnedPoints = 'Puntos obtenidos';
+  static const totalPoints = 'Puntuación total';
   static const repeatLesson = 'Repetir lección';
   static const backToCategories = 'Volver a categorías';
   static const remindersTitle = 'Recuerda';

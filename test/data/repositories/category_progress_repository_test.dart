@@ -282,17 +282,21 @@ void main() {
       expect(first.correctAnswers, 5);
       expect(first.earnedPoints, 50);
       expect(first.activityPoints, 50);
+      expect(first.totalPoints, 250);
       expect(second.attemptNumber, 2);
       expect(second.earnedPoints, 10);
       expect(second.activityPoints, 60);
+      expect(second.totalPoints, 260);
       expect(third.attemptNumber, 3);
       expect(third.earnedPoints, 1);
       expect(third.activityPoints, 61);
+      expect(third.totalPoints, 261);
       expect(fourth.attemptNumber, 4);
       expect(fourth.correctAnswers, 10);
       expect(fourth.percentage, 100);
       expect(fourth.earnedPoints, 0);
       expect(fourth.activityPoints, 61);
+      expect(fourth.totalPoints, 261);
       expect(activityData['attemptCount'], 4);
       expect(activityData['activityPoints'], 61);
       expect(activityData['bestPercentage'], 100);
@@ -329,6 +333,7 @@ void main() {
         final userData = await _userData(firestore);
 
         expect(result.earnedPoints, 100);
+        expect(result.totalPoints, 100);
         expect(activityData['activityPoints'], 100);
         expect(userData['totalPoints'], 100);
       },
@@ -361,6 +366,7 @@ void main() {
       expect(fourth.correctAnswers, 10);
       expect(fourth.percentage, 100);
       expect(fourth.earnedPoints, 0);
+      expect(fourth.totalPoints, 0);
       expect(activityData['attemptCount'], 4);
       expect(activityData['activityPoints'], 0);
       expect(userData['totalPoints'], 0);
@@ -405,6 +411,7 @@ void main() {
 
         expect(result.attemptNumber, 3);
         expect(result.earnedPoints, 1);
+        expect(result.totalPoints, 41);
         expect(activityData['attemptCount'], 3);
         expect(activityData['activityPoints'], 11);
         expect(userData['totalPoints'], 41);
@@ -440,6 +447,7 @@ void main() {
         expect(first.earnedPoints, 100);
         expect(second.attemptNumber, 1);
         expect(second.earnedPoints, 100);
+        expect(second.totalPoints, 100);
         expect(activityData['attemptCount'], 1);
         expect(activityData['activityPoints'], 100);
         expect(userData['totalPoints'], 100);
@@ -471,9 +479,85 @@ void main() {
       final examAttempt = await _examAttemptData(firestore, 'exam_attempt');
 
       expect(result.earnedPoints, 0);
+      expect(result.totalPoints, 300);
       expect(userData['totalPoints'], 300);
       expect(examAttempt['earnedPoints'], 0);
     });
+
+    test(
+      'keeps totalPoints equal to the sum of multiple activity points',
+      () async {
+        final firestore = FakeFirebaseFirestore();
+        final repository = CategoryProgressRepository(firestore: firestore);
+        await _seedUser(firestore);
+        await _seedQuestions(firestore, activityId: _activityId);
+        await _seedQuestions(
+          firestore,
+          activityId: _secondActivityId,
+          questionIds: _prefixedIds('b'),
+        );
+        await _seedQuestions(
+          firestore,
+          activityId: _thirdActivityId,
+          questionIds: _prefixedIds('c'),
+        );
+
+        for (final attempt in [
+          ('attempt_a_1', _ids(1, 5)),
+          ('attempt_a_2', _ids(1, 7)),
+          ('attempt_a_3', _ids(1, 8)),
+          ('attempt_a_4', _ids(1, 10)),
+        ]) {
+          await _completeActivity(
+            repository,
+            attemptId: attempt.$1,
+            correctQuestionIds: attempt.$2,
+          );
+        }
+        final secondActivity = await _completeActivity(
+          repository,
+          activityId: _secondActivityId,
+          attemptId: 'attempt_b_1',
+          questionIds: _prefixedIds('b').toList(),
+          correctQuestionIds: _prefixedIds('b', end: 8),
+        );
+        final thirdActivity = await _completeActivity(
+          repository,
+          activityId: _thirdActivityId,
+          attemptId: 'attempt_c_1',
+          questionIds: _prefixedIds('c').toList(),
+          correctQuestionIds: _prefixedIds('c'),
+        );
+
+        final firstActivityData = await _activityData(firestore);
+        final secondActivityData = await _activityData(
+          firestore,
+          activityId: _secondActivityId,
+        );
+        final thirdActivityData = await _activityData(
+          firestore,
+          activityId: _thirdActivityId,
+        );
+        final userData = await _userData(firestore);
+
+        expect(firstActivityData['activityPoints'], 61);
+        expect(secondActivity.earnedPoints, 80);
+        expect(secondActivity.totalPoints, 141);
+        expect(secondActivityData['activityPoints'], 80);
+        expect(thirdActivity.earnedPoints, 100);
+        expect(thirdActivity.totalPoints, 241);
+        expect(thirdActivityData['activityPoints'], 100);
+        expect(userData['totalPoints'], 241);
+        expect(
+          _sumActivityPoints([
+            firstActivityData,
+            secondActivityData,
+            thirdActivityData,
+          ]),
+          userData['totalPoints'],
+        );
+      },
+    );
   });
 }
 
@@ -481,30 +565,37 @@ const _uid = 'uid-123';
 const _categoryId = 'relations_violence_digital';
 const _lessonId = 'relations_violence';
 const _activityId = 'relations_violence_activity_01';
+const _secondActivityId = 'relations_violence_activity_02';
+const _thirdActivityId = 'relations_violence_activity_03';
 const _examId = 'relations_violence_final_exam';
 
 Future<CompletedQuizAttemptPersistenceResult> _completeActivity(
   CategoryProgressRepository repository, {
+  String activityId = _activityId,
+  List<String>? questionIds,
   required String attemptId,
   required Set<String> correctQuestionIds,
 }) {
-  final questionIds = _ids(1, 10).toList();
+  final resolvedQuestionIds = questionIds ?? _ids(1, 10).toList();
   return repository.completeActivityAttempt(
     uid: _uid,
     categoryId: _categoryId,
     lessonId: _lessonId,
-    activityId: _activityId,
+    activityId: activityId,
     attemptId: attemptId,
     startedAt: DateTime.utc(2026, 9, 10),
-    questionIds: questionIds,
-    answers: _answers(correctQuestionIds),
+    questionIds: resolvedQuestionIds,
+    answers: _answers(correctQuestionIds, questionIds: resolvedQuestionIds),
     totalLessonPages: 4,
     totalActivities: 6,
   );
 }
 
-List<CategoryProgressAnswer> _answers(Set<String> correctQuestionIds) {
-  return _ids(1, 10)
+List<CategoryProgressAnswer> _answers(
+  Set<String> correctQuestionIds, {
+  List<String>? questionIds,
+}) {
+  return (questionIds ?? _ids(1, 10))
       .map((questionId) {
         return CategoryProgressAnswer(
           questionId: questionId,
@@ -525,6 +616,13 @@ Set<String> _ids(int start, int end) {
   };
 }
 
+Set<String> _prefixedIds(String prefix, {int start = 1, int end = 10}) {
+  return {
+    for (var index = start; index <= end; index += 1)
+      '$prefix${index.toString().padLeft(2, '0')}',
+  };
+}
+
 Future<void> _seedUser(
   FakeFirebaseFirestore firestore, {
   String uid = _uid,
@@ -539,8 +637,12 @@ Future<void> _seedUser(
   });
 }
 
-Future<void> _seedQuestions(FakeFirebaseFirestore firestore) async {
-  for (final questionId in _ids(1, 10)) {
+Future<void> _seedQuestions(
+  FakeFirebaseFirestore firestore, {
+  String activityId = _activityId,
+  Set<String>? questionIds,
+}) async {
+  for (final questionId in questionIds ?? _ids(1, 10)) {
     await firestore
         .collection('categories')
         .doc(_categoryId)
@@ -551,7 +653,7 @@ Future<void> _seedQuestions(FakeFirebaseFirestore firestore) async {
             QuizQuestion(
               id: questionId,
               categoryId: _categoryId,
-              activityId: _activityId,
+              activityId: activityId,
               type: QuestionType.multipleChoice,
               statement: 'Pregunta $questionId',
               options: const <QuizOption>[
@@ -570,9 +672,13 @@ Future<void> _seedQuestions(FakeFirebaseFirestore firestore) async {
 }
 
 Future<Map<String, dynamic>> _activityData(
-  FakeFirebaseFirestore firestore,
-) async {
-  final snapshot = await _activityDocument(firestore).get();
+  FakeFirebaseFirestore firestore, {
+  String activityId = _activityId,
+}) async {
+  final snapshot = await _activityDocument(
+    firestore,
+    activityId: activityId,
+  ).get();
   return snapshot.data()!;
 }
 
@@ -632,7 +738,15 @@ DocumentReference<Map<String, dynamic>> _progressDocument(
 }
 
 DocumentReference<Map<String, dynamic>> _activityDocument(
-  FakeFirebaseFirestore firestore,
-) {
-  return _progressDocument(firestore).collection('activities').doc(_activityId);
+  FakeFirebaseFirestore firestore, {
+  String activityId = _activityId,
+}) {
+  return _progressDocument(firestore).collection('activities').doc(activityId);
+}
+
+int _sumActivityPoints(Iterable<Map<String, dynamic>> activities) {
+  return activities.fold<int>(
+    0,
+    (total, activity) => total + (activity['activityPoints'] as int),
+  );
 }
