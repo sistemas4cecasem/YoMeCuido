@@ -193,8 +193,6 @@ void main() {
         expect(attempt?.attemptNumber, 1);
         expect(attempt?.earnedPoints, 0);
         expect(attempt?.isCompleted, isTrue);
-        expect(persistence.startAttemptCalls, isEmpty);
-        expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeCalls.single.activityId, _activityId);
         expect(persistence.completeCalls.single.attemptNumber, 1);
         expect(persistence.completeCalls.single.earnedPoints, 0);
@@ -258,7 +256,6 @@ void main() {
       expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
       expect(controller.attemptFor(firstAttemptId)?.attemptNumber, 1);
       expect(controller.attemptFor(secondAttemptId)?.attemptNumber, 2);
-      expect(persistence.startAttemptCalls, isEmpty);
       expect(persistence.completeCalls, hasLength(2));
     });
 
@@ -295,8 +292,6 @@ void main() {
         expect(activityProgress.attemptCount, 0);
         expect(activityProgress.lastAttemptAt, isNull);
         expect(controller.attemptFor(attemptId)?.answers, hasLength(1));
-        expect(persistence.startAttemptCalls, isEmpty);
-        expect(persistence.answerCalls, isEmpty);
       },
     );
 
@@ -729,8 +724,6 @@ void main() {
         expect(examProgress.bestPercentage, 50);
         expect(attempt?.attemptNumber, 1);
         expect(attempt?.earnedPoints, 0);
-        expect(persistence.startExamAttemptCalls, isEmpty);
-        expect(persistence.answerCalls, isEmpty);
         expect(persistence.completeExamCalls.single.examId, attempt?.examId);
         expect(persistence.completeExamCalls.single.attemptNumber, 1);
         expect(persistence.completeExamCalls.single.earnedPoints, 0);
@@ -801,7 +794,6 @@ void main() {
         expect(controller.attemptFor(secondAttemptId)?.percentage, 100);
         expect(controller.attemptFor(firstAttemptId)?.attemptNumber, 1);
         expect(controller.attemptFor(secondAttemptId)?.attemptNumber, 2);
-        expect(persistence.startExamAttemptCalls, isEmpty);
         expect(persistence.completeExamCalls, hasLength(2));
       },
     );
@@ -1182,48 +1174,6 @@ class _TheoryPageCall {
   final String pageId;
 }
 
-class _StartAttemptCall {
-  const _StartAttemptCall({
-    required this.activityId,
-    required this.attemptId,
-    required this.questionIds,
-  });
-
-  final String activityId;
-  final String attemptId;
-  final List<String> questionIds;
-}
-
-class _StartExamAttemptCall {
-  const _StartExamAttemptCall({
-    required this.examId,
-    required this.attemptId,
-    required this.questionIds,
-  });
-
-  final String examId;
-  final String attemptId;
-  final List<String> questionIds;
-}
-
-class _AnswerCall {
-  const _AnswerCall({
-    required this.activityId,
-    required this.examId,
-    required this.attemptId,
-    required this.questionId,
-    required this.answer,
-    required this.isCorrect,
-  });
-
-  final String? activityId;
-  final String? examId;
-  final String attemptId;
-  final String questionId;
-  final String answer;
-  final bool isCorrect;
-}
-
 class _CompleteCall {
   const _CompleteCall({
     required this.activityId,
@@ -1266,9 +1216,6 @@ class _CompleteExamCall {
 
 class _FakeProgressPersistence implements CategoryProgressPersistence {
   final theoryPageCalls = <_TheoryPageCall>[];
-  final startAttemptCalls = <_StartAttemptCall>[];
-  final startExamAttemptCalls = <_StartExamAttemptCall>[];
-  final answerCalls = <_AnswerCall>[];
   final completeCalls = <_CompleteCall>[];
   final completeExamCalls = <_CompleteExamCall>[];
   final fetchCalls = <String>[];
@@ -1283,12 +1230,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   int? nextTotalPoints;
 
   int get writeCallCount =>
-      theoryPageCalls.length +
-      startAttemptCalls.length +
-      startExamAttemptCalls.length +
-      answerCalls.length +
-      completeCalls.length +
-      completeExamCalls.length;
+      theoryPageCalls.length + completeCalls.length + completeExamCalls.length;
 
   void completeFetch(String uid, List<CategoryProgressRecord> records) {
     final pendingFetches = _pendingFetches[uid];
@@ -1339,69 +1281,6 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       );
     }
     theoryPageCalls.add(_TheoryPageCall(uid: uid, pageId: pageId));
-  }
-
-  @override
-  Future<void> startActivityAttempt({
-    required String uid,
-    required String categoryId,
-    required String lessonId,
-    required String activityId,
-    required String attemptId,
-    required List<String> questionIds,
-    required int totalLessonPages,
-    required int totalActivities,
-  }) async {
-    startAttemptCalls.add(
-      _StartAttemptCall(
-        activityId: activityId,
-        attemptId: attemptId,
-        questionIds: questionIds,
-      ),
-    );
-  }
-
-  @override
-  Future<void> startExamAttempt({
-    required String uid,
-    required String categoryId,
-    required String lessonId,
-    required String examId,
-    required String attemptId,
-    required List<String> questionIds,
-    required int totalLessonPages,
-    required int totalActivities,
-  }) async {
-    startExamAttemptCalls.add(
-      _StartExamAttemptCall(
-        examId: examId,
-        attemptId: attemptId,
-        questionIds: questionIds,
-      ),
-    );
-  }
-
-  @override
-  Future<void> recordAttemptAnswer({
-    required String uid,
-    required String categoryId,
-    String? activityId,
-    String? examId,
-    required String attemptId,
-    required String questionId,
-    required String answer,
-    required bool isCorrect,
-  }) async {
-    answerCalls.add(
-      _AnswerCall(
-        activityId: activityId,
-        examId: examId,
-        attemptId: attemptId,
-        questionId: questionId,
-        answer: answer,
-        isCorrect: isCorrect,
-      ),
-    );
   }
 
   @override

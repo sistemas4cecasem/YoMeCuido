@@ -848,42 +848,6 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   }) async {}
 
   @override
-  Future<void> startActivityAttempt({
-    required String uid,
-    required String categoryId,
-    required String lessonId,
-    required String activityId,
-    required String attemptId,
-    required List<String> questionIds,
-    required int totalLessonPages,
-    required int totalActivities,
-  }) async {}
-
-  @override
-  Future<void> startExamAttempt({
-    required String uid,
-    required String categoryId,
-    required String lessonId,
-    required String examId,
-    required String attemptId,
-    required List<String> questionIds,
-    required int totalLessonPages,
-    required int totalActivities,
-  }) async {}
-
-  @override
-  Future<void> recordAttemptAnswer({
-    required String uid,
-    required String categoryId,
-    String? activityId,
-    String? examId,
-    required String attemptId,
-    required String questionId,
-    required String answer,
-    required bool isCorrect,
-  }) async {}
-
-  @override
   Future<CompletedQuizAttemptPersistenceResult> completeActivityAttempt({
     required String uid,
     required String categoryId,
