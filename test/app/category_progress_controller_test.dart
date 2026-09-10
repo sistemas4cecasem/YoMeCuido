@@ -207,7 +207,11 @@ void main() {
         questionIds: const <String>['question_03', 'question_04'],
         totalActivities: 6,
       );
-      await _recordTwoActivityAnswers(controller, secondAttemptId);
+      await _recordTwoActivityAnswers(
+        controller,
+        secondAttemptId,
+        secondCorrect: true,
+      );
       await controller.completeActivityAttempt(
         categoryId: _categoryId,
         lessonId: _lessonId,
@@ -925,8 +929,9 @@ void main() {
 
 Future<void> _recordTwoActivityAnswers(
   CategoryProgressController controller,
-  String attemptId,
-) async {
+  String attemptId, {
+  bool secondCorrect = false,
+}) async {
   await controller.recordAnswer(
     categoryId: _categoryId,
     activityId: _activityId,
@@ -941,7 +946,7 @@ Future<void> _recordTwoActivityAnswers(
     attemptId: attemptId,
     questionId: 'question_02',
     answer: 'unsafe_option',
-    isCorrect: false,
+    isCorrect: secondCorrect,
   );
 }
 
@@ -1193,20 +1198,15 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   }
 
   @override
-  Future<void> completeActivityAttempt({
+  Future<CompletedQuizAttemptPersistenceResult> completeActivityAttempt({
     required String uid,
     required String categoryId,
     required String lessonId,
     required String activityId,
     required String attemptId,
-    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
-    required int correctAnswers,
-    required int totalQuestions,
-    required int percentage,
-    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) async {
@@ -1217,6 +1217,14 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       );
     }
 
+    final attemptNumber = completeCalls.length + 1;
+    final correctAnswers = answers.where((answer) => answer.isCorrect).length;
+    final totalQuestions = questionIds.length;
+    final percentage = ((correctAnswers / totalQuestions) * 100).round();
+    final earnedPoints = answers.fold<int>(
+      0,
+      (total, answer) => total + answer.pointsEarned,
+    );
     completeCalls.add(
       _CompleteCall(
         activityId: activityId,
@@ -1228,26 +1236,35 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
         earnedPoints: earnedPoints,
       ),
     );
+    return CompletedQuizAttemptPersistenceResult(
+      attemptNumber: attemptNumber,
+      answers: List<CategoryProgressAnswer>.unmodifiable(answers),
+      correctAnswers: correctAnswers,
+      totalQuestions: totalQuestions,
+      percentage: percentage,
+      earnedPoints: earnedPoints,
+      activityPoints: earnedPoints,
+      questionScores: const <String, QuestionScoreRecord>{},
+    );
   }
 
   @override
-  Future<void> completeExamAttempt({
+  Future<CompletedQuizAttemptPersistenceResult> completeExamAttempt({
     required String uid,
     required String categoryId,
     required String lessonId,
     required String examId,
     required String attemptId,
-    required int attemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
     required int correctAnswers,
     required int totalQuestions,
     required int percentage,
-    required int earnedPoints,
     required int totalLessonPages,
     required int totalActivities,
   }) async {
+    final attemptNumber = completeExamCalls.length + 1;
     completeExamCalls.add(
       _CompleteExamCall(
         examId: examId,
@@ -1256,8 +1273,18 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
         correctAnswers: correctAnswers,
         totalQuestions: totalQuestions,
         percentage: percentage,
-        earnedPoints: earnedPoints,
+        earnedPoints: 0,
       ),
+    );
+    return CompletedQuizAttemptPersistenceResult(
+      attemptNumber: attemptNumber,
+      answers: List<CategoryProgressAnswer>.unmodifiable(answers),
+      correctAnswers: correctAnswers,
+      totalQuestions: totalQuestions,
+      percentage: percentage,
+      earnedPoints: 0,
+      activityPoints: null,
+      questionScores: const <String, QuestionScoreRecord>{},
     );
   }
 }

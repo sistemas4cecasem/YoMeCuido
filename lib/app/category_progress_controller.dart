@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
+import '../data/models/activity_scoring_policy.dart';
 import '../data/models/category_progress.dart';
 import '../data/models/quiz_result.dart';
 import '../data/repositories/category_progress_repository.dart';
@@ -320,40 +321,55 @@ class CategoryProgressController extends ChangeNotifier {
     final now = DateTime.now();
     final progress = _entryFor(categoryId)..activityTotal = totalActivities;
     final activity = progress.activityProgressFor(activityId);
-    attempt.attemptNumber = activity.attemptCount + 1;
+    final expectedAttemptNumber = activity.attemptCount + 1;
+    attempt.attemptNumber = expectedAttemptNumber;
     attempt
       ..correctAnswers = result.correctAnswers
       ..totalQuestions = result.totalQuestions
-      ..percentage = result.percentage
-      ..earnedPoints = 0;
+      ..percentage = result.percentage;
 
-    final didPersist = await _persistCompletedActivityAttempt(
+    final persisted = await _persistCompletedActivityAttempt(
       categoryId: categoryId,
       lessonId: lessonId,
       activityId: activityId,
       attempt: attempt,
-      result: result,
+      activity: activity,
       totalLessonPages: progress.theoryTotal,
       totalActivities: totalActivities,
     );
-    if (!didPersist) {
+    if (persisted == null) {
       return false;
     }
 
-    attempt.completedAt = now;
+    attempt
+      ..attemptNumber = persisted.attemptNumber
+      ..correctAnswers = persisted.correctAnswers
+      ..totalQuestions = persisted.totalQuestions
+      ..percentage = persisted.percentage
+      ..earnedPoints = persisted.earnedPoints
+      ..completedAt = now;
+    attempt.answers
+      ..clear()
+      ..addEntries(
+        persisted.answers.map((answer) => MapEntry(answer.questionId, answer)),
+      );
 
-    final shouldReplaceBest = result.percentage >= activity.bestPercentage;
+    final shouldReplaceBest = persisted.percentage >= activity.bestPercentage;
     activity
       ..status = ActivityProgressStatus.completed
-      ..attemptCount += 1
+      ..attemptCount = persisted.attemptNumber
+      ..activityPoints =
+          persisted.activityPoints ??
+          (activity.activityPoints + persisted.earnedPoints)
+      ..questionScores = persisted.questionScores
       ..lastAttemptAt = now
       ..completedAt ??= now
       ..updatedAt = now;
     if (shouldReplaceBest) {
       activity
-        ..bestCorrectAnswers = result.correctAnswers
-        ..bestTotalQuestions = result.totalQuestions
-        ..bestPercentage = result.percentage;
+        ..bestCorrectAnswers = persisted.correctAnswers
+        ..bestTotalQuestions = persisted.totalQuestions
+        ..bestPercentage = persisted.percentage;
     }
 
     progress.completedActivityIds.add(activityId);
@@ -370,12 +386,13 @@ class CategoryProgressController extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> _persistCompletedActivityAttempt({
+  Future<CompletedQuizAttemptPersistenceResult?>
+  _persistCompletedActivityAttempt({
     required String categoryId,
     required String lessonId,
     required String activityId,
     required _MutableQuizAttempt attempt,
-    required QuizResult result,
+    required _MutableActivityProgress activity,
     required int totalLessonPages,
     required int totalActivities,
   }) {
@@ -386,18 +403,13 @@ class CategoryProgressController extends ChangeNotifier {
         lessonId: lessonId,
         activityId: activityId,
         attemptId: attempt.id,
-        attemptNumber: attempt.attemptNumber,
         startedAt: attempt.startedAt,
         questionIds: attempt.questionIds,
         answers: attempt.answers.values,
-        correctAnswers: result.correctAnswers,
-        totalQuestions: result.totalQuestions,
-        percentage: result.percentage,
-        earnedPoints: attempt.earnedPoints,
         totalLessonPages: totalLessonPages,
         totalActivities: totalActivities,
       );
-    });
+    }, orElse: () => _localCompletedActivityResult(attempt, activity));
   }
 
   Future<bool> completeExamAttempt({
@@ -435,7 +447,7 @@ class CategoryProgressController extends ChangeNotifier {
       ..percentage = result.percentage
       ..earnedPoints = 0;
 
-    final didPersist = await _persistCompletedExamAttempt(
+    final persisted = await _persistCompletedExamAttempt(
       categoryId: categoryId,
       lessonId: lessonId,
       examId: examId,
@@ -444,16 +456,19 @@ class CategoryProgressController extends ChangeNotifier {
       totalLessonPages: progress.theoryTotal,
       totalActivities: totalActivities,
     );
-    if (!didPersist) {
+    if (persisted == null) {
       return false;
     }
 
-    attempt.completedAt = now;
+    attempt
+      ..attemptNumber = persisted.attemptNumber
+      ..earnedPoints = persisted.earnedPoints
+      ..completedAt = now;
 
     final shouldReplaceBest = result.percentage >= exam.bestPercentage;
     exam
       ..status = ActivityProgressStatus.completed
-      ..attemptCount += 1
+      ..attemptCount = persisted.attemptNumber
       ..lastAttemptAt = now
       ..completedAt ??= now
       ..updatedAt = now;
@@ -473,7 +488,7 @@ class CategoryProgressController extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> _persistCompletedExamAttempt({
+  Future<CompletedQuizAttemptPersistenceResult?> _persistCompletedExamAttempt({
     required String categoryId,
     required String lessonId,
     required String examId,
@@ -482,25 +497,90 @@ class CategoryProgressController extends ChangeNotifier {
     required int totalLessonPages,
     required int totalActivities,
   }) {
-    return _requirePersistForCurrentUser((uid) {
-      return _persistence!.completeExamAttempt(
-        uid: uid,
-        categoryId: categoryId,
-        lessonId: lessonId,
-        examId: examId,
-        attemptId: attempt.id,
+    return _requirePersistForCurrentUser(
+      (uid) {
+        return _persistence!.completeExamAttempt(
+          uid: uid,
+          categoryId: categoryId,
+          lessonId: lessonId,
+          examId: examId,
+          attemptId: attempt.id,
+          startedAt: attempt.startedAt,
+          questionIds: attempt.questionIds,
+          answers: attempt.answers.values,
+          correctAnswers: result.correctAnswers,
+          totalQuestions: result.totalQuestions,
+          percentage: result.percentage,
+          totalLessonPages: totalLessonPages,
+          totalActivities: totalActivities,
+        );
+      },
+      orElse: () {
+        return CompletedQuizAttemptPersistenceResult(
+          attemptNumber: attempt.attemptNumber,
+          answers: List<CategoryProgressAnswer>.unmodifiable(
+            attempt.answers.values,
+          ),
+          correctAnswers: result.correctAnswers,
+          totalQuestions: result.totalQuestions,
+          percentage: result.percentage,
+          earnedPoints: 0,
+          activityPoints: null,
+          questionScores: const <String, QuestionScoreRecord>{},
+        );
+      },
+    );
+  }
+
+  CompletedQuizAttemptPersistenceResult _localCompletedActivityResult(
+    _MutableQuizAttempt attempt,
+    _MutableActivityProgress activity,
+  ) {
+    final policy = ActivityScoringPolicy();
+    final scoredAnswers = <CategoryProgressAnswer>[];
+    final questionScores = <String, QuestionScoreRecord>{};
+    var earnedPoints = 0;
+
+    for (final answer in attempt.answers.values) {
+      final pointsEarned = policy.earnedPointsForAnswer(
         attemptNumber: attempt.attemptNumber,
-        startedAt: attempt.startedAt,
-        questionIds: attempt.questionIds,
-        answers: attempt.answers.values,
-        correctAnswers: result.correctAnswers,
-        totalQuestions: result.totalQuestions,
-        percentage: result.percentage,
-        earnedPoints: attempt.earnedPoints,
-        totalLessonPages: totalLessonPages,
-        totalActivities: totalActivities,
+        isCorrect: answer.isCorrect,
+        alreadyScored:
+            activity.questionScores[answer.questionId]?.hasAwardedPoints ??
+            false,
       );
-    });
+      earnedPoints += pointsEarned;
+      scoredAnswers.add(
+        CategoryProgressAnswer(
+          questionId: answer.questionId,
+          answer: answer.answer,
+          isCorrect: answer.isCorrect,
+          pointsEarned: pointsEarned,
+          answeredAt: answer.answeredAt,
+        ),
+      );
+      questionScores[answer.questionId] = pointsEarned > 0
+          ? QuestionScoreRecord(
+              questionId: answer.questionId,
+              pointsAwarded: pointsEarned,
+              awardedAttempt: attempt.attemptNumber,
+            )
+          : activity.questionScores[answer.questionId] ??
+                QuestionScoreRecord.notAwarded(questionId: answer.questionId);
+    }
+
+    return CompletedQuizAttemptPersistenceResult(
+      attemptNumber: attempt.attemptNumber,
+      answers: List<CategoryProgressAnswer>.unmodifiable(scoredAnswers),
+      correctAnswers: attempt.correctAnswers,
+      totalQuestions: attempt.totalQuestions,
+      percentage: attempt.percentage,
+      earnedPoints: earnedPoints,
+      activityPoints: activity.activityPoints + earnedPoints,
+      questionScores: Map<String, QuestionScoreRecord>.unmodifiable(
+        questionScores,
+      ),
+    );
   }
 
   void resetCategory(String categoryId) {
@@ -550,11 +630,12 @@ class CategoryProgressController extends ChangeNotifier {
     }
   }
 
-  Future<bool> _requirePersistForCurrentUser(
-    Future<void> Function(String uid) operation,
-  ) async {
+  Future<T?> _requirePersistForCurrentUser<T>(
+    Future<T> Function(String uid) operation, {
+    required T Function() orElse,
+  }) async {
     if (_persistence == null) {
-      return true;
+      return orElse();
     }
 
     final uid = _currentUserIdProvider?.call();
@@ -564,21 +645,20 @@ class CategoryProgressController extends ChangeNotifier {
           '[CategoryProgress] Completion skipped: no authenticated user.',
         );
       }
-      return false;
+      return null;
     }
 
     try {
-      await operation(uid);
-      return true;
+      return await operation(uid);
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
-      return false;
+      return null;
     } catch (error, stackTrace) {
       if (kDebugMode) {
         debugPrint('[CategoryProgress] Unexpected persistence error: $error');
         debugPrint('[CategoryProgress] StackTrace: $stackTrace');
       }
-      return false;
+      return null;
     }
   }
 
