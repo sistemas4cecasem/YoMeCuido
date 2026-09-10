@@ -50,6 +50,7 @@ app.*.map.json
 AGENTS.md
 
 # Local agent tooling
+node_modules/
 .agents/skills/
 .agents/firestore_rules_tests/node_modules/
 .claude/

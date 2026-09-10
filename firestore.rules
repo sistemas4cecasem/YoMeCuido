@@ -15,6 +15,7 @@ service cloud.firestore {
     //   - email: string (required, owner email, max 254)
     //   - role: string (required for new profiles: user, immutable for clients)
     //   - createdAt: timestamp (required, immutable after create)
+    //   - totalPoints: int (required, 0..100000, client increments <= 100)
     //   - updatedAt: timestamp (required)
     //
     // Collection: usernames
@@ -42,7 +43,9 @@ service cloud.firestore {
     // Fields:
     //   - activityId: string (required, must match document ID)
     //   - status: string (required: notStarted, inProgress, completed)
-    //   - attemptCount: int (required, 0..1000, cannot decrease)
+    //   - attemptCount: int (required, 1..1000, increases by one on update)
+    //   - activityPoints: int (required, 0..1000, cannot decrease)
+    //   - questionScores: map (required, max 100 dynamic question ids)
     //   - bestCorrectAnswers: int (required, 0..100)
     //   - bestTotalQuestions: int (required, 0..100)
     //   - bestPercentage: int (required, 0..100)
@@ -55,7 +58,7 @@ service cloud.firestore {
     // Fields:
     //   - examId: string (required, must match document ID)
     //   - status: string (required: notStarted, inProgress, completed)
-    //   - attemptCount: int (required, 0..1000, cannot decrease)
+    //   - attemptCount: int (required, 1..1000, increases by one on update)
     //   - bestCorrectAnswers: int (required, 0..100)
     //   - bestTotalQuestions: int (required, 0..100)
     //   - bestPercentage: int (required, 0..100)
@@ -70,11 +73,13 @@ service cloud.firestore {
     //   - categoryId: string (required)
     //   - activityId: string (required)
     //   - examId: null (required)
+    //   - attemptNumber: int (required, 1..1000)
     //   - questionIds: list (required, max 100)
     //   - answers: map (required, max 100 question keys)
     //   - correctAnswers: int (required, 0..totalQuestions)
     //   - totalQuestions: int (required, 0..100)
     //   - percentage: int (required, 0..100)
+    //   - earnedPoints: int (required, 0..100; 0 for attempt 4+)
     //   - startedAt: timestamp (required, immutable after create)
     //   - completedAt: timestamp|null (required)
     //
@@ -85,11 +90,13 @@ service cloud.firestore {
     //   - categoryId: string (required)
     //   - activityId: null (required)
     //   - examId: string (required)
+    //   - attemptNumber: int (required, 1..1000)
     //   - questionIds: list (required, max 100)
     //   - answers: map (required, max 100 question keys)
     //   - correctAnswers: int (required, 0..totalQuestions)
     //   - totalQuestions: int (required, 0..100)
     //   - percentage: int (required, 0..100)
+    //   - earnedPoints: int (required, always 0)
     //   - startedAt: timestamp (required, immutable after create)
     //   - completedAt: timestamp|null (required)
     //
@@ -175,6 +182,7 @@ service cloud.firestore {
         'usernameNormalized',
         'email',
         'role',
+        'totalPoints',
         'createdAt',
         'updatedAt',
       ];
@@ -232,6 +240,9 @@ service cloud.firestore {
         && hasValidProfileUsername()
         && isValidProfileEmail()
         && request.resource.data.role == 'user'
+        && request.resource.data.totalPoints is int
+        && request.resource.data.totalPoints >= 0
+        && request.resource.data.totalPoints <= 100000
         && request.resource.data.createdAt is timestamp
         && request.resource.data.updatedAt is timestamp;
     }
@@ -239,6 +250,7 @@ service cloud.firestore {
     function isValidNewUserProfile(userId) {
       return isValidUserProfile()
         && hasUsernameReservationForProfile(userId)
+        && request.resource.data.totalPoints == 0
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
     }
@@ -268,7 +280,28 @@ service cloud.firestore {
           || !existsAfter(/databases/$(database)/documents/usernames/$(resource.data.usernameNormalized))
         )
         && request.resource.data.role == resource.data.role
+        && request.resource.data.totalPoints == resource.data.totalPoints
         && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function isValidTotalPointsUpdate() {
+      return request.resource.data.keys().hasOnly(profileFields())
+        && request.resource.data.keys().hasAll(profileFields())
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'totalPoints',
+          'updatedAt',
+        ])
+        && request.resource.data.username == resource.data.username
+        && request.resource.data.usernameNormalized == resource.data.usernameNormalized
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.totalPoints is int
+        && resource.data.totalPoints is int
+        && request.resource.data.totalPoints >= resource.data.totalPoints
+        && request.resource.data.totalPoints <= resource.data.totalPoints + 100
+        && request.resource.data.totalPoints <= 100000
         && request.resource.data.updatedAt == request.time;
     }
 
@@ -352,6 +385,15 @@ service cloud.firestore {
           <= request.resource.data.totalActivities;
     }
 
+    function hasMonotonicProgressListsOnUpdate() {
+      return request.resource.data.viewedLessonPageIds.hasAll(
+          resource.data.viewedLessonPageIds
+        )
+        && request.resource.data.completedActivityIds.hasAll(
+          resource.data.completedActivityIds
+        );
+    }
+
     function hasValidProgressCompletionState() {
       return request.resource.data.status == 'completed'
         ? request.resource.data.completedAt is timestamp
@@ -401,6 +443,8 @@ service cloud.firestore {
         'activityId',
         'status',
         'attemptCount',
+        'activityPoints',
+        'questionScores',
         'bestCorrectAnswers',
         'bestTotalQuestions',
         'bestPercentage',
@@ -435,7 +479,7 @@ service cloud.firestore {
           'completed',
         ]
         && request.resource.data.attemptCount is int
-        && request.resource.data.attemptCount >= 0
+        && request.resource.data.attemptCount >= 1
         && request.resource.data.attemptCount <= 1000
         && request.resource.data.bestCorrectAnswers is int
         && request.resource.data.bestCorrectAnswers >= 0
@@ -466,7 +510,14 @@ service cloud.firestore {
     function hasValidActivityProgress(activityId) {
       return request.resource.data.keys().hasOnly(activityProgressFields())
         && request.resource.data.keys().hasAll(activityProgressFields())
-        && hasValidProgressSummary('activityId', activityId);
+        && hasValidProgressSummary('activityId', activityId)
+        && request.resource.data.activityPoints is int
+        && request.resource.data.activityPoints >= 0
+        && request.resource.data.activityPoints <= 1000
+        && request.resource.data.activityPoints
+          <= request.resource.data.attemptCount * 100
+        && request.resource.data.questionScores is map
+        && request.resource.data.questionScores.keys().size() <= 100;
     }
 
     function hasValidExamProgress(examId) {
@@ -476,11 +527,19 @@ service cloud.firestore {
     }
 
     function hasValidActivityAttemptCountOnCreate() {
-      return request.resource.data.attemptCount >= 0;
+      return request.resource.data.attemptCount >= 1;
     }
 
     function hasValidActivityAttemptCountOnUpdate() {
-      return request.resource.data.attemptCount >= resource.data.attemptCount;
+      return request.resource.data.attemptCount == resource.data.attemptCount + 1;
+    }
+
+    function hasValidActivityScoringOnUpdate() {
+      return request.resource.data.activityPoints >= resource.data.activityPoints
+        && request.resource.data.activityPoints <= resource.data.activityPoints + 100
+        && request.resource.data.questionScores.keys().hasAll(
+          resource.data.questionScores.keys()
+        );
     }
 
     function hasValidActivityTimestampsOnCreate() {
@@ -515,11 +574,13 @@ service cloud.firestore {
         'categoryId',
         'activityId',
         'examId',
+        'attemptNumber',
         'questionIds',
         'answers',
         'correctAnswers',
         'totalQuestions',
         'percentage',
+        'earnedPoints',
         'startedAt',
         'completedAt',
       ];
@@ -530,6 +591,9 @@ service cloud.firestore {
         && request.resource.data.keys().hasAll(attemptFields())
         && request.resource.data.categoryId is string
         && request.resource.data.categoryId == categoryId
+        && request.resource.data.attemptNumber is int
+        && request.resource.data.attemptNumber >= 1
+        && request.resource.data.attemptNumber <= 1000
         && request.resource.data.questionIds is list
         && request.resource.data.questionIds.size() > 0
         && request.resource.data.questionIds.size() <= 100
@@ -539,8 +603,9 @@ service cloud.firestore {
           request.resource.data.questionIds
         )
         && request.resource.data.totalQuestions is int
-        && request.resource.data.totalQuestions >= 0
+        && request.resource.data.totalQuestions > 0
         && request.resource.data.totalQuestions <= 100
+        && request.resource.data.totalQuestions == request.resource.data.questionIds.size()
         && request.resource.data.correctAnswers is int
         && request.resource.data.correctAnswers >= 0
         && request.resource.data.correctAnswers
@@ -548,15 +613,35 @@ service cloud.firestore {
         && request.resource.data.percentage is int
         && request.resource.data.percentage >= 0
         && request.resource.data.percentage <= 100
+        && request.resource.data.earnedPoints is int
+        && request.resource.data.earnedPoints >= 0
+        && request.resource.data.earnedPoints <= 100
         && request.resource.data.startedAt is timestamp
-        && (
-          request.resource.data.completedAt == null
-          || request.resource.data.completedAt is timestamp
+        && request.resource.data.completedAt is timestamp;
+    }
+
+    function hasValidActivityAttemptPoints() {
+      return (
+          request.resource.data.attemptNumber == 1
+          && request.resource.data.earnedPoints <= 100
+        )
+        || (
+          request.resource.data.attemptNumber == 2
+          && request.resource.data.earnedPoints <= 50
+        )
+        || (
+          request.resource.data.attemptNumber == 3
+          && request.resource.data.earnedPoints <= 10
+        )
+        || (
+          request.resource.data.attemptNumber >= 4
+          && request.resource.data.earnedPoints == 0
         );
     }
 
     function hasValidActivityAttempt(categoryId, activityId) {
       return hasValidBaseAttempt(categoryId)
+        && hasValidActivityAttemptPoints()
         && request.resource.data.type == 'activity'
         && request.resource.data.activityId is string
         && request.resource.data.activityId == activityId
@@ -568,6 +653,7 @@ service cloud.firestore {
     function hasValidExamAttempt(categoryId, examId) {
       return hasValidBaseAttempt(categoryId)
         && request.resource.data.type == 'exam'
+        && request.resource.data.earnedPoints == 0
         && request.resource.data.activityId == null
         && request.resource.data.examId is string
         && request.resource.data.examId == examId
@@ -576,17 +662,7 @@ service cloud.firestore {
     }
 
     function hasValidAttemptTimestampsOnCreate() {
-      return request.resource.data.startedAt == request.time
-        && request.resource.data.completedAt == null;
-    }
-
-    function hasValidAttemptTimestampsOnUpdate() {
-      return request.resource.data.startedAt == resource.data.startedAt
-        && (
-          request.resource.data.completedAt == null
-          || request.resource.data.completedAt == request.time
-          || request.resource.data.completedAt == resource.data.completedAt
-        );
+      return request.resource.data.completedAt == request.time;
     }
 
     match /users/{userId} {
@@ -597,6 +673,7 @@ service cloud.firestore {
         && (
           isCompletingLegacyProfile(userId)
           || isValidUpdatedUserProfile(userId)
+          || isValidTotalPointsUpdate()
         );
       allow delete: if false;
 
@@ -609,6 +686,7 @@ service cloud.firestore {
         allow update: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
+          && hasMonotonicProgressListsOnUpdate()
           && hasValidProgressTimestampsOnUpdate();
         allow delete: if false;
 
@@ -623,6 +701,7 @@ service cloud.firestore {
             && userProfileExists(userId)
             && hasValidActivityProgress(activityId)
             && hasValidActivityAttemptCountOnUpdate()
+            && hasValidActivityScoringOnUpdate()
             && hasValidActivityTimestampsOnUpdate();
           allow delete: if false;
 
@@ -632,10 +711,7 @@ service cloud.firestore {
               && userProfileExists(userId)
               && hasValidActivityAttempt(categoryId, activityId)
               && hasValidAttemptTimestampsOnCreate();
-            allow update: if isOwner(userId)
-              && userProfileExists(userId)
-              && hasValidActivityAttempt(categoryId, activityId)
-              && hasValidAttemptTimestampsOnUpdate();
+            allow update: if false;
             allow delete: if false;
           }
         }
@@ -660,10 +736,7 @@ service cloud.firestore {
               && userProfileExists(userId)
               && hasValidExamAttempt(categoryId, examId)
               && hasValidAttemptTimestampsOnCreate();
-            allow update: if isOwner(userId)
-              && userProfileExists(userId)
-              && hasValidExamAttempt(categoryId, examId)
-              && hasValidAttemptTimestampsOnUpdate();
+            allow update: if false;
             allow delete: if false;
           }
         }
