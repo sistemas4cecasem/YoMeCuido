@@ -41,6 +41,31 @@ void main() {
           persistence.theoryPageCalls.single.pageId,
           'what_is_digital_violence',
         );
+        expect(persistence.theoryPageCalls.single.uid, 'uid-123');
+      },
+    );
+
+    test(
+      'does not mark theory as viewed when remote persistence fails',
+      () async {
+        final persistence = _FakeProgressPersistence()..failTheoryPage = true;
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        await controller.markTheoryPageViewed(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          pageId: 'what_is_digital_violence',
+          totalPages: 4,
+        );
+
+        final snapshot = controller.snapshotFor(_categoryId);
+        expect(snapshot.viewedTheoryPageIds, isEmpty);
+        expect(snapshot.status, CategoryProgressStatus.notStarted);
+        expect(persistence.theoryPageCalls, isEmpty);
       },
     );
 
@@ -837,6 +862,47 @@ void main() {
       },
     );
 
+    test('hydration error is not treated as loaded zero progress', () async {
+      final persistence = _FakeProgressPersistence()..failFetch = true;
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+
+      await controller.loadPersistedProgressForUser('uid-123');
+
+      expect(controller.hydrationStatus, ProgressHydrationStatus.error);
+      expect(controller.hydratedUserId, 'uid-123');
+      expect(controller.hydrationError, isNotNull);
+      expect(controller.hasResolvedProgressFor('uid-123'), isFalse);
+      expect(controller.snapshotFor(_categoryId).viewedTheoryPageIds, isEmpty);
+    });
+
+    test('reloads successfully after hydration error', () async {
+      final persistence = _FakeProgressPersistence()..failFetch = true;
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+
+      await controller.loadPersistedProgressForUser('uid-123');
+      persistence
+        ..failFetch = false
+        ..recordsByUid['uid-123'] = <CategoryProgressRecord>[
+          _inProgressRecord(categoryId: _categoryId),
+        ];
+      await controller.loadPersistedProgressForUser('uid-123');
+
+      expect(controller.hydrationStatus, ProgressHydrationStatus.loaded);
+      expect(controller.hasResolvedProgressFor('uid-123'), isTrue);
+      expect(controller.snapshotFor(_categoryId).viewedTheoryPageIds, <String>[
+        'what_is_digital_violence',
+      ]);
+      expect(persistence.fetchCalls, <String>['uid-123', 'uid-123']);
+    });
+
     test('clear removes local progress without deleting remote data', () {
       final persistence = _FakeProgressPersistence();
       final controller = CategoryProgressController(
@@ -986,8 +1052,9 @@ AttemptIdGenerator _sequentialAttemptIds() {
 }
 
 class _TheoryPageCall {
-  const _TheoryPageCall({required this.pageId});
+  const _TheoryPageCall({required this.uid, required this.pageId});
 
+  final String uid;
   final String pageId;
 }
 
@@ -1085,6 +1152,8 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   final pendingFetchUids = <String>{};
   final _pendingFetches =
       <String, List<Completer<List<CategoryProgressRecord>>>>{};
+  bool failFetch = false;
+  bool failTheoryPage = false;
   bool failCompleteActivityAttempt = false;
 
   int get writeCallCount =>
@@ -1106,6 +1175,12 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   @override
   Future<List<CategoryProgressRecord>> fetchAllProgress({required String uid}) {
     fetchCalls.add(uid);
+    if (failFetch) {
+      throw const CategoryProgressException(
+        CategoryProgressFailureReason.unavailable,
+        operation: CategoryProgressFailureOperation.fetchAllProgress,
+      );
+    }
     if (pendingFetchUids.contains(uid)) {
       final completer = Completer<List<CategoryProgressRecord>>();
       _pendingFetches.putIfAbsent(uid, () => []).add(completer);
@@ -1131,7 +1206,13 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required int totalLessonPages,
     required int totalActivities,
   }) async {
-    theoryPageCalls.add(_TheoryPageCall(pageId: pageId));
+    if (failTheoryPage) {
+      throw const CategoryProgressException(
+        CategoryProgressFailureReason.unavailable,
+        operation: CategoryProgressFailureOperation.markTheoryPageViewed,
+      );
+    }
+    theoryPageCalls.add(_TheoryPageCall(uid: uid, pageId: pageId));
   }
 
   @override

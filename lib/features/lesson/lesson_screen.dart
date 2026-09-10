@@ -41,6 +41,7 @@ class _LessonScreenState extends State<LessonScreen> {
   final Map<String, String> _theoryImageByPageId = <String, String>{};
   int _pageIndex = 0;
   final Set<String> _reportedPageIds = <String>{};
+  final Set<String> _pendingPageIds = <String>{};
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _LessonScreenState extends State<LessonScreen> {
     setState(() {
       _pageIndex = 0;
       _theoryImageByPageId.clear();
+      _pendingPageIds.clear();
       _pagesFuture = widget.contentRepository.loadLessonPages(
         widget.category.id,
       );
@@ -84,7 +86,7 @@ class _LessonScreenState extends State<LessonScreen> {
   }
 
   void _markPageViewed(LessonPage page, int totalPages) {
-    if (!_reportedPageIds.add(page.id)) {
+    if (_reportedPageIds.contains(page.id) || !_pendingPageIds.add(page.id)) {
       return;
     }
 
@@ -93,12 +95,19 @@ class _LessonScreenState extends State<LessonScreen> {
         return;
       }
       unawaited(
-        widget.progressController.markTheoryPageViewed(
-          categoryId: widget.category.id,
-          lessonId: widget.category.lessonId ?? widget.category.id,
-          pageId: page.id,
-          totalPages: totalPages,
-        ),
+        widget.progressController
+            .markTheoryPageViewed(
+              categoryId: widget.category.id,
+              lessonId: widget.category.lessonId ?? widget.category.id,
+              pageId: page.id,
+              totalPages: totalPages,
+            )
+            .then((persisted) {
+              _pendingPageIds.remove(page.id);
+              if (persisted) {
+                _reportedPageIds.add(page.id);
+              }
+            }),
       );
     });
   }

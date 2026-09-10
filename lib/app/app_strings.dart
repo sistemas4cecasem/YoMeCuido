@@ -76,6 +76,8 @@ abstract final class AppStrings {
       'No pudimos cargar el contenido de la demo. Intenta nuevamente.';
   static const progressSaveError =
       'No pudimos guardar el resultado. Intenta nuevamente.';
+  static const progressLoadError =
+      'No pudimos cargar tu progreso. Intenta nuevamente.';
   static const retry = 'Reintentar';
   static const categoryDetailTitle = 'Relaciones y violencia digital';
   static const learningRouteTitle = 'Ruta de aprendizaje';

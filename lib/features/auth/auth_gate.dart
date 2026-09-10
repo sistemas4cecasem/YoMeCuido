@@ -8,6 +8,7 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
+import '../../shared/widgets/primary_button.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
 import 'complete_profile_screen.dart';
 import 'email_verification_screen.dart';
@@ -113,15 +114,18 @@ class _AuthGateState extends State<AuthGate> {
     );
   }
 
-  Future<void> _ensureProgressLoad(AuthUser user) {
+  Future<void> _ensureProgressLoad(AuthUser user, {bool force = false}) {
     if (widget.progressController.hasResolvedProgressFor(user.uid)) {
       return Future<void>.value();
     }
 
-    if (_progressLoadUid != user.uid || _progressLoadFuture == null) {
+    if (force || _progressLoadUid != user.uid || _progressLoadFuture == null) {
       _progressLoadUid = user.uid;
       _progressLoadFuture = widget.progressController
           .loadPersistedProgressForUser(user.uid);
+      if (force && mounted) {
+        setState(() {});
+      }
     }
 
     return _progressLoadFuture!;
@@ -185,7 +189,7 @@ class _HydratedHome extends StatelessWidget {
   final UserProfileRepository userProfileRepository;
   final VoidCallback onProfileCompleted;
   final ValueChanged<UserProfile> onProfileChanged;
-  final Future<void> Function(AuthUser user) progressLoadProvider;
+  final Future<void> Function(AuthUser user, {bool force}) progressLoadProvider;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
 
@@ -213,6 +217,7 @@ class _HydratedHome extends StatelessWidget {
           userProfileRepository: userProfileRepository,
           onProfileChanged: onProfileChanged,
           progressLoadFuture: progressLoadProvider(user),
+          onProgressRetry: () => progressLoadProvider(user, force: true),
           progressController: progressController,
           authRepository: authRepository,
         );
@@ -228,6 +233,7 @@ class _ProgressHydratedHome extends StatelessWidget {
     required this.userProfileRepository,
     required this.onProfileChanged,
     required this.progressLoadFuture,
+    required this.onProgressRetry,
     required this.progressController,
     required this.authRepository,
   });
@@ -237,6 +243,7 @@ class _ProgressHydratedHome extends StatelessWidget {
   final UserProfileRepository userProfileRepository;
   final ValueChanged<UserProfile> onProfileChanged;
   final Future<void> progressLoadFuture;
+  final VoidCallback onProgressRetry;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
 
@@ -252,11 +259,22 @@ class _ProgressHydratedHome extends StatelessWidget {
       );
     }
 
+    if (progressController.hydratedUserId == user.uid &&
+        progressController.hydrationStatus == ProgressHydrationStatus.error) {
+      return _ProgressLoadErrorView(onRetry: onProgressRetry);
+    }
+
     return FutureBuilder<void>(
       future: progressLoadFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const _AuthLoadingView();
+        }
+
+        if (progressController.hydratedUserId == user.uid &&
+            progressController.hydrationStatus ==
+                ProgressHydrationStatus.error) {
+          return _ProgressLoadErrorView(onRetry: onProgressRetry);
         }
 
         return HighLevelCategoriesScreen(
@@ -267,6 +285,56 @@ class _ProgressHydratedHome extends StatelessWidget {
           showBackButton: false,
         );
       },
+    );
+  }
+}
+
+class _ProgressLoadErrorView extends StatelessWidget {
+  const _ProgressLoadErrorView({required this.onRetry});
+
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Scaffold(
+      backgroundColor: colors.background,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: AppInsets.screen,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(
+                  Icons.cloud_off_outlined,
+                  color: colors.orangeDark,
+                  size: 40,
+                  semanticLabel: AppStrings.progressLoadError,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  AppStrings.progressLoadError,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                PrimaryButton(
+                  label: AppStrings.retry,
+                  icon: Icons.refresh_outlined,
+                  onPressed: onRetry,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

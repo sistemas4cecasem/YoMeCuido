@@ -40,8 +40,7 @@ class CategoryProgressController extends ChangeNotifier {
 
   bool hasResolvedProgressFor(String uid) {
     return _hydratedUserId == uid &&
-        (_hydrationStatus == ProgressHydrationStatus.loaded ||
-            _hydrationStatus == ProgressHydrationStatus.error);
+        _hydrationStatus == ProgressHydrationStatus.loaded;
   }
 
   Future<void> loadPersistedProgressForUser(String uid) {
@@ -183,31 +182,42 @@ class CategoryProgressController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> markTheoryPageViewed({
+  Future<bool> markTheoryPageViewed({
     required String categoryId,
     required String lessonId,
     required String pageId,
     required int totalPages,
   }) async {
-    final progress = _entryFor(categoryId)..theoryTotal = totalPages;
-    final added = progress.viewedTheoryPageIds.add(pageId);
-    if (added) {
-      if (progress.status != CategoryProgressStatus.completed) {
-        progress.status = CategoryProgressStatus.inProgress;
+    final progress = _entryFor(categoryId);
+    final normalizedTotalPages = totalPages < 0 ? 0 : totalPages;
+    if (progress.viewedTheoryPageIds.contains(pageId)) {
+      if (progress.theoryTotal != normalizedTotalPages) {
+        progress.theoryTotal = normalizedTotalPages;
+        progress.updatedAt = DateTime.now();
+        notifyListeners();
       }
-      progress.updatedAt = DateTime.now();
-      notifyListeners();
-      await _persistForCurrentUser((uid) {
-        return _persistence!.markTheoryPageViewed(
-          uid: uid,
-          categoryId: categoryId,
-          lessonId: lessonId,
-          pageId: pageId,
-          totalLessonPages: totalPages,
-          totalActivities: progress.activityTotal,
-        );
-      });
+      return true;
     }
+
+    final persisted = await _persistTheoryPageViewedForCurrentUser(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      pageId: pageId,
+      totalLessonPages: normalizedTotalPages,
+      totalActivities: progress.activityTotal,
+    );
+    if (!persisted) {
+      return false;
+    }
+
+    progress.theoryTotal = normalizedTotalPages;
+    progress.viewedTheoryPageIds.add(pageId);
+    if (progress.status != CategoryProgressStatus.completed) {
+      progress.status = CategoryProgressStatus.inProgress;
+    }
+    progress.updatedAt = DateTime.now();
+    notifyListeners();
+    return true;
   }
 
   String startActivityAttempt({
@@ -600,11 +610,16 @@ class CategoryProgressController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _persistForCurrentUser(
-    Future<void> Function(String uid) operation,
-  ) async {
-    if (_persistence == null) {
-      return;
+  Future<bool> _persistTheoryPageViewedForCurrentUser({
+    required String categoryId,
+    required String lessonId,
+    required String pageId,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {
+    final persistence = _persistence;
+    if (persistence == null) {
+      return true;
     }
 
     final uid = _currentUserIdProvider?.call();
@@ -614,19 +629,30 @@ class CategoryProgressController extends ChangeNotifier {
           '[CategoryProgress] Persistence skipped: no authenticated user.',
         );
       }
-      return;
+      return false;
     }
 
+    final normalizedUid = uid.trim();
     try {
-      await operation(uid);
+      await persistence.markTheoryPageViewed(
+        uid: normalizedUid,
+        categoryId: categoryId,
+        lessonId: lessonId,
+        pageId: pageId,
+        totalLessonPages: totalLessonPages,
+        totalActivities: totalActivities,
+      );
+      return _currentUserIdProvider?.call()?.trim() == normalizedUid;
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
+      return false;
     } catch (error, stackTrace) {
       if (!kDebugMode) {
-        return;
+        return false;
       }
       debugPrint('[CategoryProgress] Unexpected persistence error: $error');
       debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+      return false;
     }
   }
 

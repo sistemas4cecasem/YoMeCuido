@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/data/firestore/educational_content_firestore_mapper.dart';
 import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
@@ -8,6 +9,242 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('CategoryProgressRepository theory progress persistence', () {
+    test('stores the first viewed page once without changing points', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore, totalPoints: 77);
+
+      await repository.markTheoryPageViewed(
+        uid: _uid,
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+
+      final progressData = await _progressData(firestore);
+      final userData = await _userData(firestore);
+      final activitySnapshot = await _activityDocument(firestore).get();
+
+      expect(progressData['viewedLessonPageIds'], <String>['page_01']);
+      expect(progressData['status'], CategoryProgressStatus.inProgress.name);
+      expect(progressData['totalLessonPages'], 4);
+      expect(progressData['totalActivities'], 6);
+      expect(userData['totalPoints'], 77);
+      expect(progressData.containsKey('activityPoints'), isFalse);
+      expect(progressData.containsKey('questionScores'), isFalse);
+      expect(activitySnapshot.exists, isFalse);
+    });
+
+    test('adds a second page without replacing the first one', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+
+      await repository.markTheoryPageViewed(
+        uid: _uid,
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+      await repository.markTheoryPageViewed(
+        uid: _uid,
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_02',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+
+      final progressData = await _progressData(firestore);
+
+      expect(progressData['viewedLessonPageIds'], <String>[
+        'page_01',
+        'page_02',
+      ]);
+    });
+
+    test('does not duplicate a viewed page when it is visited again', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+
+      for (var index = 0; index < 10; index += 1) {
+        await repository.markTheoryPageViewed(
+          uid: _uid,
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          pageId: 'page_01',
+          totalLessonPages: 4,
+          totalActivities: 6,
+        );
+      }
+
+      final progressData = await _progressData(firestore);
+
+      expect(progressData['viewedLessonPageIds'], <String>['page_01']);
+    });
+
+    test('rehydrates the same theory progress in a new controller', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+      var currentUid = _uid;
+      final firstController = CategoryProgressController(
+        persistence: repository,
+        currentUserIdProvider: () => currentUid,
+      );
+
+      await firstController.markTheoryPageViewed(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalPages: 4,
+      );
+      await firstController.markTheoryPageViewed(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_02',
+        totalPages: 4,
+      );
+
+      final secondController = CategoryProgressController(
+        persistence: repository,
+        currentUserIdProvider: () => currentUid,
+      );
+      await secondController.loadPersistedProgressForUser(_uid);
+
+      final snapshot = secondController.snapshotFor(_categoryId);
+      expect(secondController.hydrationStatus, ProgressHydrationStatus.loaded);
+      expect(snapshot.viewedTheoryPageIds, <String>['page_01', 'page_02']);
+      expect(snapshot.viewedTheoryPages, 2);
+      expect(snapshot.totalTheoryPages, 4);
+    });
+
+    test('keeps theory progress separated by uid', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore, uid: 'uid-a');
+      await _seedUser(firestore, uid: 'uid-b');
+
+      await repository.markTheoryPageViewed(
+        uid: 'uid-a',
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+      await repository.markTheoryPageViewed(
+        uid: 'uid-a',
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_02',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+      await repository.markTheoryPageViewed(
+        uid: 'uid-b',
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalLessonPages: 4,
+        totalActivities: 6,
+      );
+
+      final progressA = await _progressData(firestore, uid: 'uid-a');
+      final progressB = await _progressData(firestore, uid: 'uid-b');
+
+      expect(progressA['viewedLessonPageIds'], <String>['page_01', 'page_02']);
+      expect(progressB['viewedLessonPageIds'], <String>['page_01']);
+    });
+
+    test('clearing memory on logout keeps Firestore progress intact', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+      var currentUid = _uid;
+      final controller = CategoryProgressController(
+        persistence: repository,
+        currentUserIdProvider: () => currentUid,
+      );
+
+      await controller.markTheoryPageViewed(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        pageId: 'page_01',
+        totalPages: 4,
+      );
+      currentUid = '';
+      controller.clearForSignedOutUser();
+
+      expect(controller.snapshotFor(_categoryId).viewedTheoryPageIds, isEmpty);
+      expect((await _progressData(firestore))['viewedLessonPageIds'], <String>[
+        'page_01',
+      ]);
+
+      currentUid = _uid;
+      await controller.loadPersistedProgressForUser(_uid);
+
+      expect(controller.snapshotFor(_categoryId).viewedTheoryPageIds, <String>[
+        'page_01',
+      ]);
+    });
+
+    test(
+      'preserves concurrent page additions from separate instances',
+      () async {
+        final firestore = FakeFirebaseFirestore();
+        final firstRepository = CategoryProgressRepository(
+          firestore: firestore,
+        );
+        final secondRepository = CategoryProgressRepository(
+          firestore: firestore,
+        );
+        await _seedUser(firestore);
+        await firstRepository.markTheoryPageViewed(
+          uid: _uid,
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          pageId: 'page_00',
+          totalLessonPages: 4,
+          totalActivities: 6,
+        );
+
+        await Future.wait(<Future<void>>[
+          firstRepository.markTheoryPageViewed(
+            uid: _uid,
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            pageId: 'page_01',
+            totalLessonPages: 4,
+            totalActivities: 6,
+          ),
+          secondRepository.markTheoryPageViewed(
+            uid: _uid,
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            pageId: 'page_02',
+            totalLessonPages: 4,
+            totalActivities: 6,
+          ),
+        ]);
+
+        final progressData = await _progressData(firestore);
+
+        expect(
+          progressData['viewedLessonPageIds'],
+          containsAll(<String>['page_00', 'page_01', 'page_02']),
+        );
+        expect(progressData['viewedLessonPageIds'], hasLength(3));
+      },
+    );
+  });
+
   group('CategoryProgressRepository activity scoring transaction', () {
     test('consolidates the complete 61 point scenario atomically', () async {
       final firestore = FakeFirebaseFirestore();
@@ -288,8 +525,12 @@ Set<String> _ids(int start, int end) {
   };
 }
 
-Future<void> _seedUser(FakeFirebaseFirestore firestore, {int totalPoints = 0}) {
-  return _userDocument(firestore).set({
+Future<void> _seedUser(
+  FakeFirebaseFirestore firestore, {
+  String uid = _uid,
+  int totalPoints = 0,
+}) {
+  return _userDocument(firestore, uid: uid).set({
     'email': 'persona@yomecuido.test',
     'role': 'user',
     'totalPoints': totalPoints,
@@ -360,23 +601,38 @@ Future<Map<String, dynamic>> _examAttemptData(
   return snapshot.data()!;
 }
 
+Future<Map<String, dynamic>> _progressData(
+  FakeFirebaseFirestore firestore, {
+  String uid = _uid,
+}) async {
+  final snapshot = await _progressDocument(firestore, uid: uid).get();
+  return snapshot.data()!;
+}
+
 Future<Map<String, dynamic>> _userData(FakeFirebaseFirestore firestore) async {
   final snapshot = await _userDocument(firestore).get();
   return snapshot.data()!;
 }
 
 DocumentReference<Map<String, dynamic>> _userDocument(
-  FakeFirebaseFirestore firestore,
-) {
-  return firestore.collection(UserProfileRepository.usersCollection).doc(_uid);
+  FakeFirebaseFirestore firestore, {
+  String uid = _uid,
+}) {
+  return firestore.collection(UserProfileRepository.usersCollection).doc(uid);
+}
+
+DocumentReference<Map<String, dynamic>> _progressDocument(
+  FakeFirebaseFirestore firestore, {
+  String uid = _uid,
+}) {
+  return _userDocument(
+    firestore,
+    uid: uid,
+  ).collection('categoryProgress').doc(_categoryId);
 }
 
 DocumentReference<Map<String, dynamic>> _activityDocument(
   FakeFirebaseFirestore firestore,
 ) {
-  return _userDocument(firestore)
-      .collection('categoryProgress')
-      .doc(_categoryId)
-      .collection('activities')
-      .doc(_activityId);
+  return _progressDocument(firestore).collection('activities').doc(_activityId);
 }

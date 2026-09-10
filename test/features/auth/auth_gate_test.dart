@@ -6,12 +6,14 @@ import 'package:demo_yomecuido/app/category_progress_controller.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/category.dart';
+import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
+import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
@@ -130,6 +132,70 @@ void main() {
     expect(find.text(AppStrings.start), findsNothing);
     expect(find.text(AppStrings.loginTitle), findsNothing);
     expect(find.text(AppStrings.addAccount), findsNothing);
+  });
+
+  testWidgets('does not show zero progress when progress hydration fails', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressPersistence = _FakeProgressPersistence()..failFetch = true;
+    final progressController = CategoryProgressController(
+      persistence: progressPersistence,
+      currentUserIdProvider: () => authRepository.currentUser?.uid,
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      progressController: progressController,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.progressLoadError), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+    expect(progressController.hydrationStatus, ProgressHydrationStatus.error);
+    expect(progressController.hasResolvedProgressFor('uid-123'), isFalse);
+  });
+
+  testWidgets('retries progress hydration before entering the app', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressPersistence = _FakeProgressPersistence()..failFetch = true;
+    final progressController = CategoryProgressController(
+      persistence: progressPersistence,
+      currentUserIdProvider: () => authRepository.currentUser?.uid,
+    );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      progressController: progressController,
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    progressPersistence.failFetch = false;
+    await tester.tap(find.text(AppStrings.retry));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+    expect(find.text(AppStrings.progressLoadError), findsNothing);
+    expect(progressController.hydrationStatus, ProgressHydrationStatus.loaded);
+    expect(progressPersistence.fetchCalls, <String>['uid-123', 'uid-123']);
   });
 
   testWidgets('moves from login to high-level categories after auth changes', (
@@ -428,11 +494,14 @@ Future<void> _pumpGate(
   WidgetTester tester,
   _ControllableAuthRepository authRepository, {
   UserProfileRepository? userProfileRepository,
+  CategoryProgressController? progressController,
 }) async {
+  final resolvedProgressController =
+      progressController ?? CategoryProgressController();
   final router = AppRouter(
     contentRepository: const _EmptyContentRepository(),
     authRepository: authRepository,
-    progressController: CategoryProgressController(),
+    progressController: resolvedProgressController,
   );
 
   await tester.pumpWidget(
@@ -442,7 +511,7 @@ Future<void> _pumpGate(
         authRepository: authRepository,
         userProfileRepository:
             userProfileRepository ?? _FakeUserProfileRepository(),
-        progressController: CategoryProgressController(),
+        progressController: resolvedProgressController,
       ),
       onGenerateRoute: router.onGenerateRoute,
     ),
@@ -571,6 +640,107 @@ class _FakeUserProfileRepository extends UserProfileRepository {
       updatedAt: null,
     );
     return profile!;
+  }
+}
+
+class _FakeProgressPersistence implements CategoryProgressPersistence {
+  final fetchCalls = <String>[];
+  bool failFetch = false;
+
+  @override
+  Future<List<CategoryProgressRecord>> fetchAllProgress({required String uid}) {
+    fetchCalls.add(uid);
+    if (failFetch) {
+      throw const CategoryProgressException(
+        CategoryProgressFailureReason.unavailable,
+        operation: CategoryProgressFailureOperation.fetchAllProgress,
+      );
+    }
+
+    return Future<List<CategoryProgressRecord>>.value(
+      const <CategoryProgressRecord>[],
+    );
+  }
+
+  @override
+  Future<void> markTheoryPageViewed({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String pageId,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {}
+
+  @override
+  Future<void> startActivityAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required List<String> questionIds,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {}
+
+  @override
+  Future<void> startExamAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required String attemptId,
+    required List<String> questionIds,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) async {}
+
+  @override
+  Future<void> recordAttemptAnswer({
+    required String uid,
+    required String categoryId,
+    String? activityId,
+    String? examId,
+    required String attemptId,
+    required String questionId,
+    required String answer,
+    required bool isCorrect,
+  }) async {}
+
+  @override
+  Future<CompletedQuizAttemptPersistenceResult> completeActivityAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<CompletedQuizAttemptPersistenceResult> completeExamAttempt({
+    required String uid,
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required String attemptId,
+    required DateTime startedAt,
+    required List<String> questionIds,
+    required Iterable<CategoryProgressAnswer> answers,
+    required int correctAnswers,
+    required int totalQuestions,
+    required int percentage,
+    required int totalLessonPages,
+    required int totalActivities,
+  }) {
+    throw UnimplementedError();
   }
 }
 
