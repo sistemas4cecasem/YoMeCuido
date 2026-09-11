@@ -188,6 +188,17 @@ service cloud.firestore {
       ];
     }
 
+    function profileFieldsWithoutTotalPoints() {
+      return [
+        'username',
+        'usernameNormalized',
+        'email',
+        'role',
+        'createdAt',
+        'updatedAt',
+      ];
+    }
+
     function legacyProfileFields() {
       return ['email', 'createdAt', 'updatedAt'];
     }
@@ -302,6 +313,27 @@ service cloud.firestore {
         && request.resource.data.totalPoints >= resource.data.totalPoints
         && request.resource.data.totalPoints <= resource.data.totalPoints + 100
         && request.resource.data.totalPoints <= 100000
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function isCompletingMissingTotalPoints() {
+      return resource.data.keys().hasOnly(profileFieldsWithoutTotalPoints())
+        && resource.data.keys().hasAll(profileFieldsWithoutTotalPoints())
+        && request.resource.data.keys().hasOnly(profileFields())
+        && request.resource.data.keys().hasAll(profileFields())
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'totalPoints',
+          'updatedAt',
+        ])
+        && request.resource.data.username == resource.data.username
+        && request.resource.data.usernameNormalized == resource.data.usernameNormalized
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.role == 'user'
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.totalPoints is int
+        && request.resource.data.totalPoints >= 0
+        && request.resource.data.totalPoints <= 100
         && request.resource.data.updatedAt == request.time;
     }
 
@@ -674,6 +706,7 @@ service cloud.firestore {
           isCompletingLegacyProfile(userId)
           || isValidUpdatedUserProfile(userId)
           || isValidTotalPointsUpdate()
+          || isCompletingMissingTotalPoints()
         );
       allow delete: if false;
 

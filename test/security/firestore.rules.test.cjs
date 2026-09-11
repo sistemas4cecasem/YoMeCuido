@@ -45,6 +45,7 @@ async function main() {
     ['usuario normal no puede escalar rol', roleEscalationDenied],
     ['creación de perfil admin denegada', adminProfileCreationDenied],
     ['totalPoints inicial manipulado denegado', manipulatedInitialPointsDenied],
+    ['perfil antiguo puede recibir primera puntuación', legacyProfileFirstScoringAllowed],
     ['reducción de totalPoints denegada', totalPointsReductionDenied],
     ['tipo inválido en totalPoints denegado', invalidTotalPointsTypeDenied],
     ['campo inesperado en perfil denegado', unexpectedProfileFieldDenied],
@@ -85,6 +86,14 @@ function unauthDb() {
 async function seedUser(uid, totalPoints = 0) {
   await testEnv.withSecurityRulesDisabled(async (context) => {
     await setDoc(doc(context.firestore(), 'users', uid), userProfile(uid, totalPoints));
+  });
+}
+
+async function seedUserWithoutTotalPoints(uid) {
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    const profile = userProfile(uid);
+    delete profile.totalPoints;
+    await setDoc(doc(context.firestore(), 'users', uid), profile);
   });
 }
 
@@ -322,6 +331,14 @@ async function manipulatedInitialPointsDenied() {
     updatedAt: serverTimestamp(),
   });
   await assertFails(batch.commit());
+}
+
+async function legacyProfileFirstScoringAllowed() {
+  await seedUserWithoutTotalPoints('uid-a');
+  await assertSucceeds(updateDoc(doc(authDb('uid-a'), 'users', 'uid-a'), {
+    totalPoints: 50,
+    updatedAt: serverTimestamp(),
+  }));
 }
 
 async function totalPointsReductionDenied() {
