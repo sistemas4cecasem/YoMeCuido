@@ -87,7 +87,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_01",
       "type": "fillBlank",
-      "statement": "El proceso de atraer o incorporar a una persona hacia una situación de explotación puede comenzar con la __.",
+      "statement": "El proceso de atraer o incorporar a una persona hacia una situación de explotación puede comenzar con la _____.",
       "options": [],
       "correctAnswer": "captación",
       "acceptedAnswers": [
@@ -185,7 +185,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_01",
       "type": "fillBlank",
-      "statement": "Una persona que se gana rápidamente la confianza para después aprovecharla puede estar realizando un proceso de __.",
+      "statement": "Una persona que se gana rápidamente la confianza para después aprovecharla puede estar realizando un proceso de _____.",
       "options": [],
       "correctAnswer": "captación",
       "acceptedAnswers": [
@@ -335,7 +335,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_02",
       "type": "fillBlank",
-      "statement": "Ocultar intencionalmente las condiciones reales de un trabajo es una forma de __.",
+      "statement": "Ocultar intencionalmente las condiciones reales de un trabajo es una forma de _____.",
       "options": [],
       "correctAnswer": "engaño",
       "acceptedAnswers": [
@@ -433,7 +433,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_02",
       "type": "fillBlank",
-      "statement": "Presionar para que alguien decida “ahora mismo” busca limitar su tiempo de __.",
+      "statement": "Presionar para que alguien decida “ahora mismo” busca limitar su tiempo de _____.",
       "options": [],
       "correctAnswer": "verificación",
       "acceptedAnswers": [
@@ -583,7 +583,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_03",
       "type": "fillBlank",
-      "statement": "Cuando alguien aprovecha que otra persona no tiene dónde vivir para imponerle explotación, está abusando de su __.",
+      "statement": "Cuando alguien aprovecha que otra persona no tiene dónde vivir para imponerle explotación, está abusando de su _____.",
       "options": [],
       "correctAnswer": "vulnerabilidad",
       "acceptedAnswers": [
@@ -680,7 +680,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_03",
       "type": "fillBlank",
-      "statement": "Una persona que depende totalmente de otra para vivienda, dinero y comunicación puede estar en una situación de __.",
+      "statement": "Una persona que depende totalmente de otra para vivienda, dinero y comunicación puede estar en una situación de _____.",
       "options": [],
       "correctAnswer": "dependencia",
       "acceptedAnswers": [
@@ -829,7 +829,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_04",
       "type": "fillBlank",
-      "statement": "Obligar a trabajar para pagar una deuda impuesta o manipulada puede convertirse en servidumbre por __.",
+      "statement": "Obligar a trabajar para pagar una deuda impuesta o manipulada puede convertirse en servidumbre por _____.",
       "options": [],
       "correctAnswer": "deudas",
       "acceptedAnswers": [
@@ -926,7 +926,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_04",
       "type": "fillBlank",
-      "statement": "Retener el teléfono de una persona para impedir que se comunique es una forma de __.",
+      "statement": "Retener el teléfono de una persona para impedir que se comunique es una forma de _____.",
       "options": [],
       "correctAnswer": "control",
       "acceptedAnswers": [
@@ -1045,7 +1045,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_05",
       "type": "fillBlank",
-      "statement": "Una amenaza utilizada para obligar a alguien a actuar contra su voluntad es una forma de __.",
+      "statement": "Una amenaza utilizada para obligar a alguien a actuar contra su voluntad es una forma de _____.",
       "options": [],
       "correctAnswer": "coacción",
       "acceptedAnswers": [
@@ -1173,7 +1173,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_05",
       "type": "fillBlank",
-      "statement": "Separar a una persona de amistades y familia aumenta su __ del explotador.",
+      "statement": "Separar a una persona de amistades y familia aumenta su _____ del explotador.",
       "options": [],
       "correctAnswer": "dependencia",
       "acceptedAnswers": [
@@ -1322,7 +1322,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_06",
       "type": "fillBlank",
-      "statement": "Confirmar que una empresa, dirección y persona realmente existen es un proceso de __.",
+      "statement": "Confirmar que una empresa, dirección y persona realmente existen es un proceso de _____.",
       "options": [],
       "correctAnswer": "verificación",
       "acceptedAnswers": [
@@ -1420,7 +1420,7 @@
       "categoryId": "recruitment_deception",
       "activityId": "recruitment_deception_activity_06",
       "type": "fillBlank",
-      "statement": "Tener personas que conocen tu destino y pueden ayudarte forma parte de una red de __.",
+      "statement": "Tener personas que conocen tu destino y pueden ayudarte forma parte de una red de _____.",
       "options": [],
       "correctAnswer": "apoyo",
       "acceptedAnswers": [

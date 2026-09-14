@@ -87,7 +87,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_01",
       "type": "fillBlank",
-      "statement": "Tratar a una persona sin humillarla ni culparla protege su __.",
+      "statement": "Tratar a una persona sin humillarla ni culparla protege su _____.",
       "options": [],
       "correctAnswer": "dignidad",
       "acceptedAnswers": [
@@ -184,7 +184,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_01",
       "type": "fillBlank",
-      "statement": "Negar ayuda por origen, género o situación migratoria sería una forma de __.",
+      "statement": "Negar ayuda por origen, género o situación migratoria sería una forma de _____.",
       "options": [],
       "correctAnswer": "discriminación",
       "acceptedAnswers": [
@@ -334,7 +334,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_02",
       "type": "fillBlank",
-      "statement": "Evaluar amenazas y necesidades inmediatas forma parte de la __.",
+      "statement": "Evaluar amenazas y necesidades inmediatas forma parte de la _____.",
       "options": [],
       "correctAnswer": "protección",
       "acceptedAnswers": [
@@ -432,7 +432,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_02",
       "type": "fillBlank",
-      "statement": "Un lugar donde la persona pueda permanecer sin exposición a quien la amenaza puede ser un alojamiento __.",
+      "statement": "Un lugar donde la persona pueda permanecer sin exposición a quien la amenaza puede ser un alojamiento _____.",
       "options": [],
       "correctAnswer": "seguro",
       "acceptedAnswers": [
@@ -581,7 +581,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_03",
       "type": "fillBlank",
-      "statement": "Comunicar formalmente hechos posiblemente delictivos a una autoridad puede realizarse mediante una __.",
+      "statement": "Comunicar formalmente hechos posiblemente delictivos a una autoridad puede realizarse mediante una _____.",
       "options": [],
       "correctAnswer": "denuncia",
       "acceptedAnswers": [
@@ -678,7 +678,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_03",
       "type": "fillBlank",
-      "statement": "Una institución que investiga delitos y dirige la acción penal en Bolivia es el Ministerio __.",
+      "statement": "Una institución que investiga delitos y dirige la acción penal en Bolivia es el Ministerio _____.",
       "options": [],
       "correctAnswer": "Público",
       "acceptedAnswers": [
@@ -828,7 +828,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_04",
       "type": "fillBlank",
-      "statement": "Proteger la información personal de una víctima forma parte de la __.",
+      "statement": "Proteger la información personal de una víctima forma parte de la _____.",
       "options": [],
       "correctAnswer": "confidencialidad",
       "acceptedAnswers": [
@@ -925,7 +925,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_04",
       "type": "fillBlank",
-      "statement": "Una entrevista realizada con cuidado para obtener información necesaria sin causar daño adicional puede ser una entrevista __.",
+      "statement": "Una entrevista realizada con cuidado para obtener información necesaria sin causar daño adicional puede ser una entrevista _____.",
       "options": [],
       "correctAnswer": "especializada",
       "acceptedAnswers": [
@@ -1074,7 +1074,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_05",
       "type": "fillBlank",
-      "statement": "El proceso de reconstruir condiciones de vida, vínculos y autonomía después de la explotación se denomina __.",
+      "statement": "El proceso de reconstruir condiciones de vida, vínculos y autonomía después de la explotación se denomina _____.",
       "options": [],
       "correctAnswer": "reintegración",
       "acceptedAnswers": [
@@ -1172,7 +1172,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_05",
       "type": "fillBlank",
-      "statement": "Contar con ingresos y vivienda segura puede reducir la __ frente a nuevas situaciones de explotación.",
+      "statement": "Contar con ingresos y vivienda segura puede reducir la _____ frente a nuevas situaciones de explotación.",
       "options": [],
       "correctAnswer": "vulnerabilidad",
       "acceptedAnswers": [
@@ -1321,7 +1321,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_06",
       "type": "fillBlank",
-      "statement": "Recuperar la capacidad de decidir sobre la propia vida forma parte de recuperar la __.",
+      "statement": "Recuperar la capacidad de decidir sobre la propia vida forma parte de recuperar la _____.",
       "options": [],
       "correctAnswer": "autonomía",
       "acceptedAnswers": [
@@ -1419,7 +1419,7 @@
       "categoryId": "rights_response_reintegration",
       "activityId": "rights_response_reintegration_activity_06",
       "type": "fillBlank",
-      "statement": "Revisar periódicamente riesgos y necesidades forma parte del __.",
+      "statement": "Revisar periódicamente riesgos y necesidades forma parte del _____.",
       "options": [],
       "correctAnswer": "seguimiento",
       "acceptedAnswers": [

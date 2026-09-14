@@ -87,7 +87,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_01",
       "type": "fillBlank",
-      "statement": "El aprovechamiento de una persona para obtener un beneficio mediante su sometimiento se denomina __.",
+      "statement": "El aprovechamiento de una persona para obtener un beneficio mediante su sometimiento se denomina _____.",
       "options": [],
       "correctAnswer": "explotación",
       "acceptedAnswers": [
@@ -215,7 +215,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_01",
       "type": "fillBlank",
-      "statement": "La trata puede ocurrir dentro del mismo país; por eso también puede ser trata __.",
+      "statement": "La trata puede ocurrir dentro del mismo país; por eso también puede ser trata _____.",
       "options": [],
       "correctAnswer": "interna",
       "acceptedAnswers": [
@@ -334,7 +334,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_02",
       "type": "fillBlank",
-      "statement": "La trata se centra principalmente en la __ de la persona.",
+      "statement": "La trata se centra principalmente en la _____ de la persona.",
       "options": [],
       "correctAnswer": "explotación",
       "acceptedAnswers": [
@@ -432,7 +432,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_02",
       "type": "fillBlank",
-      "statement": "El paso ilegal de una persona de un Estado a otro con beneficio económico para quien lo facilita corresponde al __ de personas.",
+      "statement": "El paso ilegal de una persona de un Estado a otro con beneficio económico para quien lo facilita corresponde al _____ de personas.",
       "options": [],
       "correctAnswer": "tráfico",
       "acceptedAnswers": [
@@ -560,7 +560,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_03",
       "type": "fillBlank",
-      "statement": "Captación, traslado y acogida son ejemplos de __ dentro del proceso de trata.",
+      "statement": "Captación, traslado y acogida son ejemplos de _____ dentro del proceso de trata.",
       "options": [],
       "correctAnswer": "acciones",
       "acceptedAnswers": [
@@ -679,7 +679,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_03",
       "type": "fillBlank",
-      "statement": "La razón por la que se capta o somete a una persona en la trata es una finalidad de __.",
+      "statement": "La razón por la que se capta o somete a una persona en la trata es una finalidad de _____.",
       "options": [],
       "correctAnswer": "explotación",
       "acceptedAnswers": [
@@ -799,7 +799,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_04",
       "type": "fillBlank",
-      "statement": "Aprovechar una necesidad económica extrema para someter a una persona puede constituir abuso de una situación de __.",
+      "statement": "Aprovechar una necesidad económica extrema para someter a una persona puede constituir abuso de una situación de _____.",
       "options": [],
       "correctAnswer": "vulnerabilidad",
       "acceptedAnswers": [
@@ -896,7 +896,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_04",
       "type": "fillBlank",
-      "statement": "Las amenazas, la fuerza o el engaño pueden utilizarse para ejercer __ sobre una víctima.",
+      "statement": "Las amenazas, la fuerza o el engaño pueden utilizarse para ejercer _____ sobre una víctima.",
       "options": [],
       "correctAnswer": "control",
       "acceptedAnswers": [
@@ -1037,7 +1037,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_05",
       "type": "fillBlank",
-      "statement": "Cuando la trata involucra más de un país se denomina trata __.",
+      "statement": "Cuando la trata involucra más de un país se denomina trata _____.",
       "options": [],
       "correctAnswer": "transnacional",
       "acceptedAnswers": [
@@ -1134,7 +1134,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_05",
       "type": "fillBlank",
-      "statement": "El cruce de una __ no es requisito para que exista trata de personas.",
+      "statement": "El cruce de una _____ no es requisito para que exista trata de personas.",
       "options": [],
       "correctAnswer": "frontera",
       "acceptedAnswers": [
@@ -1305,7 +1305,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_06",
       "type": "fillBlank",
-      "statement": "Evitar culpar, humillar o exponer innecesariamente a una víctima ayuda a prevenir la __.",
+      "statement": "Evitar culpar, humillar o exponer innecesariamente a una víctima ayuda a prevenir la _____.",
       "options": [],
       "correctAnswer": "revictimización",
       "acceptedAnswers": [
@@ -1403,7 +1403,7 @@
       "categoryId": "trafficking_fundamentals",
       "activityId": "trafficking_fundamentals_activity_06",
       "type": "fillBlank",
-      "statement": "Tratar a una víctima con respeto, protección y sin culparla forma parte de un enfoque centrado en sus __.",
+      "statement": "Tratar a una víctima con respeto, protección y sin culparla forma parte de un enfoque centrado en sus _____.",
       "options": [],
       "correctAnswer": "derechos",
       "acceptedAnswers": [

@@ -87,7 +87,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_01",
       "type": "fillBlank",
-      "statement": "El proceso de atraer a una persona mediante mensajes, promesas o relaciones puede formar parte de la __.",
+      "statement": "El proceso de atraer a una persona mediante mensajes, promesas o relaciones puede formar parte de la _____.",
       "options": [],
       "correctAnswer": "captación",
       "acceptedAnswers": [
@@ -185,7 +185,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_01",
       "type": "fillBlank",
-      "statement": "Pedir que una relación o propuesta se mantenga en __ puede facilitar el aislamiento.",
+      "statement": "Pedir que una relación o propuesta se mantenga en _____ puede facilitar el aislamiento.",
       "options": [],
       "correctAnswer": "secreto",
       "acceptedAnswers": [
@@ -304,7 +304,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_02",
       "type": "fillBlank",
-      "statement": "Usar el nombre y fotografías de otra persona para hacerse pasar por ella es una forma de __ de identidad.",
+      "statement": "Usar el nombre y fotografías de otra persona para hacerse pasar por ella es una forma de _____ de identidad.",
       "options": [],
       "correctAnswer": "suplantación",
       "acceptedAnswers": [
@@ -432,7 +432,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_02",
       "type": "fillBlank",
-      "statement": "Comprobar datos por medios distintos al chat original se llama verificación __.",
+      "statement": "Comprobar datos por medios distintos al chat original se llama verificación _____.",
       "options": [],
       "correctAnswer": "independiente",
       "acceptedAnswers": [
@@ -581,7 +581,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_03",
       "type": "fillBlank",
-      "statement": "Una oferta legítima debería permitir comprobar las condiciones antes de realizar un __.",
+      "statement": "Una oferta legítima debería permitir comprobar las condiciones antes de realizar un _____.",
       "options": [],
       "correctAnswer": "viaje",
       "acceptedAnswers": [
@@ -678,7 +678,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_03",
       "type": "fillBlank",
-      "statement": "Una oferta con datos comprobables puede considerarse más __ que una basada únicamente en promesas.",
+      "statement": "Una oferta con datos comprobables puede considerarse más _____ que una basada únicamente en promesas.",
       "options": [],
       "correctAnswer": "verificable",
       "acceptedAnswers": [
@@ -827,7 +827,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_04",
       "type": "fillBlank",
-      "statement": "Ganar confianza mediante atención y secretos para luego manipular a un menor puede formar parte del __.",
+      "statement": "Ganar confianza mediante atención y secretos para luego manipular a un menor puede formar parte del _____.",
       "options": [],
       "correctAnswer": "grooming",
       "acceptedAnswers": [
@@ -924,7 +924,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_04",
       "type": "fillBlank",
-      "statement": "Presionar para alejar a una persona de sus vínculos de confianza es una forma de __.",
+      "statement": "Presionar para alejar a una persona de sus vínculos de confianza es una forma de _____.",
       "options": [],
       "correctAnswer": "aislamiento",
       "acceptedAnswers": [
@@ -1073,7 +1073,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_05",
       "type": "fillBlank",
-      "statement": "Amenazar con divulgar contenido íntimo para obtener dinero o acciones se denomina __.",
+      "statement": "Amenazar con divulgar contenido íntimo para obtener dinero o acciones se denomina _____.",
       "options": [],
       "correctAnswer": "sextorsión",
       "acceptedAnswers": [
@@ -1171,7 +1171,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_05",
       "type": "fillBlank",
-      "statement": "Conservar capturas, enlaces, nombres de usuario y mensajes ayuda a preservar __.",
+      "statement": "Conservar capturas, enlaces, nombres de usuario y mensajes ayuda a preservar _____.",
       "options": [],
       "correctAnswer": "evidencia",
       "acceptedAnswers": [
@@ -1320,7 +1320,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_06",
       "type": "fillBlank",
-      "statement": "Revisar quién puede ver tus publicaciones y ubicación forma parte de la configuración de __.",
+      "statement": "Revisar quién puede ver tus publicaciones y ubicación forma parte de la configuración de _____.",
       "options": [],
       "correctAnswer": "privacidad",
       "acceptedAnswers": [
@@ -1417,7 +1417,7 @@
       "categoryId": "digital_recruitment",
       "activityId": "digital_recruitment_activity_06",
       "type": "fillBlank",
-      "statement": "Guardar información relevante de una amenaza sin modificarla ayuda a conservar la __ digital.",
+      "statement": "Guardar información relevante de una amenaza sin modificarla ayuda a conservar la _____ digital.",
       "options": [],
       "correctAnswer": "evidencia",
       "acceptedAnswers": [

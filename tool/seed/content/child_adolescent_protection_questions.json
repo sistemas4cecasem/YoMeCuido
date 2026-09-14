@@ -87,7 +87,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_01",
       "type": "fillBlank",
-      "statement": "La obligación de cuidar y resguardar a niñas, niños y adolescentes forma parte de su __.",
+      "statement": "La obligación de cuidar y resguardar a niñas, niños y adolescentes forma parte de su _____.",
       "options": [],
       "correctAnswer": "protección",
       "acceptedAnswers": [
@@ -185,7 +185,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_01",
       "type": "fillBlank",
-      "statement": "Cuando una persona adulta usa su autoridad para someter a un menor existe abuso de __.",
+      "statement": "Cuando una persona adulta usa su autoridad para someter a un menor existe abuso de _____.",
       "options": [],
       "correctAnswer": "poder",
       "acceptedAnswers": [
@@ -304,7 +304,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_02",
       "type": "fillBlank",
-      "statement": "Un secreto que provoca miedo o impide pedir ayuda debe compartirse con una persona adulta de __.",
+      "statement": "Un secreto que provoca miedo o impide pedir ayuda debe compartirse con una persona adulta de _____.",
       "options": [],
       "correctAnswer": "confianza",
       "acceptedAnswers": [
@@ -431,7 +431,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_02",
       "type": "fillBlank",
-      "statement": "Usar regalos o afecto para presionar decisiones puede ser una forma de __.",
+      "statement": "Usar regalos o afecto para presionar decisiones puede ser una forma de _____.",
       "options": [],
       "correctAnswer": "manipulación",
       "acceptedAnswers": [
@@ -581,7 +581,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_03",
       "type": "fillBlank",
-      "statement": "Una oportunidad para una persona menor debe ser __ antes de realizar viajes o compromisos.",
+      "statement": "Una oportunidad para una persona menor debe ser _____ antes de realizar viajes o compromisos.",
       "options": [],
       "correctAnswer": "verificada",
       "acceptedAnswers": [
@@ -678,7 +678,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_03",
       "type": "fillBlank",
-      "statement": "Una institución real debería poder identificar a sus responsables, dirección y condiciones de __.",
+      "statement": "Una institución real debería poder identificar a sus responsables, dirección y condiciones de _____.",
       "options": [],
       "correctAnswer": "participación",
       "acceptedAnswers": [
@@ -828,7 +828,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_04",
       "type": "fillBlank",
-      "statement": "Varias señales de riesgo juntas justifican aumentar la __.",
+      "statement": "Varias señales de riesgo juntas justifican aumentar la _____.",
       "options": [],
       "correctAnswer": "protección",
       "acceptedAnswers": [
@@ -926,7 +926,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_04",
       "type": "fillBlank",
-      "statement": "La pérdida inesperada de contacto con una persona menor requiere una respuesta __.",
+      "statement": "La pérdida inesperada de contacto con una persona menor requiere una respuesta _____.",
       "options": [],
       "correctAnswer": "inmediata",
       "acceptedAnswers": [
@@ -1075,7 +1075,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_05",
       "type": "fillBlank",
-      "statement": "Hacer que una víctima repita innecesariamente hechos traumáticos puede causar __.",
+      "statement": "Hacer que una víctima repita innecesariamente hechos traumáticos puede causar _____.",
       "options": [],
       "correctAnswer": "revictimización",
       "acceptedAnswers": [
@@ -1173,7 +1173,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_05",
       "type": "fillBlank",
-      "statement": "Escuchar sin juzgar ayuda a mantener una relación de __.",
+      "statement": "Escuchar sin juzgar ayuda a mantener una relación de _____.",
       "options": [],
       "correctAnswer": "confianza",
       "acceptedAnswers": [
@@ -1322,7 +1322,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_06",
       "type": "fillBlank",
-      "statement": "Una persona adulta a la que un menor puede acudir sin miedo forma parte de su red de __.",
+      "statement": "Una persona adulta a la que un menor puede acudir sin miedo forma parte de su red de _____.",
       "options": [],
       "correctAnswer": "apoyo",
       "acceptedAnswers": [
@@ -1419,7 +1419,7 @@
       "categoryId": "child_adolescent_protection",
       "activityId": "child_adolescent_protection_activity_06",
       "type": "fillBlank",
-      "statement": "Saber a quién llamar o acudir en una situación de riesgo es parte de un plan de __.",
+      "statement": "Saber a quién llamar o acudir en una situación de riesgo es parte de un plan de _____.",
       "options": [],
       "correctAnswer": "seguridad",
       "acceptedAnswers": [

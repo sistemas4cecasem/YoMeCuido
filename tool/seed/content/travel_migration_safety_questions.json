@@ -87,7 +87,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_01",
       "type": "fillBlank",
-      "statement": "Compartir destino, horarios y contactos principales forma parte de un __ de viaje.",
+      "statement": "Compartir destino, horarios y contactos principales forma parte de un _____ de viaje.",
       "options": [],
       "correctAnswer": "itinerario",
       "acceptedAnswers": [
@@ -184,7 +184,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_01",
       "type": "fillBlank",
-      "statement": "Tener un contacto fuera del grupo de viaje fortalece la red de __.",
+      "statement": "Tener un contacto fuera del grupo de viaje fortalece la red de _____.",
       "options": [],
       "correctAnswer": "apoyo",
       "acceptedAnswers": [
@@ -333,7 +333,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_02",
       "type": "fillBlank",
-      "statement": "Antes de aceptar empleo fuera del país conviene comprobar la identidad del __.",
+      "statement": "Antes de aceptar empleo fuera del país conviene comprobar la identidad del _____.",
       "options": [],
       "correctAnswer": "empleador",
       "acceptedAnswers": [
@@ -430,7 +430,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_02",
       "type": "fillBlank",
-      "statement": "Las funciones, pago y horario deberían quedar claros antes de firmar un __.",
+      "statement": "Las funciones, pago y horario deberían quedar claros antes de firmar un _____.",
       "options": [],
       "correctAnswer": "contrato",
       "acceptedAnswers": [
@@ -579,7 +579,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_03",
       "type": "fillBlank",
-      "statement": "Una situación de tráfico puede convertirse en trata si aparece __ de la persona.",
+      "statement": "Una situación de tráfico puede convertirse en trata si aparece _____ de la persona.",
       "options": [],
       "correctAnswer": "explotación",
       "acceptedAnswers": [
@@ -677,7 +677,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_03",
       "type": "fillBlank",
-      "statement": "El cruce ilegal entre países es un elemento del __ de personas.",
+      "statement": "El cruce ilegal entre países es un elemento del _____ de personas.",
       "options": [],
       "correctAnswer": "tráfico",
       "acceptedAnswers": [
@@ -827,7 +827,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_04",
       "type": "fillBlank",
-      "statement": "Retener documentos para impedir que una persona continúe o abandone un viaje es una forma de __.",
+      "statement": "Retener documentos para impedir que una persona continúe o abandone un viaje es una forma de _____.",
       "options": [],
       "correctAnswer": "control",
       "acceptedAnswers": [
@@ -924,7 +924,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_04",
       "type": "fillBlank",
-      "statement": "Un cambio no informado de ruta puede dificultar que la red de apoyo conozca la __ de la persona.",
+      "statement": "Un cambio no informado de ruta puede dificultar que la red de apoyo conozca la _____ de la persona.",
       "options": [],
       "correctAnswer": "ubicación",
       "acceptedAnswers": [
@@ -1074,7 +1074,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_05",
       "type": "fillBlank",
-      "statement": "Obligar a trabajar para pagar una deuda manipulada puede convertirse en servidumbre por __.",
+      "statement": "Obligar a trabajar para pagar una deuda manipulada puede convertirse en servidumbre por _____.",
       "options": [],
       "correctAnswer": "deudas",
       "acceptedAnswers": [
@@ -1171,7 +1171,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_05",
       "type": "fillBlank",
-      "statement": "Los gastos no explicados pueden generar una __ inesperada.",
+      "statement": "Los gastos no explicados pueden generar una _____ inesperada.",
       "options": [],
       "correctAnswer": "deuda",
       "acceptedAnswers": [
@@ -1320,7 +1320,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_06",
       "type": "fillBlank",
-      "statement": "Contar con contactos externos facilita pedir __ si las condiciones cambian.",
+      "statement": "Contar con contactos externos facilita pedir _____ si las condiciones cambian.",
       "options": [],
       "correctAnswer": "ayuda",
       "acceptedAnswers": [
@@ -1417,7 +1417,7 @@
       "categoryId": "travel_migration_safety",
       "activityId": "travel_migration_safety_activity_06",
       "type": "fillBlank",
-      "statement": "La prioridad ante amenazas durante un viaje es preservar la __ de la persona.",
+      "statement": "La prioridad ante amenazas durante un viaje es preservar la _____ de la persona.",
       "options": [],
       "correctAnswer": "seguridad",
       "acceptedAnswers": [

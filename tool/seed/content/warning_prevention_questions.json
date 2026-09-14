@@ -87,7 +87,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_01",
       "type": "fillBlank",
-      "statement": "Retener pasaporte, cédula o teléfono puede ser una señal de __.",
+      "statement": "Retener pasaporte, cédula o teléfono puede ser una señal de _____.",
       "options": [],
       "correctAnswer": "control",
       "acceptedAnswers": [
@@ -184,7 +184,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_01",
       "type": "fillBlank",
-      "statement": "Las señales deben analizarse dentro de su __ y no como pruebas aisladas.",
+      "statement": "Las señales deben analizarse dentro de su _____ y no como pruebas aisladas.",
       "options": [],
       "correctAnswer": "contexto",
       "acceptedAnswers": [
@@ -333,7 +333,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_02",
       "type": "fillBlank",
-      "statement": "Escuchar sin juzgar ayuda a crear un espacio de __.",
+      "statement": "Escuchar sin juzgar ayuda a crear un espacio de _____.",
       "options": [],
       "correctAnswer": "confianza",
       "acceptedAnswers": [
@@ -430,7 +430,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_02",
       "type": "fillBlank",
-      "statement": "Preguntar “¿estás en peligro ahora?” ayuda a evaluar la __ inmediata.",
+      "statement": "Preguntar “¿estás en peligro ahora?” ayuda a evaluar la _____ inmediata.",
       "options": [],
       "correctAnswer": "seguridad",
       "acceptedAnswers": [
@@ -579,7 +579,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_03",
       "type": "fillBlank",
-      "statement": "Compartir información clara sobre riesgos antes de que ocurra un delito es una medida de __.",
+      "statement": "Compartir información clara sobre riesgos antes de que ocurra un delito es una medida de _____.",
       "options": [],
       "correctAnswer": "prevención",
       "acceptedAnswers": [
@@ -677,7 +677,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_03",
       "type": "fillBlank",
-      "statement": "Personas, familias e instituciones que pueden brindar ayuda forman una red de __.",
+      "statement": "Personas, familias e instituciones que pueden brindar ayuda forman una red de _____.",
       "options": [],
       "correctAnswer": "protección",
       "acceptedAnswers": [
@@ -827,7 +827,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_04",
       "type": "fillBlank",
-      "statement": "Ante una amenaza física grave, la prioridad es la __.",
+      "statement": "Ante una amenaza física grave, la prioridad es la _____.",
       "options": [],
       "correctAnswer": "seguridad",
       "acceptedAnswers": [
@@ -924,7 +924,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_04",
       "type": "fillBlank",
-      "statement": "Planificar cómo salir de una situación peligrosa forma parte de un plan de __.",
+      "statement": "Planificar cómo salir de una situación peligrosa forma parte de un plan de _____.",
       "options": [],
       "correctAnswer": "seguridad",
       "acceptedAnswers": [
@@ -1073,7 +1073,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_05",
       "type": "fillBlank",
-      "statement": "Capturas, enlaces y mensajes pueden formar parte de la __ digital.",
+      "statement": "Capturas, enlaces y mensajes pueden formar parte de la _____ digital.",
       "options": [],
       "correctAnswer": "evidencia",
       "acceptedAnswers": [
@@ -1170,7 +1170,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_05",
       "type": "fillBlank",
-      "statement": "No publicar datos que permitan identificar a una víctima protege su __.",
+      "statement": "No publicar datos que permitan identificar a una víctima protege su _____.",
       "options": [],
       "correctAnswer": "privacidad",
       "acceptedAnswers": [
@@ -1319,7 +1319,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_06",
       "type": "fillBlank",
-      "statement": "Una persona de la comunidad puede __ una sospecha sin realizar la investigación por su cuenta.",
+      "statement": "Una persona de la comunidad puede _____ una sospecha sin realizar la investigación por su cuenta.",
       "options": [],
       "correctAnswer": "reportar",
       "acceptedAnswers": [
@@ -1416,7 +1416,7 @@
       "categoryId": "warning_prevention",
       "activityId": "warning_prevention_activity_06",
       "type": "fillBlank",
-      "statement": "Ayudar sin ponerse en peligro ni poner en riesgo a la víctima es una actuación __.",
+      "statement": "Ayudar sin ponerse en peligro ni poner en riesgo a la víctima es una actuación _____.",
       "options": [],
       "correctAnswer": "segura",
       "acceptedAnswers": [
