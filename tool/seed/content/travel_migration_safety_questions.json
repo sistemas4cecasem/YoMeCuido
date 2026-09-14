@@ -9,19 +9,19 @@
       "options": [
         {
           "id": "q01_o1",
-          "text": "Destino, responsables, alojamiento, transporte y forma de retorno."
+          "text": "Destino, responsables, alojamiento, transporte y forma de retorno"
         },
         {
           "id": "q01_o2",
-          "text": "Solo el nombre de quien invita."
+          "text": "Solo el nombre de quien invita"
         },
         {
           "id": "q01_o3",
-          "text": "Solo el precio del pasaje."
+          "text": "Solo el precio del pasaje"
         },
         {
           "id": "q01_o4",
-          "text": "Nada si la propuesta parece atractiva."
+          "text": "Nada si la propuesta parece atractiva"
         }
       ],
       "correctAnswer": "q01_o1",
@@ -61,19 +61,19 @@
       "options": [
         {
           "id": "q03_o1",
-          "text": "Llevarlos bajo control propio y conservar copias seguras."
+          "text": "Llevarlos bajo control propio y conservar copias seguras"
         },
         {
           "id": "q03_o2",
-          "text": "Entregarlos a cualquier acompañante."
+          "text": "Entregarlos a cualquier acompañante"
         },
         {
           "id": "q03_o3",
-          "text": "Publicarlos en redes."
+          "text": "Publicarlos en redes"
         },
         {
           "id": "q03_o4",
-          "text": "Viajar sin saber dónde están."
+          "text": "Viajar sin saber dónde están"
         }
       ],
       "correctAnswer": "q03_o1",
@@ -128,19 +128,19 @@
       "options": [
         {
           "id": "q06_o1",
-          "text": "Que nadie pueda explicar la dirección exacta del alojamiento."
+          "text": "Que nadie pueda explicar la dirección exacta del alojamiento"
         },
         {
           "id": "q06_o2",
-          "text": "Tener una reserva verificable."
+          "text": "Tener una reserva verificable"
         },
         {
           "id": "q06_o3",
-          "text": "Conocer el número del transporte."
+          "text": "Conocer el número del transporte"
         },
         {
           "id": "q06_o4",
-          "text": "Informar a la familia."
+          "text": "Informar a la familia"
         }
       ],
       "correctAnswer": "q06_o1",
@@ -158,19 +158,19 @@
       "options": [
         {
           "id": "q07_o1",
-          "text": "Guardar copias accesibles de forma segura."
+          "text": "Guardar copias accesibles de forma segura"
         },
         {
           "id": "q07_o2",
-          "text": "Dar la única copia a un desconocido."
+          "text": "Dar la única copia a un desconocido"
         },
         {
           "id": "q07_o3",
-          "text": "Romperlos antes de viajar."
+          "text": "Romperlos antes de viajar"
         },
         {
           "id": "q07_o4",
-          "text": "Enviarlos a grupos públicos."
+          "text": "Enviarlos a grupos públicos"
         }
       ],
       "correctAnswer": "q07_o1",
@@ -225,19 +225,19 @@
       "options": [
         {
           "id": "q10_o1",
-          "text": "Datos verificados + itinerario compartido + documentos propios + contactos de apoyo."
+          "text": "Datos verificados + itinerario compartido + documentos propios + contactos de apoyo"
         },
         {
           "id": "q10_o2",
-          "text": "Secreto + documentos entregados + destino desconocido."
+          "text": "Secreto + documentos entregados + destino desconocido"
         },
         {
           "id": "q10_o3",
-          "text": "Viaje urgente sin información."
+          "text": "Viaje urgente sin información"
         },
         {
           "id": "q10_o4",
-          "text": "Dependencia total del reclutador."
+          "text": "Dependencia total del reclutador"
         }
       ],
       "correctAnswer": "q10_o1",
@@ -255,19 +255,19 @@
       "options": [
         {
           "id": "q11_o1",
-          "text": "Empresa, funciones, salario, horario y lugar de trabajo."
+          "text": "Empresa, funciones, salario, horario y lugar de trabajo"
         },
         {
           "id": "q11_o2",
-          "text": "Solo una promesa de “ganar mucho”."
+          "text": "Solo una promesa de “ganar mucho”"
         },
         {
           "id": "q11_o3",
-          "text": "Únicamente un número de mensajería."
+          "text": "Únicamente un número de mensajería"
         },
         {
           "id": "q11_o4",
-          "text": "Una exigencia de viajar ese mismo día."
+          "text": "Una exigencia de viajar ese mismo día"
         }
       ],
       "correctAnswer": "q11_o1",
@@ -307,19 +307,19 @@
       "options": [
         {
           "id": "q13_o1",
-          "text": "Verificar requisitos y empleador antes de salir."
+          "text": "Verificar requisitos y empleador antes de salir"
         },
         {
           "id": "q13_o2",
-          "text": "Viajar y preguntar al llegar."
+          "text": "Viajar y preguntar al llegar"
         },
         {
           "id": "q13_o3",
-          "text": "Entregar pasaporte al intermediario."
+          "text": "Entregar pasaporte al intermediario"
         },
         {
           "id": "q13_o4",
-          "text": "No decirlo a nadie."
+          "text": "No decirlo a nadie"
         }
       ],
       "correctAnswer": "q13_o1",
@@ -374,19 +374,19 @@
       "options": [
         {
           "id": "q16_o1",
-          "text": "El reclutador exige entregar el pasaporte y dice que lo devolverá “cuando termines de pagar”."
+          "text": "El reclutador exige entregar el pasaporte y dice que lo devolverá “cuando termines de pagar”"
         },
         {
           "id": "q16_o2",
-          "text": "El empleador envía contrato."
+          "text": "El empleador envía contrato"
         },
         {
           "id": "q16_o3",
-          "text": "La empresa tiene dirección verificable."
+          "text": "La empresa tiene dirección verificable"
         },
         {
           "id": "q16_o4",
-          "text": "Puedes consultar a otras personas."
+          "text": "Puedes consultar a otras personas"
         }
       ],
       "correctAnswer": "q16_o1",
@@ -404,19 +404,19 @@
       "options": [
         {
           "id": "q17_o1",
-          "text": "Dirección, costo, reglas y si puedes salir libremente."
+          "text": "Dirección, costo, reglas y si puedes salir libremente"
         },
         {
           "id": "q17_o2",
-          "text": "Solo el color de la habitación."
+          "text": "Solo el color de la habitación"
         },
         {
           "id": "q17_o3",
-          "text": "Nada, porque es gratuito."
+          "text": "Nada, porque es gratuito"
         },
         {
           "id": "q17_o4",
-          "text": "Solo cuántas camas hay."
+          "text": "Solo cuántas camas hay"
         }
       ],
       "correctAnswer": "q17_o1",
@@ -471,19 +471,19 @@
       "options": [
         {
           "id": "q20_o1",
-          "text": "Revisar contrato, empleador, requisitos, costos y contactos."
+          "text": "Revisar contrato, empleador, requisitos, costos y contactos"
         },
         {
           "id": "q20_o2",
-          "text": "Confiar solo en capturas de pantalla."
+          "text": "Confiar solo en capturas de pantalla"
         },
         {
           "id": "q20_o3",
-          "text": "Viajar por presión."
+          "text": "Viajar por presión"
         },
         {
           "id": "q20_o4",
-          "text": "Firmar hojas en blanco."
+          "text": "Firmar hojas en blanco"
         }
       ],
       "correctAnswer": "q20_o1",
@@ -523,19 +523,19 @@
       "options": [
         {
           "id": "q22_o1",
-          "text": "Facilitar un cruce ilegal entre Estados buscando beneficio económico."
+          "text": "Facilitar un cruce ilegal entre Estados buscando beneficio económico"
         },
         {
           "id": "q22_o2",
-          "text": "Cualquier viaje internacional."
+          "text": "Cualquier viaje internacional"
         },
         {
           "id": "q22_o3",
-          "text": "Toda contratación extranjera."
+          "text": "Toda contratación extranjera"
         },
         {
           "id": "q22_o4",
-          "text": "Mudarse dentro de Bolivia."
+          "text": "Mudarse dentro de Bolivia"
         }
       ],
       "correctAnswer": "q22_o1",
@@ -553,19 +553,19 @@
       "options": [
         {
           "id": "q23_o1",
-          "text": "Extorsión, abandono, violencia o explotación."
+          "text": "Extorsión, abandono, violencia o explotación"
         },
         {
           "id": "q23_o2",
-          "text": "Ninguno si pagó por adelantado."
+          "text": "Ninguno si pagó por adelantado"
         },
         {
           "id": "q23_o3",
-          "text": "Seguridad garantizada."
+          "text": "Seguridad garantizada"
         },
         {
           "id": "q23_o4",
-          "text": "Protección automática del intermediario."
+          "text": "Protección automática del intermediario"
         }
       ],
       "correctAnswer": "q23_o1",
@@ -621,19 +621,19 @@
       "options": [
         {
           "id": "q26_o1",
-          "text": "Aumenta el riesgo de coerción y explotación."
+          "text": "Aumenta el riesgo de coerción y explotación"
         },
         {
           "id": "q26_o2",
-          "text": "Es siempre un trámite normal."
+          "text": "Es siempre un trámite normal"
         },
         {
           "id": "q26_o3",
-          "text": "El viaje se vuelve automáticamente seguro."
+          "text": "El viaje se vuelve automáticamente seguro"
         },
         {
           "id": "q26_o4",
-          "text": "No cambia nada."
+          "text": "No cambia nada"
         }
       ],
       "correctAnswer": "q26_o1",
@@ -651,19 +651,19 @@
       "options": [
         {
           "id": "q27_o1",
-          "text": "Tráfico y trata pueden relacionarse, pero no son sinónimos."
+          "text": "Tráfico y trata pueden relacionarse, pero no son sinónimos"
         },
         {
           "id": "q27_o2",
-          "text": "Son idénticos en todos los casos."
+          "text": "Son idénticos en todos los casos"
         },
         {
           "id": "q27_o3",
-          "text": "La trata siempre requiere frontera."
+          "text": "La trata siempre requiere frontera"
         },
         {
           "id": "q27_o4",
-          "text": "El tráfico siempre incluye explotación."
+          "text": "El tráfico siempre incluye explotación"
         }
       ],
       "correctAnswer": "q27_o1",
@@ -719,19 +719,19 @@
       "options": [
         {
           "id": "q30_o1",
-          "text": "Diferenciar migración de trata y analizar riesgos sin culpar a la persona."
+          "text": "Diferenciar migración de trata y analizar riesgos sin culpar a la persona"
         },
         {
           "id": "q30_o2",
-          "text": "Considerar sospechosa a toda persona migrante."
+          "text": "Considerar sospechosa a toda persona migrante"
         },
         {
           "id": "q30_o3",
-          "text": "Asumir que quien viaja irregularmente acepta cualquier abuso."
+          "text": "Asumir que quien viaja irregularmente acepta cualquier abuso"
         },
         {
           "id": "q30_o4",
-          "text": "Negar ayuda por su situación migratoria."
+          "text": "Negar ayuda por su situación migratoria"
         }
       ],
       "correctAnswer": "q30_o1",
@@ -749,19 +749,19 @@
       "options": [
         {
           "id": "q31_o1",
-          "text": "Una señal de alerta que debe aclararse."
+          "text": "Una señal de alerta que debe aclararse"
         },
         {
           "id": "q31_o2",
-          "text": "Una garantía de seguridad."
+          "text": "Una garantía de seguridad"
         },
         {
           "id": "q31_o3",
-          "text": "Un detalle sin importancia."
+          "text": "Un detalle sin importancia"
         },
         {
           "id": "q31_o4",
-          "text": "Una obligación normal."
+          "text": "Una obligación normal"
         }
       ],
       "correctAnswer": "q31_o1",
@@ -801,19 +801,19 @@
       "options": [
         {
           "id": "q33_o1",
-          "text": "Que impidan salir, comunicarse o conservar documentos."
+          "text": "Que impidan salir, comunicarse o conservar documentos"
         },
         {
           "id": "q33_o2",
-          "text": "Que exista una dirección verificable."
+          "text": "Que exista una dirección verificable"
         },
         {
           "id": "q33_o3",
-          "text": "Que puedas comunicarte con tu familia."
+          "text": "Que puedas comunicarte con tu familia"
         },
         {
           "id": "q33_o4",
-          "text": "Que puedas abandonar el lugar."
+          "text": "Que puedas abandonar el lugar"
         }
       ],
       "correctAnswer": "q33_o1",
@@ -868,19 +868,19 @@
       "options": [
         {
           "id": "q36_o1",
-          "text": "Informar a un contacto de confianza sobre el cambio cuando sea seguro."
+          "text": "Informar a un contacto de confianza sobre el cambio cuando sea seguro"
         },
         {
           "id": "q36_o2",
-          "text": "Desaparecer de toda comunicación."
+          "text": "Desaparecer de toda comunicación"
         },
         {
           "id": "q36_o3",
-          "text": "Entregar el teléfono."
+          "text": "Entregar el teléfono"
         },
         {
           "id": "q36_o4",
-          "text": "Eliminar la ubicación del destino sin avisar."
+          "text": "Eliminar la ubicación del destino sin avisar"
         }
       ],
       "correctAnswer": "q36_o1",
@@ -898,19 +898,19 @@
       "options": [
         {
           "id": "q37_o1",
-          "text": "Restricción de libertad asociada a deuda."
+          "text": "Restricción de libertad asociada a deuda"
         },
         {
           "id": "q37_o2",
-          "text": "Hospedaje normal."
+          "text": "Hospedaje normal"
         },
         {
           "id": "q37_o3",
-          "text": "Beneficio turístico."
+          "text": "Beneficio turístico"
         },
         {
           "id": "q37_o4",
-          "text": "Capacitación."
+          "text": "Capacitación"
         }
       ],
       "correctAnswer": "q37_o1",
@@ -966,19 +966,19 @@
       "options": [
         {
           "id": "q40_o1",
-          "text": "Que el traslado sea seguro y no implique amenazas ni restricciones abusivas."
+          "text": "Que el traslado sea seguro y no implique amenazas ni restricciones abusivas"
         },
         {
           "id": "q40_o2",
-          "text": "La música del vehículo."
+          "text": "La música del vehículo"
         },
         {
           "id": "q40_o3",
-          "text": "El color de los asientos."
+          "text": "El color de los asientos"
         },
         {
           "id": "q40_o4",
-          "text": "La cantidad de fotos tomadas."
+          "text": "La cantidad de fotos tomadas"
         }
       ],
       "correctAnswer": "q40_o1",
@@ -996,19 +996,19 @@
       "options": [
         {
           "id": "q41_o1",
-          "text": "Transporte, alojamiento, trámites y cualquier descuento previsto."
+          "text": "Transporte, alojamiento, trámites y cualquier descuento previsto"
         },
         {
           "id": "q41_o2",
-          "text": "Ninguno."
+          "text": "Ninguno"
         },
         {
           "id": "q41_o3",
-          "text": "Solo comida."
+          "text": "Solo comida"
         },
         {
           "id": "q41_o4",
-          "text": "Solo el pasaje de ida."
+          "text": "Solo el pasaje de ida"
         }
       ],
       "correctAnswer": "q41_o1",
@@ -1048,19 +1048,19 @@
       "options": [
         {
           "id": "q43_o1",
-          "text": "El monto cambia sin explicación y nunca disminuye pese al trabajo."
+          "text": "El monto cambia sin explicación y nunca disminuye pese al trabajo"
         },
         {
           "id": "q43_o2",
-          "text": "Existe un monto fijo y comprobable."
+          "text": "Existe un monto fijo y comprobable"
         },
         {
           "id": "q43_o3",
-          "text": "Hay recibos y condiciones claras."
+          "text": "Hay recibos y condiciones claras"
         },
         {
           "id": "q43_o4",
-          "text": "La persona puede pagar y retirarse."
+          "text": "La persona puede pagar y retirarse"
         }
       ],
       "correctAnswer": "q43_o1",
@@ -1115,19 +1115,19 @@
       "options": [
         {
           "id": "q46_o1",
-          "text": "Transparencia sobre costos."
+          "text": "Transparencia sobre costos"
         },
         {
           "id": "q46_o2",
-          "text": "Fotografías del destino."
+          "text": "Fotografías del destino"
         },
         {
           "id": "q46_o3",
-          "text": "Publicidad."
+          "text": "Publicidad"
         },
         {
           "id": "q46_o4",
-          "text": "Un uniforme."
+          "text": "Un uniforme"
         }
       ],
       "correctAnswer": "q46_o1",
@@ -1145,19 +1145,19 @@
       "options": [
         {
           "id": "q47_o1",
-          "text": "Explicación, comprobantes y relación clara con un servicio legítimo."
+          "text": "Explicación, comprobantes y relación clara con un servicio legítimo"
         },
         {
           "id": "q47_o2",
-          "text": "Que todo sea verbal."
+          "text": "Que todo sea verbal"
         },
         {
           "id": "q47_o3",
-          "text": "Una cuenta personal sin nombre."
+          "text": "Una cuenta personal sin nombre"
         },
         {
           "id": "q47_o4",
-          "text": "Ningún documento."
+          "text": "Ningún documento"
         }
       ],
       "correctAnswer": "q47_o1",
@@ -1212,19 +1212,19 @@
       "options": [
         {
           "id": "q50_o1",
-          "text": "Conocer costos totales y condiciones antes de viajar."
+          "text": "Conocer costos totales y condiciones antes de viajar"
         },
         {
           "id": "q50_o2",
-          "text": "Aceptar cualquier deuda al llegar."
+          "text": "Aceptar cualquier deuda al llegar"
         },
         {
           "id": "q50_o3",
-          "text": "No preguntar por descuentos."
+          "text": "No preguntar por descuentos"
         },
         {
           "id": "q50_o4",
-          "text": "Dejar que otra persona maneje todo el dinero."
+          "text": "Dejar que otra persona maneje todo el dinero"
         }
       ],
       "correctAnswer": "q50_o1",
@@ -1242,19 +1242,19 @@
       "options": [
         {
           "id": "q51_o1",
-          "text": "La seguridad y buscar ayuda por un canal confiable cuando sea posible."
+          "text": "La seguridad y buscar ayuda por un canal confiable cuando sea posible"
         },
         {
           "id": "q51_o2",
-          "text": "Discutir a solas para recuperarlos."
+          "text": "Discutir a solas para recuperarlos"
         },
         {
           "id": "q51_o3",
-          "text": "Publicar inmediatamente tu ubicación exacta."
+          "text": "Publicar inmediatamente tu ubicación exacta"
         },
         {
           "id": "q51_o4",
-          "text": "Ignorar las amenazas."
+          "text": "Ignorar las amenazas"
         }
       ],
       "correctAnswer": "q51_o1",
@@ -1294,19 +1294,19 @@
       "options": [
         {
           "id": "q53_o1",
-          "text": "Te impiden comunicarte, cambian el destino y controlan tus documentos."
+          "text": "Te impiden comunicarte, cambian el destino y controlan tus documentos"
         },
         {
           "id": "q53_o2",
-          "text": "Te explican el itinerario."
+          "text": "Te explican el itinerario"
         },
         {
           "id": "q53_o3",
-          "text": "Puedes llamar libremente."
+          "text": "Puedes llamar libremente"
         },
         {
           "id": "q53_o4",
-          "text": "Conservas tus pertenencias."
+          "text": "Conservas tus pertenencias"
         }
       ],
       "correctAnswer": "q53_o1",
@@ -1361,19 +1361,19 @@
       "options": [
         {
           "id": "q56_o1",
-          "text": "Ubicación, nombres o descripciones, vehículo, contactos y situación cuando sea seguro obtenerlos."
+          "text": "Ubicación, nombres o descripciones, vehículo, contactos y situación cuando sea seguro obtenerlos"
         },
         {
           "id": "q56_o2",
-          "text": "Solo rumores."
+          "text": "Solo rumores"
         },
         {
           "id": "q56_o3",
-          "text": "Ningún dato."
+          "text": "Ningún dato"
         },
         {
           "id": "q56_o4",
-          "text": "Contraseñas personales."
+          "text": "Contraseñas personales"
         }
       ],
       "correctAnswer": "q56_o1",
@@ -1391,19 +1391,19 @@
       "options": [
         {
           "id": "q57_o1",
-          "text": "Regresar solo para recuperar objetos si existe riesgo grave."
+          "text": "Regresar solo para recuperar objetos si existe riesgo grave"
         },
         {
           "id": "q57_o2",
-          "text": "Contactar apoyo."
+          "text": "Contactar apoyo"
         },
         {
           "id": "q57_o3",
-          "text": "Informar dónde estás."
+          "text": "Informar dónde estás"
         },
         {
           "id": "q57_o4",
-          "text": "Buscar orientación."
+          "text": "Buscar orientación"
         }
       ],
       "correctAnswer": "q57_o1",
@@ -1458,19 +1458,19 @@
       "options": [
         {
           "id": "q60_o1",
-          "text": "Información, documentos propios, costos claros, contactos externos y capacidad de pedir ayuda."
+          "text": "Información, documentos propios, costos claros, contactos externos y capacidad de pedir ayuda"
         },
         {
           "id": "q60_o2",
-          "text": "Secreto, dependencia y documentos retenidos."
+          "text": "Secreto, dependencia y documentos retenidos"
         },
         {
           "id": "q60_o3",
-          "text": "Deuda desconocida y destino variable."
+          "text": "Deuda desconocida y destino variable"
         },
         {
           "id": "q60_o4",
-          "text": "Aislamiento durante todo el viaje."
+          "text": "Aislamiento durante todo el viaje"
         }
       ],
       "correctAnswer": "q60_o1",

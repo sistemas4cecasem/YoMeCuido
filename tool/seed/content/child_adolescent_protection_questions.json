@@ -9,19 +9,19 @@
       "options": [
         {
           "id": "q01_o1",
-          "text": "Porque pueden depender más de personas adultas y ser más vulnerables a manipulación."
+          "text": "Porque pueden depender más de personas adultas y ser más vulnerables a manipulación"
         },
         {
           "id": "q01_o2",
-          "text": "Porque nunca usan internet."
+          "text": "Porque nunca usan internet"
         },
         {
           "id": "q01_o3",
-          "text": "Porque siempre reconocen el peligro."
+          "text": "Porque siempre reconocen el peligro"
         },
         {
           "id": "q01_o4",
-          "text": "Porque no tienen derechos propios."
+          "text": "Porque no tienen derechos propios"
         }
       ],
       "correctAnswer": "q01_o1",
@@ -61,19 +61,19 @@
       "options": [
         {
           "id": "q03_o1",
-          "text": "Verificar condiciones, responsables, lugar y seguridad."
+          "text": "Verificar condiciones, responsables, lugar y seguridad"
         },
         {
           "id": "q03_o2",
-          "text": "Permitir que viaje solo sin información."
+          "text": "Permitir que viaje solo sin información"
         },
         {
           "id": "q03_o3",
-          "text": "Entregar documentos a desconocidos."
+          "text": "Entregar documentos a desconocidos"
         },
         {
           "id": "q03_o4",
-          "text": "Ignorar la edad."
+          "text": "Ignorar la edad"
         }
       ],
       "correctAnswer": "q03_o1",
@@ -129,19 +129,19 @@
       "options": [
         {
           "id": "q06_o1",
-          "text": "“Si algo te preocupa, puedes contármelo sin miedo a que te culpe”."
+          "text": "“Si algo te preocupa, puedes contármelo sin miedo a que te culpe”"
         },
         {
           "id": "q06_o2",
-          "text": "“Si te engañan será porque no hiciste caso”."
+          "text": "“Si te engañan será porque no hiciste caso”"
         },
         {
           "id": "q06_o3",
-          "text": "“Resuelve tus problemas solo”."
+          "text": "“Resuelve tus problemas solo”"
         },
         {
           "id": "q06_o4",
-          "text": "“Nunca cambies de opinión”."
+          "text": "“Nunca cambies de opinión”"
         }
       ],
       "correctAnswer": "q06_o1",
@@ -159,19 +159,19 @@
       "options": [
         {
           "id": "q07_o1",
-          "text": "Escuchar sin burlas ni castigos automáticos."
+          "text": "Escuchar sin burlas ni castigos automáticos"
         },
         {
           "id": "q07_o2",
-          "text": "Amenazar con quitarle todo si cuenta algo."
+          "text": "Amenazar con quitarle todo si cuenta algo"
         },
         {
           "id": "q07_o3",
-          "text": "Ignorar cambios preocupantes."
+          "text": "Ignorar cambios preocupantes"
         },
         {
           "id": "q07_o4",
-          "text": "Prohibir cualquier pregunta."
+          "text": "Prohibir cualquier pregunta"
         }
       ],
       "correctAnswer": "q07_o1",
@@ -226,19 +226,19 @@
       "options": [
         {
           "id": "q10_o1",
-          "text": "Su seguridad y acceso a ayuda."
+          "text": "Su seguridad y acceso a ayuda"
         },
         {
           "id": "q10_o2",
-          "text": "Conseguir todos los detalles antes de actuar."
+          "text": "Conseguir todos los detalles antes de actuar"
         },
         {
           "id": "q10_o3",
-          "text": "Publicar el caso."
+          "text": "Publicar el caso"
         },
         {
           "id": "q10_o4",
-          "text": "Enfrentar a la persona sospechosa sin apoyo."
+          "text": "Enfrentar a la persona sospechosa sin apoyo"
         }
       ],
       "correctAnswer": "q10_o1",
@@ -256,19 +256,19 @@
       "options": [
         {
           "id": "q11_o1",
-          "text": "Una señal de manipulación."
+          "text": "Una señal de manipulación"
         },
         {
           "id": "q11_o2",
-          "text": "Una obligación por recibir regalos."
+          "text": "Una obligación por recibir regalos"
         },
         {
           "id": "q11_o3",
-          "text": "Un vínculo automáticamente seguro."
+          "text": "Un vínculo automáticamente seguro"
         },
         {
           "id": "q11_o4",
-          "text": "Una forma normal de pago."
+          "text": "Una forma normal de pago"
         }
       ],
       "correctAnswer": "q11_o1",
@@ -323,19 +323,19 @@
       "options": [
         {
           "id": "q14_o1",
-          "text": "“No le digas a nadie que hablamos; se enojarán contigo”."
+          "text": "“No le digas a nadie que hablamos; se enojarán contigo”"
         },
         {
           "id": "q14_o2",
-          "text": "“Puedes contárselo a tus cuidadores”."
+          "text": "“Puedes contárselo a tus cuidadores”"
         },
         {
           "id": "q14_o3",
-          "text": "“Si algo te incomoda, paramos”."
+          "text": "“Si algo te incomoda, paramos”"
         },
         {
           "id": "q14_o4",
-          "text": "“No tienes que aceptar”."
+          "text": "“No tienes que aceptar”"
         }
       ],
       "correctAnswer": "q14_o1",
@@ -375,19 +375,19 @@
       "options": [
         {
           "id": "q16_o1",
-          "text": "Negarse y buscar apoyo de confianza."
+          "text": "Negarse y buscar apoyo de confianza"
         },
         {
           "id": "q16_o2",
-          "text": "Enviar más para evitar problemas."
+          "text": "Enviar más para evitar problemas"
         },
         {
           "id": "q16_o3",
-          "text": "Mantenerlo en secreto."
+          "text": "Mantenerlo en secreto"
         },
         {
           "id": "q16_o4",
-          "text": "Entregar también documentos."
+          "text": "Entregar también documentos"
         }
       ],
       "correctAnswer": "q16_o1",
@@ -405,19 +405,19 @@
       "options": [
         {
           "id": "q17_o1",
-          "text": "“Si de verdad me quieres, harás lo que te pido”."
+          "text": "“Si de verdad me quieres, harás lo que te pido”"
         },
         {
           "id": "q17_o2",
-          "text": "“Respeto tu decisión”."
+          "text": "“Respeto tu decisión”"
         },
         {
           "id": "q17_o3",
-          "text": "“Puedes tomarte tu tiempo”."
+          "text": "“Puedes tomarte tu tiempo”"
         },
         {
           "id": "q17_o4",
-          "text": "“Pregunta a tu familia”."
+          "text": "“Pregunta a tu familia”"
         }
       ],
       "correctAnswer": "q17_o1",
@@ -473,19 +473,19 @@
       "options": [
         {
           "id": "q20_o1",
-          "text": "Respetar límites y no pedir secretos que generen miedo."
+          "text": "Respetar límites y no pedir secretos que generen miedo"
         },
         {
           "id": "q20_o2",
-          "text": "Aislar al menor de sus cuidadores."
+          "text": "Aislar al menor de sus cuidadores"
         },
         {
           "id": "q20_o3",
-          "text": "Exigir contacto constante."
+          "text": "Exigir contacto constante"
         },
         {
           "id": "q20_o4",
-          "text": "Presionarlo con regalos."
+          "text": "Presionarlo con regalos"
         }
       ],
       "correctAnswer": "q20_o1",
@@ -503,19 +503,19 @@
       "options": [
         {
           "id": "q21_o1",
-          "text": "Verificar la oferta y no excluir a personas adultas responsables."
+          "text": "Verificar la oferta y no excluir a personas adultas responsables"
         },
         {
           "id": "q21_o2",
-          "text": "Aceptar en secreto."
+          "text": "Aceptar en secreto"
         },
         {
           "id": "q21_o3",
-          "text": "Viajar sin dirección."
+          "text": "Viajar sin dirección"
         },
         {
           "id": "q21_o4",
-          "text": "Entregar documentos originales."
+          "text": "Entregar documentos originales"
         }
       ],
       "correctAnswer": "q21_o1",
@@ -555,19 +555,19 @@
       "options": [
         {
           "id": "q23_o1",
-          "text": "Verificar la institución y acompañamiento antes de aceptar."
+          "text": "Verificar la institución y acompañamiento antes de aceptar"
         },
         {
           "id": "q23_o2",
-          "text": "Viajar de inmediato."
+          "text": "Viajar de inmediato"
         },
         {
           "id": "q23_o3",
-          "text": "Mantenerlo en secreto."
+          "text": "Mantenerlo en secreto"
         },
         {
           "id": "q23_o4",
-          "text": "Apagar el teléfono."
+          "text": "Apagar el teléfono"
         }
       ],
       "correctAnswer": "q23_o1",
@@ -622,19 +622,19 @@
       "options": [
         {
           "id": "q26_o1",
-          "text": "Exigir acudir a solas a una vivienda y mantenerlo en secreto."
+          "text": "Exigir acudir a solas a una vivienda y mantenerlo en secreto"
         },
         {
           "id": "q26_o2",
-          "text": "Realizarse en una institución identificable."
+          "text": "Realizarse en una institución identificable"
         },
         {
           "id": "q26_o3",
-          "text": "Permitir acompañamiento."
+          "text": "Permitir acompañamiento"
         },
         {
           "id": "q26_o4",
-          "text": "Explicar condiciones por escrito."
+          "text": "Explicar condiciones por escrito"
         }
       ],
       "correctAnswer": "q26_o1",
@@ -652,19 +652,19 @@
       "options": [
         {
           "id": "q27_o1",
-          "text": "Sus derechos, seguridad y límites legales."
+          "text": "Sus derechos, seguridad y límites legales"
         },
         {
           "id": "q27_o2",
-          "text": "La entrega permanente de documentos."
+          "text": "La entrega permanente de documentos"
         },
         {
           "id": "q27_o3",
-          "text": "La prohibición de comunicarse con la familia."
+          "text": "La prohibición de comunicarse con la familia"
         },
         {
           "id": "q27_o4",
-          "text": "La obligación de trabajar bajo amenazas."
+          "text": "La obligación de trabajar bajo amenazas"
         }
       ],
       "correctAnswer": "q27_o1",
@@ -720,19 +720,19 @@
       "options": [
         {
           "id": "q30_o1",
-          "text": "Que personas de confianza conozcan responsables, destino, contacto e itinerario."
+          "text": "Que personas de confianza conozcan responsables, destino, contacto e itinerario"
         },
         {
           "id": "q30_o2",
-          "text": "Que viaje sin avisar."
+          "text": "Que viaje sin avisar"
         },
         {
           "id": "q30_o3",
-          "text": "Que entregue su teléfono."
+          "text": "Que entregue su teléfono"
         },
         {
           "id": "q30_o4",
-          "text": "Que elimine las conversaciones."
+          "text": "Que elimine las conversaciones"
         }
       ],
       "correctAnswer": "q30_o1",
@@ -750,19 +750,19 @@
       "options": [
         {
           "id": "q31_o1",
-          "text": "Comunicarlo de forma inmediata a las autoridades competentes y activar la búsqueda."
+          "text": "Comunicarlo de forma inmediata a las autoridades competentes y activar la búsqueda"
         },
         {
           "id": "q31_o2",
-          "text": "Esperar varios días."
+          "text": "Esperar varios días"
         },
         {
           "id": "q31_o3",
-          "text": "Borrar su información."
+          "text": "Borrar su información"
         },
         {
           "id": "q31_o4",
-          "text": "Asumir que volverá."
+          "text": "Asumir que volverá"
         }
       ],
       "correctAnswer": "q31_o1",
@@ -802,19 +802,19 @@
       "options": [
         {
           "id": "q33_o1",
-          "text": "Miedo intenso hacia una persona y regalos inexplicables."
+          "text": "Miedo intenso hacia una persona y regalos inexplicables"
         },
         {
           "id": "q33_o2",
-          "text": "Cambiar de música favorita."
+          "text": "Cambiar de música favorita"
         },
         {
           "id": "q33_o3",
-          "text": "Dormir un poco más un fin de semana."
+          "text": "Dormir un poco más un fin de semana"
         },
         {
           "id": "q33_o4",
-          "text": "Usar ropa diferente."
+          "text": "Usar ropa diferente"
         }
       ],
       "correctAnswer": "q33_o1",
@@ -870,19 +870,19 @@
       "options": [
         {
           "id": "q36_o1",
-          "text": "Foto reciente, última ubicación conocida, contactos y circunstancias relevantes."
+          "text": "Foto reciente, última ubicación conocida, contactos y circunstancias relevantes"
         },
         {
           "id": "q36_o2",
-          "text": "Rumores sin verificar publicados como hechos."
+          "text": "Rumores sin verificar publicados como hechos"
         },
         {
           "id": "q36_o3",
-          "text": "Contraseñas difundidas públicamente."
+          "text": "Contraseñas difundidas públicamente"
         },
         {
           "id": "q36_o4",
-          "text": "Datos privados innecesarios."
+          "text": "Datos privados innecesarios"
         }
       ],
       "correctAnswer": "q36_o1",
@@ -900,19 +900,19 @@
       "options": [
         {
           "id": "q37_o1",
-          "text": "Conversar sin culpar y verificar quién organiza el viaje."
+          "text": "Conversar sin culpar y verificar quién organiza el viaje"
         },
         {
           "id": "q37_o2",
-          "text": "Ignorarlo."
+          "text": "Ignorarlo"
         },
         {
           "id": "q37_o3",
-          "text": "Castigarla sin escuchar."
+          "text": "Castigarla sin escuchar"
         },
         {
           "id": "q37_o4",
-          "text": "Publicar sus mensajes."
+          "text": "Publicar sus mensajes"
         }
       ],
       "correctAnswer": "q37_o1",
@@ -967,19 +967,19 @@
       "options": [
         {
           "id": "q40_o1",
-          "text": "Mantener comunicación y conocer cambios importantes sin invadir ni humillar."
+          "text": "Mantener comunicación y conocer cambios importantes sin invadir ni humillar"
         },
         {
           "id": "q40_o2",
-          "text": "Ignorar cualquier preocupación."
+          "text": "Ignorar cualquier preocupación"
         },
         {
           "id": "q40_o3",
-          "text": "Usar solo castigos."
+          "text": "Usar solo castigos"
         },
         {
           "id": "q40_o4",
-          "text": "Prohibir que el menor hable con adultos de confianza."
+          "text": "Prohibir que el menor hable con adultos de confianza"
         }
       ],
       "correctAnswer": "q40_o1",
@@ -997,19 +997,19 @@
       "options": [
         {
           "id": "q41_o1",
-          "text": "Escuchar con calma y agradecer que lo haya contado."
+          "text": "Escuchar con calma y agradecer que lo haya contado"
         },
         {
           "id": "q41_o2",
-          "text": "Culparlo."
+          "text": "Culparlo"
         },
         {
           "id": "q41_o3",
-          "text": "Exigir que enfrente a la persona."
+          "text": "Exigir que enfrente a la persona"
         },
         {
           "id": "q41_o4",
-          "text": "Publicarlo en redes."
+          "text": "Publicarlo en redes"
         }
       ],
       "correctAnswer": "q41_o1",
@@ -1049,19 +1049,19 @@
       "options": [
         {
           "id": "q43_o1",
-          "text": "“Hiciste bien en contarlo; vamos a buscar ayuda”."
+          "text": "“Hiciste bien en contarlo; vamos a buscar ayuda”"
         },
         {
           "id": "q43_o2",
-          "text": "“¿Por qué fuiste tan ingenuo?”."
+          "text": "“¿Por qué fuiste tan ingenuo?”"
         },
         {
           "id": "q43_o3",
-          "text": "“Seguro exageras”."
+          "text": "“Seguro exageras”"
         },
         {
           "id": "q43_o4",
-          "text": "“Ahora todos deben saberlo”."
+          "text": "“Ahora todos deben saberlo”"
         }
       ],
       "correctAnswer": "q43_o1",
@@ -1117,19 +1117,19 @@
       "options": [
         {
           "id": "q46_o1",
-          "text": "Confrontar sola al posible agresor si puede aumentar el riesgo."
+          "text": "Confrontar sola al posible agresor si puede aumentar el riesgo"
         },
         {
           "id": "q46_o2",
-          "text": "Buscar apoyo institucional."
+          "text": "Buscar apoyo institucional"
         },
         {
           "id": "q46_o3",
-          "text": "Escuchar al menor."
+          "text": "Escuchar al menor"
         },
         {
           "id": "q46_o4",
-          "text": "Proteger su privacidad."
+          "text": "Proteger su privacidad"
         }
       ],
       "correctAnswer": "q46_o1",
@@ -1147,19 +1147,19 @@
       "options": [
         {
           "id": "q47_o1",
-          "text": "Un plan de seguridad y apoyo especializado."
+          "text": "Un plan de seguridad y apoyo especializado"
         },
         {
           "id": "q47_o2",
-          "text": "Decirle que el miedo no importa."
+          "text": "Decirle que el miedo no importa"
         },
         {
           "id": "q47_o3",
-          "text": "Obligarle a volver al lugar."
+          "text": "Obligarle a volver al lugar"
         },
         {
           "id": "q47_o4",
-          "text": "Difundir su ubicación."
+          "text": "Difundir su ubicación"
         }
       ],
       "correctAnswer": "q47_o1",
@@ -1214,19 +1214,19 @@
       "options": [
         {
           "id": "q50_o1",
-          "text": "Escuchar, no culpar, proteger y conectar con ayuda adecuada."
+          "text": "Escuchar, no culpar, proteger y conectar con ayuda adecuada"
         },
         {
           "id": "q50_o2",
-          "text": "Castigar, exponer y confrontar."
+          "text": "Castigar, exponer y confrontar"
         },
         {
           "id": "q50_o3",
-          "text": "Ignorar para no preocuparlo."
+          "text": "Ignorar para no preocuparlo"
         },
         {
           "id": "q50_o4",
-          "text": "Pedirle que resuelva solo."
+          "text": "Pedirle que resuelva solo"
         }
       ],
       "correctAnswer": "q50_o1",
@@ -1244,19 +1244,19 @@
       "options": [
         {
           "id": "q51_o1",
-          "text": "Personas e instituciones a las que un menor puede acudir para recibir ayuda."
+          "text": "Personas e instituciones a las que un menor puede acudir para recibir ayuda"
         },
         {
           "id": "q51_o2",
-          "text": "Solo sus seguidores en redes sociales."
+          "text": "Solo sus seguidores en redes sociales"
         },
         {
           "id": "q51_o3",
-          "text": "Únicamente una aplicación."
+          "text": "Únicamente una aplicación"
         },
         {
           "id": "q51_o4",
-          "text": "Un grupo secreto."
+          "text": "Un grupo secreto"
         }
       ],
       "correctAnswer": "q51_o1",
@@ -1296,19 +1296,19 @@
       "options": [
         {
           "id": "q53_o1",
-          "text": "Conversar sobre ofertas, viajes y contactos sin basarse solo en castigos."
+          "text": "Conversar sobre ofertas, viajes y contactos sin basarse solo en castigos"
         },
         {
           "id": "q53_o2",
-          "text": "Prohibir cualquier conversación sobre riesgos."
+          "text": "Prohibir cualquier conversación sobre riesgos"
         },
         {
           "id": "q53_o3",
-          "text": "Ridiculizar las dudas."
+          "text": "Ridiculizar las dudas"
         },
         {
           "id": "q53_o4",
-          "text": "No conocer nunca sus actividades."
+          "text": "No conocer nunca sus actividades"
         }
       ],
       "correctAnswer": "q53_o1",
@@ -1363,19 +1363,19 @@
       "options": [
         {
           "id": "q56_o1",
-          "text": "Verificar ofertas y pedir ayuda cuando algo no coincide."
+          "text": "Verificar ofertas y pedir ayuda cuando algo no coincide"
         },
         {
           "id": "q56_o2",
-          "text": "Mantener viajes en secreto."
+          "text": "Mantener viajes en secreto"
         },
         {
           "id": "q56_o3",
-          "text": "Entregar documentos a cualquier persona."
+          "text": "Entregar documentos a cualquier persona"
         },
         {
           "id": "q56_o4",
-          "text": "Ignorar incomodidad."
+          "text": "Ignorar incomodidad"
         }
       ],
       "correctAnswer": "q56_o1",
@@ -1393,19 +1393,19 @@
       "options": [
         {
           "id": "q57_o1",
-          "text": "Que pueden consultarse y verificarse con personas adultas responsables."
+          "text": "Que pueden consultarse y verificarse con personas adultas responsables"
         },
         {
           "id": "q57_o2",
-          "text": "Que toda oferta es segura."
+          "text": "Que toda oferta es segura"
         },
         {
           "id": "q57_o3",
-          "text": "Que nunca deben comentarse."
+          "text": "Que nunca deben comentarse"
         },
         {
           "id": "q57_o4",
-          "text": "Que los estudiantes deben viajar solos."
+          "text": "Que los estudiantes deben viajar solos"
         }
       ],
       "correctAnswer": "q57_o1",
@@ -1460,19 +1460,19 @@
       "options": [
         {
           "id": "q60_o1",
-          "text": "Información, confianza, verificación, límites y acceso a ayuda."
+          "text": "Información, confianza, verificación, límites y acceso a ayuda"
         },
         {
           "id": "q60_o2",
-          "text": "Miedo, silencio y castigo."
+          "text": "Miedo, silencio y castigo"
         },
         {
           "id": "q60_o3",
-          "text": "Aislamiento total."
+          "text": "Aislamiento total"
         },
         {
           "id": "q60_o4",
-          "text": "Responsabilizar al menor."
+          "text": "Responsabilizar al menor"
         }
       ],
       "correctAnswer": "q60_o1",

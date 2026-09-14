@@ -9,19 +9,19 @@
       "options": [
         {
           "id": "q01_o1",
-          "text": "Cualquier viaje al extranjero."
+          "text": "Cualquier viaje al extranjero"
         },
         {
           "id": "q01_o2",
-          "text": "La captación o traslado de personas con fines de explotación mediante engaño, coacción u otros medios de sometimiento."
+          "text": "La captación o traslado de personas con fines de explotación mediante engaño, coacción u otros medios de sometimiento"
         },
         {
           "id": "q01_o3",
-          "text": "Toda contratación laboral informal."
+          "text": "Toda contratación laboral informal"
         },
         {
           "id": "q01_o4",
-          "text": "Cualquier cambio de domicilio."
+          "text": "Cualquier cambio de domicilio"
         }
       ],
       "correctAnswer": "q01_o2",
@@ -61,19 +61,19 @@
       "options": [
         {
           "id": "q03_o1",
-          "text": "Captar a una persona con una oferta falsa para explotarla."
+          "text": "Captar a una persona con una oferta falsa para explotarla"
         },
         {
           "id": "q03_o2",
-          "text": "Cambiar de empleo voluntariamente."
+          "text": "Cambiar de empleo voluntariamente"
         },
         {
           "id": "q03_o3",
-          "text": "Viajar por turismo con documentos regulares."
+          "text": "Viajar por turismo con documentos regulares"
         },
         {
           "id": "q03_o4",
-          "text": "Mudarse por estudios."
+          "text": "Mudarse por estudios"
         }
       ],
       "correctAnswer": "q03_o1",
@@ -107,19 +107,19 @@
       "options": [
         {
           "id": "q05_o1",
-          "text": "Trabajo forzoso."
+          "text": "Trabajo forzoso"
         },
         {
           "id": "q05_o2",
-          "text": "Turismo voluntario."
+          "text": "Turismo voluntario"
         },
         {
           "id": "q05_o3",
-          "text": "Estudio universitario regular."
+          "text": "Estudio universitario regular"
         },
         {
           "id": "q05_o4",
-          "text": "Cambio de residencia elegido libremente."
+          "text": "Cambio de residencia elegido libremente"
         }
       ],
       "correctAnswer": "q05_o1",
@@ -159,19 +159,19 @@
       "options": [
         {
           "id": "q07_o1",
-          "text": "El cambio de ciudad."
+          "text": "El cambio de ciudad"
         },
         {
           "id": "q07_o2",
-          "text": "La obligación y explotación."
+          "text": "La obligación y explotación"
         },
         {
           "id": "q07_o3",
-          "text": "El uso de transporte público."
+          "text": "El uso de transporte público"
         },
         {
           "id": "q07_o4",
-          "text": "La distancia recorrida."
+          "text": "La distancia recorrida"
         }
       ],
       "correctAnswer": "q07_o2",
@@ -189,19 +189,19 @@
       "options": [
         {
           "id": "q08_o1",
-          "text": "Captar."
+          "text": "Captar"
         },
         {
           "id": "q08_o2",
-          "text": "Elegir voluntariamente un curso."
+          "text": "Elegir voluntariamente un curso"
         },
         {
           "id": "q08_o3",
-          "text": "Comprar un pasaje para vacaciones."
+          "text": "Comprar un pasaje para vacaciones"
         },
         {
           "id": "q08_o4",
-          "text": "Registrarse en una biblioteca."
+          "text": "Registrarse en una biblioteca"
         }
       ],
       "correctAnswer": "q08_o1",
@@ -256,19 +256,19 @@
       "options": [
         {
           "id": "q11_o1",
-          "text": "La trata busca explotación; el tráfico se relaciona con facilitar un cruce ilegal de frontera por beneficio económico."
+          "text": "La trata busca explotación; el tráfico se relaciona con facilitar un cruce ilegal de frontera por beneficio económico"
         },
         {
           "id": "q11_o2",
-          "text": "Son exactamente lo mismo."
+          "text": "Son exactamente lo mismo"
         },
         {
           "id": "q11_o3",
-          "text": "La trata siempre ocurre por avión."
+          "text": "La trata siempre ocurre por avión"
         },
         {
           "id": "q11_o4",
-          "text": "El tráfico solo ocurre dentro de una ciudad."
+          "text": "El tráfico solo ocurre dentro de una ciudad"
         }
       ],
       "correctAnswer": "q11_o1",
@@ -308,19 +308,19 @@
       "options": [
         {
           "id": "q13_o1",
-          "text": "Facilitar la entrada o salida ilegal entre Estados buscando beneficio económico."
+          "text": "Facilitar la entrada o salida ilegal entre Estados buscando beneficio económico"
         },
         {
           "id": "q13_o2",
-          "text": "Que la persona cambie de barrio."
+          "text": "Que la persona cambie de barrio"
         },
         {
           "id": "q13_o3",
-          "text": "Que exista necesariamente explotación laboral."
+          "text": "Que exista necesariamente explotación laboral"
         },
         {
           "id": "q13_o4",
-          "text": "Que la persona sea menor de edad."
+          "text": "Que la persona sea menor de edad"
         }
       ],
       "correctAnswer": "q13_o1",
@@ -354,19 +354,19 @@
       "options": [
         {
           "id": "q15_o1",
-          "text": "Solo turismo."
+          "text": "Solo turismo"
         },
         {
           "id": "q15_o2",
-          "text": "Una situación de tráfico que puede haberse convertido o conectado con trata."
+          "text": "Una situación de tráfico que puede haberse convertido o conectado con trata"
         },
         {
           "id": "q15_o3",
-          "text": "Un viaje académico."
+          "text": "Un viaje académico"
         },
         {
           "id": "q15_o4",
-          "text": "Un trámite migratorio normal."
+          "text": "Un trámite migratorio normal"
         }
       ],
       "correctAnswer": "q15_o2",
@@ -406,19 +406,19 @@
       "options": [
         {
           "id": "q17_o1",
-          "text": "Una persona es captada en su ciudad y explotada laboralmente en otra zona del mismo país."
+          "text": "Una persona es captada en su ciudad y explotada laboralmente en otra zona del mismo país"
         },
         {
           "id": "q17_o2",
-          "text": "Una persona tramita un pasaporte."
+          "text": "Una persona tramita un pasaporte"
         },
         {
           "id": "q17_o3",
-          "text": "Una familia cruza una frontera con documentos válidos."
+          "text": "Una familia cruza una frontera con documentos válidos"
         },
         {
           "id": "q17_o4",
-          "text": "Una persona compra un boleto internacional."
+          "text": "Una persona compra un boleto internacional"
         }
       ],
       "correctAnswer": "q17_o1",
@@ -474,19 +474,19 @@
       "options": [
         {
           "id": "q20_o1",
-          "text": "Solo cuántos kilómetros viajó la persona."
+          "text": "Solo cuántos kilómetros viajó la persona"
         },
         {
           "id": "q20_o2",
-          "text": "Si hubo cruce ilegal, engaño, control, explotación o beneficio para terceros."
+          "text": "Si hubo cruce ilegal, engaño, control, explotación o beneficio para terceros"
         },
         {
           "id": "q20_o3",
-          "text": "Qué ropa llevaba."
+          "text": "Qué ropa llevaba"
         },
         {
           "id": "q20_o4",
-          "text": "Si conocía previamente a quien la trasladó."
+          "text": "Si conocía previamente a quien la trasladó"
         }
       ],
       "correctAnswer": "q20_o2",
@@ -504,19 +504,19 @@
       "options": [
         {
           "id": "q21_o1",
-          "text": "Acoger a una persona para explotarla."
+          "text": "Acoger a una persona para explotarla"
         },
         {
           "id": "q21_o2",
-          "text": "Ofrecer información turística verdadera."
+          "text": "Ofrecer información turística verdadera"
         },
         {
           "id": "q21_o3",
-          "text": "Inscribir a alguien en un curso con su consentimiento."
+          "text": "Inscribir a alguien en un curso con su consentimiento"
         },
         {
           "id": "q21_o4",
-          "text": "Acompañar a un familiar a una consulta médica."
+          "text": "Acompañar a un familiar a una consulta médica"
         }
       ],
       "correctAnswer": "q21_o1",
@@ -534,19 +534,19 @@
       "options": [
         {
           "id": "q22_o1",
-          "text": "Engaño."
+          "text": "Engaño"
         },
         {
           "id": "q22_o2",
-          "text": "Información completa y verificable."
+          "text": "Información completa y verificable"
         },
         {
           "id": "q22_o3",
-          "text": "Contrato transparente."
+          "text": "Contrato transparente"
         },
         {
           "id": "q22_o4",
-          "text": "Libertad de abandonar el trabajo."
+          "text": "Libertad de abandonar el trabajo"
         }
       ],
       "correctAnswer": "q22_o1",
@@ -601,19 +601,19 @@
       "options": [
         {
           "id": "q25_o1",
-          "text": "Obligar a una persona a trabajar bajo amenazas."
+          "text": "Obligar a una persona a trabajar bajo amenazas"
         },
         {
           "id": "q25_o2",
-          "text": "Pagar un salario acordado y permitir renunciar."
+          "text": "Pagar un salario acordado y permitir renunciar"
         },
         {
           "id": "q25_o3",
-          "text": "Facilitar vacaciones familiares."
+          "text": "Facilitar vacaciones familiares"
         },
         {
           "id": "q25_o4",
-          "text": "Ofrecer transporte escolar autorizado."
+          "text": "Ofrecer transporte escolar autorizado"
         }
       ],
       "correctAnswer": "q25_o1",
@@ -631,19 +631,19 @@
       "options": [
         {
           "id": "q26_o1",
-          "text": "Acogida, control y finalidad de explotación."
+          "text": "Acogida, control y finalidad de explotación"
         },
         {
           "id": "q26_o2",
-          "text": "Solo hospedaje."
+          "text": "Solo hospedaje"
         },
         {
           "id": "q26_o3",
-          "text": "Solo transporte."
+          "text": "Solo transporte"
         },
         {
           "id": "q26_o4",
-          "text": "Ningún elemento relevante."
+          "text": "Ningún elemento relevante"
         }
       ],
       "correctAnswer": "q26_o1",
@@ -699,19 +699,19 @@
       "options": [
         {
           "id": "q29_o1",
-          "text": "Amenazar con dañar a la familia si la persona intenta irse."
+          "text": "Amenazar con dañar a la familia si la persona intenta irse"
         },
         {
           "id": "q29_o2",
-          "text": "Permitir que la persona renuncie libremente."
+          "text": "Permitir que la persona renuncie libremente"
         },
         {
           "id": "q29_o3",
-          "text": "Explicar todas las condiciones antes de viajar."
+          "text": "Explicar todas las condiciones antes de viajar"
         },
         {
           "id": "q29_o4",
-          "text": "Entregar una copia del contrato."
+          "text": "Entregar una copia del contrato"
         }
       ],
       "correctAnswer": "q29_o1",
@@ -773,19 +773,19 @@
       "options": [
         {
           "id": "q32_o1",
-          "text": "Que el consentimiento inicial elimina el delito."
+          "text": "Que el consentimiento inicial elimina el delito"
         },
         {
           "id": "q32_o2",
-          "text": "Que una aceptación obtenida mediante engaño no justifica la explotación."
+          "text": "Que una aceptación obtenida mediante engaño no justifica la explotación"
         },
         {
           "id": "q32_o3",
-          "text": "Que cambiar las condiciones es normal."
+          "text": "Que cambiar las condiciones es normal"
         },
         {
           "id": "q32_o4",
-          "text": "Que la víctima es responsable."
+          "text": "Que la víctima es responsable"
         }
       ],
       "correctAnswer": "q32_o2",
@@ -818,19 +818,19 @@
       "options": [
         {
           "id": "q34_o1",
-          "text": "Dependencia económica y aislamiento."
+          "text": "Dependencia económica y aislamiento"
         },
         {
           "id": "q34_o2",
-          "text": "Tener información verificable y una red de apoyo."
+          "text": "Tener información verificable y una red de apoyo"
         },
         {
           "id": "q34_o3",
-          "text": "Conocer las condiciones del trabajo."
+          "text": "Conocer las condiciones del trabajo"
         },
         {
           "id": "q34_o4",
-          "text": "Mantener documentos personales bajo control propio."
+          "text": "Mantener documentos personales bajo control propio"
         }
       ],
       "correctAnswer": "q34_o1",
@@ -870,19 +870,19 @@
       "options": [
         {
           "id": "q36_o1",
-          "text": "Aprovechar que una persona necesita urgentemente dinero para imponerle condiciones abusivas."
+          "text": "Aprovechar que una persona necesita urgentemente dinero para imponerle condiciones abusivas"
         },
         {
           "id": "q36_o2",
-          "text": "Entregar información clara y tiempo para decidir."
+          "text": "Entregar información clara y tiempo para decidir"
         },
         {
           "id": "q36_o3",
-          "text": "Recomendar verificar una oferta."
+          "text": "Recomendar verificar una oferta"
         },
         {
           "id": "q36_o4",
-          "text": "Permitir consultar con la familia."
+          "text": "Permitir consultar con la familia"
         }
       ],
       "correctAnswer": "q36_o1",
@@ -937,19 +937,19 @@
       "options": [
         {
           "id": "q39_o1",
-          "text": "Decidir con urgencia y en secreto."
+          "text": "Decidir con urgencia y en secreto"
         },
         {
           "id": "q39_o2",
-          "text": "Verificar información, consultar con personas de confianza y mantener control de sus documentos."
+          "text": "Verificar información, consultar con personas de confianza y mantener control de sus documentos"
         },
         {
           "id": "q39_o3",
-          "text": "Entregar sus documentos originales al reclutador."
+          "text": "Entregar sus documentos originales al reclutador"
         },
         {
           "id": "q39_o4",
-          "text": "Viajar sin compartir su itinerario."
+          "text": "Viajar sin compartir su itinerario"
         }
       ],
       "correctAnswer": "q39_o2",
@@ -1011,19 +1011,19 @@
       "options": [
         {
           "id": "q42_o1",
-          "text": "Que el proceso ocurre dentro del territorio de un mismo país."
+          "text": "Que el proceso ocurre dentro del territorio de un mismo país"
         },
         {
           "id": "q42_o2",
-          "text": "Que siempre ocurre dentro de una vivienda."
+          "text": "Que siempre ocurre dentro de una vivienda"
         },
         {
           "id": "q42_o3",
-          "text": "Que no existe explotación."
+          "text": "Que no existe explotación"
         },
         {
           "id": "q42_o4",
-          "text": "Que no intervienen otras personas."
+          "text": "Que no intervienen otras personas"
         }
       ],
       "correctAnswer": "q42_o1",
@@ -1056,19 +1056,19 @@
       "options": [
         {
           "id": "q44_o1",
-          "text": "La existencia de explotación y medios de sometimiento."
+          "text": "La existencia de explotación y medios de sometimiento"
         },
         {
           "id": "q44_o2",
-          "text": "El tipo de vehículo utilizado."
+          "text": "El tipo de vehículo utilizado"
         },
         {
           "id": "q44_o3",
-          "text": "El número de maletas."
+          "text": "El número de maletas"
         },
         {
           "id": "q44_o4",
-          "text": "La duración del viaje."
+          "text": "La duración del viaje"
         }
       ],
       "correctAnswer": "q44_o1",
@@ -1108,19 +1108,19 @@
       "options": [
         {
           "id": "q46_o1",
-          "text": "Puede tratarse de trata interna."
+          "text": "Puede tratarse de trata interna"
         },
         {
           "id": "q46_o2",
-          "text": "No puede ser trata porque no salió del país."
+          "text": "No puede ser trata porque no salió del país"
         },
         {
           "id": "q46_o3",
-          "text": "Solo sería trata si viajara en avión."
+          "text": "Solo sería trata si viajara en avión"
         },
         {
           "id": "q46_o4",
-          "text": "Sería únicamente migración."
+          "text": "Sería únicamente migración"
         }
       ],
       "correctAnswer": "q46_o1",
@@ -1227,19 +1227,19 @@
       "options": [
         {
           "id": "q51_o1",
-          "text": "“Debiste darte cuenta antes”."
+          "text": "“Debiste darte cuenta antes”"
         },
         {
           "id": "q51_o2",
-          "text": "“La responsabilidad es de quien engañó, sometió o explotó”."
+          "text": "“La responsabilidad es de quien engañó, sometió o explotó”"
         },
         {
           "id": "q51_o3",
-          "text": "“Si aceptaste viajar, ya no puedes reclamar”."
+          "text": "“Si aceptaste viajar, ya no puedes reclamar”"
         },
         {
           "id": "q51_o4",
-          "text": "“Seguro hiciste algo para que ocurriera”."
+          "text": "“Seguro hiciste algo para que ocurriera”"
         }
       ],
       "correctAnswer": "q51_o2",
@@ -1279,19 +1279,19 @@
       "options": [
         {
           "id": "q53_o1",
-          "text": "La trata puede ocurrir dentro del país."
+          "text": "La trata puede ocurrir dentro del país"
         },
         {
           "id": "q53_o2",
-          "text": "Solo pueden ser víctimas las mujeres."
+          "text": "Solo pueden ser víctimas las mujeres"
         },
         {
           "id": "q53_o3",
-          "text": "El engaño puede utilizarse para captar."
+          "text": "El engaño puede utilizarse para captar"
         },
         {
           "id": "q53_o4",
-          "text": "La explotación laboral también puede ser trata."
+          "text": "La explotación laboral también puede ser trata"
         }
       ],
       "correctAnswer": "q53_o2",
@@ -1347,19 +1347,19 @@
       "options": [
         {
           "id": "q56_o1",
-          "text": "Escuchar sin culpar y buscar apoyo seguro."
+          "text": "Escuchar sin culpar y buscar apoyo seguro"
         },
         {
           "id": "q56_o2",
-          "text": "Exigir todos los detalles inmediatamente."
+          "text": "Exigir todos los detalles inmediatamente"
         },
         {
           "id": "q56_o3",
-          "text": "Publicar el caso en redes."
+          "text": "Publicar el caso en redes"
         },
         {
           "id": "q56_o4",
-          "text": "Confrontar al sospechoso sin evaluar el riesgo."
+          "text": "Confrontar al sospechoso sin evaluar el riesgo"
         }
       ],
       "correctAnswer": "q56_o1",
@@ -1377,19 +1377,19 @@
       "options": [
         {
           "id": "q57_o1",
-          "text": "Recibir un salario siempre descarta explotación."
+          "text": "Recibir un salario siempre descarta explotación"
         },
         {
           "id": "q57_o2",
-          "text": "Una persona puede ser explotada aunque reciba algún pago."
+          "text": "Una persona puede ser explotada aunque reciba algún pago"
         },
         {
           "id": "q57_o3",
-          "text": "Solo existe trata si hay violencia física visible."
+          "text": "Solo existe trata si hay violencia física visible"
         },
         {
           "id": "q57_o4",
-          "text": "Solo existe trata cuando hay secuestro."
+          "text": "Solo existe trata cuando hay secuestro"
         }
       ],
       "correctAnswer": "q57_o2",
@@ -1444,19 +1444,19 @@
       "options": [
         {
           "id": "q60_o1",
-          "text": "Culpar a quienes aceptan ofertas."
+          "text": "Culpar a quienes aceptan ofertas"
         },
         {
           "id": "q60_o2",
-          "text": "Reconocer señales, verificar oportunidades y fortalecer redes de apoyo."
+          "text": "Reconocer señales, verificar oportunidades y fortalecer redes de apoyo"
         },
         {
           "id": "q60_o3",
-          "text": "Desconfiar de toda persona sin excepción."
+          "text": "Desconfiar de toda persona sin excepción"
         },
         {
           "id": "q60_o4",
-          "text": "Evitar hablar del tema."
+          "text": "Evitar hablar del tema"
         }
       ],
       "correctAnswer": "q60_o2",

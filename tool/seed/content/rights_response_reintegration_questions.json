@@ -9,19 +9,19 @@
       "options": [
         {
           "id": "q01_o1",
-          "text": "Quien capta, controla, explota o se beneficia del delito."
+          "text": "Quien capta, controla, explota o se beneficia del delito"
         },
         {
           "id": "q01_o2",
-          "text": "La víctima por confiar."
+          "text": "La víctima por confiar"
         },
         {
           "id": "q01_o3",
-          "text": "La familia automáticamente."
+          "text": "La familia automáticamente"
         },
         {
           "id": "q01_o4",
-          "text": "Nadie."
+          "text": "Nadie"
         }
       ],
       "correctAnswer": "q01_o1",
@@ -61,19 +61,19 @@
       "options": [
         {
           "id": "q03_o1",
-          "text": "Respeto a la dignidad, privacidad y seguridad."
+          "text": "Respeto a la dignidad, privacidad y seguridad"
         },
         {
           "id": "q03_o2",
-          "text": "Exposición pública."
+          "text": "Exposición pública"
         },
         {
           "id": "q03_o3",
-          "text": "Castigo a la víctima."
+          "text": "Castigo a la víctima"
         },
         {
           "id": "q03_o4",
-          "text": "Presión para contar todo."
+          "text": "Presión para contar todo"
         }
       ],
       "correctAnswer": "q03_o1",
@@ -128,19 +128,19 @@
       "options": [
         {
           "id": "q06_o1",
-          "text": "“Lo que te hicieron no es tu culpa y podemos buscar apoyo”."
+          "text": "“Lo que te hicieron no es tu culpa y podemos buscar apoyo”"
         },
         {
           "id": "q06_o2",
-          "text": "“Debiste saberlo”."
+          "text": "“Debiste saberlo”"
         },
         {
           "id": "q06_o3",
-          "text": "“Si aceptaste viajar, es tu responsabilidad”."
+          "text": "“Si aceptaste viajar, es tu responsabilidad”"
         },
         {
           "id": "q06_o4",
-          "text": "“Mejor no digas nada”."
+          "text": "“Mejor no digas nada”"
         }
       ],
       "correctAnswer": "q06_o1",
@@ -158,19 +158,19 @@
       "options": [
         {
           "id": "q07_o1",
-          "text": "Su privacidad y seguridad."
+          "text": "Su privacidad y seguridad"
         },
         {
           "id": "q07_o2",
-          "text": "El interés de las redes sociales."
+          "text": "El interés de las redes sociales"
         },
         {
           "id": "q07_o3",
-          "text": "La curiosidad del público."
+          "text": "La curiosidad del público"
         },
         {
           "id": "q07_o4",
-          "text": "La viralidad del caso."
+          "text": "La viralidad del caso"
         }
       ],
       "correctAnswer": "q07_o1",
@@ -226,19 +226,19 @@
       "options": [
         {
           "id": "q10_o1",
-          "text": "Proteger, informar, escuchar y evitar culpabilización."
+          "text": "Proteger, informar, escuchar y evitar culpabilización"
         },
         {
           "id": "q10_o2",
-          "text": "Exponer, juzgar y presionar."
+          "text": "Exponer, juzgar y presionar"
         },
         {
           "id": "q10_o3",
-          "text": "Decidir todo por la víctima."
+          "text": "Decidir todo por la víctima"
         },
         {
           "id": "q10_o4",
-          "text": "Priorizar la publicidad del caso."
+          "text": "Priorizar la publicidad del caso"
         }
       ],
       "correctAnswer": "q10_o1",
@@ -256,19 +256,19 @@
       "options": [
         {
           "id": "q11_o1",
-          "text": "Si existe peligro inmediato y qué necesita para estar segura."
+          "text": "Si existe peligro inmediato y qué necesita para estar segura"
         },
         {
           "id": "q11_o2",
-          "text": "Cuántas entrevistas puede dar."
+          "text": "Cuántas entrevistas puede dar"
         },
         {
           "id": "q11_o3",
-          "text": "Si quiere aparecer en medios."
+          "text": "Si quiere aparecer en medios"
         },
         {
           "id": "q11_o4",
-          "text": "Qué opinan desconocidos."
+          "text": "Qué opinan desconocidos"
         }
       ],
       "correctAnswer": "q11_o1",
@@ -308,19 +308,19 @@
       "options": [
         {
           "id": "q13_o1",
-          "text": "Una alternativa segura de alojamiento y plan de protección."
+          "text": "Una alternativa segura de alojamiento y plan de protección"
         },
         {
           "id": "q13_o2",
-          "text": "Obligarla a volver."
+          "text": "Obligarla a volver"
         },
         {
           "id": "q13_o3",
-          "text": "Publicar la dirección."
+          "text": "Publicar la dirección"
         },
         {
           "id": "q13_o4",
-          "text": "Ignorar el temor."
+          "text": "Ignorar el temor"
         }
       ],
       "correctAnswer": "q13_o1",
@@ -376,19 +376,19 @@
       "options": [
         {
           "id": "q16_o1",
-          "text": "Apoyo para identificación y recuperación documental."
+          "text": "Apoyo para identificación y recuperación documental"
         },
         {
           "id": "q16_o2",
-          "text": "Ser rechazada por no portar documentos."
+          "text": "Ser rechazada por no portar documentos"
         },
         {
           "id": "q16_o3",
-          "text": "Publicar sus datos."
+          "text": "Publicar sus datos"
         },
         {
           "id": "q16_o4",
-          "text": "Volver sola al lugar de explotación."
+          "text": "Volver sola al lugar de explotación"
         }
       ],
       "correctAnswer": "q16_o1",
@@ -406,19 +406,19 @@
       "options": [
         {
           "id": "q17_o1",
-          "text": "Facilitar acceso seguro a servicios de salud."
+          "text": "Facilitar acceso seguro a servicios de salud"
         },
         {
           "id": "q17_o2",
-          "text": "Esperar a que termine toda investigación."
+          "text": "Esperar a que termine toda investigación"
         },
         {
           "id": "q17_o3",
-          "text": "Exigir que relate públicamente su caso."
+          "text": "Exigir que relate públicamente su caso"
         },
         {
           "id": "q17_o4",
-          "text": "Ignorar síntomas."
+          "text": "Ignorar síntomas"
         }
       ],
       "correctAnswer": "q17_o1",
@@ -473,19 +473,19 @@
       "options": [
         {
           "id": "q20_o1",
-          "text": "Seguridad, necesidades básicas, salud, apoyo y orientación."
+          "text": "Seguridad, necesidades básicas, salud, apoyo y orientación"
         },
         {
           "id": "q20_o2",
-          "text": "Publicidad y entrevistas."
+          "text": "Publicidad y entrevistas"
         },
         {
           "id": "q20_o3",
-          "text": "Castigo y aislamiento."
+          "text": "Castigo y aislamiento"
         },
         {
           "id": "q20_o4",
-          "text": "Regreso automático al lugar anterior."
+          "text": "Regreso automático al lugar anterior"
         }
       ],
       "correctAnswer": "q20_o1",
@@ -503,19 +503,19 @@
       "options": [
         {
           "id": "q21_o1",
-          "text": "Las autoridades competentes."
+          "text": "Las autoridades competentes"
         },
         {
           "id": "q21_o2",
-          "text": "Cualquier usuario de redes sociales."
+          "text": "Cualquier usuario de redes sociales"
         },
         {
           "id": "q21_o3",
-          "text": "Solo la familia."
+          "text": "Solo la familia"
         },
         {
           "id": "q21_o4",
-          "text": "La víctima sin apoyo."
+          "text": "La víctima sin apoyo"
         }
       ],
       "correctAnswer": "q21_o1",
@@ -555,19 +555,19 @@
       "options": [
         {
           "id": "q23_o1",
-          "text": "Policía Boliviana y Ministerio Público."
+          "text": "Policía Boliviana y Ministerio Público"
         },
         {
           "id": "q23_o2",
-          "text": "Solo empresas privadas."
+          "text": "Solo empresas privadas"
         },
         {
           "id": "q23_o3",
-          "text": "Únicamente redes sociales."
+          "text": "Únicamente redes sociales"
         },
         {
           "id": "q23_o4",
-          "text": "Ninguna institución."
+          "text": "Ninguna institución"
         }
       ],
       "correctAnswer": "q23_o1",
@@ -622,19 +622,19 @@
       "options": [
         {
           "id": "q26_o1",
-          "text": "Hechos observados, fechas, lugares, contactos y riesgos inmediatos."
+          "text": "Hechos observados, fechas, lugares, contactos y riesgos inmediatos"
         },
         {
           "id": "q26_o2",
-          "text": "Rumores presentados como hechos."
+          "text": "Rumores presentados como hechos"
         },
         {
           "id": "q26_o3",
-          "text": "Información inventada."
+          "text": "Información inventada"
         },
         {
           "id": "q26_o4",
-          "text": "Datos privados sin relación."
+          "text": "Datos privados sin relación"
         }
       ],
       "correctAnswer": "q26_o1",
@@ -652,19 +652,19 @@
       "options": [
         {
           "id": "q27_o1",
-          "text": "Avisar al posible tratante que será investigado si eso puede poner en riesgo a la víctima."
+          "text": "Avisar al posible tratante que será investigado si eso puede poner en riesgo a la víctima"
         },
         {
           "id": "q27_o2",
-          "text": "Preservar información."
+          "text": "Preservar información"
         },
         {
           "id": "q27_o3",
-          "text": "Buscar un canal oficial."
+          "text": "Buscar un canal oficial"
         },
         {
           "id": "q27_o4",
-          "text": "Describir el riesgo."
+          "text": "Describir el riesgo"
         }
       ],
       "correctAnswer": "q27_o1",
@@ -720,19 +720,19 @@
       "options": [
         {
           "id": "q30_o1",
-          "text": "Usar canales competentes y proteger la identidad de la posible víctima."
+          "text": "Usar canales competentes y proteger la identidad de la posible víctima"
         },
         {
           "id": "q30_o2",
-          "text": "Publicar acusaciones antes de investigar."
+          "text": "Publicar acusaciones antes de investigar"
         },
         {
           "id": "q30_o3",
-          "text": "Organizar una persecución ciudadana."
+          "text": "Organizar una persecución ciudadana"
         },
         {
           "id": "q30_o4",
-          "text": "Difundir documentos privados."
+          "text": "Difundir documentos privados"
         }
       ],
       "correctAnswer": "q30_o1",
@@ -750,19 +750,19 @@
       "options": [
         {
           "id": "q31_o1",
-          "text": "Causar daño adicional mediante culpa, exposición o repetición innecesaria de experiencias traumáticas."
+          "text": "Causar daño adicional mediante culpa, exposición o repetición innecesaria de experiencias traumáticas"
         },
         {
           "id": "q31_o2",
-          "text": "Brindar apoyo."
+          "text": "Brindar apoyo"
         },
         {
           "id": "q31_o3",
-          "text": "Proteger identidad."
+          "text": "Proteger identidad"
         },
         {
           "id": "q31_o4",
-          "text": "Facilitar atención médica."
+          "text": "Facilitar atención médica"
         }
       ],
       "correctAnswer": "q31_o1",
@@ -802,19 +802,19 @@
       "options": [
         {
           "id": "q33_o1",
-          "text": "“Si no escapaste antes, entonces querías estar ahí”."
+          "text": "“Si no escapaste antes, entonces querías estar ahí”"
         },
         {
           "id": "q33_o2",
-          "text": "“Gracias por contarlo”."
+          "text": "“Gracias por contarlo”"
         },
         {
           "id": "q33_o3",
-          "text": "“Tu seguridad importa”."
+          "text": "“Tu seguridad importa”"
         },
         {
           "id": "q33_o4",
-          "text": "“Busquemos opciones”."
+          "text": "“Busquemos opciones”"
         }
       ],
       "correctAnswer": "q33_o1",
@@ -869,19 +869,19 @@
       "options": [
         {
           "id": "q36_o1",
-          "text": "Personas o instituciones que realmente la necesitan para atención, protección o investigación."
+          "text": "Personas o instituciones que realmente la necesitan para atención, protección o investigación"
         },
         {
           "id": "q36_o2",
-          "text": "Cualquier curioso."
+          "text": "Cualquier curioso"
         },
         {
           "id": "q36_o3",
-          "text": "Todos los seguidores de una página."
+          "text": "Todos los seguidores de una página"
         },
         {
           "id": "q36_o4",
-          "text": "Personas sin relación con el caso."
+          "text": "Personas sin relación con el caso"
         }
       ],
       "correctAnswer": "q36_o1",
@@ -899,19 +899,19 @@
       "options": [
         {
           "id": "q37_o1",
-          "text": "Coordinar para reducir interrogatorios repetidos."
+          "text": "Coordinar para reducir interrogatorios repetidos"
         },
         {
           "id": "q37_o2",
-          "text": "Hacer que cuente el caso a cada persona por separado."
+          "text": "Hacer que cuente el caso a cada persona por separado"
         },
         {
           "id": "q37_o3",
-          "text": "Culparla por decisiones previas."
+          "text": "Culparla por decisiones previas"
         },
         {
           "id": "q37_o4",
-          "text": "Difundir su historia sin autorización."
+          "text": "Difundir su historia sin autorización"
         }
       ],
       "correctAnswer": "q37_o1",
@@ -966,19 +966,19 @@
       "options": [
         {
           "id": "q40_o1",
-          "text": "No culpar, proteger privacidad, reducir repeticiones y respetar dignidad."
+          "text": "No culpar, proteger privacidad, reducir repeticiones y respetar dignidad"
         },
         {
           "id": "q40_o2",
-          "text": "Exponer, presionar y juzgar."
+          "text": "Exponer, presionar y juzgar"
         },
         {
           "id": "q40_o3",
-          "text": "Publicar todo."
+          "text": "Publicar todo"
         },
         {
           "id": "q40_o4",
-          "text": "Ignorar necesidades de la persona."
+          "text": "Ignorar necesidades de la persona"
         }
       ],
       "correctAnswer": "q40_o1",
@@ -1018,19 +1018,19 @@
       "options": [
         {
           "id": "q42_o1",
-          "text": "Salud, apoyo psicológico, educación, empleo y documentación."
+          "text": "Salud, apoyo psicológico, educación, empleo y documentación"
         },
         {
           "id": "q42_o2",
-          "text": "Solo una entrevista policial."
+          "text": "Solo una entrevista policial"
         },
         {
           "id": "q42_o3",
-          "text": "Publicidad del caso."
+          "text": "Publicidad del caso"
         },
         {
           "id": "q42_o4",
-          "text": "Aislamiento social."
+          "text": "Aislamiento social"
         }
       ],
       "correctAnswer": "q42_o1",
@@ -1048,19 +1048,19 @@
       "options": [
         {
           "id": "q43_o1",
-          "text": "Recuperación documental y acceso a oportunidades económicas seguras."
+          "text": "Recuperación documental y acceso a oportunidades económicas seguras"
         },
         {
           "id": "q43_o2",
-          "text": "Culparla por no conservarlos."
+          "text": "Culparla por no conservarlos"
         },
         {
           "id": "q43_o3",
-          "text": "Negarle trámites."
+          "text": "Negarle trámites"
         },
         {
           "id": "q43_o4",
-          "text": "Exigir exposición pública."
+          "text": "Exigir exposición pública"
         }
       ],
       "correctAnswer": "q43_o1",
@@ -1116,19 +1116,19 @@
       "options": [
         {
           "id": "q46_o1",
-          "text": "Falta de vivienda, ingresos y red de apoyo."
+          "text": "Falta de vivienda, ingresos y red de apoyo"
         },
         {
           "id": "q46_o2",
-          "text": "Acceso a empleo seguro."
+          "text": "Acceso a empleo seguro"
         },
         {
           "id": "q46_o3",
-          "text": "Documentación recuperada."
+          "text": "Documentación recuperada"
         },
         {
           "id": "q46_o4",
-          "text": "Acompañamiento profesional."
+          "text": "Acompañamiento profesional"
         }
       ],
       "correctAnswer": "q46_o1",
@@ -1146,19 +1146,19 @@
       "options": [
         {
           "id": "q47_o1",
-          "text": "Fortalecer autonomía y opciones reales."
+          "text": "Fortalecer autonomía y opciones reales"
         },
         {
           "id": "q47_o2",
-          "text": "Tomar todas las decisiones por la persona indefinidamente."
+          "text": "Tomar todas las decisiones por la persona indefinidamente"
         },
         {
           "id": "q47_o3",
-          "text": "Aislarla."
+          "text": "Aislarla"
         },
         {
           "id": "q47_o4",
-          "text": "Recordarle constantemente que fue víctima."
+          "text": "Recordarle constantemente que fue víctima"
         }
       ],
       "correctAnswer": "q47_o1",
@@ -1213,19 +1213,19 @@
       "options": [
         {
           "id": "q50_o1",
-          "text": "Seguridad, derechos, salud, estabilidad, apoyo y autonomía."
+          "text": "Seguridad, derechos, salud, estabilidad, apoyo y autonomía"
         },
         {
           "id": "q50_o2",
-          "text": "Solo investigación penal."
+          "text": "Solo investigación penal"
         },
         {
           "id": "q50_o3",
-          "text": "Solo ayuda económica de un día."
+          "text": "Solo ayuda económica de un día"
         },
         {
           "id": "q50_o4",
-          "text": "Exposición pública."
+          "text": "Exposición pública"
         }
       ],
       "correctAnswer": "q50_o1",
@@ -1243,19 +1243,19 @@
       "options": [
         {
           "id": "q51_o1",
-          "text": "Informar opciones y apoyar decisiones sin controlar innecesariamente."
+          "text": "Informar opciones y apoyar decisiones sin controlar innecesariamente"
         },
         {
           "id": "q51_o2",
-          "text": "Decidir todo por la persona."
+          "text": "Decidir todo por la persona"
         },
         {
           "id": "q51_o3",
-          "text": "Exigir que cuente su historia."
+          "text": "Exigir que cuente su historia"
         },
         {
           "id": "q51_o4",
-          "text": "Publicar sus avances."
+          "text": "Publicar sus avances"
         }
       ],
       "correctAnswer": "q51_o1",
@@ -1295,19 +1295,19 @@
       "options": [
         {
           "id": "q53_o1",
-          "text": "Contraseñas, sesiones abiertas, ubicación compartida y dispositivos vinculados."
+          "text": "Contraseñas, sesiones abiertas, ubicación compartida y dispositivos vinculados"
         },
         {
           "id": "q53_o2",
-          "text": "Publicar nuevas contraseñas."
+          "text": "Publicar nuevas contraseñas"
         },
         {
           "id": "q53_o3",
-          "text": "Mantener accesos del explotador."
+          "text": "Mantener accesos del explotador"
         },
         {
           "id": "q53_o4",
-          "text": "Compartir ubicación públicamente."
+          "text": "Compartir ubicación públicamente"
         }
       ],
       "correctAnswer": "q53_o1",
@@ -1363,19 +1363,19 @@
       "options": [
         {
           "id": "q56_o1",
-          "text": "Respetar decisiones, estar disponible y ayudar a identificar riesgos."
+          "text": "Respetar decisiones, estar disponible y ayudar a identificar riesgos"
         },
         {
           "id": "q56_o2",
-          "text": "Controlar cada movimiento."
+          "text": "Controlar cada movimiento"
         },
         {
           "id": "q56_o3",
-          "text": "usar culpa para que obedezca."
+          "text": "usar culpa para que obedezca"
         },
         {
           "id": "q56_o4",
-          "text": "decidir quién puede ver."
+          "text": "decidir quién puede ver"
         }
       ],
       "correctAnswer": "q56_o1",
@@ -1393,19 +1393,19 @@
       "options": [
         {
           "id": "q57_o1",
-          "text": "Acompañar gradualmente y facilitar oportunidades seguras y verificables."
+          "text": "Acompañar gradualmente y facilitar oportunidades seguras y verificables"
         },
         {
           "id": "q57_o2",
-          "text": "Decirle que exagera."
+          "text": "Decirle que exagera"
         },
         {
           "id": "q57_o3",
-          "text": "Obligarla a aceptar el primer trabajo."
+          "text": "Obligarla a aceptar el primer trabajo"
         },
         {
           "id": "q57_o4",
-          "text": "prohibirle trabajar."
+          "text": "prohibirle trabajar"
         }
       ],
       "correctAnswer": "q57_o1",
@@ -1460,19 +1460,19 @@
       "options": [
         {
           "id": "q60_o1",
-          "text": "Que la persona recupere seguridad, derechos, autonomía y un proyecto de vida propio."
+          "text": "Que la persona recupere seguridad, derechos, autonomía y un proyecto de vida propio"
         },
         {
           "id": "q60_o2",
-          "text": "Que dependa siempre de la institución."
+          "text": "Que dependa siempre de la institución"
         },
         {
           "id": "q60_o3",
-          "text": "Que haga pública su historia."
+          "text": "Que haga pública su historia"
         },
         {
           "id": "q60_o4",
-          "text": "Que olvide inmediatamente lo ocurrido."
+          "text": "Que olvide inmediatamente lo ocurrido"
         }
       ],
       "correctAnswer": "q60_o1",
