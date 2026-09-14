@@ -279,6 +279,28 @@
       ],
       "lessonId": "child_adolescent_protection",
       "warning": "Algunos contenidos mencionan manipulación, grooming, desaparición, explotación y situaciones de riesgo para niñas, niños y adolescentes. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "travel_migration_safety",
+      "parentCategoryId": "human_trafficking",
+      "title": "Viajes, fronteras, migración y ofertas laborales seguras",
+      "description": "Aprende a planificar viajes, verificar ofertas laborales, distinguir movilidad, tráfico y trata, y proteger documentos, autonomía y redes de apoyo durante traslados.",
+      "iconName": "restore_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Planificar viajes con información clara sobre destino, transporte, alojamiento y retorno.",
+        "Verificar ofertas laborales fuera de la ciudad o del país antes de aceptar traslados.",
+        "Distinguir migración, tráfico de personas, trata y situaciones de explotación o control.",
+        "Reconocer deudas, retención de documentos y aislamiento como señales de riesgo durante viajes."
+      ],
+      "lessonId": "travel_migration_safety",
+      "warning": "Algunos contenidos mencionan migración irregular, tráfico de personas, retención de documentos, deudas, amenazas y explotación. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }

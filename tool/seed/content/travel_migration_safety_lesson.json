@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "travel_migration_safety_safe_trip_planning",
+      "order": 1,
+      "title": "Planificación segura de viajes",
+      "body": "Antes de viajar conviene conocer destino, transporte, alojamiento, contactos, documentos necesarios y forma de retorno. Compartir el itinerario con una persona de confianza y conservar copias de documentos puede facilitar ayuda ante cambios inesperados.\n\nUna persona debe saber dónde estará y cómo contactar a alguien fuera del grupo con el que viaja."
+    },
+    {
+      "id": "travel_migration_safety_remote_job_offers",
+      "order": 2,
+      "title": "Ofertas laborales fuera de la ciudad o del país",
+      "body": "Un empleo fuera del lugar de residencia requiere verificar empresa, contrato, funciones, salario, horario, alojamiento, costos y requisitos migratorios cuando corresponda. Las promesas verbales deben contrastarse con información comprobable.\n\nLas señales de alerta incluyen cambios de destino, empleador no identificable, cobros imprecisos, entrega de documentos originales o prohibición de hablar con familiares."
+    },
+    {
+      "id": "travel_migration_safety_migration_trafficking_risks",
+      "order": 3,
+      "title": "Migración, tráfico de personas y riesgos",
+      "body": "Migrar no es un delito por sí mismo. El tráfico de personas, según el marco boliviano, implica facilitar la entrada o salida ilegal entre Estados buscando un beneficio económico.\n\nLas personas que recurren a rutas irregulares pueden quedar expuestas a extorsión, abandono, violencia, deuda o explotación. Una situación de tráfico puede conectarse con trata si aparece sometimiento con fines de explotación."
+    },
+    {
+      "id": "travel_migration_safety_borders_transport_lodging",
+      "order": 4,
+      "title": "Fronteras, transporte y alojamiento",
+      "body": "Cambios inesperados de ruta, transporte en condiciones peligrosas, alojamiento secreto, confiscación de documentos o imposibilidad de contactar a terceros son señales graves.\n\nNinguna persona que facilite un viaje adquiere derecho a retener, amenazar o explotar a quien transporta."
+    },
+    {
+      "id": "travel_migration_safety_debts_costs_payment_promises",
+      "order": 5,
+      "title": "Deudas, costos y promesas de pago",
+      "body": "Los costos de viaje, alojamiento o contratación deben ser claros desde el principio. Una deuda que crece sin explicación o se utiliza para impedir que la persona se retire puede convertirse en mecanismo de control.\n\nAceptar un préstamo o adelanto no significa renunciar a la libertad personal."
+    },
+    {
+      "id": "travel_migration_safety_trip_security_help",
+      "order": 6,
+      "title": "Seguridad durante el viaje y búsqueda de ayuda",
+      "body": "Si durante un viaje cambian las condiciones, se retienen documentos, aparecen amenazas o se impide comunicarse, conviene priorizar la seguridad y buscar apoyo por canales confiables cuando sea posible.\n\nNo es necesario enfrentar a la persona controladora a solas. Mantener contactos externos, copias de información y un plan de ayuda puede facilitar una salida segura."
+    }
+  ]
+}

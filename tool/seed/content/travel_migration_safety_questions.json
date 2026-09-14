@@ -1,0 +1,1483 @@
+{
+  "questions": [
+    {
+      "id": "travel_migration_safety_q01",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué información conviene conocer antes de viajar por una oportunidad?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Destino, responsables, alojamiento, transporte y forma de retorno."
+        },
+        {
+          "id": "q01_o2",
+          "text": "Solo el nombre de quien invita."
+        },
+        {
+          "id": "q01_o3",
+          "text": "Solo el precio del pasaje."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Nada si la propuesta parece atractiva."
+        }
+      ],
+      "correctAnswer": "q01_o1",
+      "acceptedAnswers": [],
+      "feedback": "Conocer los detalles básicos permite detectar inconsistencias y pedir ayuda si algo cambia.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q02",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "trueFalse",
+      "statement": "Compartir el itinerario con una persona de confianza puede mejorar la seguridad.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o1",
+      "acceptedAnswers": [],
+      "feedback": "Un contacto externo puede notar cambios o pérdida de comunicación.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q03",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica protege mejor los documentos?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Llevarlos bajo control propio y conservar copias seguras."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Entregarlos a cualquier acompañante."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Publicarlos en redes."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Viajar sin saber dónde están."
+        }
+      ],
+      "correctAnswer": "q03_o1",
+      "acceptedAnswers": [],
+      "feedback": "El control personal de documentos favorece autonomía y movilidad.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q04",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "fillBlank",
+      "statement": "Compartir destino, horarios y contactos principales forma parte de un __ de viaje.",
+      "options": [],
+      "correctAnswer": "itinerario",
+      "acceptedAnswers": [
+        "itinerario"
+      ],
+      "feedback": "El itinerario ayuda a mantener informada a la red de apoyo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q05",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "trueFalse",
+      "statement": "Una persona debería conocer cómo regresar o pedir ayuda si el plan cambia.",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q05_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q05_o1",
+      "acceptedAnswers": [],
+      "feedback": "Contar con alternativas reduce dependencia de una sola persona.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q06",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué debería preocupar antes de salir?",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "Que nadie pueda explicar la dirección exacta del alojamiento."
+        },
+        {
+          "id": "q06_o2",
+          "text": "Tener una reserva verificable."
+        },
+        {
+          "id": "q06_o3",
+          "text": "Conocer el número del transporte."
+        },
+        {
+          "id": "q06_o4",
+          "text": "Informar a la familia."
+        }
+      ],
+      "correctAnswer": "q06_o1",
+      "acceptedAnswers": [],
+      "feedback": "El destino debe poder identificarse antes del viaje.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q07",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una medida útil con documentos importantes?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "Guardar copias accesibles de forma segura."
+        },
+        {
+          "id": "q07_o2",
+          "text": "Dar la única copia a un desconocido."
+        },
+        {
+          "id": "q07_o3",
+          "text": "Romperlos antes de viajar."
+        },
+        {
+          "id": "q07_o4",
+          "text": "Enviarlos a grupos públicos."
+        }
+      ],
+      "correctAnswer": "q07_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las copias pueden ser útiles si los originales se pierden o son retenidos.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q08",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "fillBlank",
+      "statement": "Tener un contacto fuera del grupo de viaje fortalece la red de __.",
+      "options": [],
+      "correctAnswer": "apoyo",
+      "acceptedAnswers": [
+        "apoyo"
+      ],
+      "feedback": "Un contacto externo puede ayudar si surge una situación inesperada.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q09",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "trueFalse",
+      "statement": "Planificar seguridad significa asumir que todo viaje es peligroso.",
+      "options": [
+        {
+          "id": "q09_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q09_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q09_o2",
+      "acceptedAnswers": [],
+      "feedback": "La planificación permite viajar con mayor información, no vivir con miedo.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q10",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué combinación es más segura?",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "Datos verificados + itinerario compartido + documentos propios + contactos de apoyo."
+        },
+        {
+          "id": "q10_o2",
+          "text": "Secreto + documentos entregados + destino desconocido."
+        },
+        {
+          "id": "q10_o3",
+          "text": "Viaje urgente sin información."
+        },
+        {
+          "id": "q10_o4",
+          "text": "Dependencia total del reclutador."
+        }
+      ],
+      "correctAnswer": "q10_o1",
+      "acceptedAnswers": [],
+      "feedback": "La información y autonomía reducen vulnerabilidades durante el viaje.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q11",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe incluir una oferta laboral verificable?",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "Empresa, funciones, salario, horario y lugar de trabajo."
+        },
+        {
+          "id": "q11_o2",
+          "text": "Solo una promesa de “ganar mucho”."
+        },
+        {
+          "id": "q11_o3",
+          "text": "Únicamente un número de mensajería."
+        },
+        {
+          "id": "q11_o4",
+          "text": "Una exigencia de viajar ese mismo día."
+        }
+      ],
+      "correctAnswer": "q11_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las condiciones concretas permiten evaluar si la propuesta es real.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q12",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "trueFalse",
+      "statement": "Un contrato debería coincidir con lo prometido verbalmente.",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q12_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q12_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las diferencias importantes deben aclararse antes de viajar.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q13",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "multipleChoice",
+      "statement": "La oferta promete trabajo en Argentina, pero nadie explica los requisitos migratorios. ¿Qué conviene?",
+      "options": [
+        {
+          "id": "q13_o1",
+          "text": "Verificar requisitos y empleador antes de salir."
+        },
+        {
+          "id": "q13_o2",
+          "text": "Viajar y preguntar al llegar."
+        },
+        {
+          "id": "q13_o3",
+          "text": "Entregar pasaporte al intermediario."
+        },
+        {
+          "id": "q13_o4",
+          "text": "No decirlo a nadie."
+        }
+      ],
+      "correctAnswer": "q13_o1",
+      "acceptedAnswers": [],
+      "feedback": "Conocer requisitos evita depender completamente de intermediarios.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q14",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "fillBlank",
+      "statement": "Antes de aceptar empleo fuera del país conviene comprobar la identidad del __.",
+      "options": [],
+      "correctAnswer": "empleador",
+      "acceptedAnswers": [
+        "empleador"
+      ],
+      "feedback": "La empresa o persona contratante debe poder verificarse por canales independientes.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q15",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "trueFalse",
+      "statement": "Un salario extraordinariamente alto con pocas explicaciones merece verificación adicional.",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q15_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q15_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las promesas desproporcionadas pueden utilizarse para atraer rápidamente.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q16",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué señal es especialmente preocupante?",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "El reclutador exige entregar el pasaporte y dice que lo devolverá “cuando termines de pagar”."
+        },
+        {
+          "id": "q16_o2",
+          "text": "El empleador envía contrato."
+        },
+        {
+          "id": "q16_o3",
+          "text": "La empresa tiene dirección verificable."
+        },
+        {
+          "id": "q16_o4",
+          "text": "Puedes consultar a otras personas."
+        }
+      ],
+      "correctAnswer": "q16_o1",
+      "acceptedAnswers": [],
+      "feedback": "Retener documentos para controlar una deuda puede limitar la libertad.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q17",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué conviene aclarar sobre alojamiento proporcionado por el empleador?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "Dirección, costo, reglas y si puedes salir libremente."
+        },
+        {
+          "id": "q17_o2",
+          "text": "Solo el color de la habitación."
+        },
+        {
+          "id": "q17_o3",
+          "text": "Nada, porque es gratuito."
+        },
+        {
+          "id": "q17_o4",
+          "text": "Solo cuántas camas hay."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "El alojamiento puede generar dependencia si los costos o condiciones son ocultos.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q18",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "fillBlank",
+      "statement": "Las funciones, pago y horario deberían quedar claros antes de firmar un __.",
+      "options": [],
+      "correctAnswer": "contrato",
+      "acceptedAnswers": [
+        "contrato"
+      ],
+      "feedback": "Un documento claro reduce ambigüedades y permite comparar lo prometido con lo real.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q19",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "trueFalse",
+      "statement": "Si la empresa cambia de nombre y dirección varias veces, conviene verificar nuevamente.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las inconsistencias pueden indicar fraude o una oferta falsa.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q20",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué protege mejor antes de aceptar?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Revisar contrato, empleador, requisitos, costos y contactos."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Confiar solo en capturas de pantalla."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Viajar por presión."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Firmar hojas en blanco."
+        }
+      ],
+      "correctAnswer": "q20_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una decisión informada requiere comprobar los elementos principales de la oferta.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "travel_migration_safety_q21",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "trueFalse",
+      "statement": "Migrar a otro país es por sí mismo trata de personas.",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q21_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q21_o2",
+      "acceptedAnswers": [],
+      "feedback": "La migración puede ser regular o irregular y no equivale automáticamente a trata.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q22",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué caracteriza el tráfico de personas en el marco boliviano?",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Facilitar un cruce ilegal entre Estados buscando beneficio económico."
+        },
+        {
+          "id": "q22_o2",
+          "text": "Cualquier viaje internacional."
+        },
+        {
+          "id": "q22_o3",
+          "text": "Toda contratación extranjera."
+        },
+        {
+          "id": "q22_o4",
+          "text": "Mudarse dentro de Bolivia."
+        }
+      ],
+      "correctAnswer": "q22_o1",
+      "acceptedAnswers": [],
+      "feedback": "El tráfico se relaciona con el cruce ilegal de frontera y beneficio para quien lo facilita.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q23",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué riesgo puede enfrentar una persona en una ruta irregular?",
+      "options": [
+        {
+          "id": "q23_o1",
+          "text": "Extorsión, abandono, violencia o explotación."
+        },
+        {
+          "id": "q23_o2",
+          "text": "Ninguno si pagó por adelantado."
+        },
+        {
+          "id": "q23_o3",
+          "text": "Seguridad garantizada."
+        },
+        {
+          "id": "q23_o4",
+          "text": "Protección automática del intermediario."
+        }
+      ],
+      "correctAnswer": "q23_o1",
+      "acceptedAnswers": [],
+      "feedback": "La dependencia de intermediarios puede aumentar vulnerabilidad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q24",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "fillBlank",
+      "statement": "Una situación de tráfico puede convertirse en trata si aparece __ de la persona.",
+      "options": [],
+      "correctAnswer": "explotación",
+      "acceptedAnswers": [
+        "explotación",
+        "explotacion"
+      ],
+      "feedback": "La explotación es el elemento central de la trata.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q25",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "trueFalse",
+      "statement": "Pagar a una persona para facilitar un cruce ilegal impide que posteriormente exista trata.",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q25_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q25_o2",
+      "acceptedAnswers": [],
+      "feedback": "Puede aparecer deuda, coacción o explotación después del acuerdo inicial.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q26",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "multipleChoice",
+      "statement": "Un intermediario cambia el precio durante la ruta y amenaza con abandonar a la persona si no acepta una deuda. ¿Qué ocurre?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "Aumenta el riesgo de coerción y explotación."
+        },
+        {
+          "id": "q26_o2",
+          "text": "Es siempre un trámite normal."
+        },
+        {
+          "id": "q26_o3",
+          "text": "El viaje se vuelve automáticamente seguro."
+        },
+        {
+          "id": "q26_o4",
+          "text": "No cambia nada."
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "La deuda y la amenaza pueden reducir la libertad real de la persona.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q27",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué afirmación es correcta?",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Tráfico y trata pueden relacionarse, pero no son sinónimos."
+        },
+        {
+          "id": "q27_o2",
+          "text": "Son idénticos en todos los casos."
+        },
+        {
+          "id": "q27_o3",
+          "text": "La trata siempre requiere frontera."
+        },
+        {
+          "id": "q27_o4",
+          "text": "El tráfico siempre incluye explotación."
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "La distinción ayuda a comprender el tipo de riesgo presente.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q28",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "fillBlank",
+      "statement": "El cruce ilegal entre países es un elemento del __ de personas.",
+      "options": [],
+      "correctAnswer": "tráfico",
+      "acceptedAnswers": [
+        "tráfico",
+        "trafico"
+      ],
+      "feedback": "La Ley 263 vincula el tráfico de personas con entrada o salida ilegal entre Estados.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q29",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "trueFalse",
+      "statement": "Una persona migrante en situación irregular sigue teniendo derechos y puede ser víctima de delitos.",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q29_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q29_o1",
+      "acceptedAnswers": [],
+      "feedback": "La situación migratoria no elimina derechos ni justifica explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q30",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué enfoque evita estigmatizar?",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Diferenciar migración de trata y analizar riesgos sin culpar a la persona."
+        },
+        {
+          "id": "q30_o2",
+          "text": "Considerar sospechosa a toda persona migrante."
+        },
+        {
+          "id": "q30_o3",
+          "text": "Asumir que quien viaja irregularmente acepta cualquier abuso."
+        },
+        {
+          "id": "q30_o4",
+          "text": "Negar ayuda por su situación migratoria."
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "La prevención debe proteger derechos y reconocer situaciones de vulnerabilidad.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q31",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "multipleChoice",
+      "statement": "Durante el viaje cambian la ruta y nadie explica el nuevo destino. ¿Qué es?",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Una señal de alerta que debe aclararse."
+        },
+        {
+          "id": "q31_o2",
+          "text": "Una garantía de seguridad."
+        },
+        {
+          "id": "q31_o3",
+          "text": "Un detalle sin importancia."
+        },
+        {
+          "id": "q31_o4",
+          "text": "Una obligación normal."
+        }
+      ],
+      "correctAnswer": "q31_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los cambios inesperados pueden aumentar dependencia y dificultar localización.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q32",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "trueFalse",
+      "statement": "Transportar personas en condiciones que ponen en peligro su integridad es una señal grave.",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q32_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q32_o1",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad física nunca debe sacrificarse como parte del traslado.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q33",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué debería preocupar en un alojamiento?",
+      "options": [
+        {
+          "id": "q33_o1",
+          "text": "Que impidan salir, comunicarse o conservar documentos."
+        },
+        {
+          "id": "q33_o2",
+          "text": "Que exista una dirección verificable."
+        },
+        {
+          "id": "q33_o3",
+          "text": "Que puedas comunicarte con tu familia."
+        },
+        {
+          "id": "q33_o4",
+          "text": "Que puedas abandonar el lugar."
+        }
+      ],
+      "correctAnswer": "q33_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las restricciones de movimiento y comunicación indican pérdida de autonomía.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q34",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "fillBlank",
+      "statement": "Retener documentos para impedir que una persona continúe o abandone un viaje es una forma de __.",
+      "options": [],
+      "correctAnswer": "control",
+      "acceptedAnswers": [
+        "control"
+      ],
+      "feedback": "Los documentos son esenciales para movilidad e identificación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q35",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "trueFalse",
+      "statement": "Quien organiza el transporte puede decidir que la persona no use su teléfono.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o2",
+      "acceptedAnswers": [],
+      "feedback": "Quitar medios de comunicación puede aumentar aislamiento y control.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q36",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica reduce riesgos en una parada inesperada?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "Informar a un contacto de confianza sobre el cambio cuando sea seguro."
+        },
+        {
+          "id": "q36_o2",
+          "text": "Desaparecer de toda comunicación."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Entregar el teléfono."
+        },
+        {
+          "id": "q36_o4",
+          "text": "Eliminar la ubicación del destino sin avisar."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "Mantener un contacto externo facilita apoyo y seguimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q37",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "multipleChoice",
+      "statement": "El organizador dice que nadie puede salir del alojamiento hasta “pagar el viaje”. ¿Qué señal aparece?",
+      "options": [
+        {
+          "id": "q37_o1",
+          "text": "Restricción de libertad asociada a deuda."
+        },
+        {
+          "id": "q37_o2",
+          "text": "Hospedaje normal."
+        },
+        {
+          "id": "q37_o3",
+          "text": "Beneficio turístico."
+        },
+        {
+          "id": "q37_o4",
+          "text": "Capacitación."
+        }
+      ],
+      "correctAnswer": "q37_o1",
+      "acceptedAnswers": [],
+      "feedback": "La deuda no autoriza impedir que una persona se vaya.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q38",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "fillBlank",
+      "statement": "Un cambio no informado de ruta puede dificultar que la red de apoyo conozca la __ de la persona.",
+      "options": [],
+      "correctAnswer": "ubicación",
+      "acceptedAnswers": [
+        "ubicación",
+        "ubicacion"
+      ],
+      "feedback": "La localización es importante para solicitar ayuda en caso de emergencia.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q39",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "trueFalse",
+      "statement": "Un alojamiento gratuito siempre es seguro.",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q39_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q39_o2",
+      "acceptedAnswers": [],
+      "feedback": "Deben evaluarse condiciones, libertad, costos ocultos y quién controla el lugar.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q40",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué elemento importa más que la comodidad del transporte?",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "Que el traslado sea seguro y no implique amenazas ni restricciones abusivas."
+        },
+        {
+          "id": "q40_o2",
+          "text": "La música del vehículo."
+        },
+        {
+          "id": "q40_o3",
+          "text": "El color de los asientos."
+        },
+        {
+          "id": "q40_o4",
+          "text": "La cantidad de fotos tomadas."
+        }
+      ],
+      "correctAnswer": "q40_o1",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad y libertad son prioritarias.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q41",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué costo debe aclararse antes de viajar?",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Transporte, alojamiento, trámites y cualquier descuento previsto."
+        },
+        {
+          "id": "q41_o2",
+          "text": "Ninguno."
+        },
+        {
+          "id": "q41_o3",
+          "text": "Solo comida."
+        },
+        {
+          "id": "q41_o4",
+          "text": "Solo el pasaje de ida."
+        }
+      ],
+      "correctAnswer": "q41_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los costos ocultos pueden convertirse en deudas inesperadas.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q42",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "trueFalse",
+      "statement": "Una deuda puede ser utilizada para mantener a una persona trabajando contra su voluntad.",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q42_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q42_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las deudas manipuladas son un mecanismo conocido de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q43",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué señal indica una deuda abusiva?",
+      "options": [
+        {
+          "id": "q43_o1",
+          "text": "El monto cambia sin explicación y nunca disminuye pese al trabajo."
+        },
+        {
+          "id": "q43_o2",
+          "text": "Existe un monto fijo y comprobable."
+        },
+        {
+          "id": "q43_o3",
+          "text": "Hay recibos y condiciones claras."
+        },
+        {
+          "id": "q43_o4",
+          "text": "La persona puede pagar y retirarse."
+        }
+      ],
+      "correctAnswer": "q43_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una deuda indefinida puede impedir la salida real de la persona.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q44",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "fillBlank",
+      "statement": "Obligar a trabajar para pagar una deuda manipulada puede convertirse en servidumbre por __.",
+      "options": [],
+      "correctAnswer": "deudas",
+      "acceptedAnswers": [
+        "deudas"
+      ],
+      "feedback": "La deuda se utiliza como herramienta de control.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q45",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "trueFalse",
+      "statement": "Aceptar que alguien pague un pasaje le da derecho a controlar a la persona durante el viaje.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o2",
+      "acceptedAnswers": [],
+      "feedback": "El financiamiento del viaje no elimina la libertad personal.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q46",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "multipleChoice",
+      "statement": "Una oferta dice “todo es gratis”, pero al llegar aparece una deuda por transporte, vivienda y comida. ¿Qué había faltado?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Transparencia sobre costos."
+        },
+        {
+          "id": "q46_o2",
+          "text": "Fotografías del destino."
+        },
+        {
+          "id": "q46_o3",
+          "text": "Publicidad."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Un uniforme."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los costos deben explicarse antes de asumir el compromiso.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q47",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué conviene pedir ante cobros de contratación?",
+      "options": [
+        {
+          "id": "q47_o1",
+          "text": "Explicación, comprobantes y relación clara con un servicio legítimo."
+        },
+        {
+          "id": "q47_o2",
+          "text": "Que todo sea verbal."
+        },
+        {
+          "id": "q47_o3",
+          "text": "Una cuenta personal sin nombre."
+        },
+        {
+          "id": "q47_o4",
+          "text": "Ningún documento."
+        }
+      ],
+      "correctAnswer": "q47_o1",
+      "acceptedAnswers": [],
+      "feedback": "La trazabilidad ayuda a detectar cobros inventados o abusivos.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q48",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "fillBlank",
+      "statement": "Los gastos no explicados pueden generar una __ inesperada.",
+      "options": [],
+      "correctAnswer": "deuda",
+      "acceptedAnswers": [
+        "deuda"
+      ],
+      "feedback": "Una deuda imprevista puede aumentar dependencia.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q49",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "trueFalse",
+      "statement": "Una persona debe trabajar indefinidamente si otra pagó su viaje.",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q49_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q49_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ninguna deuda justifica trabajo forzoso o privación de libertad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q50",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué protege mejor?",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "Conocer costos totales y condiciones antes de viajar."
+        },
+        {
+          "id": "q50_o2",
+          "text": "Aceptar cualquier deuda al llegar."
+        },
+        {
+          "id": "q50_o3",
+          "text": "No preguntar por descuentos."
+        },
+        {
+          "id": "q50_o4",
+          "text": "Dejar que otra persona maneje todo el dinero."
+        }
+      ],
+      "correctAnswer": "q50_o1",
+      "acceptedAnswers": [],
+      "feedback": "La claridad financiera reduce posibilidades de manipulación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "travel_migration_safety_q51",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "multipleChoice",
+      "statement": "Durante el viaje alguien retiene tus documentos y amenaza con violencia. ¿Qué debe priorizarse?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "La seguridad y buscar ayuda por un canal confiable cuando sea posible."
+        },
+        {
+          "id": "q51_o2",
+          "text": "Discutir a solas para recuperarlos."
+        },
+        {
+          "id": "q51_o3",
+          "text": "Publicar inmediatamente tu ubicación exacta."
+        },
+        {
+          "id": "q51_o4",
+          "text": "Ignorar las amenazas."
+        }
+      ],
+      "correctAnswer": "q51_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta debe reducir el riesgo físico y conectar con apoyo.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q52",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "trueFalse",
+      "statement": "Es útil acordar con una persona de confianza una forma de avisar si el viaje cambia.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o1",
+      "acceptedAnswers": [],
+      "feedback": "Un sistema simple de contacto puede ayudar a detectar pérdida de comunicación.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q53",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué puede indicar que la situación se volvió peligrosa?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "Te impiden comunicarte, cambian el destino y controlan tus documentos."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Te explican el itinerario."
+        },
+        {
+          "id": "q53_o3",
+          "text": "Puedes llamar libremente."
+        },
+        {
+          "id": "q53_o4",
+          "text": "Conservas tus pertenencias."
+        }
+      ],
+      "correctAnswer": "q53_o1",
+      "acceptedAnswers": [],
+      "feedback": "Varias pérdidas de autonomía juntas requieren atención inmediata.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q54",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "fillBlank",
+      "statement": "Contar con contactos externos facilita pedir __ si las condiciones cambian.",
+      "options": [],
+      "correctAnswer": "ayuda",
+      "acceptedAnswers": [
+        "ayuda"
+      ],
+      "feedback": "La comunicación reduce aislamiento y dependencia.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q55",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "trueFalse",
+      "statement": "Para demostrar valentía, una persona debe enfrentar sola a quienes la amenazan.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o2",
+      "acceptedAnswers": [],
+      "feedback": "Buscar apoyo es una medida de seguridad, no una falta de valentía.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q56",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué información es útil para pedir ayuda?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Ubicación, nombres o descripciones, vehículo, contactos y situación cuando sea seguro obtenerlos."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Solo rumores."
+        },
+        {
+          "id": "q56_o3",
+          "text": "Ningún dato."
+        },
+        {
+          "id": "q56_o4",
+          "text": "Contraseñas personales."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "La información concreta puede facilitar una intervención o localización.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q57",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "multipleChoice",
+      "statement": "Si puedes salir a un lugar seguro, ¿qué conviene evitar?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Regresar solo para recuperar objetos si existe riesgo grave."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Contactar apoyo."
+        },
+        {
+          "id": "q57_o3",
+          "text": "Informar dónde estás."
+        },
+        {
+          "id": "q57_o4",
+          "text": "Buscar orientación."
+        }
+      ],
+      "correctAnswer": "q57_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los objetos pueden recuperarse después; la integridad personal es prioritaria.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q58",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "fillBlank",
+      "statement": "La prioridad ante amenazas durante un viaje es preservar la __ de la persona.",
+      "options": [],
+      "correctAnswer": "seguridad",
+      "acceptedAnswers": [
+        "seguridad"
+      ],
+      "feedback": "La evidencia y los objetos son secundarios frente a un riesgo inmediato.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q59",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "trueFalse",
+      "statement": "Un cambio de condiciones durante el viaje puede justificar pedir ayuda aunque la persona haya aceptado viajar inicialmente.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o1",
+      "acceptedAnswers": [],
+      "feedback": "El consentimiento inicial no obliga a aceptar amenazas, engaños o explotación posteriores.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "travel_migration_safety_q60",
+      "categoryId": "travel_migration_safety",
+      "activityId": "travel_migration_safety_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume mejor una movilidad segura?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Información, documentos propios, costos claros, contactos externos y capacidad de pedir ayuda."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Secreto, dependencia y documentos retenidos."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Deuda desconocida y destino variable."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Aislamiento durante todo el viaje."
+        }
+      ],
+      "correctAnswer": "q60_o1",
+      "acceptedAnswers": [],
+      "feedback": "La autonomía y la información reducen vulnerabilidades.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    }
+  ]
+}

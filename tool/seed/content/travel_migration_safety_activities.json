@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "travel_migration_safety_activity_01",
+      "categoryId": "travel_migration_safety",
+      "title": "Planificación segura de viajes",
+      "order": 1
+    },
+    {
+      "id": "travel_migration_safety_activity_02",
+      "categoryId": "travel_migration_safety",
+      "title": "Ofertas laborales fuera de la ciudad o país",
+      "order": 2
+    },
+    {
+      "id": "travel_migration_safety_activity_03",
+      "categoryId": "travel_migration_safety",
+      "title": "Migración, tráfico de personas y riesgos",
+      "order": 3
+    },
+    {
+      "id": "travel_migration_safety_activity_04",
+      "categoryId": "travel_migration_safety",
+      "title": "Fronteras, transporte y alojamiento",
+      "order": 4
+    },
+    {
+      "id": "travel_migration_safety_activity_05",
+      "categoryId": "travel_migration_safety",
+      "title": "Deudas, costos y promesas de pago",
+      "order": 5
+    },
+    {
+      "id": "travel_migration_safety_activity_06",
+      "categoryId": "travel_migration_safety",
+      "title": "Seguridad durante el viaje y búsqueda de ayuda",
+      "order": 6
+    }
+  ]
+}
