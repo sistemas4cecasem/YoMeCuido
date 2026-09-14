@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "recruitment_deception_offers_relationships",
+      "order": 1,
+      "title": "Captación mediante ofertas y relaciones",
+      "body": "La captación puede comenzar con ofertas de empleo, estudio, viaje, modelaje, deporte, vivienda o relaciones afectivas. La persona tratante no siempre se presenta como una amenaza: puede mostrarse amable, generosa o interesada en ayudar.\n\nUna señal de alerta aparece cuando la oportunidad exige confianza rápida, evita verificaciones o cambia las condiciones después de que la persona ya está comprometida."
+    },
+    {
+      "id": "recruitment_deception_deception_urgency_secrecy",
+      "order": 2,
+      "title": "Engaño, urgencia y secreto",
+      "body": "Las ofertas fraudulentas suelen utilizar promesas demasiado atractivas, presión para decidir rápido, información incompleta o solicitudes de mantener la oportunidad en secreto. La urgencia reduce el tiempo disponible para verificar.\n\nUna oportunidad legítima debe permitir preguntar, revisar documentos, consultar con otras personas y conocer condiciones claras antes de viajar o entregar información personal."
+    },
+    {
+      "id": "recruitment_deception_vulnerability_abuse",
+      "order": 3,
+      "title": "Abuso de vulnerabilidad",
+      "body": "La necesidad de empleo, vivienda, dinero, regularización migratoria, protección o afecto puede ser aprovechada por una persona tratante. La vulnerabilidad no es una culpa ni una característica permanente; es una situación que alguien puede utilizar para ejercer control.\n\nTambién pueden aumentar el riesgo el aislamiento, la dependencia económica, la edad, la discapacidad o la falta de una red de apoyo."
+    },
+    {
+      "id": "recruitment_deception_debts_advances_documents",
+      "order": 4,
+      "title": "Deudas, adelantos y documentos",
+      "body": "Una deuda puede convertirse en mecanismo de control cuando crece sin explicación, impide que la persona se retire o se utiliza para obligarla a trabajar. Los adelantos de dinero no autorizan a retener a una persona.\n\nRetener cédula, pasaporte, teléfono o documentos de viaje para impedir que alguien se vaya es una señal grave. Cada persona debe conservar, cuando sea posible, control sobre sus documentos y medios de comunicación."
+    },
+    {
+      "id": "recruitment_deception_isolation_threats_coercion",
+      "order": 5,
+      "title": "Aislamiento, amenazas y coerción",
+      "body": "El control puede ejercerse mediante amenazas contra la víctima o su familia, vigilancia, restricción de movimientos, confiscación del teléfono, aislamiento, violencia o miedo a denunciar.\n\nNo toda coerción deja marcas físicas. El miedo, la dependencia, la deuda o la amenaza de denunciar una situación migratoria también pueden utilizarse para someter."
+    },
+    {
+      "id": "recruitment_deception_verification_safe_decisions",
+      "order": 6,
+      "title": "Verificación y decisiones seguras",
+      "body": "Antes de aceptar una oferta conviene verificar la identidad de quien contrata, dirección, empresa, condiciones, salario, funciones, alojamiento y forma de retorno. Es útil compartir información con una persona de confianza y conservar copias de documentos.\n\nSi una oferta cambia, exige secreto, pide documentos originales sin justificación o impide consultar con otras personas, conviene detenerse y verificar antes de continuar."
+    }
+  ]
+}

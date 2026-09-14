@@ -191,6 +191,28 @@
       ],
       "lessonId": "trafficking_fundamentals",
       "warning": "Algunos contenidos mencionan explotación, engaño, amenazas, abuso de vulnerabilidad y situaciones de violencia. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "recruitment_deception",
+      "parentCategoryId": "human_trafficking",
+      "title": "Captación, engaño y abuso de vulnerabilidad",
+      "description": "Aprende a reconocer mecanismos de captación, engaño, urgencia, secreto y abuso de vulnerabilidad, y a tomar decisiones preventivas con apoyo y verificación.",
+      "iconName": "groups_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer ofertas, relaciones y promesas que pueden funcionar como captación.",
+        "Identificar engaños, urgencias y secretos usados para limitar decisiones seguras.",
+        "Comprender cómo se aprovechan situaciones de vulnerabilidad, deudas, documentos y aislamiento.",
+        "Aplicar verificación, comunicación con redes de apoyo y conservación de autonomía antes de aceptar una oferta o traslado."
+      ],
+      "lessonId": "recruitment_deception",
+      "warning": "Algunos contenidos mencionan engaño, amenazas, coerción, aislamiento, abuso de vulnerabilidad y explotación. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }

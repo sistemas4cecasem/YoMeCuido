@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "recruitment_deception_activity_01",
+      "categoryId": "recruitment_deception",
+      "title": "Captación mediante ofertas y relaciones",
+      "order": 1
+    },
+    {
+      "id": "recruitment_deception_activity_02",
+      "categoryId": "recruitment_deception",
+      "title": "Engaño, urgencia y secreto",
+      "order": 2
+    },
+    {
+      "id": "recruitment_deception_activity_03",
+      "categoryId": "recruitment_deception",
+      "title": "Abuso de vulnerabilidad",
+      "order": 3
+    },
+    {
+      "id": "recruitment_deception_activity_04",
+      "categoryId": "recruitment_deception",
+      "title": "Deudas, adelantos y documentos",
+      "order": 4
+    },
+    {
+      "id": "recruitment_deception_activity_05",
+      "categoryId": "recruitment_deception",
+      "title": "Aislamiento, amenazas y coerción",
+      "order": 5
+    },
+    {
+      "id": "recruitment_deception_activity_06",
+      "categoryId": "recruitment_deception",
+      "title": "Verificación y decisiones seguras",
+      "order": 6
+    }
+  ]
+}

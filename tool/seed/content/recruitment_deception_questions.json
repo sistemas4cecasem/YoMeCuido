@@ -1,0 +1,1486 @@
+{
+  "questions": [
+    {
+      "id": "recruitment_deception_q01",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál puede ser una forma de captación?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Una oferta de trabajo falsa."
+        },
+        {
+          "id": "q01_o2",
+          "text": "Un contrato revisable y verificable."
+        },
+        {
+          "id": "q01_o3",
+          "text": "Una convocatoria pública con requisitos claros."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Una entrevista en una empresa identificable."
+        }
+      ],
+      "correctAnswer": "q01_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las ofertas falsas son un mecanismo frecuente para atraer a una persona hacia una situación de explotación.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q02",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "trueFalse",
+      "statement": "La captación siempre comienza con secuestro o violencia física.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o2",
+      "acceptedAnswers": [],
+      "feedback": "Puede comenzar con confianza, amistad, afecto, regalos o promesas atractivas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q03",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "multipleChoice",
+      "statement": "Una persona recién conocida promete un empleo excelente y alojamiento gratis, pero evita decir el nombre de la empresa. ¿Qué conviene hacer?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Viajar inmediatamente."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Verificar empresa, dirección, funciones y condiciones antes de aceptar."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Entregar documentos originales."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Mantener la oferta en secreto."
+        }
+      ],
+      "correctAnswer": "q03_o2",
+      "acceptedAnswers": [],
+      "feedback": "La información incompleta debe verificarse antes de asumir compromisos.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q04",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "fillBlank",
+      "statement": "El proceso de atraer o incorporar a una persona hacia una situación de explotación puede comenzar con la __.",
+      "options": [],
+      "correctAnswer": "captación",
+      "acceptedAnswers": [
+        "captación",
+        "captacion"
+      ],
+      "feedback": "La captación es una de las acciones que puede iniciar un proceso de trata.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q05",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "trueFalse",
+      "statement": "Una pareja sentimental también puede utilizar la relación para captar o controlar a una persona.",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q05_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q05_o1",
+      "acceptedAnswers": [],
+      "feedback": "La persona tratante puede aprovechar vínculos afectivos o de confianza.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q06",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué característica aumenta la confiabilidad de una oferta?",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "Permite verificar empresa, contrato, dirección y responsabilidades."
+        },
+        {
+          "id": "q06_o2",
+          "text": "Exige decidir en cinco minutos."
+        },
+        {
+          "id": "q06_o3",
+          "text": "Prohíbe contárselo a la familia."
+        },
+        {
+          "id": "q06_o4",
+          "text": "Cambia las funciones al preguntar detalles."
+        }
+      ],
+      "correctAnswer": "q06_o1",
+      "acceptedAnswers": [],
+      "feedback": "La transparencia y la posibilidad de verificar son señales positivas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q07",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "multipleChoice",
+      "statement": "Alguien ofrece “una oportunidad única” por redes y pide encontrarse directamente en una terminal para viajar. ¿Cuál es la respuesta más segura?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "Ir sin avisar a nadie."
+        },
+        {
+          "id": "q07_o2",
+          "text": "Verificar identidad, destino y oferta antes de desplazarse."
+        },
+        {
+          "id": "q07_o3",
+          "text": "Entregar el teléfono al reclutador."
+        },
+        {
+          "id": "q07_o4",
+          "text": "Borrar la conversación."
+        }
+      ],
+      "correctAnswer": "q07_o2",
+      "acceptedAnswers": [],
+      "feedback": "Verificar antes del desplazamiento permite detectar engaños y mantener una red de apoyo.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q08",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "fillBlank",
+      "statement": "Una persona que se gana rápidamente la confianza para después aprovecharla puede estar realizando un proceso de __.",
+      "options": [],
+      "correctAnswer": "captación",
+      "acceptedAnswers": [
+        "captación",
+        "captacion"
+      ],
+      "feedback": "La confianza puede utilizarse como parte del acercamiento.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q09",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "trueFalse",
+      "statement": "Que una oferta provenga de un conocido elimina cualquier riesgo.",
+      "options": [
+        {
+          "id": "q09_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q09_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q09_o2",
+      "acceptedAnswers": [],
+      "feedback": "Las ofertas deben verificarse independientemente de quién las presente.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q10",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase debería generar mayor precaución?",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "“Puedes revisar el contrato con calma”."
+        },
+        {
+          "id": "q10_o2",
+          "text": "“No le cuentes a nadie; si preguntas demasiado perderás la oportunidad”."
+        },
+        {
+          "id": "q10_o3",
+          "text": "“Esta es la dirección y el registro de la empresa”."
+        },
+        {
+          "id": "q10_o4",
+          "text": "“Puedes venir acompañado a la entrevista”."
+        }
+      ],
+      "correctAnswer": "q10_o2",
+      "acceptedAnswers": [],
+      "feedback": "El secreto y la presión dificultan la verificación y pueden favorecer el control.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q11",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Por qué la urgencia puede utilizarse para engañar?",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "Porque reduce el tiempo para verificar y pedir consejo."
+        },
+        {
+          "id": "q11_o2",
+          "text": "Porque todas las ofertas rápidas son legales."
+        },
+        {
+          "id": "q11_o3",
+          "text": "Porque mejora los contratos."
+        },
+        {
+          "id": "q11_o4",
+          "text": "Porque elimina cualquier riesgo."
+        }
+      ],
+      "correctAnswer": "q11_o1",
+      "acceptedAnswers": [],
+      "feedback": "La presión temporal puede impedir una decisión informada.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q12",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "trueFalse",
+      "statement": "Una oportunidad legítima debería permitir hacer preguntas sobre funciones, salario y destino.",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q12_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q12_o1",
+      "acceptedAnswers": [],
+      "feedback": "La claridad de condiciones permite evaluar la propuesta antes de aceptarla.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q13",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "multipleChoice",
+      "statement": "Una oferta dice “gana muchísimo, no necesitas experiencia, viajas hoy y los detalles te los contamos al llegar”. ¿Qué señal destaca?",
+      "options": [
+        {
+          "id": "q13_o1",
+          "text": "Transparencia."
+        },
+        {
+          "id": "q13_o2",
+          "text": "Información insuficiente y presión para decidir."
+        },
+        {
+          "id": "q13_o3",
+          "text": "Contratación regular."
+        },
+        {
+          "id": "q13_o4",
+          "text": "Seguridad garantizada."
+        }
+      ],
+      "correctAnswer": "q13_o2",
+      "acceptedAnswers": [],
+      "feedback": "Promesas excesivas combinadas con poca información y urgencia requieren verificación.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q14",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "fillBlank",
+      "statement": "Ocultar intencionalmente las condiciones reales de un trabajo es una forma de __.",
+      "options": [],
+      "correctAnswer": "engaño",
+      "acceptedAnswers": [
+        "engaño",
+        "engano"
+      ],
+      "feedback": "El engaño puede utilizarse para conseguir que una persona acepte algo que rechazaría si conociera la verdad.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q15",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "trueFalse",
+      "statement": "Pedir que una oportunidad se mantenga en secreto frente a familiares o amistades puede ser una señal de alerta.",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q15_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q15_o1",
+      "acceptedAnswers": [],
+      "feedback": "El secreto puede aislar a la persona y dificultar que alguien detecte inconsistencias.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q16",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué conviene hacer ante una oferta que cambia repetidamente?",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "Aceptar la última versión sin preguntar."
+        },
+        {
+          "id": "q16_o2",
+          "text": "Detenerse y aclarar por escrito funciones, salario, horario y destino."
+        },
+        {
+          "id": "q16_o3",
+          "text": "Entregar documentos para asegurar el cupo."
+        },
+        {
+          "id": "q16_o4",
+          "text": "Viajar antes de recibir detalles."
+        }
+      ],
+      "correctAnswer": "q16_o2",
+      "acceptedAnswers": [],
+      "feedback": "Los cambios sin explicación pueden ocultar condiciones reales distintas a las prometidas.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q17",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una señal positiva en un proceso de contratación?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "Contrato claro que puede revisarse antes de firmar."
+        },
+        {
+          "id": "q17_o2",
+          "text": "Negativa a identificar al empleador."
+        },
+        {
+          "id": "q17_o3",
+          "text": "Amenaza de perder el puesto si se consulta a alguien."
+        },
+        {
+          "id": "q17_o4",
+          "text": "Pago obligatorio a una cuenta personal sin comprobante."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "La transparencia facilita comprobar que la oportunidad es real.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q18",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "fillBlank",
+      "statement": "Presionar para que alguien decida “ahora mismo” busca limitar su tiempo de __.",
+      "options": [],
+      "correctAnswer": "verificación",
+      "acceptedAnswers": [
+        "verificación",
+        "verificacion"
+      ],
+      "feedback": "Comprobar la información antes de actuar es una medida preventiva importante.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q19",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "trueFalse",
+      "statement": "Una persona debería desconfiar automáticamente de todo empleo fuera de su ciudad.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o2",
+      "acceptedAnswers": [],
+      "feedback": "El objetivo no es temer a toda oportunidad, sino aprender a verificarla y reconocer señales de riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q20",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué combinación merece mayor precaución?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Oferta verificable + contrato + tiempo para decidir."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Promesa extraordinaria + secreto + urgencia + pocos datos."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Entrevista formal + dirección pública."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Referencias comprobables + funciones definidas."
+        }
+      ],
+      "correctAnswer": "q20_o2",
+      "acceptedAnswers": [],
+      "feedback": "Varias señales juntas aumentan la necesidad de detenerse y comprobar la propuesta.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "recruitment_deception_q21",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué significa abusar de una situación de vulnerabilidad?",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Aprovechar una necesidad o dependencia para someter a alguien."
+        },
+        {
+          "id": "q21_o2",
+          "text": "Ayudar sin pedir nada a cambio."
+        },
+        {
+          "id": "q21_o3",
+          "text": "Informar sobre derechos laborales."
+        },
+        {
+          "id": "q21_o4",
+          "text": "Ofrecer una oportunidad verificable."
+        }
+      ],
+      "correctAnswer": "q21_o1",
+      "acceptedAnswers": [],
+      "feedback": "El abuso aparece cuando una situación difícil se utiliza para controlar o explotar.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q22",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "trueFalse",
+      "statement": "Tener necesidad económica hace responsable a una persona si es engañada.",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q22_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q22_o2",
+      "acceptedAnswers": [],
+      "feedback": "La responsabilidad recae en quien aprovecha la necesidad para engañar o explotar.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q23",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál puede aumentar la vulnerabilidad?",
+      "options": [
+        {
+          "id": "q23_o1",
+          "text": "Aislamiento y dependencia económica."
+        },
+        {
+          "id": "q23_o2",
+          "text": "Red de apoyo y acceso a información."
+        },
+        {
+          "id": "q23_o3",
+          "text": "Control personal de documentos."
+        },
+        {
+          "id": "q23_o4",
+          "text": "Condiciones laborales transparentes."
+        }
+      ],
+      "correctAnswer": "q23_o1",
+      "acceptedAnswers": [],
+      "feedback": "El aislamiento y la dependencia pueden reducir las opciones para pedir ayuda o salir.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q24",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "fillBlank",
+      "statement": "Cuando alguien aprovecha que otra persona no tiene dónde vivir para imponerle explotación, está abusando de su __.",
+      "options": [],
+      "correctAnswer": "vulnerabilidad",
+      "acceptedAnswers": [
+        "vulnerabilidad"
+      ],
+      "feedback": "Las necesidades básicas pueden ser utilizadas como mecanismo de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q25",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "trueFalse",
+      "statement": "La vulnerabilidad puede cambiar con el tiempo y las circunstancias.",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q25_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q25_o1",
+      "acceptedAnswers": [],
+      "feedback": "No es una etiqueta permanente; depende de condiciones personales, sociales y económicas.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q26",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "multipleChoice",
+      "statement": "Un empleador amenaza con denunciar la situación migratoria de una persona si intenta irse. ¿Qué está haciendo?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "Aprovechando una vulnerabilidad para controlar."
+        },
+        {
+          "id": "q26_o2",
+          "text": "Ofreciendo orientación migratoria."
+        },
+        {
+          "id": "q26_o3",
+          "text": "Mejorando la seguridad."
+        },
+        {
+          "id": "q26_o4",
+          "text": "Negociando libremente."
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "El miedo relacionado con la situación migratoria puede utilizarse como forma de coacción.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q27",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué ayuda a reducir vulnerabilidad ante una oferta?",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Tener información, contactos de apoyo y alternativas."
+        },
+        {
+          "id": "q27_o2",
+          "text": "Depender completamente de una sola persona."
+        },
+        {
+          "id": "q27_o3",
+          "text": "Entregar el teléfono."
+        },
+        {
+          "id": "q27_o4",
+          "text": "Mantener el viaje en secreto."
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las redes de apoyo y la información amplían las opciones de decisión y salida.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q28",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "fillBlank",
+      "statement": "Una persona que depende totalmente de otra para vivienda, dinero y comunicación puede estar en una situación de __.",
+      "options": [],
+      "correctAnswer": "dependencia",
+      "acceptedAnswers": [
+        "dependencia"
+      ],
+      "feedback": "La dependencia puede ser aprovechada para imponer control.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q29",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "trueFalse",
+      "statement": "Las niñas, niños y adolescentes pueden encontrarse en una situación especial de vulnerabilidad.",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q29_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q29_o1",
+      "acceptedAnswers": [],
+      "feedback": "La edad y dependencia de personas adultas requieren medidas de protección reforzada.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q30",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué enfoque es correcto?",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Fortalecer opciones y apoyo, no culpar a la persona por su vulnerabilidad."
+        },
+        {
+          "id": "q30_o2",
+          "text": "Considerar que quien necesita dinero acepta cualquier riesgo."
+        },
+        {
+          "id": "q30_o3",
+          "text": "Ignorar amenazas si no hay violencia física."
+        },
+        {
+          "id": "q30_o4",
+          "text": "Responsabilizar a la familia por completo."
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "La prevención debe aumentar protección y alternativas sin estigmatizar.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q31",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Cuándo una deuda se vuelve una señal grave de control?",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Cuando se usa para impedir que la persona se vaya y crece sin reglas claras."
+        },
+        {
+          "id": "q31_o2",
+          "text": "Cuando existe un préstamo formal con condiciones conocidas."
+        },
+        {
+          "id": "q31_o3",
+          "text": "Cuando puede pagarse libremente."
+        },
+        {
+          "id": "q31_o4",
+          "text": "Cuando hay recibos verificables."
+        }
+      ],
+      "correctAnswer": "q31_o1",
+      "acceptedAnswers": [],
+      "feedback": "La servidumbre por deudas utiliza obligaciones económicas para mantener a la persona sometida.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q32",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "trueFalse",
+      "statement": "Recibir un adelanto de dinero permite al empleador impedir que una persona abandone el trabajo.",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q32_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q32_o2",
+      "acceptedAnswers": [],
+      "feedback": "Una deuda no autoriza privación de libertad, amenazas ni trabajo forzoso.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q33",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "multipleChoice",
+      "statement": "Al llegar al trabajo, el empleador guarda el pasaporte “para que no se pierda” y se niega a devolverlo. ¿Qué representa?",
+      "options": [
+        {
+          "id": "q33_o1",
+          "text": "Una señal de control."
+        },
+        {
+          "id": "q33_o2",
+          "text": "Una práctica obligatoria."
+        },
+        {
+          "id": "q33_o3",
+          "text": "Una garantía de seguridad."
+        },
+        {
+          "id": "q33_o4",
+          "text": "Ningún riesgo."
+        }
+      ],
+      "correctAnswer": "q33_o1",
+      "acceptedAnswers": [],
+      "feedback": "Retener documentos puede dificultar que la persona se desplace, busque ayuda o abandone el lugar.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q34",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "fillBlank",
+      "statement": "Obligar a trabajar para pagar una deuda impuesta o manipulada puede convertirse en servidumbre por __.",
+      "options": [],
+      "correctAnswer": "deudas",
+      "acceptedAnswers": [
+        "deudas"
+      ],
+      "feedback": "La deuda puede ser utilizada como mecanismo de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q35",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "trueFalse",
+      "statement": "Es recomendable conservar copias de documentos importantes en un lugar accesible y seguro.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las copias pueden facilitar identificación y búsqueda de ayuda si los originales se pierden o son retenidos.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q36",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una señal de servidumbre por deudas?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "La deuda aumenta constantemente y nunca se explica cómo puede terminar."
+        },
+        {
+          "id": "q36_o2",
+          "text": "El monto y cuotas están claros."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Existe libertad de renunciar."
+        },
+        {
+          "id": "q36_o4",
+          "text": "La persona conserva sus documentos."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las deudas indefinidas o manipuladas pueden mantener a la persona atrapada.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q37",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué debería despertar preocupación antes de viajar?",
+      "options": [
+        {
+          "id": "q37_o1",
+          "text": "Que exijan entregar el pasaporte original sin explicar por qué ni cuándo será devuelto."
+        },
+        {
+          "id": "q37_o2",
+          "text": "Que pidan una copia para un trámite identificado."
+        },
+        {
+          "id": "q37_o3",
+          "text": "Que entreguen comprobantes."
+        },
+        {
+          "id": "q37_o4",
+          "text": "Que permitan hacer consultas."
+        }
+      ],
+      "correctAnswer": "q37_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los documentos originales son esenciales para la autonomía y no deberían entregarse sin necesidad y garantías claras.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q38",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "fillBlank",
+      "statement": "Retener el teléfono de una persona para impedir que se comunique es una forma de __.",
+      "options": [],
+      "correctAnswer": "control",
+      "acceptedAnswers": [
+        "control"
+      ],
+      "feedback": "Restringir comunicaciones puede aislar a la víctima de su red de apoyo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q39",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "trueFalse",
+      "statement": "Si una persona recibe alojamiento del empleador, este puede prohibirle salir fuera del horario laboral.",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q39_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q39_o2",
+      "acceptedAnswers": [],
+      "feedback": "El alojamiento no autoriza restricciones abusivas de libertad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q40",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica protege mejor la autonomía?",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "Conservar documentos, contactos y un medio propio de comunicación cuando sea posible."
+        },
+        {
+          "id": "q40_o2",
+          "text": "Entregar todo al reclutador."
+        },
+        {
+          "id": "q40_o3",
+          "text": "Depender de una sola persona para llamar a la familia."
+        },
+        {
+          "id": "q40_o4",
+          "text": "No guardar ninguna copia."
+        }
+      ],
+      "correctAnswer": "q40_o1",
+      "acceptedAnswers": [],
+      "feedback": "Mantener acceso a documentos y comunicación facilita pedir ayuda y tomar decisiones.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q41",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "trueFalse",
+      "statement": "La coerción puede ser psicológica y no dejar lesiones visibles.",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q41_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q41_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las amenazas, intimidación y miedo también pueden someter a una persona.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q42",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una forma de aislamiento?",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Impedir llamadas y contacto con familiares."
+        },
+        {
+          "id": "q42_o2",
+          "text": "Permitir visitas."
+        },
+        {
+          "id": "q42_o3",
+          "text": "Facilitar acceso a internet."
+        },
+        {
+          "id": "q42_o4",
+          "text": "Respetar horarios libres."
+        }
+      ],
+      "correctAnswer": "q42_o1",
+      "acceptedAnswers": [],
+      "feedback": "Separar a una persona de su red de apoyo aumenta su dependencia.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q43",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "fillBlank",
+      "statement": "Una amenaza utilizada para obligar a alguien a actuar contra su voluntad es una forma de __.",
+      "options": [],
+      "correctAnswer": "coacción",
+      "acceptedAnswers": [
+        "coacción",
+        "coaccion"
+      ],
+      "feedback": "La coacción busca imponer una conducta mediante miedo o presión.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q44",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase muestra una amenaza de control?",
+      "options": [
+        {
+          "id": "q44_o1",
+          "text": "“Si intentas irte, le haremos daño a tu familia”."
+        },
+        {
+          "id": "q44_o2",
+          "text": "“Puedes retirarte cuando quieras”."
+        },
+        {
+          "id": "q44_o3",
+          "text": "“Aquí tienes una copia del contrato”."
+        },
+        {
+          "id": "q44_o4",
+          "text": "“Puedes llamar a quien necesites”."
+        }
+      ],
+      "correctAnswer": "q44_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las amenazas contra seres queridos pueden utilizarse para mantener a la víctima sometida.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q45",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "trueFalse",
+      "statement": "Una persona puede permanecer en una situación de explotación porque teme represalias.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o1",
+      "acceptedAnswers": [],
+      "feedback": "El miedo puede limitar la capacidad real de abandonar el lugar o pedir ayuda.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q46",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué situación indica pérdida de autonomía?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Otra persona controla horarios, salidas, llamadas y documentos."
+        },
+        {
+          "id": "q46_o2",
+          "text": "La persona decide libremente su tiempo fuera del trabajo."
+        },
+        {
+          "id": "q46_o3",
+          "text": "Puede renunciar y regresar a casa."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Mantiene sus pertenencias."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "El control sobre múltiples aspectos de la vida es una señal importante de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q47",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "multipleChoice",
+      "statement": "Si alguien amenaza con denunciar a una persona migrante para impedir que se vaya, ¿qué conviene reconocer?",
+      "options": [
+        {
+          "id": "q47_o1",
+          "text": "Es una forma de intimidación y control."
+        },
+        {
+          "id": "q47_o2",
+          "text": "Es parte normal de cualquier empleo."
+        },
+        {
+          "id": "q47_o3",
+          "text": "Es una obligación del empleador."
+        },
+        {
+          "id": "q47_o4",
+          "text": "No tiene relación con coerción."
+        }
+      ],
+      "correctAnswer": "q47_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las amenazas vinculadas al estatus migratorio pueden utilizarse para someter.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q48",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "fillBlank",
+      "statement": "Separar a una persona de amistades y familia aumenta su __ del explotador.",
+      "options": [],
+      "correctAnswer": "dependencia",
+      "acceptedAnswers": [
+        "dependencia"
+      ],
+      "feedback": "El aislamiento reduce apoyos externos y puede facilitar el control.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q49",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "trueFalse",
+      "statement": "Si no existen golpes, entonces no puede existir sometimiento.",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q49_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q49_o2",
+      "acceptedAnswers": [],
+      "feedback": "El sometimiento puede producirse mediante amenazas, deuda, miedo, aislamiento o manipulación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q50",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué es más seguro para una persona que identifica amenazas graves?",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "Buscar apoyo y planificar una salida segura sin confrontar innecesariamente al agresor."
+        },
+        {
+          "id": "q50_o2",
+          "text": "Anunciarle inmediatamente que será denunciado estando a solas."
+        },
+        {
+          "id": "q50_o3",
+          "text": "Publicar su ubicación exacta."
+        },
+        {
+          "id": "q50_o4",
+          "text": "Destruir toda evidencia."
+        }
+      ],
+      "correctAnswer": "q50_o1",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad personal debe priorizarse y la salida puede requerir apoyo especializado.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "recruitment_deception_q51",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "multipleChoice",
+      "statement": "Antes de aceptar trabajo en otra ciudad, ¿qué información conviene verificar?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "Empleador, dirección, funciones, salario, horarios y alojamiento."
+        },
+        {
+          "id": "q51_o2",
+          "text": "Solo el nombre de quien escribió."
+        },
+        {
+          "id": "q51_o3",
+          "text": "Solo el precio del pasaje."
+        },
+        {
+          "id": "q51_o4",
+          "text": "Nada si la paga parece alta."
+        }
+      ],
+      "correctAnswer": "q51_o1",
+      "acceptedAnswers": [],
+      "feedback": "Comprobar varios datos permite detectar inconsistencias antes de desplazarse.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q52",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "trueFalse",
+      "statement": "Compartir el itinerario y datos de contacto con una persona de confianza puede ser una medida preventiva.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una red de apoyo facilita la localización y el contacto ante cambios inesperados.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q53",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué conviene hacer con un contrato antes de viajar?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "Leerlo y comprobar que coincida con lo prometido."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Firmarlo sin revisar."
+        },
+        {
+          "id": "q53_o3",
+          "text": "Dejar todos los campos en blanco."
+        },
+        {
+          "id": "q53_o4",
+          "text": "Entregar la única copia."
+        }
+      ],
+      "correctAnswer": "q53_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las condiciones escritas deben revisarse antes de asumir el compromiso.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q54",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "fillBlank",
+      "statement": "Confirmar que una empresa, dirección y persona realmente existen es un proceso de __.",
+      "options": [],
+      "correctAnswer": "verificación",
+      "acceptedAnswers": [
+        "verificación",
+        "verificacion"
+      ],
+      "feedback": "Verificar reduce la posibilidad de actuar basándose únicamente en promesas.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q55",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "trueFalse",
+      "statement": "Si al preguntar detalles la persona reclutadora se molesta y amenaza con retirar la oferta, conviene ignorar esa señal.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o2",
+      "acceptedAnswers": [],
+      "feedback": "La presión ante preguntas legítimas es una señal que merece precaución.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q56",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica es más segura al enviar documentos para una postulación?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Entregar solo lo necesario y conocer quién lo recibe y para qué."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Enviar todos los documentos personales a cualquier contacto."
+        },
+        {
+          "id": "q56_o3",
+          "text": "Publicarlos en redes sociales."
+        },
+        {
+          "id": "q56_o4",
+          "text": "Dar también contraseñas."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "Minimizar la información compartida reduce riesgos de fraude y abuso.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q57",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "multipleChoice",
+      "statement": "La oferta cambia justo antes del viaje y ahora exige entregar el teléfono al llegar. ¿Qué conviene hacer?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Detener el proceso y verificar antes de continuar."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Aceptar porque ya se compró el pasaje."
+        },
+        {
+          "id": "q57_o3",
+          "text": "No contárselo a nadie."
+        },
+        {
+          "id": "q57_o4",
+          "text": "Borrar mensajes anteriores."
+        }
+      ],
+      "correctAnswer": "q57_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los cambios que reducen autonomía son señales importantes y justifican reconsiderar la decisión.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q58",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "fillBlank",
+      "statement": "Tener personas que conocen tu destino y pueden ayudarte forma parte de una red de __.",
+      "options": [],
+      "correctAnswer": "apoyo",
+      "acceptedAnswers": [
+        "apoyo"
+      ],
+      "feedback": "Una red de apoyo puede ser esencial para prevenir aislamiento y pedir ayuda.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q59",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "trueFalse",
+      "statement": "Verificar una oferta significa rechazar automáticamente cualquier oportunidad nueva.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o2",
+      "acceptedAnswers": [],
+      "feedback": "Verificar permite tomar decisiones informadas, no vivir con miedo a toda oportunidad.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "recruitment_deception_q60",
+      "categoryId": "recruitment_deception",
+      "activityId": "recruitment_deception_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume mejor una decisión preventiva?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Verificar, informar a alguien de confianza, conservar documentos y no ceder ante urgencias sospechosas."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Viajar en secreto."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Confiar solo en promesas verbales."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Entregar documentos y teléfono al llegar."
+        }
+      ],
+      "correctAnswer": "q60_o1",
+      "acceptedAnswers": [],
+      "feedback": "La prevención combina información, autonomía y redes de apoyo.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    }
+  ]
+}
