@@ -1,0 +1,1483 @@
+{
+  "questions": [
+    {
+      "id": "digital_recruitment_q01",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "multipleChoice",
+      "statement": "Una cuenta desconocida comienza a escribirte todos los días, te halaga y rápidamente ofrece llevarte a otra ciudad para trabajar. ¿Qué conviene hacer?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Aceptar porque parece amable."
+        },
+        {
+          "id": "q01_o2",
+          "text": "Verificar identidad y oferta antes de compartir datos o desplazarte."
+        },
+        {
+          "id": "q01_o3",
+          "text": "Enviar documentos inmediatamente."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Mantener todo en secreto."
+        }
+      ],
+      "correctAnswer": "q01_o2",
+      "acceptedAnswers": [],
+      "feedback": "La confianza rápida no sustituye la verificación de identidad y condiciones.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q02",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "trueFalse",
+      "statement": "Una persona tratante puede utilizar redes sociales para identificar y acercarse a posibles víctimas.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las plataformas digitales pueden utilizarse para captar mediante amistad, afecto u ofertas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q03",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué comportamiento merece mayor precaución?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Respetar que quieras verificar una propuesta."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Pedir que ocultes la conversación a familia y amistades."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Dar datos verificables de la empresa."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Aceptar una videollamada profesional."
+        }
+      ],
+      "correctAnswer": "q03_o2",
+      "acceptedAnswers": [],
+      "feedback": "El secreto puede aislar y dificultar que otras personas detecten señales de riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q04",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "fillBlank",
+      "statement": "El proceso de atraer a una persona mediante mensajes, promesas o relaciones puede formar parte de la __.",
+      "options": [],
+      "correctAnswer": "captación",
+      "acceptedAnswers": [
+        "captación",
+        "captacion"
+      ],
+      "feedback": "La captación puede comenzar completamente en línea.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q05",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "trueFalse",
+      "statement": "Tener muchos seguidores demuestra que una cuenta es auténtica y segura.",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q05_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q05_o2",
+      "acceptedAnswers": [],
+      "feedback": "Seguidores, fotografías y actividad pueden manipularse o comprarse.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q06",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál puede ser una estrategia de acercamiento?",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "Elogios constantes y regalos para generar confianza acelerada."
+        },
+        {
+          "id": "q06_o2",
+          "text": "Contrato verificable."
+        },
+        {
+          "id": "q06_o3",
+          "text": "Información pública de la empresa."
+        },
+        {
+          "id": "q06_o4",
+          "text": "Tiempo para consultar con otras personas."
+        }
+      ],
+      "correctAnswer": "q06_o1",
+      "acceptedAnswers": [],
+      "feedback": "La atención intensa puede utilizarse para crear dependencia o confianza rápida.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q07",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "multipleChoice",
+      "statement": "Un contacto insiste en pasar de una red pública a una app privada y pide borrar los mensajes anteriores. ¿Qué es más prudente?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "Considerar la solicitud una señal de alerta."
+        },
+        {
+          "id": "q07_o2",
+          "text": "Borrar todo sin preguntar."
+        },
+        {
+          "id": "q07_o3",
+          "text": "Compartir la ubicación."
+        },
+        {
+          "id": "q07_o4",
+          "text": "Enviar una foto del documento."
+        }
+      ],
+      "correctAnswer": "q07_o1",
+      "acceptedAnswers": [],
+      "feedback": "Ocultar rastros y trasladar la conversación puede reducir posibilidades de verificación o reporte.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q08",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "fillBlank",
+      "statement": "Pedir que una relación o propuesta se mantenga en __ puede facilitar el aislamiento.",
+      "options": [],
+      "correctAnswer": "secreto",
+      "acceptedAnswers": [
+        "secreto"
+      ],
+      "feedback": "El secreto puede impedir que la persona reciba advertencias o apoyo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q09",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "trueFalse",
+      "statement": "Una conversación amistosa puede transformarse gradualmente en manipulación o captación.",
+      "options": [
+        {
+          "id": "q09_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q09_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q09_o1",
+      "acceptedAnswers": [],
+      "feedback": "El proceso puede ser gradual y comenzar con temas completamente normales.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q10",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué medida ayuda ante un contacto nuevo que propone un viaje?",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "Compartir la propuesta con una persona de confianza y verificarla por separado."
+        },
+        {
+          "id": "q10_o2",
+          "text": "Viajar sin avisar."
+        },
+        {
+          "id": "q10_o3",
+          "text": "Dar contraseñas para demostrar confianza."
+        },
+        {
+          "id": "q10_o4",
+          "text": "Eliminar a todos tus contactos."
+        }
+      ],
+      "correctAnswer": "q10_o1",
+      "acceptedAnswers": [],
+      "feedback": "La verificación independiente y la red de apoyo reducen el aislamiento.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q11",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "trueFalse",
+      "statement": "La fotografía de perfil es prueba suficiente de la identidad de una persona.",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q11_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q11_o2",
+      "acceptedAnswers": [],
+      "feedback": "Las imágenes pueden ser robadas, editadas o generadas artificialmente.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q12",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cómo verificar mejor a una supuesta agencia?",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Buscar información por canales independientes, dirección y datos de contacto oficiales."
+        },
+        {
+          "id": "q12_o2",
+          "text": "Confiar solo en el chat."
+        },
+        {
+          "id": "q12_o3",
+          "text": "Revisar únicamente sus emojis."
+        },
+        {
+          "id": "q12_o4",
+          "text": "Aceptar cualquier documento enviado por mensaje."
+        }
+      ],
+      "correctAnswer": "q12_o1",
+      "acceptedAnswers": [],
+      "feedback": "La verificación independiente evita depender de la información controlada por quien hace la oferta.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q13",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "fillBlank",
+      "statement": "Usar el nombre y fotografías de otra persona para hacerse pasar por ella es una forma de __ de identidad.",
+      "options": [],
+      "correctAnswer": "suplantación",
+      "acceptedAnswers": [
+        "suplantación",
+        "suplantacion"
+      ],
+      "feedback": "La suplantación puede utilizarse para generar confianza o cometer otros engaños.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q14",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "multipleChoice",
+      "statement": "Un supuesto reclutador usa un correo gratuito, no aparece en la web de la empresa y evita llamadas. ¿Qué conviene hacer?",
+      "options": [
+        {
+          "id": "q14_o1",
+          "text": "Contactar a la empresa por su canal oficial para comprobarlo."
+        },
+        {
+          "id": "q14_o2",
+          "text": "Enviar el pasaporte."
+        },
+        {
+          "id": "q14_o3",
+          "text": "Pagar una reserva."
+        },
+        {
+          "id": "q14_o4",
+          "text": "Viajar para verificar en persona."
+        }
+      ],
+      "correctAnswer": "q14_o1",
+      "acceptedAnswers": [],
+      "feedback": "La empresa puede confirmar si la persona realmente trabaja allí.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q15",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "trueFalse",
+      "statement": "Una videollamada por sí sola garantiza que la historia y la oferta sean verdaderas.",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q15_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q15_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ver el rostro no confirma empresa, condiciones, intenciones ni identidad completa.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q16",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué señal puede indicar un perfil fabricado?",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "Información inconsistente sobre identidad, ciudad o trabajo."
+        },
+        {
+          "id": "q16_o2",
+          "text": "Datos coherentes y comprobables."
+        },
+        {
+          "id": "q16_o3",
+          "text": "Referencias verificables."
+        },
+        {
+          "id": "q16_o4",
+          "text": "Presencia oficial de la empresa."
+        }
+      ],
+      "correctAnswer": "q16_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las contradicciones merecen verificación adicional.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q17",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una buena práctica antes de encontrarte con alguien conocido solo en línea?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "Informar a una persona de confianza y elegir un lugar público."
+        },
+        {
+          "id": "q17_o2",
+          "text": "Ir a un lugar aislado."
+        },
+        {
+          "id": "q17_o3",
+          "text": "Apagar el teléfono."
+        },
+        {
+          "id": "q17_o4",
+          "text": "No decir a nadie dónde estarás."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las medidas de seguridad permiten pedir ayuda si algo cambia.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q18",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "fillBlank",
+      "statement": "Comprobar datos por medios distintos al chat original se llama verificación __.",
+      "options": [],
+      "correctAnswer": "independiente",
+      "acceptedAnswers": [
+        "independiente"
+      ],
+      "feedback": "No conviene depender exclusivamente de la información proporcionada por el contacto.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q19",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "trueFalse",
+      "statement": "Los perfiles falsos pueden hacerse pasar por empresas, amistades o posibles parejas.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o1",
+      "acceptedAnswers": [],
+      "feedback": "La suplantación puede adoptar distintos roles para ganar confianza.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q20",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una respuesta adecuada si descubres que las fotos del contacto pertenecen a otra persona?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Detener la interacción y reevaluar cualquier información compartida."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Ignorarlo si la oferta es buena."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Enviar más documentos."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Transferir dinero para “demostrar confianza”."
+        }
+      ],
+      "correctAnswer": "q20_o1",
+      "acceptedAnswers": [],
+      "feedback": "La identidad falsa es una señal fuerte de engaño.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "digital_recruitment_q21",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué combinación vuelve una oferta especialmente sospechosa?",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Sueldo muy alto, ninguna experiencia, viaje inmediato y empresa no identificable."
+        },
+        {
+          "id": "q21_o2",
+          "text": "Entrevista, funciones claras y referencias."
+        },
+        {
+          "id": "q21_o3",
+          "text": "Contrato y dirección verificables."
+        },
+        {
+          "id": "q21_o4",
+          "text": "Tiempo para decidir."
+        }
+      ],
+      "correctAnswer": "q21_o1",
+      "acceptedAnswers": [],
+      "feedback": "Promesas extraordinarias con poca información y presión requieren verificación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q22",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "trueFalse",
+      "statement": "Una oferta publicada en una red conocida es automáticamente legítima.",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q22_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q22_o2",
+      "acceptedAnswers": [],
+      "feedback": "Las plataformas pueden contener publicaciones fraudulentas.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q23",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "multipleChoice",
+      "statement": "Una agencia de modelaje pide pagar por transferencia a una persona particular y no entrega contrato ni dirección. ¿Qué conviene?",
+      "options": [
+        {
+          "id": "q23_o1",
+          "text": "Verificar antes de pagar o enviar documentos."
+        },
+        {
+          "id": "q23_o2",
+          "text": "Pagar para no perder el cupo."
+        },
+        {
+          "id": "q23_o3",
+          "text": "Viajar sin más información."
+        },
+        {
+          "id": "q23_o4",
+          "text": "Compartir el anuncio con más personas como si fuera seguro."
+        }
+      ],
+      "correctAnswer": "q23_o1",
+      "acceptedAnswers": [],
+      "feedback": "La falta de trazabilidad y documentación es una señal de alerta.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q24",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "fillBlank",
+      "statement": "Una oferta legítima debería permitir comprobar las condiciones antes de realizar un __.",
+      "options": [],
+      "correctAnswer": "viaje",
+      "acceptedAnswers": [
+        "viaje"
+      ],
+      "feedback": "El destino, empleador y condiciones deben conocerse antes del desplazamiento.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q25",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "trueFalse",
+      "statement": "Es buena idea enviar fotografías de todos tus documentos a cualquier cuenta que ofrezca empleo.",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q25_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q25_o2",
+      "acceptedAnswers": [],
+      "feedback": "Solo debe compartirse lo necesario con destinatarios legítimos y verificados.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q26",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué pregunta es útil antes de aceptar una oferta de viaje?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "¿Quién cubre costos, dónde me alojaré y cuál es el contrato?"
+        },
+        {
+          "id": "q26_o2",
+          "text": "¿Cuántos “me gusta” tiene el anuncio?"
+        },
+        {
+          "id": "q26_o3",
+          "text": "¿Qué filtro usaron en la foto?"
+        },
+        {
+          "id": "q26_o4",
+          "text": "¿Cuántos emojis tiene el mensaje?"
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los detalles concretos permiten comprobar si la oferta es coherente.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q27",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "multipleChoice",
+      "statement": "La persona reclutadora evita responder cuánto pagarás por alojamiento y dice que “se descontará después”. ¿Qué riesgo existe?",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Deuda imprecisa que podría utilizarse como control."
+        },
+        {
+          "id": "q27_o2",
+          "text": "Ninguno."
+        },
+        {
+          "id": "q27_o3",
+          "text": "Mejor salario garantizado."
+        },
+        {
+          "id": "q27_o4",
+          "text": "Trámite normal en todos los trabajos."
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las deudas no definidas pueden convertirse en mecanismos de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q28",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "fillBlank",
+      "statement": "Una oferta con datos comprobables puede considerarse más __ que una basada únicamente en promesas.",
+      "options": [],
+      "correctAnswer": "verificable",
+      "acceptedAnswers": [
+        "verificable"
+      ],
+      "feedback": "La trazabilidad permite contrastar información.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q29",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "trueFalse",
+      "statement": "Si una oferta cambia el destino a último momento, es razonable detenerse y verificar nuevamente.",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q29_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q29_o1",
+      "acceptedAnswers": [],
+      "feedback": "Cambios importantes deben aclararse antes de continuar.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q30",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué acción protege mejor antes de viajar por una oferta encontrada en internet?",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Compartir contrato, destino y contactos con alguien de confianza."
+        },
+        {
+          "id": "q30_o2",
+          "text": "Borrar todo el historial."
+        },
+        {
+          "id": "q30_o3",
+          "text": "Apagar el teléfono durante varios días."
+        },
+        {
+          "id": "q30_o4",
+          "text": "No decir a nadie quién te contrató."
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una red informada puede ayudar si surgen problemas.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q31",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué caracteriza al grooming?",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Un proceso de acercamiento y manipulación de una persona adulta hacia una niña, niño o adolescente con fines sexuales."
+        },
+        {
+          "id": "q31_o2",
+          "text": "Una amistad normal entre compañeros."
+        },
+        {
+          "id": "q31_o3",
+          "text": "Un anuncio comercial."
+        },
+        {
+          "id": "q31_o4",
+          "text": "Una clase virtual."
+        }
+      ],
+      "correctAnswer": "q31_o1",
+      "acceptedAnswers": [],
+      "feedback": "El grooming busca construir confianza para manipular y vulnerar a una persona menor de edad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q32",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "trueFalse",
+      "statement": "El grooming puede comenzar con conversaciones aparentemente normales.",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q32_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q32_o1",
+      "acceptedAnswers": [],
+      "feedback": "El acercamiento suele ser gradual para generar confianza.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q33",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué señal es preocupante en la conversación de una persona adulta con un adolescente?",
+      "options": [
+        {
+          "id": "q33_o1",
+          "text": "Pedirle que oculte la relación a sus cuidadores."
+        },
+        {
+          "id": "q33_o2",
+          "text": "Recomendar hablar con su familia."
+        },
+        {
+          "id": "q33_o3",
+          "text": "Respetar límites."
+        },
+        {
+          "id": "q33_o4",
+          "text": "Evitar temas sexuales."
+        }
+      ],
+      "correctAnswer": "q33_o1",
+      "acceptedAnswers": [],
+      "feedback": "El secreto puede utilizarse para aislar y aumentar control.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q34",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "fillBlank",
+      "statement": "Ganar confianza mediante atención y secretos para luego manipular a un menor puede formar parte del __.",
+      "options": [],
+      "correctAnswer": "grooming",
+      "acceptedAnswers": [
+        "grooming"
+      ],
+      "feedback": "El proceso busca reducir defensas y normalizar conductas de riesgo.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q35",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "trueFalse",
+      "statement": "Una persona menor de edad debe resolver sola una situación de grooming para demostrar madurez.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o2",
+      "acceptedAnswers": [],
+      "feedback": "Debe buscar apoyo de una persona adulta de confianza y no cargar sola con la situación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q36",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué conducta puede formar parte de la manipulación afectiva?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "Alternar regalos, cariño intenso y amenazas cuando la persona pone límites."
+        },
+        {
+          "id": "q36_o2",
+          "text": "Respetar decisiones."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Permitir contacto con amistades."
+        },
+        {
+          "id": "q36_o4",
+          "text": "Aceptar un “no”."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "El afecto puede mezclarse con presión y amenazas para crear dependencia.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q37",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "multipleChoice",
+      "statement": "Un adulto conocido solo en línea pide a una adolescente encontrarse a solas y no decir nada. ¿Qué es lo más seguro?",
+      "options": [
+        {
+          "id": "q37_o1",
+          "text": "No acudir sola y contarlo a una persona adulta de confianza."
+        },
+        {
+          "id": "q37_o2",
+          "text": "Ir sin avisar."
+        },
+        {
+          "id": "q37_o3",
+          "text": "Apagar el celular."
+        },
+        {
+          "id": "q37_o4",
+          "text": "Borrar la conversación."
+        }
+      ],
+      "correctAnswer": "q37_o1",
+      "acceptedAnswers": [],
+      "feedback": "El secreto y el encuentro aislado son señales de riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q38",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "fillBlank",
+      "statement": "Presionar para alejar a una persona de sus vínculos de confianza es una forma de __.",
+      "options": [],
+      "correctAnswer": "aislamiento",
+      "acceptedAnswers": [
+        "aislamiento"
+      ],
+      "feedback": "El aislamiento puede aumentar dependencia y dificultar pedir ayuda.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q39",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "trueFalse",
+      "statement": "Los regalos eliminan la obligación de respetar los límites de una persona.",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q39_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q39_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ningún regalo crea derecho sobre otra persona ni obliga a corresponder.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q40",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué mensaje protege mejor a niñas, niños y adolescentes?",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "“Si algo te incomoda, puedes contarlo a una persona adulta de confianza aunque te hayan pedido secreto”."
+        },
+        {
+          "id": "q40_o2",
+          "text": "“Debes obedecer a todo adulto en internet”."
+        },
+        {
+          "id": "q40_o3",
+          "text": "“Nunca pidas ayuda”."
+        },
+        {
+          "id": "q40_o4",
+          "text": "“Si aceptaste hablar, ya no puedes cambiar de opinión”."
+        }
+      ],
+      "correctAnswer": "q40_o1",
+      "acceptedAnswers": [],
+      "feedback": "Romper secretos que generan miedo o incomodidad es una medida de protección.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q41",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "multipleChoice",
+      "statement": "Alguien amenaza con publicar una imagen íntima si no aceptas un encuentro. ¿Qué situación describe?",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Sextorsión."
+        },
+        {
+          "id": "q41_o2",
+          "text": "Publicidad."
+        },
+        {
+          "id": "q41_o3",
+          "text": "Verificación de identidad."
+        },
+        {
+          "id": "q41_o4",
+          "text": "Negociación normal."
+        }
+      ],
+      "correctAnswer": "q41_o1",
+      "acceptedAnswers": [],
+      "feedback": "La sextorsión utiliza la amenaza de divulgar contenido para exigir algo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q42",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "trueFalse",
+      "statement": "Enviar más imágenes garantiza que quien amenaza dejará de hacerlo.",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q42_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q42_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ceder puede aumentar el material utilizado para seguir presionando.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q43",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "multipleChoice",
+      "statement": "Ante sextorsión, ¿qué acción suele ser más segura?",
+      "options": [
+        {
+          "id": "q43_o1",
+          "text": "Guardar evidencia, proteger cuentas y buscar apoyo."
+        },
+        {
+          "id": "q43_o2",
+          "text": "Enviar más contenido."
+        },
+        {
+          "id": "q43_o3",
+          "text": "Publicar datos personales del agresor inmediatamente."
+        },
+        {
+          "id": "q43_o4",
+          "text": "Ir solo a confrontarlo."
+        }
+      ],
+      "correctAnswer": "q43_o1",
+      "acceptedAnswers": [],
+      "feedback": "La prioridad es reducir exposición y obtener apoyo sin aumentar el riesgo.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q44",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "fillBlank",
+      "statement": "Amenazar con divulgar contenido íntimo para obtener dinero o acciones se denomina __.",
+      "options": [],
+      "correctAnswer": "sextorsión",
+      "acceptedAnswers": [
+        "sextorsión",
+        "sextorsion"
+      ],
+      "feedback": "La amenaza puede buscar dinero, más contenido, encuentros o silencio.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q45",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "trueFalse",
+      "statement": "Una imagen manipulada también puede utilizarse para amenazar a una persona.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o1",
+      "acceptedAnswers": [],
+      "feedback": "El contenido no tiene que ser auténtico para generar miedo y presión.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q46",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Quién es responsable de la sextorsión?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Quien amenaza o utiliza el contenido para coaccionar."
+        },
+        {
+          "id": "q46_o2",
+          "text": "La víctima por haber confiado."
+        },
+        {
+          "id": "q46_o3",
+          "text": "La familia."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Nadie."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "La responsabilidad corresponde a quien realiza la amenaza y coerción.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q47",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "multipleChoice",
+      "statement": "Si una amenaza busca obligar a viajar o reunirse con alguien, ¿por qué es especialmente grave?",
+      "options": [
+        {
+          "id": "q47_o1",
+          "text": "Puede utilizarse como medio de captación o sometimiento."
+        },
+        {
+          "id": "q47_o2",
+          "text": "Porque mejora la privacidad."
+        },
+        {
+          "id": "q47_o3",
+          "text": "Porque elimina riesgos."
+        },
+        {
+          "id": "q47_o4",
+          "text": "Porque demuestra confianza."
+        }
+      ],
+      "correctAnswer": "q47_o1",
+      "acceptedAnswers": [],
+      "feedback": "La coerción digital puede conectarse con situaciones de explotación fuera de internet.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q48",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "fillBlank",
+      "statement": "Conservar capturas, enlaces, nombres de usuario y mensajes ayuda a preservar __.",
+      "options": [],
+      "correctAnswer": "evidencia",
+      "acceptedAnswers": [
+        "evidencia"
+      ],
+      "feedback": "La evidencia puede ser útil para reportar o denunciar la situación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q49",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "trueFalse",
+      "statement": "Una persona menor de edad amenazada con contenido íntimo debe ser culpada por lo ocurrido.",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q49_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q49_o2",
+      "acceptedAnswers": [],
+      "feedback": "Debe recibir protección y apoyo; la responsabilidad es de quien amenaza o explota.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q50",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe priorizarse si la amenaza incluye riesgo físico?",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "La seguridad inmediata y buscar ayuda."
+        },
+        {
+          "id": "q50_o2",
+          "text": "Conseguir más pruebas exponiéndose."
+        },
+        {
+          "id": "q50_o3",
+          "text": "Reunirse a solas con quien amenaza."
+        },
+        {
+          "id": "q50_o4",
+          "text": "Mantener el problema en secreto."
+        }
+      ],
+      "correctAnswer": "q50_o1",
+      "acceptedAnswers": [],
+      "feedback": "No se debe aumentar el peligro únicamente para obtener más evidencia.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "digital_recruitment_q51",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué dato conviene limitar en publicaciones públicas?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "Ubicación en tiempo real y rutinas frecuentes."
+        },
+        {
+          "id": "q51_o2",
+          "text": "Una opinión sobre una película."
+        },
+        {
+          "id": "q51_o3",
+          "text": "Un dibujo propio."
+        },
+        {
+          "id": "q51_o4",
+          "text": "Una receta general."
+        }
+      ],
+      "correctAnswer": "q51_o1",
+      "acceptedAnswers": [],
+      "feedback": "La ubicación y rutinas pueden facilitar seguimiento o encuentros no deseados.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q52",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "trueFalse",
+      "statement": "Compartir una foto de tu documento puede exponer información útil para engaños o suplantación.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los documentos contienen datos sensibles que deben compartirse solo cuando sea necesario y seguro.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q53",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué evidencia conviene conservar ante una conversación sospechosa?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "Capturas completas, usuario, enlace, fechas y mensajes relevantes."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Solo una frase fuera de contexto."
+        },
+        {
+          "id": "q53_o3",
+          "text": "Nada."
+        },
+        {
+          "id": "q53_o4",
+          "text": "Únicamente la foto de perfil."
+        }
+      ],
+      "correctAnswer": "q53_o1",
+      "acceptedAnswers": [],
+      "feedback": "El contexto facilita comprender qué ocurrió y quién participó.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q54",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "fillBlank",
+      "statement": "Revisar quién puede ver tus publicaciones y ubicación forma parte de la configuración de __.",
+      "options": [],
+      "correctAnswer": "privacidad",
+      "acceptedAnswers": [
+        "privacidad"
+      ],
+      "feedback": "La privacidad ayuda a limitar exposición innecesaria.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q55",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "trueFalse",
+      "statement": "Conviene seguir respondiendo a una persona peligrosa durante días únicamente para obtener más capturas.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o2",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad es prioritaria; no se debe prolongar una interacción riesgosa solo por evidencia.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q56",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica protege mejor la ubicación?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Compartirla solo con personas necesarias y revisar permisos de apps."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Publicarla en tiempo real siempre."
+        },
+        {
+          "id": "q56_o3",
+          "text": "Mantener todas las apps con acceso permanente."
+        },
+        {
+          "id": "q56_o4",
+          "text": "Aceptar cualquier solicitud."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "Limitar permisos reduce exposición y seguimiento innecesario.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q57",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "multipleChoice",
+      "statement": "Un contacto sospechoso conoce tu escuela y horarios porque estaban visibles en tu perfil. ¿Qué conviene hacer?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Revisar privacidad y retirar datos sensibles."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Publicar todavía más detalles."
+        },
+        {
+          "id": "q57_o3",
+          "text": "Enviar tu dirección."
+        },
+        {
+          "id": "q57_o4",
+          "text": "Ignorar cualquier configuración."
+        }
+      ],
+      "correctAnswer": "q57_o1",
+      "acceptedAnswers": [],
+      "feedback": "Reducir información pública puede disminuir riesgos de seguimiento.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q58",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "fillBlank",
+      "statement": "Guardar información relevante de una amenaza sin modificarla ayuda a conservar la __ digital.",
+      "options": [],
+      "correctAnswer": "evidencia",
+      "acceptedAnswers": [
+        "evidencia"
+      ],
+      "feedback": "Los registros originales pueden ser útiles para una investigación.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q59",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "trueFalse",
+      "statement": "Bloquear una cuenta puede formar parte de la respuesta después de conservar la información necesaria.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o1",
+      "acceptedAnswers": [],
+      "feedback": "Bloquear puede reducir contacto no deseado una vez resguardada la evidencia útil.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "digital_recruitment_q60",
+      "categoryId": "digital_recruitment",
+      "activityId": "digital_recruitment_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume una respuesta digital segura?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Limitar datos, conservar evidencia, proteger cuentas y buscar apoyo."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Publicar todos los detalles del caso."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Enfrentar siempre a la persona sospechosa."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Entregar contraseñas para negociar."
+        }
+      ],
+      "correctAnswer": "q60_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta debe reducir exposición, preservar información y conectar con apoyo.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    }
+  ]
+}

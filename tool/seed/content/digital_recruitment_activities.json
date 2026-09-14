@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "digital_recruitment_activity_01",
+      "categoryId": "digital_recruitment",
+      "title": "Acercamiento y captación en redes",
+      "order": 1
+    },
+    {
+      "id": "digital_recruitment_activity_02",
+      "categoryId": "digital_recruitment",
+      "title": "Perfiles falsos y verificación de identidad",
+      "order": 2
+    },
+    {
+      "id": "digital_recruitment_activity_03",
+      "categoryId": "digital_recruitment",
+      "title": "Ofertas digitales de trabajo y viaje",
+      "order": 3
+    },
+    {
+      "id": "digital_recruitment_activity_04",
+      "categoryId": "digital_recruitment",
+      "title": "Manipulación afectiva y grooming",
+      "order": 4
+    },
+    {
+      "id": "digital_recruitment_activity_05",
+      "categoryId": "digital_recruitment",
+      "title": "Contenido íntimo, sextorsión y coerción",
+      "order": 5
+    },
+    {
+      "id": "digital_recruitment_activity_06",
+      "categoryId": "digital_recruitment",
+      "title": "Datos, ubicación, evidencia y respuesta",
+      "order": 6
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "digital_recruitment_social_media_approach",
+      "order": 1,
+      "title": "Acercamiento y captación en redes",
+      "body": "Las redes sociales permiten conocer personas y oportunidades, pero también pueden ser utilizadas para localizar posibles víctimas. La captación puede comenzar con mensajes amistosos, elogios, invitaciones, regalos, propuestas de trabajo o interés romántico.\n\nUna señal de alerta aparece cuando alguien busca generar confianza muy rápido, insiste en trasladar la conversación a canales privados o pide mantener el vínculo en secreto."
+    },
+    {
+      "id": "digital_recruitment_fake_profiles_identity",
+      "order": 2,
+      "title": "Perfiles falsos y verificación de identidad",
+      "body": "Una fotografía, nombre o perfil atractivo no demuestran quién está detrás de una cuenta. Las personas pueden suplantar identidades, utilizar imágenes ajenas o inventar empresas y agencias.\n\nAntes de confiar en una oferta o encuentro conviene verificar identidad, empresa, historial, dirección y medios de contacto por canales independientes."
+    },
+    {
+      "id": "digital_recruitment_job_travel_offers",
+      "order": 3,
+      "title": "Ofertas digitales de trabajo, viaje y oportunidades",
+      "body": "Las redes pueden difundir ofertas de empleo, modelaje, estudio, deporte, casting o viajes. Las señales de riesgo incluyen salarios desproporcionados, requisitos mínimos, urgencia, falta de empresa verificable, pagos previos extraños o cambio de condiciones.\n\nUna oportunidad legítima debe poder comprobarse fuera del chat donde fue recibida."
+    },
+    {
+      "id": "digital_recruitment_affective_manipulation_grooming",
+      "order": 4,
+      "title": "Manipulación afectiva, grooming y secretos",
+      "body": "La manipulación puede comenzar con atención constante, comprensión, regalos o promesas de una relación. En niñas, niños y adolescentes, una persona adulta puede utilizar este proceso para ganar confianza, introducir secretos y luego realizar solicitudes inapropiadas o buscar encuentros.\n\nPedir mantener una relación en secreto, aislar de personas cuidadoras o presionar para reunirse a solas son señales de alerta."
+    },
+    {
+      "id": "digital_recruitment_intimate_content_sextortion",
+      "order": 5,
+      "title": "Contenido íntimo, sextorsión y coerción digital",
+      "body": "Una persona puede utilizar imágenes íntimas reales, robadas o manipuladas para amenazar, exigir dinero, más contenido, encuentros o silencio. Esto se conoce como sextorsión.\n\nEnviar más material o pagar no garantiza que la amenaza termine. Cuando sea seguro, conviene conservar evidencia, cortar la interacción, proteger cuentas y buscar apoyo de confianza o institucional."
+    },
+    {
+      "id": "digital_recruitment_data_location_evidence_response",
+      "order": 6,
+      "title": "Datos, ubicación, evidencia y respuesta digital",
+      "body": "Compartir ubicación, documentos, rutinas o información familiar puede facilitar seguimiento o manipulación. Conviene revisar privacidad y limitar datos sensibles a quienes realmente los necesitan.\n\nAnte una situación sospechosa, la evidencia puede incluir capturas completas, perfiles, enlaces, números, audios, fechas y mensajes. No se debe continuar una interacción peligrosa solo para obtener más pruebas."
+    }
+  ]
+}

@@ -213,6 +213,28 @@
       ],
       "lessonId": "recruitment_deception",
       "warning": "Algunos contenidos mencionan engaño, amenazas, coerción, aislamiento, abuso de vulnerabilidad y explotación. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "digital_recruitment",
+      "parentCategoryId": "human_trafficking",
+      "title": "Riesgos digitales y captación en línea",
+      "description": "Aprende a reconocer riesgos de captación en redes, perfiles falsos, ofertas digitales, manipulación afectiva, sextorsión y formas seguras de responder en entornos digitales.",
+      "iconName": "mark_email_unread_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer acercamientos y señales de captación en redes sociales y mensajería.",
+        "Verificar identidades, perfiles y ofertas digitales antes de compartir datos o desplazarse.",
+        "Identificar manipulación afectiva, grooming, sextorsión y coerción digital.",
+        "Proteger datos, ubicación, cuentas y evidencia ante riesgos de captación en línea."
+      ],
+      "lessonId": "digital_recruitment",
+      "warning": "Algunos contenidos mencionan grooming, sextorsión, coerción digital, amenazas y captación en línea. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }
