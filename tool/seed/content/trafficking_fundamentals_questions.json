@@ -1,0 +1,1469 @@
+{
+  "questions": [
+    {
+      "id": "trafficking_fundamentals_q01",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál describe mejor la trata de personas?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Cualquier viaje al extranjero."
+        },
+        {
+          "id": "q01_o2",
+          "text": "La captación o traslado de personas con fines de explotación mediante engaño, coacción u otros medios de sometimiento."
+        },
+        {
+          "id": "q01_o3",
+          "text": "Toda contratación laboral informal."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Cualquier cambio de domicilio."
+        }
+      ],
+      "correctAnswer": "q01_o2",
+      "acceptedAnswers": [],
+      "feedback": "La trata implica acciones sobre una persona y una finalidad de explotación; puede utilizar engaño, amenazas, fuerza o abuso de vulnerabilidad.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q02",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "trueFalse",
+      "statement": "La trata de personas puede ocurrir sin que la víctima salga del país.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o1",
+      "acceptedAnswers": [],
+      "feedback": "La trata puede ser interna. No requiere necesariamente un cruce de frontera.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q03",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál de estas situaciones puede formar parte de un caso de trata?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Captar a una persona con una oferta falsa para explotarla."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Cambiar de empleo voluntariamente."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Viajar por turismo con documentos regulares."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Mudarse por estudios."
+        }
+      ],
+      "correctAnswer": "q03_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una oferta falsa puede utilizarse como medio de captación cuando el objetivo real es explotar a la persona.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q04",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "fillBlank",
+      "statement": "El aprovechamiento de una persona para obtener un beneficio mediante su sometimiento se denomina __.",
+      "options": [],
+      "correctAnswer": "explotación",
+      "acceptedAnswers": [
+        "explotación",
+        "explotacion"
+      ],
+      "feedback": "La explotación es el elemento final que caracteriza la trata de personas.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q05",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué finalidad puede estar asociada a la trata de personas?",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Trabajo forzoso."
+        },
+        {
+          "id": "q05_o2",
+          "text": "Turismo voluntario."
+        },
+        {
+          "id": "q05_o3",
+          "text": "Estudio universitario regular."
+        },
+        {
+          "id": "q05_o4",
+          "text": "Cambio de residencia elegido libremente."
+        }
+      ],
+      "correctAnswer": "q05_o1",
+      "acceptedAnswers": [],
+      "feedback": "El trabajo forzoso es una de las formas de explotación reconocidas en la normativa.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q06",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "trueFalse",
+      "statement": "Solo existe trata cuando la explotación es sexual.",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q06_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q06_o2",
+      "acceptedAnswers": [],
+      "feedback": "La trata puede tener fines sexuales, laborales, de servidumbre, mendicidad forzada, matrimonio servil y otros.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q07",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "multipleChoice",
+      "statement": "Una persona es llevada a otra ciudad con una promesa de empleo y luego obligada a trabajar sin poder salir. ¿Qué elemento hace que la situación sea especialmente preocupante?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "El cambio de ciudad."
+        },
+        {
+          "id": "q07_o2",
+          "text": "La obligación y explotación."
+        },
+        {
+          "id": "q07_o3",
+          "text": "El uso de transporte público."
+        },
+        {
+          "id": "q07_o4",
+          "text": "La distancia recorrida."
+        }
+      ],
+      "correctAnswer": "q07_o2",
+      "acceptedAnswers": [],
+      "feedback": "La explotación y el sometimiento son señales centrales; la distancia recorrida no define por sí sola la trata.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q08",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una acción que puede formar parte del proceso de trata?",
+      "options": [
+        {
+          "id": "q08_o1",
+          "text": "Captar."
+        },
+        {
+          "id": "q08_o2",
+          "text": "Elegir voluntariamente un curso."
+        },
+        {
+          "id": "q08_o3",
+          "text": "Comprar un pasaje para vacaciones."
+        },
+        {
+          "id": "q08_o4",
+          "text": "Registrarse en una biblioteca."
+        }
+      ],
+      "correctAnswer": "q08_o1",
+      "acceptedAnswers": [],
+      "feedback": "Captar, trasladar, transportar, acoger o recibir son acciones que pueden integrar un caso de trata.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q09",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "fillBlank",
+      "statement": "La trata puede ocurrir dentro del mismo país; por eso también puede ser trata __.",
+      "options": [],
+      "correctAnswer": "interna",
+      "acceptedAnswers": [
+        "interna"
+      ],
+      "feedback": "No es necesario cruzar una frontera para que exista trata de personas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q10",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_01",
+      "type": "trueFalse",
+      "statement": "Una persona tratante puede utilizar una relación de confianza para captar a una víctima.",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q10_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q10_o1",
+      "acceptedAnswers": [],
+      "feedback": "La captación no siempre comienza con violencia; puede iniciar mediante confianza, afecto, promesas o engaño.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q11",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es la diferencia principal entre trata y tráfico de personas?",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "La trata busca explotación; el tráfico se relaciona con facilitar un cruce ilegal de frontera por beneficio económico."
+        },
+        {
+          "id": "q11_o2",
+          "text": "Son exactamente lo mismo."
+        },
+        {
+          "id": "q11_o3",
+          "text": "La trata siempre ocurre por avión."
+        },
+        {
+          "id": "q11_o4",
+          "text": "El tráfico solo ocurre dentro de una ciudad."
+        }
+      ],
+      "correctAnswer": "q11_o1",
+      "acceptedAnswers": [],
+      "feedback": "La finalidad de explotación caracteriza la trata; el tráfico se relaciona con el cruce ilegal entre Estados por beneficio económico.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q12",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "trueFalse",
+      "statement": "Trata de personas y tráfico de personas deben utilizarse siempre como sinónimos.",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q12_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q12_o2",
+      "acceptedAnswers": [],
+      "feedback": "Son fenómenos relacionados pero jurídicamente distintos.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q13",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué elemento es esencial en el tráfico de personas según el marco boliviano?",
+      "options": [
+        {
+          "id": "q13_o1",
+          "text": "Facilitar la entrada o salida ilegal entre Estados buscando beneficio económico."
+        },
+        {
+          "id": "q13_o2",
+          "text": "Que la persona cambie de barrio."
+        },
+        {
+          "id": "q13_o3",
+          "text": "Que exista necesariamente explotación laboral."
+        },
+        {
+          "id": "q13_o4",
+          "text": "Que la persona sea menor de edad."
+        }
+      ],
+      "correctAnswer": "q13_o1",
+      "acceptedAnswers": [],
+      "feedback": "El tráfico implica facilitar un cruce ilegal de frontera con propósito de beneficio económico.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q14",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "fillBlank",
+      "statement": "La trata se centra principalmente en la __ de la persona.",
+      "options": [],
+      "correctAnswer": "explotación",
+      "acceptedAnswers": [
+        "explotación",
+        "explotacion"
+      ],
+      "feedback": "La finalidad de explotación diferencia la trata de otros movimientos de personas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q15",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "multipleChoice",
+      "statement": "Una persona paga para cruzar ilegalmente una frontera. Durante el trayecto le quitan sus documentos y después la obligan a trabajar para pagar una deuda creciente. ¿Qué puede haber ocurrido?",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Solo turismo."
+        },
+        {
+          "id": "q15_o2",
+          "text": "Una situación de tráfico que puede haberse convertido o conectado con trata."
+        },
+        {
+          "id": "q15_o3",
+          "text": "Un viaje académico."
+        },
+        {
+          "id": "q15_o4",
+          "text": "Un trámite migratorio normal."
+        }
+      ],
+      "correctAnswer": "q15_o2",
+      "acceptedAnswers": [],
+      "feedback": "Una situación puede comenzar como tráfico y derivar en trata cuando aparece sometimiento y explotación.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q16",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "trueFalse",
+      "statement": "El tráfico de personas, en el sentido jurídico boliviano, implica un cruce ilegal entre Estados.",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q16_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q16_o1",
+      "acceptedAnswers": [],
+      "feedback": "La Ley 263 vincula el tráfico con facilitar la entrada o salida ilegal de una persona entre Estados por beneficio económico.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q17",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál situación se acerca más a trata que a tráfico?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "Una persona es captada en su ciudad y explotada laboralmente en otra zona del mismo país."
+        },
+        {
+          "id": "q17_o2",
+          "text": "Una persona tramita un pasaporte."
+        },
+        {
+          "id": "q17_o3",
+          "text": "Una familia cruza una frontera con documentos válidos."
+        },
+        {
+          "id": "q17_o4",
+          "text": "Una persona compra un boleto internacional."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "La trata puede ser interna y no requiere cruce fronterizo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q18",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "fillBlank",
+      "statement": "El paso ilegal de una persona de un Estado a otro con beneficio económico para quien lo facilita corresponde al __ de personas.",
+      "options": [],
+      "correctAnswer": "tráfico",
+      "acceptedAnswers": [
+        "tráfico",
+        "trafico"
+      ],
+      "feedback": "Esta es la característica central del tráfico de personas en la normativa boliviana.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q19",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "trueFalse",
+      "statement": "Una situación de tráfico nunca puede terminar en explotación.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o2",
+      "acceptedAnswers": [],
+      "feedback": "Una persona puede quedar expuesta a coerción, deuda o explotación y convertirse en víctima de trata.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q20",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_02",
+      "type": "multipleChoice",
+      "statement": "Para analizar correctamente un caso, ¿qué conviene preguntar primero?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Solo cuántos kilómetros viajó la persona."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Si hubo cruce ilegal, engaño, control, explotación o beneficio para terceros."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Qué ropa llevaba."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Si conocía previamente a quien la trasladó."
+        }
+      ],
+      "correctAnswer": "q20_o2",
+      "acceptedAnswers": [],
+      "feedback": "Los elementos del hecho permiten distinguir entre tráfico, trata u otras situaciones.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "trafficking_fundamentals_q21",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál de estas es una acción que puede integrar la trata?",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Acoger a una persona para explotarla."
+        },
+        {
+          "id": "q21_o2",
+          "text": "Ofrecer información turística verdadera."
+        },
+        {
+          "id": "q21_o3",
+          "text": "Inscribir a alguien en un curso con su consentimiento."
+        },
+        {
+          "id": "q21_o4",
+          "text": "Acompañar a un familiar a una consulta médica."
+        }
+      ],
+      "correctAnswer": "q21_o1",
+      "acceptedAnswers": [],
+      "feedback": "Captar, trasladar, transportar, acoger o recibir pueden formar parte de la trata cuando existe finalidad de explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q22",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es un medio que puede utilizar una persona tratante?",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Engaño."
+        },
+        {
+          "id": "q22_o2",
+          "text": "Información completa y verificable."
+        },
+        {
+          "id": "q22_o3",
+          "text": "Contrato transparente."
+        },
+        {
+          "id": "q22_o4",
+          "text": "Libertad de abandonar el trabajo."
+        }
+      ],
+      "correctAnswer": "q22_o1",
+      "acceptedAnswers": [],
+      "feedback": "El engaño, las amenazas, la fuerza, la coacción y el abuso de vulnerabilidad son medios frecuentes de sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q23",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "fillBlank",
+      "statement": "Captación, traslado y acogida son ejemplos de __ dentro del proceso de trata.",
+      "options": [],
+      "correctAnswer": "acciones",
+      "acceptedAnswers": [
+        "acciones"
+      ],
+      "feedback": "Las acciones describen lo que se hace con respecto a la persona.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q24",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "trueFalse",
+      "statement": "Una oferta de empleo falsa puede funcionar como medio de engaño para captar a una persona.",
+      "options": [
+        {
+          "id": "q24_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q24_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q24_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las promesas falsas pueden utilizarse para lograr que una persona acepte desplazarse o ponerse bajo control de terceros.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q25",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál representa una finalidad de explotación?",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Obligar a una persona a trabajar bajo amenazas."
+        },
+        {
+          "id": "q25_o2",
+          "text": "Pagar un salario acordado y permitir renunciar."
+        },
+        {
+          "id": "q25_o3",
+          "text": "Facilitar vacaciones familiares."
+        },
+        {
+          "id": "q25_o4",
+          "text": "Ofrecer transporte escolar autorizado."
+        }
+      ],
+      "correctAnswer": "q25_o1",
+      "acceptedAnswers": [],
+      "feedback": "El trabajo forzoso es una forma de explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q26",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "multipleChoice",
+      "statement": "Una persona recibe a trabajadores en una vivienda, les retiene sus documentos y los obliga a trabajar para pagar una deuda. ¿Qué componentes aparecen?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "Acogida, control y finalidad de explotación."
+        },
+        {
+          "id": "q26_o2",
+          "text": "Solo hospedaje."
+        },
+        {
+          "id": "q26_o3",
+          "text": "Solo transporte."
+        },
+        {
+          "id": "q26_o4",
+          "text": "Ningún elemento relevante."
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "La acogida puede ser una acción de trata cuando se combina con medios de control y explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q27",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "trueFalse",
+      "statement": "Para reconocer un posible caso de trata conviene analizar acciones, medios utilizados y finalidad.",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q27_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "Esta estructura ayuda a comprender cómo se produce el sometimiento y para qué se realiza.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q28",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "fillBlank",
+      "statement": "La razón por la que se capta o somete a una persona en la trata es una finalidad de __.",
+      "options": [],
+      "correctAnswer": "explotación",
+      "acceptedAnswers": [
+        "explotación",
+        "explotacion"
+      ],
+      "feedback": "La explotación es el propósito que conecta las distintas acciones del proceso.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q29",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál de estas situaciones muestra coacción?",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Amenazar con dañar a la familia si la persona intenta irse."
+        },
+        {
+          "id": "q29_o2",
+          "text": "Permitir que la persona renuncie libremente."
+        },
+        {
+          "id": "q29_o3",
+          "text": "Explicar todas las condiciones antes de viajar."
+        },
+        {
+          "id": "q29_o4",
+          "text": "Entregar una copia del contrato."
+        }
+      ],
+      "correctAnswer": "q29_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las amenazas contra la víctima o su familia pueden utilizarse para impedir que abandone la situación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q30",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_03",
+      "type": "trueFalse",
+      "statement": "La explotación puede existir aunque la persona reciba algún pago.",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q30_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "Recibir dinero no elimina automáticamente la posibilidad de trabajo forzoso, servidumbre o explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q31",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "trueFalse",
+      "statement": "Aceptar inicialmente una oferta de trabajo significa aceptar cualquier condición que aparezca después.",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q31_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q31_o2",
+      "acceptedAnswers": [],
+      "feedback": "El consentimiento inicial no autoriza engaños, amenazas, restricciones ni explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q32",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "multipleChoice",
+      "statement": "Una persona acepta viajar porque le prometen trabajo de mesera, pero al llegar la obligan a realizar otra actividad bajo amenazas. ¿Qué demuestra este caso?",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Que el consentimiento inicial elimina el delito."
+        },
+        {
+          "id": "q32_o2",
+          "text": "Que una aceptación obtenida mediante engaño no justifica la explotación."
+        },
+        {
+          "id": "q32_o3",
+          "text": "Que cambiar las condiciones es normal."
+        },
+        {
+          "id": "q32_o4",
+          "text": "Que la víctima es responsable."
+        }
+      ],
+      "correctAnswer": "q32_o2",
+      "acceptedAnswers": [],
+      "feedback": "La oferta falsa y la explotación posterior muestran que el consentimiento inicial no legitima el sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q33",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "fillBlank",
+      "statement": "Aprovechar una necesidad económica extrema para someter a una persona puede constituir abuso de una situación de __.",
+      "options": [],
+      "correctAnswer": "vulnerabilidad",
+      "acceptedAnswers": [
+        "vulnerabilidad"
+      ],
+      "feedback": "La vulnerabilidad puede ser utilizada como medio de control o captación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q34",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Cuál puede aumentar la vulnerabilidad frente a la trata?",
+      "options": [
+        {
+          "id": "q34_o1",
+          "text": "Dependencia económica y aislamiento."
+        },
+        {
+          "id": "q34_o2",
+          "text": "Tener información verificable y una red de apoyo."
+        },
+        {
+          "id": "q34_o3",
+          "text": "Conocer las condiciones del trabajo."
+        },
+        {
+          "id": "q34_o4",
+          "text": "Mantener documentos personales bajo control propio."
+        }
+      ],
+      "correctAnswer": "q34_o1",
+      "acceptedAnswers": [],
+      "feedback": "La dependencia y el aislamiento pueden facilitar el sometimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q35",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "trueFalse",
+      "statement": "Una persona puede ser víctima de trata aunque conozca a quien la captó.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o1",
+      "acceptedAnswers": [],
+      "feedback": "La persona tratante puede ser una pareja, amistad, familiar, conocido o desconocido.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q36",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una forma de abuso de vulnerabilidad?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "Aprovechar que una persona necesita urgentemente dinero para imponerle condiciones abusivas."
+        },
+        {
+          "id": "q36_o2",
+          "text": "Entregar información clara y tiempo para decidir."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Recomendar verificar una oferta."
+        },
+        {
+          "id": "q36_o4",
+          "text": "Permitir consultar con la familia."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "La necesidad económica puede ser aprovechada para captar o controlar a una persona.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q37",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "fillBlank",
+      "statement": "Las amenazas, la fuerza o el engaño pueden utilizarse para ejercer __ sobre una víctima.",
+      "options": [],
+      "correctAnswer": "control",
+      "acceptedAnswers": [
+        "control"
+      ],
+      "feedback": "El control puede ser físico, psicológico, económico o social.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q38",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "trueFalse",
+      "statement": "Culpar a una víctima por haber confiado en una oferta ayuda a prevenir la trata.",
+      "options": [
+        {
+          "id": "q38_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q38_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q38_o2",
+      "acceptedAnswers": [],
+      "feedback": "La prevención debe enseñar a reconocer riesgos sin responsabilizar a quien fue engañado o explotado.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q39",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué protege mejor a una persona ante una oferta importante?",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Decidir con urgencia y en secreto."
+        },
+        {
+          "id": "q39_o2",
+          "text": "Verificar información, consultar con personas de confianza y mantener control de sus documentos."
+        },
+        {
+          "id": "q39_o3",
+          "text": "Entregar sus documentos originales al reclutador."
+        },
+        {
+          "id": "q39_o4",
+          "text": "Viajar sin compartir su itinerario."
+        }
+      ],
+      "correctAnswer": "q39_o2",
+      "acceptedAnswers": [],
+      "feedback": "Verificar y mantener una red de apoyo reduce riesgos y permite detectar inconsistencias.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q40",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_04",
+      "type": "trueFalse",
+      "statement": "La vulnerabilidad de una persona justifica que otra la explote.",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q40_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q40_o2",
+      "acceptedAnswers": [],
+      "feedback": "La vulnerabilidad nunca justifica explotación; aprovecharla puede formar parte del delito.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q41",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "trueFalse",
+      "statement": "Si una persona es explotada en la misma ciudad donde fue captada, no puede existir trata.",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q41_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q41_o2",
+      "acceptedAnswers": [],
+      "feedback": "La trata no exige un desplazamiento largo ni un cruce fronterizo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q42",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué significa trata interna?",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Que el proceso ocurre dentro del territorio de un mismo país."
+        },
+        {
+          "id": "q42_o2",
+          "text": "Que siempre ocurre dentro de una vivienda."
+        },
+        {
+          "id": "q42_o3",
+          "text": "Que no existe explotación."
+        },
+        {
+          "id": "q42_o4",
+          "text": "Que no intervienen otras personas."
+        }
+      ],
+      "correctAnswer": "q42_o1",
+      "acceptedAnswers": [],
+      "feedback": "La trata interna puede implicar traslado entre ciudades o departamentos, o incluso explotación sin gran desplazamiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q43",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "fillBlank",
+      "statement": "Cuando la trata involucra más de un país se denomina trata __.",
+      "options": [],
+      "correctAnswer": "transnacional",
+      "acceptedAnswers": [
+        "transnacional"
+      ],
+      "feedback": "La trata transnacional atraviesa fronteras, pero la trata también puede ser interna.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q44",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué aspecto es más importante que la distancia recorrida para identificar una posible trata?",
+      "options": [
+        {
+          "id": "q44_o1",
+          "text": "La existencia de explotación y medios de sometimiento."
+        },
+        {
+          "id": "q44_o2",
+          "text": "El tipo de vehículo utilizado."
+        },
+        {
+          "id": "q44_o3",
+          "text": "El número de maletas."
+        },
+        {
+          "id": "q44_o4",
+          "text": "La duración del viaje."
+        }
+      ],
+      "correctAnswer": "q44_o1",
+      "acceptedAnswers": [],
+      "feedback": "La distancia no define el delito; el sometimiento y la finalidad de explotación sí son relevantes.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q45",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "trueFalse",
+      "statement": "Cruzar una frontera convierte automáticamente cualquier viaje en trata de personas.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o2",
+      "acceptedAnswers": [],
+      "feedback": "Debe analizarse si hubo captación, engaño, coacción, abuso y finalidad de explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q46",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "multipleChoice",
+      "statement": "Una joven es captada en La Paz y explotada en otra ciudad boliviana. ¿Qué afirmación es correcta?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Puede tratarse de trata interna."
+        },
+        {
+          "id": "q46_o2",
+          "text": "No puede ser trata porque no salió del país."
+        },
+        {
+          "id": "q46_o3",
+          "text": "Solo sería trata si viajara en avión."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Sería únicamente migración."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "El traslado dentro del país no excluye la trata.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q47",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "fillBlank",
+      "statement": "El cruce de una __ no es requisito para que exista trata de personas.",
+      "options": [],
+      "correctAnswer": "frontera",
+      "acceptedAnswers": [
+        "frontera"
+      ],
+      "feedback": "La trata puede producirse dentro de un mismo país.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q48",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "trueFalse",
+      "statement": "Una persona puede ser captada, acogida y explotada sin ser transportada a otra ciudad.",
+      "options": [
+        {
+          "id": "q48_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q48_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q48_o1",
+      "acceptedAnswers": [],
+      "feedback": "El transporte es una posible acción, pero no siempre es indispensable para identificar explotación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q49",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Cuál de estas preguntas ayuda a analizar un traslado sospechoso?",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "¿La persona conserva libertad, documentos y condiciones acordadas?"
+        },
+        {
+          "id": "q49_o2",
+          "text": "¿Qué música escuchó durante el viaje?"
+        },
+        {
+          "id": "q49_o3",
+          "text": "¿Cuántas fotos tomó?"
+        },
+        {
+          "id": "q49_o4",
+          "text": "¿Qué color tenía el vehículo?"
+        }
+      ],
+      "correctAnswer": "q49_o1",
+      "acceptedAnswers": [],
+      "feedback": "La libertad, los documentos y las condiciones reales ayudan a identificar control o explotación.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q50",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_05",
+      "type": "trueFalse",
+      "statement": "La trata transnacional y el tráfico de personas son exactamente el mismo fenómeno.",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q50_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q50_o2",
+      "acceptedAnswers": [],
+      "feedback": "Aunque ambos pueden involucrar fronteras, la trata se caracteriza por explotación y el tráfico por facilitar el cruce ilegal con beneficio económico.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "trafficking_fundamentals_q51",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál afirmación evita revictimizar?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "“Debiste darte cuenta antes”."
+        },
+        {
+          "id": "q51_o2",
+          "text": "“La responsabilidad es de quien engañó, sometió o explotó”."
+        },
+        {
+          "id": "q51_o3",
+          "text": "“Si aceptaste viajar, ya no puedes reclamar”."
+        },
+        {
+          "id": "q51_o4",
+          "text": "“Seguro hiciste algo para que ocurriera”."
+        }
+      ],
+      "correctAnswer": "q51_o2",
+      "acceptedAnswers": [],
+      "feedback": "La responsabilidad recae en quienes cometen el delito, no en la persona explotada.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q52",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "trueFalse",
+      "statement": "Las víctimas de trata siempre son secuestradas por desconocidos.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o2",
+      "acceptedAnswers": [],
+      "feedback": "La captación puede realizarla una persona conocida y comenzar con confianza, ofertas o relaciones afectivas.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q53",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es un mito frecuente?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "La trata puede ocurrir dentro del país."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Solo pueden ser víctimas las mujeres."
+        },
+        {
+          "id": "q53_o3",
+          "text": "El engaño puede utilizarse para captar."
+        },
+        {
+          "id": "q53_o4",
+          "text": "La explotación laboral también puede ser trata."
+        }
+      ],
+      "correctAnswer": "q53_o2",
+      "acceptedAnswers": [],
+      "feedback": "Personas de diferentes edades y géneros pueden ser víctimas de trata.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q54",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "fillBlank",
+      "statement": "Evitar culpar, humillar o exponer innecesariamente a una víctima ayuda a prevenir la __.",
+      "options": [],
+      "correctAnswer": "revictimización",
+      "acceptedAnswers": [
+        "revictimización",
+        "revictimizacion"
+      ],
+      "feedback": "La atención debe proteger dignidad, privacidad y seguridad.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q55",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "trueFalse",
+      "statement": "Una persona explotada puede tardar en reconocer o contar lo que le está ocurriendo.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o1",
+      "acceptedAnswers": [],
+      "feedback": "El miedo, la dependencia, las amenazas, la manipulación o la confusión pueden dificultar pedir ayuda.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q56",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué reacción es más adecuada cuando alguien cuenta una posible situación de trata?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Escuchar sin culpar y buscar apoyo seguro."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Exigir todos los detalles inmediatamente."
+        },
+        {
+          "id": "q56_o3",
+          "text": "Publicar el caso en redes."
+        },
+        {
+          "id": "q56_o4",
+          "text": "Confrontar al sospechoso sin evaluar el riesgo."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "Escuchar, proteger la privacidad y buscar ayuda especializada reduce riesgos y evita revictimización.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q57",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál afirmación es correcta?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Recibir un salario siempre descarta explotación."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Una persona puede ser explotada aunque reciba algún pago."
+        },
+        {
+          "id": "q57_o3",
+          "text": "Solo existe trata si hay violencia física visible."
+        },
+        {
+          "id": "q57_o4",
+          "text": "Solo existe trata cuando hay secuestro."
+        }
+      ],
+      "correctAnswer": "q57_o2",
+      "acceptedAnswers": [],
+      "feedback": "La explotación puede incluir amenazas, deuda, control, jornadas abusivas o imposibilidad real de abandonar la situación.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q58",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "fillBlank",
+      "statement": "Tratar a una víctima con respeto, protección y sin culparla forma parte de un enfoque centrado en sus __.",
+      "options": [],
+      "correctAnswer": "derechos",
+      "acceptedAnswers": [
+        "derechos"
+      ],
+      "feedback": "La protección de derechos debe orientar la atención y la respuesta institucional.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q59",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "trueFalse",
+      "statement": "Publicar el nombre y la historia de una posible víctima sin su autorización puede aumentar su riesgo.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o1",
+      "acceptedAnswers": [],
+      "feedback": "La privacidad puede ser esencial para proteger a la persona y evitar daños adicionales.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "trafficking_fundamentals_q60",
+      "categoryId": "trafficking_fundamentals",
+      "activityId": "trafficking_fundamentals_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una idea clave para prevenir la trata?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Culpar a quienes aceptan ofertas."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Reconocer señales, verificar oportunidades y fortalecer redes de apoyo."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Desconfiar de toda persona sin excepción."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Evitar hablar del tema."
+        }
+      ],
+      "correctAnswer": "q60_o2",
+      "acceptedAnswers": [],
+      "feedback": "La prevención combina información, verificación, vínculos de confianza y acceso a ayuda segura.",
+      "capacity": "responder",
+      "difficulty": "avanzada"
+    }
+  ]
+}

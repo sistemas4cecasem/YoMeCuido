@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "trafficking_fundamentals_activity_01",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Qué es la trata de personas",
+      "order": 1
+    },
+    {
+      "id": "trafficking_fundamentals_activity_02",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Qué es el tráfico de personas y cómo se diferencia",
+      "order": 2
+    },
+    {
+      "id": "trafficking_fundamentals_activity_03",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Acción, medios y finalidad",
+      "order": 3
+    },
+    {
+      "id": "trafficking_fundamentals_activity_04",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Consentimiento y vulnerabilidad",
+      "order": 4
+    },
+    {
+      "id": "trafficking_fundamentals_activity_05",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Trata interna, transnacional y movimiento",
+      "order": 5
+    },
+    {
+      "id": "trafficking_fundamentals_activity_06",
+      "categoryId": "trafficking_fundamentals",
+      "title": "Mitos, lenguaje y enfoque de protección",
+      "order": 6
+    }
+  ]
+}

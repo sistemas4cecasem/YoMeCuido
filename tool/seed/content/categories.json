@@ -169,6 +169,28 @@
       ],
       "lessonId": "incident_response",
       "warning": "Algunos contenidos mencionan fraude, malware, amenazas y riesgo físico. Prioriza siempre tu seguridad y busca apoyo adecuado cuando sea necesario."
+    },
+    {
+      "id": "trafficking_fundamentals",
+      "parentCategoryId": "human_trafficking",
+      "title": "Conceptos fundamentales sobre trata y tráfico de personas",
+      "description": "Aprende a diferenciar la trata y el tráfico de personas, reconocer sus componentes, comprender el consentimiento y usar un enfoque de protección sin culpabilizar a las víctimas.",
+      "iconName": "health_and_safety_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Diferenciar la trata de personas del tráfico de personas.",
+        "Reconocer acciones, medios y finalidades vinculadas a la trata.",
+        "Comprender el rol del consentimiento, la vulnerabilidad y el movimiento.",
+        "Identificar mitos y usar un enfoque de protección hacia las víctimas."
+      ],
+      "lessonId": "trafficking_fundamentals",
+      "warning": "Algunos contenidos mencionan explotación, engaño, amenazas, abuso de vulnerabilidad y situaciones de violencia. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }

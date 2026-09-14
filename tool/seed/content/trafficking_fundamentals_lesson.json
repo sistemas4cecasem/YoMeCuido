@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "trafficking_fundamentals_lesson_01",
+      "order": 1,
+      "title": "Qué es la trata de personas",
+      "body": "La trata de personas es un delito que utiliza acciones como captar, trasladar, transportar, acoger o recibir a una persona con fines de explotación. Puede involucrar engaño, amenazas, fuerza, abuso de poder o aprovechamiento de una situación de vulnerabilidad.\n\nLa explotación puede ser sexual, laboral, mediante trabajo forzoso, servidumbre, mendicidad forzada, matrimonio servil, empleo en actividades delictivas u otras finalidades reconocidas por la normativa.\n\nNo es necesario que la víctima cruce una frontera. La trata puede ocurrir dentro de la misma ciudad, departamento o país."
+    },
+    {
+      "id": "trafficking_fundamentals_lesson_02",
+      "order": 2,
+      "title": "Qué es el tráfico de personas y cómo se diferencia",
+      "body": "En el marco boliviano, el tráfico de personas se relaciona con promover, facilitar o favorecer la entrada o salida ilegal de una persona del país hacia otro Estado, buscando un beneficio económico para quien organiza o facilita el traslado.\n\nLa diferencia central es el propósito: la trata se orienta a la explotación de la persona; el tráfico se relaciona con el cruce ilegal de fronteras por beneficio económico. Una situación de tráfico puede transformarse o conectarse con trata si posteriormente aparece explotación."
+    },
+    {
+      "id": "trafficking_fundamentals_lesson_03",
+      "order": 3,
+      "title": "Acción, medios y finalidad",
+      "body": "Para comprender la trata es útil reconocer tres componentes: una acción sobre la persona, los medios utilizados para controlarla y una finalidad de explotación.\n\nLas acciones pueden incluir captación, traslado, transporte, acogida o recepción. Los medios pueden incluir engaño, coacción, amenazas, fuerza, fraude o abuso de vulnerabilidad. La finalidad es obtener provecho mediante alguna forma de explotación."
+    },
+    {
+      "id": "trafficking_fundamentals_lesson_04",
+      "order": 4,
+      "title": "Consentimiento y vulnerabilidad",
+      "body": "Una persona puede haber aceptado inicialmente una oferta, un viaje o un trabajo y aun así convertirse en víctima de trata cuando existe engaño, coacción, abuso o explotación. Haber dicho “sí” a una oportunidad no significa aceptar condiciones abusivas que nunca fueron informadas.\n\nLa vulnerabilidad puede relacionarse con necesidades económicas, edad, dependencia, discapacidad, embarazo, migración irregular, aislamiento u otras situaciones que una persona tratante aprovecha para someter o controlar."
+    },
+    {
+      "id": "trafficking_fundamentals_lesson_05",
+      "order": 5,
+      "title": "Trata interna, transnacional y movimiento",
+      "body": "La trata puede ocurrir sin salir del país e incluso sin recorrer una gran distancia. Lo esencial no es cuánto se desplazó la persona, sino la existencia de captación, control o sometimiento con fines de explotación.\n\nTambién puede existir trata transnacional cuando la persona es trasladada entre países. El cruce de una frontera no convierte automáticamente un caso en trata: deben analizarse las condiciones, los medios utilizados y la finalidad."
+    },
+    {
+      "id": "trafficking_fundamentals_lesson_06",
+      "order": 6,
+      "title": "Mitos, lenguaje y enfoque de protección",
+      "body": "Las víctimas no son responsables de haber sido engañadas, manipuladas o sometidas. Una oferta atractiva, una relación afectiva o una necesidad económica pueden ser utilizadas para captar a una persona.\n\nEvitar la revictimización implica no culpar, no exigir que la persona repita innecesariamente hechos traumáticos y respetar su dignidad, privacidad y seguridad. La prevención debe centrarse en reconocer riesgos y facilitar apoyo, no en responsabilizar a quien sufrió el delito."
+    }
+  ]
+}
