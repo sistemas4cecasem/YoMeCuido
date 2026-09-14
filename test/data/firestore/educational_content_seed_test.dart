@@ -14,23 +14,31 @@ void main() {
     test('builds a seed plan from the current local JSON content', () async {
       final bundle = await _loadCurrentBundle();
       final plan = EducationalContentSeedBuilder.build(bundle);
+      final expectedCategories = bundle.categories.length;
+      final enabledCategories = bundle.categories
+          .where((category) => category.isEnabled)
+          .length;
 
-      expect(plan.categoryCount, 8);
-      expect(plan.lessonPageCount, 48);
-      expect(plan.activityCount, 48);
-      expect(plan.questionCount, 480);
-      expect(plan.examConfigCount, 8);
-      expect(plan.documents, hasLength(592));
-      expect(bundle.categories.map((category) => category.id), <String>[
-        'account_protection_authentication',
-        'device_app_security',
-        'personal_data_privacy_identity',
-        'phishing_social_engineering',
-        'information_misinformation_ai',
-        'digital_payments_consumption',
-        'relations_violence_digital',
-        'incident_response_recovery',
-      ]);
+      expect(plan.categoryCount, expectedCategories);
+      expect(plan.lessonPageCount, enabledCategories * 6);
+      expect(plan.activityCount, enabledCategories * 6);
+      expect(plan.questionCount, enabledCategories * 60);
+      expect(plan.examConfigCount, enabledCategories);
+      expect(
+        plan.documents,
+        hasLength(expectedCategories + (enabledCategories * 73)),
+      );
+      expect(
+        bundle.categories.map((category) => category.id),
+        containsAll(<String>[
+          'account_protection_authentication',
+          'relations_violence_digital',
+        ]),
+      );
+      expect(
+        bundle.categories.map((category) => category.parentCategoryId).toSet(),
+        contains(ParentCategoryIds.digitalSecurity),
+      );
       expect(plan.paths, contains('categories/relations_violence_digital'));
       expect(
         plan.paths,

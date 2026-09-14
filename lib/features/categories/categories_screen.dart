@@ -15,11 +15,15 @@ import '../../shared/widgets/primary_button.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({
+    required this.parentCategoryId,
+    required this.title,
     required this.contentRepository,
     required this.progressController,
     super.key,
   });
 
+  final String parentCategoryId;
+  final String title;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
 
@@ -61,7 +65,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: AppStrings.digitalSecurityTitle,
+      title: widget.title,
       child: FutureBuilder<List<Category>>(
         future: _categoriesFuture,
         builder: (context, snapshot) {
@@ -69,16 +73,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError ||
-              !snapshot.hasData ||
-              snapshot.data!.isEmpty) {
+          if (snapshot.hasError || !snapshot.hasData) {
             if (kDebugMode && snapshot.error != null) {
               debugPrint('Content load error: ${snapshot.error}');
             }
             return _CategoriesLoadError(onRetry: _retry);
           }
 
-          final categories = snapshot.data!;
+          final categories = snapshot.data!
+              .where(
+                (category) =>
+                    category.parentCategoryId == widget.parentCategoryId,
+              )
+              .toList(growable: false);
+
+          if (categories.isEmpty) {
+            return const _EmptyCategoryGroup();
+          }
 
           return AnimatedBuilder(
             animation: widget.progressController,
@@ -149,6 +160,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       return AppStrings.comingSoon;
     }
     return AppStrings.categoryLockedByProgress;
+  }
+}
+
+class _EmptyCategoryGroup extends StatelessWidget {
+  const _EmptyCategoryGroup();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Text(
+          AppStrings.emptyCategoryGroup,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+      ),
+    );
   }
 }
 

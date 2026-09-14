@@ -141,20 +141,23 @@ void main() {
     expect(find.text(AppStrings.categoriesTitle), findsNothing);
     expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
     expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
-    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.text(AppStrings.comingSoon), findsNothing);
     expect(repository.loadCategoriesCalls, 0);
   });
 
-  testWidgets('trata y tráfico queda bloqueada', (tester) async {
+  testWidgets('trata y tráfico abre una lista vacía reutilizable', (
+    tester,
+  ) async {
     await pumpApp(tester);
 
     await tester.tap(find.text(AppStrings.traffickingTitle));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.categoriesTitle), findsNothing);
-    expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
-    expect(find.text(AppStrings.comingSoonSnackBar), findsOneWidget);
-    expect(repository.loadCategoriesCalls, 0);
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.text(AppStrings.emptyCategoryGroup), findsOneWidget);
+    expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+    expect(find.text('Relaciones y violencia digital'), findsNothing);
+    expect(repository.loadCategoriesCalls, 1);
   });
 
   testWidgets('seguridad digital abre las categorías existentes', (
@@ -165,6 +168,34 @@ void main() {
     expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
     expect(repository.loadCategoriesCalls, 1);
     expect(find.text('Relaciones y violencia digital'), findsOneWidget);
+  });
+
+  testWidgets('seguridad digital filtra subcategorías de otros grupos', (
+    tester,
+  ) async {
+    repository.categories = <Category>[
+      ...repository.categories,
+      const Category(
+        id: 'trafficking_fundamentals',
+        parentCategoryId: ParentCategoryIds.humanTrafficking,
+        title: 'Conceptos fundamentales sobre trata y tráfico de personas',
+        description: 'Contenido futuro.',
+        iconName: 'health_and_safety_outlined',
+        status: CategoryStatus.available,
+        isEnabled: true,
+        indicators: <String>['6 actividades'],
+        objectives: <String>['Reconocer conceptos fundamentales.'],
+        lessonId: 'trafficking_fundamentals',
+      ),
+    ];
+
+    await openCategories(tester);
+
+    expect(find.text('Relaciones y violencia digital'), findsOneWidget);
+    expect(
+      find.text('Conceptos fundamentales sobre trata y tráfico de personas'),
+      findsNothing,
+    );
   });
 
   testWidgets(
@@ -724,7 +755,7 @@ class _FakeContentRepository implements ContentRepository {
   int loadQuizQuestionsCalls = 0;
   int loadFinalExamConfigCalls = 0;
 
-  final categories = const <Category>[
+  List<Category> categories = const <Category>[
     Category(
       id: 'relations_violence_digital',
       title: 'Relaciones y violencia digital',

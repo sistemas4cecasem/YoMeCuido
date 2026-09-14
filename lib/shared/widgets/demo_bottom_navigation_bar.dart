@@ -37,7 +37,7 @@ class DemoBottomNavigationBar extends StatelessWidget {
                 label: AppStrings.homeTitle,
                 selected: selectedItem == DemoNavItem.home,
                 onTap: () => Navigator.of(context).popUntil((route) {
-                  return route.settings.name == AppRoutes.categories ||
+                  return route.settings.name == AppRoutes.highLevelCategories ||
                       route.isFirst;
                 }),
               ),

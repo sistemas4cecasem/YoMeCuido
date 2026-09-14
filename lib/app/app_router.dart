@@ -59,10 +59,7 @@ class AppRouter {
             authRepository: _authRepository,
           ),
           AppRoutes.highLevelCategories => const HighLevelCategoriesScreen(),
-          AppRoutes.categories => CategoriesScreen(
-            contentRepository: _contentRepository,
-            progressController: _progressController,
-          ),
+          AppRoutes.categories => _buildCategoriesScreen(settings),
           AppRoutes.categoryDetail => CategoryDetailScreen(
             category: settings.arguments! as Category,
             contentRepository: _contentRepository,
@@ -112,6 +109,33 @@ class AppRouter {
       totalActivities: arguments.totalActivities,
     );
   }
+
+  Widget _buildCategoriesScreen(RouteSettings settings) {
+    final arguments = settings.arguments;
+    final routeArguments = arguments is CategoriesRouteArguments
+        ? arguments
+        : const CategoriesRouteArguments(
+            parentCategoryId: ParentCategoryIds.digitalSecurity,
+            title: AppStrings.digitalSecurityTitle,
+          );
+
+    return CategoriesScreen(
+      parentCategoryId: routeArguments.parentCategoryId,
+      title: routeArguments.title,
+      contentRepository: _contentRepository,
+      progressController: _progressController,
+    );
+  }
+}
+
+class CategoriesRouteArguments {
+  const CategoriesRouteArguments({
+    required this.parentCategoryId,
+    required this.title,
+  });
+
+  final String parentCategoryId;
+  final String title;
 }
 
 class QuizRouteArguments {

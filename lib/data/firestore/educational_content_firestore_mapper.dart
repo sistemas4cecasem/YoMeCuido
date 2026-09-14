@@ -11,6 +11,7 @@ abstract final class EducationalContentFirestoreMapper {
   }) {
     return <String, Object?>{
       'id': category.id,
+      'parentCategoryId': category.parentCategoryId,
       'title': category.title,
       'description': category.description,
       'iconName': category.iconName,

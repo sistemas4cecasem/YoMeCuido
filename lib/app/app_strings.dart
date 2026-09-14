@@ -63,9 +63,13 @@ abstract final class AppStrings {
       'Cuenta creada correctamente. Revisa tu correo para verificarla.';
   static const categoriesTitle = 'Categorías';
   static const digitalSecurityTitle = 'Seguridad digital';
-  static const traffickingTitle = 'Trata y tráfico';
+  static const traffickingTitle = 'Trata y tráfico de personas';
   static const digitalSecurityDescription =
       'Protege tus cuentas, dispositivos y datos.';
+  static const traffickingDescription =
+      'Aprende a reconocer riesgos, señales de alerta y rutas de apoyo.';
+  static const emptyCategoryGroup =
+      'Este contenido estará disponible próximamente.';
   static const comingSoon = 'Próximamente';
   static const comingSoonSnackBar =
       'Esta categoría estará disponible próximamente';

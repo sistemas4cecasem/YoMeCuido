@@ -217,14 +217,10 @@ Future<List<T>> _loadList<T>({
 }
 
 void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
-  const expectedCategories = 8;
   const expectedLessonPages = 6;
   const expectedActivities = 6;
   const expectedQuestions = 60;
   const expectedQuestionsPerActivity = 10;
-  const expectedGlobalLessonPages = expectedCategories * expectedLessonPages;
-  const expectedGlobalActivities = expectedCategories * expectedActivities;
-  const expectedGlobalQuestions = expectedCategories * expectedQuestions;
   const validCapacities = <String>{
     'reconocer',
     'responder',
@@ -233,7 +229,9 @@ void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
   };
   const validDifficulties = <String>{'básica', 'intermedia', 'avanzada'};
 
-  _ensureExactCount(bundle.categories, expectedCategories, 'categories');
+  if (bundle.categories.isEmpty) {
+    throw const FormatException('Expected at least one category.');
+  }
   _ensureGloballyUnique(
     bundle.categories.map((category) => category.id),
     'category',
@@ -249,6 +247,10 @@ void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
   final allQuestions = <QuizQuestion>[];
 
   for (final category in bundle.categories) {
+    if (!category.isEnabled) {
+      continue;
+    }
+
     final lessonPages =
         bundle.lessonPagesByCategory[category.id] ?? const <LessonPage>[];
     final activities =
@@ -355,9 +357,6 @@ void _validateAdministrativeContent(EducationalContentSeedBundle bundle) {
     allQuestions.addAll(questions);
   }
 
-  _ensureExactCount(allLessonPages, expectedGlobalLessonPages, 'lesson pages');
-  _ensureExactCount(allActivities, expectedGlobalActivities, 'activities');
-  _ensureExactCount(allQuestions, expectedGlobalQuestions, 'questions');
   _ensureGloballyUnique(allLessonPages.map((page) => page.id), 'lesson page');
   _ensureGloballyUnique(
     allActivities.map((activity) => activity.id),

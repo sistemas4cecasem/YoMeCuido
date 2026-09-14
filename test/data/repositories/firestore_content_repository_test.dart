@@ -24,6 +24,10 @@ void main() {
         ]);
         expect(categories.first.status, CategoryStatus.available);
         expect(categories.first.isEnabled, isTrue);
+        expect(
+          categories.first.parentCategoryId,
+          ParentCategoryIds.digitalSecurity,
+        );
       },
     );
 

@@ -107,6 +107,7 @@ service cloud.firestore {
     // Document ID: categoryId, stable educational-content id
     // Fields:
     //   - id: string (required, must match document ID, max 120)
+    //   - parentCategoryId: string (required, stable parent category id, max 120)
     //   - title: string (required, max 120)
     //   - description: string (required, max 1200)
     //   - iconName: string (required, max 80)

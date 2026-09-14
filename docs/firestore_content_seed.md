@@ -55,18 +55,18 @@ dart run tool/seed_educational_content.dart --write --project-id=yomecuido-1dc1a
 
 La ejecución prepara documentos solo bajo `categories/...`:
 
-- 8 categorías.
-- 48 páginas teóricas.
-- 48 actividades.
-- 480 preguntas.
-- 8 configuraciones de examen final.
+- una categoría educativa por cada entrada habilitada en `categories.json`;
+- 6 páginas teóricas por categoría habilitada;
+- 6 actividades por categoría habilitada;
+- 60 preguntas por categoría habilitada;
+- 1 configuración de examen final por categoría habilitada.
 
 El script usa operaciones `set` mediante `batchWrite`, por lo que una segunda
 ejecución actualiza los mismos paths y no crea duplicados.
 
-Antes de escribir, valida localmente que cada categoría tenga 6 cápsulas, 6
-actividades, 60 preguntas, 10 preguntas por actividad, referencias válidas y
-respuestas correctas coherentes con el tipo de pregunta.
+Antes de escribir, valida localmente que cada categoría habilitada tenga 6
+cápsulas, 6 actividades, 60 preguntas, 10 preguntas por actividad, referencias
+válidas y respuestas correctas coherentes con el tipo de pregunta.
 
 ## Verificación
 

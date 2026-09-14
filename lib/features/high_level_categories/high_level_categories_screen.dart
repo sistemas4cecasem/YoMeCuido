@@ -5,6 +5,7 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
+import '../../data/models/category.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
@@ -31,12 +32,18 @@ class HighLevelCategoriesScreen extends StatelessWidget {
   final ValueChanged<UserProfile>? onProfileChanged;
   final bool showBackButton;
 
-  void _openDigitalSecurity(BuildContext context) {
-    Navigator.of(context).pushNamed(AppRoutes.categories);
-  }
-
-  void _showTraffickingLocked(BuildContext context) {
-    AppToast.showInfo(context, AppStrings.comingSoonSnackBar);
+  void _openCategoryGroup({
+    required BuildContext context,
+    required String parentCategoryId,
+    required String title,
+  }) {
+    Navigator.of(context).pushNamed(
+      AppRoutes.categories,
+      arguments: CategoriesRouteArguments(
+        parentCategoryId: parentCategoryId,
+        title: title,
+      ),
+    );
   }
 
   @override
@@ -105,10 +112,18 @@ class HighLevelCategoriesScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: _CenteredCategoryButtons(
-                              onTraffickingTap: () =>
-                                  _showTraffickingLocked(context),
-                              onDigitalSecurityTap: () =>
-                                  _openDigitalSecurity(context),
+                              onTraffickingTap: () => _openCategoryGroup(
+                                context: context,
+                                parentCategoryId:
+                                    ParentCategoryIds.humanTrafficking,
+                                title: AppStrings.traffickingTitle,
+                              ),
+                              onDigitalSecurityTap: () => _openCategoryGroup(
+                                context: context,
+                                parentCategoryId:
+                                    ParentCategoryIds.digitalSecurity,
+                                title: AppStrings.digitalSecurityTitle,
+                              ),
                             ),
                           ),
                         ),
@@ -418,8 +433,9 @@ class _CenteredCategoryButtons extends StatelessWidget {
           children: [
             _HighLevelCategoryCard(
               title: AppStrings.traffickingTitle,
-              icon: Icons.lock_outline_rounded,
-              enabled: false,
+              description: AppStrings.traffickingDescription,
+              icon: Icons.health_and_safety_outlined,
+              enabled: true,
               onTap: onTraffickingTap,
             ),
             const SizedBox(height: AppSpacing.lg),

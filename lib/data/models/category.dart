@@ -2,9 +2,15 @@ import 'json_readers.dart';
 
 enum CategoryStatus { available, comingSoon }
 
+abstract final class ParentCategoryIds {
+  static const digitalSecurity = 'digital_security';
+  static const humanTrafficking = 'human_trafficking';
+}
+
 class Category {
   const Category({
     required this.id,
+    this.parentCategoryId = ParentCategoryIds.digitalSecurity,
     required this.title,
     required this.description,
     required this.iconName,
@@ -33,6 +39,9 @@ class Category {
 
     return Category(
       id: readString(json, 'id'),
+      parentCategoryId:
+          readOptionalString(json, 'parentCategoryId') ??
+          ParentCategoryIds.digitalSecurity,
       title: readString(json, 'title'),
       description: readString(json, 'description'),
       iconName: readString(json, 'iconName'),
@@ -46,6 +55,7 @@ class Category {
   }
 
   final String id;
+  final String parentCategoryId;
   final String title;
   final String description;
   final String iconName;

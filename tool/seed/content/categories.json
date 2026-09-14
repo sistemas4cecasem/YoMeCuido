@@ -2,6 +2,7 @@
   "categories": [
     {
       "id": "account_protection_authentication",
+      "parentCategoryId": "digital_security",
       "title": "Protección de cuentas y autenticación",
       "description": "Aprende a proteger tus cuentas con contraseñas seguras, gestores, autenticación multifactor, recuperación y revisión de sesiones.",
       "iconName": "lock_outline",
@@ -22,6 +23,7 @@
     },
     {
       "id": "device_app_security",
+      "parentCategoryId": "digital_security",
       "title": "Seguridad de dispositivos y aplicaciones",
       "description": "Aprende a proteger teléfonos, computadoras y aplicaciones mediante bloqueo, actualizaciones, permisos, instalaciones seguras, copias de seguridad y conexiones confiables.",
       "iconName": "phone_android_outlined",
@@ -42,6 +44,7 @@
     },
     {
       "id": "personal_data_privacy_identity",
+      "parentCategoryId": "digital_security",
       "title": "Datos personales, privacidad e identidad",
       "description": "Aprende a compartir solo los datos necesarios, proteger documentos y ubicación, prevenir suplantaciones y recuperar control sobre tu identidad digital.",
       "iconName": "badge_outlined",
@@ -62,6 +65,7 @@
     },
     {
       "id": "phishing_social_engineering",
+      "parentCategoryId": "digital_security",
       "title": "Engaños, phishing e ingeniería social",
       "description": "Aprende a reconocer phishing, smishing, vishing y otras técnicas de manipulación, y a verificar identidades, enlaces, códigos y ofertas antes de actuar.",
       "iconName": "mark_email_unread_outlined",
@@ -82,6 +86,7 @@
     },
     {
       "id": "information_misinformation_ai",
+      "parentCategoryId": "digital_security",
       "title": "Información, desinformación e inteligencia artificial",
       "description": "Aprende a verificar información, reconocer contenido fuera de contexto o manipulado y utilizar herramientas de inteligencia artificial con criterios de privacidad y comprobación.",
       "iconName": "fact_check_outlined",
@@ -102,6 +107,7 @@
     },
     {
       "id": "digital_payments_consumption",
+      "parentCategoryId": "digital_security",
       "title": "Pagos, transferencias, compras y consumo digital",
       "description": "Aprende a realizar transferencias y compras con mayor seguridad, detectar comprobantes y comercios dudosos, revisar suscripciones y responder ante fraude financiero.",
       "iconName": "credit_card_outlined",
@@ -122,6 +128,7 @@
     },
     {
       "id": "relations_violence_digital",
+      "parentCategoryId": "digital_security",
       "title": "Relaciones y violencia digital",
       "description": "Aprende a reconocer el control, el acoso, las amenazas y otras formas de violencia que pueden ocurrir mediante redes sociales, mensajería, cuentas y dispositivos.",
       "iconName": "shield_outlined",
@@ -143,6 +150,7 @@
     },
     {
       "id": "incident_response_recovery",
+      "parentCategoryId": "digital_security",
       "title": "Respuesta y recuperación ante incidentes",
       "description": "Aprende a contener incidentes, proteger cuentas, dinero y dispositivos, conservar evidencia, pedir apoyo y recuperar el control después de un problema.",
       "iconName": "health_and_safety_outlined",

@@ -32,8 +32,10 @@ void main() {
       );
 
       expect(data['id'], category.id);
+      expect(data['parentCategoryId'], ParentCategoryIds.digitalSecurity);
       expect(data['order'], 1);
       expect(rebuilt.id, category.id);
+      expect(rebuilt.parentCategoryId, ParentCategoryIds.digitalSecurity);
       expect(rebuilt.title, category.title);
       expect(rebuilt.status, CategoryStatus.available);
       expect(rebuilt.warning, category.warning);
