@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "warning_prevention_alert_signs_context",
+      "order": 1,
+      "title": "Señales de alerta y lectura del contexto",
+      "body": "Ninguna señal aislada confirma por sí sola un caso de trata. Sin embargo, varias señales juntas pueden justificar atención: control de documentos, miedo intenso, imposibilidad de hablar a solas, deudas extrañas, vigilancia constante, cambios de destino, amenazas o falta de libertad para salir.\n\nLo importante es observar el conjunto de condiciones y no basarse en estereotipos sobre apariencia, nacionalidad, género o forma de vestir."
+    },
+    {
+      "id": "warning_prevention_safe_conversation",
+      "order": 2,
+      "title": "Conversación segura con una posible víctima",
+      "body": "Si es seguro hablar, conviene utilizar preguntas sencillas y no acusatorias: si puede salir libremente, conserva sus documentos, puede comunicarse con su familia o necesita ayuda.\n\nNo debe prometerse algo que no puede garantizarse ni presionar a la persona para que relate todo. El objetivo inicial es escuchar, evaluar seguridad y conectar con apoyo."
+    },
+    {
+      "id": "warning_prevention_community_prevention",
+      "order": 3,
+      "title": "Prevención comunitaria",
+      "body": "La prevención mejora cuando comunidades, escuelas, familias, empresas de transporte y lugares de trabajo conocen señales, verifican ofertas y saben cómo activar ayuda.\n\nLas campañas efectivas informan sin generar pánico ni estigmatizar a personas migrantes, trabajadoras o víctimas."
+    },
+    {
+      "id": "warning_prevention_immediate_risk_safety",
+      "order": 4,
+      "title": "Riesgo inmediato y seguridad",
+      "body": "Si existe riesgo físico inmediato, la prioridad es alejarse del peligro y contactar a servicios o autoridades competentes. No conviene confrontar a una persona sospechosa si puede reaccionar violentamente.\n\nUna intervención impulsiva puede hacer que la víctima sea trasladada, castigada o aislada aún más."
+    },
+    {
+      "id": "warning_prevention_evidence_reporting_privacy",
+      "order": 5,
+      "title": "Evidencia, reporte y privacidad",
+      "body": "La información útil puede incluir fechas, lugares, matrículas, nombres, perfiles, mensajes o descripciones observadas de manera segura. No se debe obtener evidencia entrando ilegalmente a dispositivos o exponiéndose a peligro.\n\nLa identidad de posibles víctimas debe protegerse. Publicar detalles, fotografías o ubicación puede revictimizar o alertar a responsables."
+    },
+    {
+      "id": "warning_prevention_safe_witness_action",
+      "order": 6,
+      "title": "Actuar como testigo sin convertirse en investigador",
+      "body": "Una persona de la comunidad no necesita probar el delito antes de pedir orientación o reportar una sospecha razonable. Tampoco debe realizar operativos por cuenta propia.\n\nLa actuación segura consiste en observar, registrar información sin exponerse, buscar canales adecuados y dejar la investigación a autoridades competentes."
+    }
+  ]
+}

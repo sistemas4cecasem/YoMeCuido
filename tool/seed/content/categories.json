@@ -301,6 +301,28 @@
       ],
       "lessonId": "travel_migration_safety",
       "warning": "Algunos contenidos mencionan migración irregular, tráfico de personas, retención de documentos, deudas, amenazas y explotación. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "warning_prevention",
+      "parentCategoryId": "human_trafficking",
+      "title": "Señales de alerta, prevención y actuación segura",
+      "description": "Aprende a reconocer señales de alerta en contexto, prevenir riesgos desde la comunidad, conversar de forma segura y actuar sin exponerte ni poner en peligro a posibles víctimas.",
+      "iconName": "health_and_safety_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer señales de alerta sin basarse en estereotipos ni conclusiones apresuradas.",
+        "Conversar con una posible víctima de forma respetuosa, segura y no culpabilizante.",
+        "Aplicar medidas comunitarias de prevención sin generar pánico ni estigmatización.",
+        "Priorizar la seguridad, proteger la privacidad y reportar sospechas por canales adecuados."
+      ],
+      "lessonId": "warning_prevention",
+      "warning": "Algunos contenidos mencionan amenazas, explotación, riesgo físico, evidencias y actuación ante sospechas de trata. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }

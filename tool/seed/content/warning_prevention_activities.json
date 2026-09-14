@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "warning_prevention_activity_01",
+      "categoryId": "warning_prevention",
+      "title": "Señales de alerta y contexto",
+      "order": 1
+    },
+    {
+      "id": "warning_prevention_activity_02",
+      "categoryId": "warning_prevention",
+      "title": "Conversación segura",
+      "order": 2
+    },
+    {
+      "id": "warning_prevention_activity_03",
+      "categoryId": "warning_prevention",
+      "title": "Prevención comunitaria",
+      "order": 3
+    },
+    {
+      "id": "warning_prevention_activity_04",
+      "categoryId": "warning_prevention",
+      "title": "Riesgo inmediato y seguridad",
+      "order": 4
+    },
+    {
+      "id": "warning_prevention_activity_05",
+      "categoryId": "warning_prevention",
+      "title": "Evidencia, reporte y privacidad",
+      "order": 5
+    },
+    {
+      "id": "warning_prevention_activity_06",
+      "categoryId": "warning_prevention",
+      "title": "Actuación segura como testigo",
+      "order": 6
+    }
+  ]
+}
