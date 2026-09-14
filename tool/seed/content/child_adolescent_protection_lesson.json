@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "child_adolescent_protection_reinforced_protection",
+      "order": 1,
+      "title": "Protección reforzada y responsabilidad adulta",
+      "body": "Las niñas, niños y adolescentes dependen en mayor medida de personas adultas y pueden ser más vulnerables a engaños, promesas, regalos o abuso de autoridad. La responsabilidad de proteger recae en personas adultas, instituciones y Estado.\n\nNunca debe culpabilizarse a una persona menor de edad por haber confiado, aceptado un regalo o conversado con alguien que después la manipuló."
+    },
+    {
+      "id": "child_adolescent_protection_secrets_gifts_manipulation",
+      "order": 2,
+      "title": "Secretos, regalos y manipulación",
+      "body": "Una persona que busca manipular puede utilizar regalos, favores, atención especial o secretos para construir confianza. Los secretos que producen miedo, incomodidad o impiden pedir ayuda deben romperse y compartirse con una persona adulta de confianza.\n\nNingún regalo obliga a corresponder con fotografías, encuentros, trabajo, silencio o conductas que generen incomodidad."
+    },
+    {
+      "id": "child_adolescent_protection_school_sport_entertainment_work",
+      "order": 3,
+      "title": "Riesgos en escuela, deporte, entretenimiento y trabajo",
+      "body": "La captación puede ocurrir en espacios conocidos: escuela, barrio, deporte, trabajo informal, academias o actividades artísticas. Que la persona captadora sea conocida no elimina el riesgo.\n\nLas oportunidades para menores deben involucrar a personas cuidadoras, contar con información verificable y respetar la edad, horarios, seguridad y derechos."
+    },
+    {
+      "id": "child_adolescent_protection_disappearance_behavior_alerts",
+      "order": 4,
+      "title": "Desaparición, cambios de conducta y señales de alerta",
+      "body": "Una desaparición o pérdida inesperada de contacto requiere actuar de forma inmediata y comunicarla a autoridades competentes. También pueden ser señales de alerta cambios bruscos, regalos inexplicables, miedo a una persona, viajes secretos, control por terceros o aislamiento.\n\nNinguna señal aislada confirma trata, pero varias juntas justifican atención y protección."
+    },
+    {
+      "id": "child_adolescent_protection_protective_response",
+      "order": 5,
+      "title": "Cómo responder cuando un menor cuenta algo preocupante",
+      "body": "Cuando una niña, niño o adolescente cuenta una situación de riesgo, conviene escuchar con calma, creer sin interrogar de forma agresiva, evitar culpar y buscar apoyo institucional o especializado.\n\nNo debe obligarse a repetir los hechos innecesariamente ni confrontar al posible agresor si eso aumenta el riesgo."
+    },
+    {
+      "id": "child_adolescent_protection_networks_daily_prevention",
+      "order": 6,
+      "title": "Redes de protección y prevención cotidiana",
+      "body": "La protección mejora cuando menores saben a quién acudir, conocen límites, pueden decir “no”, cuentan con canales de ayuda y mantienen comunicación con personas cuidadoras.\n\nLa prevención no consiste en prohibir toda vida digital o social, sino en desarrollar habilidades, verificar oportunidades y mantener redes de confianza."
+    }
+  ]
+}

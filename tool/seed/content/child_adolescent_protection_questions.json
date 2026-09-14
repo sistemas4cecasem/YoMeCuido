@@ -1,0 +1,1485 @@
+{
+  "questions": [
+    {
+      "id": "child_adolescent_protection_q01",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Por qué niñas, niños y adolescentes requieren protección reforzada?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Porque pueden depender más de personas adultas y ser más vulnerables a manipulación."
+        },
+        {
+          "id": "q01_o2",
+          "text": "Porque nunca usan internet."
+        },
+        {
+          "id": "q01_o3",
+          "text": "Porque siempre reconocen el peligro."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Porque no tienen derechos propios."
+        }
+      ],
+      "correctAnswer": "q01_o1",
+      "acceptedAnswers": [],
+      "feedback": "La edad y dependencia pueden aumentar vulnerabilidad y requieren mayor responsabilidad adulta.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q02",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "trueFalse",
+      "statement": "Un menor es responsable si una persona adulta lo engaña utilizando regalos o promesas.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o2",
+      "acceptedAnswers": [],
+      "feedback": "La responsabilidad es de quien manipula o explota, no de la persona menor de edad.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q03",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe hacer una persona adulta ante una oportunidad laboral para un adolescente?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Verificar condiciones, responsables, lugar y seguridad."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Permitir que viaje solo sin información."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Entregar documentos a desconocidos."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Ignorar la edad."
+        }
+      ],
+      "correctAnswer": "q03_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las oportunidades deben ser compatibles con derechos y protección de la persona menor.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q04",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "fillBlank",
+      "statement": "La obligación de cuidar y resguardar a niñas, niños y adolescentes forma parte de su __.",
+      "options": [],
+      "correctAnswer": "protección",
+      "acceptedAnswers": [
+        "protección",
+        "proteccion"
+      ],
+      "feedback": "Las personas adultas e instituciones deben actuar para prevenir riesgos y vulneraciones.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q05",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "trueFalse",
+      "statement": "Una persona menor de edad puede pedir ayuda aunque haya aceptado inicialmente hablar con alguien.",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q05_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q05_o1",
+      "acceptedAnswers": [],
+      "feedback": "Puede cambiar de opinión y buscar apoyo en cualquier momento.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q06",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál mensaje es protector?",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "“Si algo te preocupa, puedes contármelo sin miedo a que te culpe”."
+        },
+        {
+          "id": "q06_o2",
+          "text": "“Si te engañan será porque no hiciste caso”."
+        },
+        {
+          "id": "q06_o3",
+          "text": "“Resuelve tus problemas solo”."
+        },
+        {
+          "id": "q06_o4",
+          "text": "“Nunca cambies de opinión”."
+        }
+      ],
+      "correctAnswer": "q06_o1",
+      "acceptedAnswers": [],
+      "feedback": "La confianza facilita que una persona menor de edad pida ayuda temprano.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q07",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué actitud aumenta la protección?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "Escuchar sin burlas ni castigos automáticos."
+        },
+        {
+          "id": "q07_o2",
+          "text": "Amenazar con quitarle todo si cuenta algo."
+        },
+        {
+          "id": "q07_o3",
+          "text": "Ignorar cambios preocupantes."
+        },
+        {
+          "id": "q07_o4",
+          "text": "Prohibir cualquier pregunta."
+        }
+      ],
+      "correctAnswer": "q07_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una comunicación segura ayuda a revelar situaciones de riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q08",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "fillBlank",
+      "statement": "Cuando una persona adulta usa su autoridad para someter a un menor existe abuso de __.",
+      "options": [],
+      "correctAnswer": "poder",
+      "acceptedAnswers": [
+        "poder"
+      ],
+      "feedback": "La desigualdad de poder puede ser aprovechada para controlar o explotar.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q09",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "trueFalse",
+      "statement": "La protección de menores es responsabilidad exclusiva de su familia.",
+      "options": [
+        {
+          "id": "q09_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q09_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q09_o2",
+      "acceptedAnswers": [],
+      "feedback": "Familias, instituciones, comunidades y Estado comparten responsabilidades de protección.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q10",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe priorizarse si un menor está en riesgo inmediato?",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "Su seguridad y acceso a ayuda."
+        },
+        {
+          "id": "q10_o2",
+          "text": "Conseguir todos los detalles antes de actuar."
+        },
+        {
+          "id": "q10_o3",
+          "text": "Publicar el caso."
+        },
+        {
+          "id": "q10_o4",
+          "text": "Enfrentar a la persona sospechosa sin apoyo."
+        }
+      ],
+      "correctAnswer": "q10_o1",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad inmediata está por encima de obtener información completa.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q11",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "multipleChoice",
+      "statement": "Una persona adulta regala cosas a un adolescente y luego exige que mantenga encuentros en secreto. ¿Qué representa?",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "Una señal de manipulación."
+        },
+        {
+          "id": "q11_o2",
+          "text": "Una obligación por recibir regalos."
+        },
+        {
+          "id": "q11_o3",
+          "text": "Un vínculo automáticamente seguro."
+        },
+        {
+          "id": "q11_o4",
+          "text": "Una forma normal de pago."
+        }
+      ],
+      "correctAnswer": "q11_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los regalos pueden utilizarse para generar deuda emocional o presión.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q12",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "trueFalse",
+      "statement": "Recibir un regalo obliga a una persona menor de edad a devolver favores.",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q12_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q12_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ningún regalo crea derecho sobre la persona o sus decisiones.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q13",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "fillBlank",
+      "statement": "Un secreto que provoca miedo o impide pedir ayuda debe compartirse con una persona adulta de __.",
+      "options": [],
+      "correctAnswer": "confianza",
+      "acceptedAnswers": [
+        "confianza"
+      ],
+      "feedback": "Romper un secreto peligroso es una medida de protección.",
+      "capacity": "responder",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q14",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase es una señal de alerta?",
+      "options": [
+        {
+          "id": "q14_o1",
+          "text": "“No le digas a nadie que hablamos; se enojarán contigo”."
+        },
+        {
+          "id": "q14_o2",
+          "text": "“Puedes contárselo a tus cuidadores”."
+        },
+        {
+          "id": "q14_o3",
+          "text": "“Si algo te incomoda, paramos”."
+        },
+        {
+          "id": "q14_o4",
+          "text": "“No tienes que aceptar”."
+        }
+      ],
+      "correctAnswer": "q14_o1",
+      "acceptedAnswers": [],
+      "feedback": "El secreto impuesto puede aislar y facilitar manipulación.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q15",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "trueFalse",
+      "statement": "La atención especial y los elogios pueden utilizarse para ganar confianza antes de imponer presión.",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q15_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q15_o1",
+      "acceptedAnswers": [],
+      "feedback": "La manipulación puede comenzar con comportamientos agradables.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q16",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué debería hacer un adolescente si alguien le pide fotografías a cambio de mantener un regalo?",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "Negarse y buscar apoyo de confianza."
+        },
+        {
+          "id": "q16_o2",
+          "text": "Enviar más para evitar problemas."
+        },
+        {
+          "id": "q16_o3",
+          "text": "Mantenerlo en secreto."
+        },
+        {
+          "id": "q16_o4",
+          "text": "Entregar también documentos."
+        }
+      ],
+      "correctAnswer": "q16_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los regalos no justifican presión ni solicitudes inapropiadas.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q17",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una forma de manipulación emocional?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "“Si de verdad me quieres, harás lo que te pido”."
+        },
+        {
+          "id": "q17_o2",
+          "text": "“Respeto tu decisión”."
+        },
+        {
+          "id": "q17_o3",
+          "text": "“Puedes tomarte tu tiempo”."
+        },
+        {
+          "id": "q17_o4",
+          "text": "“Pregunta a tu familia”."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "Condicionar el afecto puede utilizarse para presionar.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q18",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "fillBlank",
+      "statement": "Usar regalos o afecto para presionar decisiones puede ser una forma de __.",
+      "options": [],
+      "correctAnswer": "manipulación",
+      "acceptedAnswers": [
+        "manipulación",
+        "manipulacion"
+      ],
+      "feedback": "La manipulación busca influir sin respetar plenamente la voluntad de la persona.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q19",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "trueFalse",
+      "statement": "Una persona menor de edad puede decir “no” aunque antes haya aceptado algo diferente.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los límites pueden cambiar y deben respetarse.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q20",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué conducta de una persona adulta es protectora?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Respetar límites y no pedir secretos que generen miedo."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Aislar al menor de sus cuidadores."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Exigir contacto constante."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Presionarlo con regalos."
+        }
+      ],
+      "correctAnswer": "q20_o1",
+      "acceptedAnswers": [],
+      "feedback": "El respeto por límites y redes de apoyo reduce riesgos de manipulación.",
+      "capacity": "prevenir",
+      "difficulty": "básica"
+    },
+    {
+      "id": "child_adolescent_protection_q21",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "multipleChoice",
+      "statement": "Una persona ofrece a estudiantes trabajos de fin de semana pero se niega a hablar con sus familias. ¿Qué conviene?",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Verificar la oferta y no excluir a personas adultas responsables."
+        },
+        {
+          "id": "q21_o2",
+          "text": "Aceptar en secreto."
+        },
+        {
+          "id": "q21_o3",
+          "text": "Viajar sin dirección."
+        },
+        {
+          "id": "q21_o4",
+          "text": "Entregar documentos originales."
+        }
+      ],
+      "correctAnswer": "q21_o1",
+      "acceptedAnswers": [],
+      "feedback": "La transparencia con personas cuidadoras es una medida de protección.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q22",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "trueFalse",
+      "statement": "La captación puede ocurrir en espacios conocidos como escuelas, barrios o actividades deportivas.",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q22_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q22_o1",
+      "acceptedAnswers": [],
+      "feedback": "La persona captadora no siempre es desconocida ni actúa en lugares extraños.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q23",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "multipleChoice",
+      "statement": "Un supuesto entrenador ofrece llevar a un adolescente a una prueba en otra ciudad sin documentos, responsables ni datos del club. ¿Qué corresponde?",
+      "options": [
+        {
+          "id": "q23_o1",
+          "text": "Verificar la institución y acompañamiento antes de aceptar."
+        },
+        {
+          "id": "q23_o2",
+          "text": "Viajar de inmediato."
+        },
+        {
+          "id": "q23_o3",
+          "text": "Mantenerlo en secreto."
+        },
+        {
+          "id": "q23_o4",
+          "text": "Apagar el teléfono."
+        }
+      ],
+      "correctAnswer": "q23_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las oportunidades deportivas legítimas deben poder comprobarse.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q24",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "fillBlank",
+      "statement": "Una oportunidad para una persona menor debe ser __ antes de realizar viajes o compromisos.",
+      "options": [],
+      "correctAnswer": "verificada",
+      "acceptedAnswers": [
+        "verificada"
+      ],
+      "feedback": "Comprobar institución, responsables y condiciones reduce riesgos.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q25",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "trueFalse",
+      "statement": "Conocer personalmente a quien hace una oferta elimina la necesidad de verificarla.",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q25_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q25_o2",
+      "acceptedAnswers": [],
+      "feedback": "Los vínculos conocidos no garantizan que una propuesta sea segura.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q26",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué señal preocupa en un casting para menores?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "Exigir acudir a solas a una vivienda y mantenerlo en secreto."
+        },
+        {
+          "id": "q26_o2",
+          "text": "Realizarse en una institución identificable."
+        },
+        {
+          "id": "q26_o3",
+          "text": "Permitir acompañamiento."
+        },
+        {
+          "id": "q26_o4",
+          "text": "Explicar condiciones por escrito."
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "El aislamiento y el secreto aumentan el riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q27",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué condición debe respetar un trabajo permitido para adolescentes?",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Sus derechos, seguridad y límites legales."
+        },
+        {
+          "id": "q27_o2",
+          "text": "La entrega permanente de documentos."
+        },
+        {
+          "id": "q27_o3",
+          "text": "La prohibición de comunicarse con la familia."
+        },
+        {
+          "id": "q27_o4",
+          "text": "La obligación de trabajar bajo amenazas."
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "El trabajo nunca debe convertirse en explotación o impedir derechos fundamentales.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q28",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "fillBlank",
+      "statement": "Una institución real debería poder identificar a sus responsables, dirección y condiciones de __.",
+      "options": [],
+      "correctAnswer": "participación",
+      "acceptedAnswers": [
+        "participación",
+        "participacion"
+      ],
+      "feedback": "La información clara ayuda a comprobar legitimidad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q29",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "trueFalse",
+      "statement": "Una oferta artística o deportiva puede utilizarse como fachada para captar.",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q29_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q29_o1",
+      "acceptedAnswers": [],
+      "feedback": "Cualquier tipo de oportunidad puede ser falsificada; por eso debe verificarse.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q30",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué protege mejor a un adolescente ante una oportunidad fuera de su ciudad?",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Que personas de confianza conozcan responsables, destino, contacto e itinerario."
+        },
+        {
+          "id": "q30_o2",
+          "text": "Que viaje sin avisar."
+        },
+        {
+          "id": "q30_o3",
+          "text": "Que entregue su teléfono."
+        },
+        {
+          "id": "q30_o4",
+          "text": "Que elimine las conversaciones."
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una red informada facilita apoyo ante cambios o problemas.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q31",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "multipleChoice",
+      "statement": "Un adolescente desaparece y nadie sabe dónde está. ¿Qué corresponde?",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Comunicarlo de forma inmediata a las autoridades competentes y activar la búsqueda."
+        },
+        {
+          "id": "q31_o2",
+          "text": "Esperar varios días."
+        },
+        {
+          "id": "q31_o3",
+          "text": "Borrar su información."
+        },
+        {
+          "id": "q31_o4",
+          "text": "Asumir que volverá."
+        }
+      ],
+      "correctAnswer": "q31_o1",
+      "acceptedAnswers": [],
+      "feedback": "La reacción temprana es importante ante una desaparición.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q32",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "trueFalse",
+      "statement": "Es necesario esperar 24 horas antes de actuar ante una posible situación grave de desaparición.",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q32_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q32_o2",
+      "acceptedAnswers": [],
+      "feedback": "Ante riesgo, corresponde actuar y reportar de manera inmediata.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q33",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Cuál puede ser una señal que merece atención?",
+      "options": [
+        {
+          "id": "q33_o1",
+          "text": "Miedo intenso hacia una persona y regalos inexplicables."
+        },
+        {
+          "id": "q33_o2",
+          "text": "Cambiar de música favorita."
+        },
+        {
+          "id": "q33_o3",
+          "text": "Dormir un poco más un fin de semana."
+        },
+        {
+          "id": "q33_o4",
+          "text": "Usar ropa diferente."
+        }
+      ],
+      "correctAnswer": "q33_o1",
+      "acceptedAnswers": [],
+      "feedback": "Los cambios deben analizarse en contexto, especialmente si aparecen varias señales juntas.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q34",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "fillBlank",
+      "statement": "Varias señales de riesgo juntas justifican aumentar la __.",
+      "options": [],
+      "correctAnswer": "protección",
+      "acceptedAnswers": [
+        "protección",
+        "proteccion"
+      ],
+      "feedback": "Ninguna señal aislada confirma trata, pero el conjunto puede requerir intervención.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q35",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "trueFalse",
+      "statement": "Un cambio de conducta por sí solo demuestra que existe trata.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o2",
+      "acceptedAnswers": [],
+      "feedback": "Debe evaluarse el contexto y evitar conclusiones sin información suficiente.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q36",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué información puede ayudar ante una desaparición?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "Foto reciente, última ubicación conocida, contactos y circunstancias relevantes."
+        },
+        {
+          "id": "q36_o2",
+          "text": "Rumores sin verificar publicados como hechos."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Contraseñas difundidas públicamente."
+        },
+        {
+          "id": "q36_o4",
+          "text": "Datos privados innecesarios."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "La información concreta facilita la activación de búsqueda y seguimiento.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q37",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "multipleChoice",
+      "statement": "Una adolescente empieza a hablar de un viaje secreto pagado por alguien que su familia no conoce. ¿Qué conviene?",
+      "options": [
+        {
+          "id": "q37_o1",
+          "text": "Conversar sin culpar y verificar quién organiza el viaje."
+        },
+        {
+          "id": "q37_o2",
+          "text": "Ignorarlo."
+        },
+        {
+          "id": "q37_o3",
+          "text": "Castigarla sin escuchar."
+        },
+        {
+          "id": "q37_o4",
+          "text": "Publicar sus mensajes."
+        }
+      ],
+      "correctAnswer": "q37_o1",
+      "acceptedAnswers": [],
+      "feedback": "Escuchar y verificar protege mejor que responder solo con castigo.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q38",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "fillBlank",
+      "statement": "La pérdida inesperada de contacto con una persona menor requiere una respuesta __.",
+      "options": [],
+      "correctAnswer": "inmediata",
+      "acceptedAnswers": [
+        "inmediata"
+      ],
+      "feedback": "La rapidez puede ser importante para su localización y protección.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q39",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "trueFalse",
+      "statement": "Compartir información falsa sobre una desaparición puede dificultar la búsqueda.",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q39_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q39_o1",
+      "acceptedAnswers": [],
+      "feedback": "Conviene utilizar información confirmada y canales responsables.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q40",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué actitud ayuda a detectar riesgo temprano?",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "Mantener comunicación y conocer cambios importantes sin invadir ni humillar."
+        },
+        {
+          "id": "q40_o2",
+          "text": "Ignorar cualquier preocupación."
+        },
+        {
+          "id": "q40_o3",
+          "text": "Usar solo castigos."
+        },
+        {
+          "id": "q40_o4",
+          "text": "Prohibir que el menor hable con adultos de confianza."
+        }
+      ],
+      "correctAnswer": "q40_o1",
+      "acceptedAnswers": [],
+      "feedback": "La comunicación abierta facilita que situaciones preocupantes se conozcan antes.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q41",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "multipleChoice",
+      "statement": "Un adolescente cuenta que una persona lo amenaza. ¿Cuál es una buena primera respuesta?",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Escuchar con calma y agradecer que lo haya contado."
+        },
+        {
+          "id": "q41_o2",
+          "text": "Culparlo."
+        },
+        {
+          "id": "q41_o3",
+          "text": "Exigir que enfrente a la persona."
+        },
+        {
+          "id": "q41_o4",
+          "text": "Publicarlo en redes."
+        }
+      ],
+      "correctAnswer": "q41_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una respuesta tranquila facilita seguridad y confianza.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q42",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "trueFalse",
+      "statement": "Conviene interrogar repetidamente a un menor para comprobar si su historia cambia.",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q42_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q42_o2",
+      "acceptedAnswers": [],
+      "feedback": "Repetir innecesariamente relatos puede revictimizar y debe evitarse.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q43",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase evita culpabilizar?",
+      "options": [
+        {
+          "id": "q43_o1",
+          "text": "“Hiciste bien en contarlo; vamos a buscar ayuda”."
+        },
+        {
+          "id": "q43_o2",
+          "text": "“¿Por qué fuiste tan ingenuo?”."
+        },
+        {
+          "id": "q43_o3",
+          "text": "“Seguro exageras”."
+        },
+        {
+          "id": "q43_o4",
+          "text": "“Ahora todos deben saberlo”."
+        }
+      ],
+      "correctAnswer": "q43_o1",
+      "acceptedAnswers": [],
+      "feedback": "Validar y acompañar favorece la protección.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q44",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "fillBlank",
+      "statement": "Hacer que una víctima repita innecesariamente hechos traumáticos puede causar __.",
+      "options": [],
+      "correctAnswer": "revictimización",
+      "acceptedAnswers": [
+        "revictimización",
+        "revictimizacion"
+      ],
+      "feedback": "La respuesta debe minimizar daños adicionales.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q45",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "trueFalse",
+      "statement": "Prometer “nunca se lo diré a nadie” siempre es correcto cuando un menor revela un riesgo grave.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o2",
+      "acceptedAnswers": [],
+      "feedback": "Puede ser necesario buscar ayuda para protegerlo; conviene explicarlo con cuidado.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q46",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe evitar una persona adulta?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Confrontar sola al posible agresor si puede aumentar el riesgo."
+        },
+        {
+          "id": "q46_o2",
+          "text": "Buscar apoyo institucional."
+        },
+        {
+          "id": "q46_o3",
+          "text": "Escuchar al menor."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Proteger su privacidad."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "La intervención debe planificarse para no agravar el peligro.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q47",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "multipleChoice",
+      "statement": "Si el menor teme represalias contra su familia, ¿qué conviene priorizar?",
+      "options": [
+        {
+          "id": "q47_o1",
+          "text": "Un plan de seguridad y apoyo especializado."
+        },
+        {
+          "id": "q47_o2",
+          "text": "Decirle que el miedo no importa."
+        },
+        {
+          "id": "q47_o3",
+          "text": "Obligarle a volver al lugar."
+        },
+        {
+          "id": "q47_o4",
+          "text": "Difundir su ubicación."
+        }
+      ],
+      "correctAnswer": "q47_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las amenazas deben tomarse en serio y abordarse con apoyo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q48",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "fillBlank",
+      "statement": "Escuchar sin juzgar ayuda a mantener una relación de __.",
+      "options": [],
+      "correctAnswer": "confianza",
+      "acceptedAnswers": [
+        "confianza"
+      ],
+      "feedback": "La confianza favorece que la persona siga comunicando información relevante.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q49",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "trueFalse",
+      "statement": "La privacidad del menor debe protegerse durante la búsqueda de ayuda.",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q49_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q49_o1",
+      "acceptedAnswers": [],
+      "feedback": "Exponer detalles innecesarios puede aumentar daño o riesgo.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q50",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume una respuesta protectora?",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "Escuchar, no culpar, proteger y conectar con ayuda adecuada."
+        },
+        {
+          "id": "q50_o2",
+          "text": "Castigar, exponer y confrontar."
+        },
+        {
+          "id": "q50_o3",
+          "text": "Ignorar para no preocuparlo."
+        },
+        {
+          "id": "q50_o4",
+          "text": "Pedirle que resuelva solo."
+        }
+      ],
+      "correctAnswer": "q50_o1",
+      "acceptedAnswers": [],
+      "feedback": "La protección combina escucha, seguridad y apoyo especializado.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "child_adolescent_protection_q51",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué es una red de protección?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "Personas e instituciones a las que un menor puede acudir para recibir ayuda."
+        },
+        {
+          "id": "q51_o2",
+          "text": "Solo sus seguidores en redes sociales."
+        },
+        {
+          "id": "q51_o3",
+          "text": "Únicamente una aplicación."
+        },
+        {
+          "id": "q51_o4",
+          "text": "Un grupo secreto."
+        }
+      ],
+      "correctAnswer": "q51_o1",
+      "acceptedAnswers": [],
+      "feedback": "Una red de protección puede incluir familia, escuela, profesionales e instituciones.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q52",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "trueFalse",
+      "statement": "Es útil que niñas, niños y adolescentes sepan identificar varias personas adultas de confianza.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o1",
+      "acceptedAnswers": [],
+      "feedback": "Tener varias opciones aumenta las posibilidades de pedir ayuda.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q53",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué práctica familiar fortalece prevención?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "Conversar sobre ofertas, viajes y contactos sin basarse solo en castigos."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Prohibir cualquier conversación sobre riesgos."
+        },
+        {
+          "id": "q53_o3",
+          "text": "Ridiculizar las dudas."
+        },
+        {
+          "id": "q53_o4",
+          "text": "No conocer nunca sus actividades."
+        }
+      ],
+      "correctAnswer": "q53_o1",
+      "acceptedAnswers": [],
+      "feedback": "La comunicación permite analizar oportunidades antes de que exista una crisis.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q54",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "fillBlank",
+      "statement": "Una persona adulta a la que un menor puede acudir sin miedo forma parte de su red de __.",
+      "options": [],
+      "correctAnswer": "apoyo",
+      "acceptedAnswers": [
+        "apoyo"
+      ],
+      "feedback": "El apoyo accesible reduce aislamiento.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q55",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "trueFalse",
+      "statement": "Prevenir significa impedir que los adolescentes tengan toda vida social o digital.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o2",
+      "acceptedAnswers": [],
+      "feedback": "La prevención busca desarrollar habilidades, límites y apoyo, no aislamiento absoluto.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q56",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué habilidad preventiva es útil?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Verificar ofertas y pedir ayuda cuando algo no coincide."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Mantener viajes en secreto."
+        },
+        {
+          "id": "q56_o3",
+          "text": "Entregar documentos a cualquier persona."
+        },
+        {
+          "id": "q56_o4",
+          "text": "Ignorar incomodidad."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "La verificación y la capacidad de pedir ayuda fortalecen autonomía segura.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q57",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe enseñar una escuela sobre ofertas externas?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Que pueden consultarse y verificarse con personas adultas responsables."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Que toda oferta es segura."
+        },
+        {
+          "id": "q57_o3",
+          "text": "Que nunca deben comentarse."
+        },
+        {
+          "id": "q57_o4",
+          "text": "Que los estudiantes deben viajar solos."
+        }
+      ],
+      "correctAnswer": "q57_o1",
+      "acceptedAnswers": [],
+      "feedback": "La escuela puede formar parte de la red de protección.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q58",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "fillBlank",
+      "statement": "Saber a quién llamar o acudir en una situación de riesgo es parte de un plan de __.",
+      "options": [],
+      "correctAnswer": "seguridad",
+      "acceptedAnswers": [
+        "seguridad"
+      ],
+      "feedback": "Planificar contactos reduce tiempo de reacción ante una emergencia.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q59",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "trueFalse",
+      "statement": "Hablar sobre trata de forma clara y apropiada para la edad puede mejorar la prevención.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o1",
+      "acceptedAnswers": [],
+      "feedback": "La información comprensible ayuda a reconocer señales y pedir ayuda.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "child_adolescent_protection_q60",
+      "categoryId": "child_adolescent_protection",
+      "activityId": "child_adolescent_protection_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume mejor la protección de menores?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Información, confianza, verificación, límites y acceso a ayuda."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Miedo, silencio y castigo."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Aislamiento total."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Responsabilizar al menor."
+        }
+      ],
+      "correctAnswer": "q60_o1",
+      "acceptedAnswers": [],
+      "feedback": "La protección efectiva combina capacidades personales y redes de apoyo.",
+      "capacity": "reconocer",
+      "difficulty": "avanzada"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "activities": [
+    {
+      "id": "child_adolescent_protection_activity_01",
+      "categoryId": "child_adolescent_protection",
+      "title": "Protección reforzada y responsabilidad adulta",
+      "order": 1
+    },
+    {
+      "id": "child_adolescent_protection_activity_02",
+      "categoryId": "child_adolescent_protection",
+      "title": "Secretos, regalos y manipulación",
+      "order": 2
+    },
+    {
+      "id": "child_adolescent_protection_activity_03",
+      "categoryId": "child_adolescent_protection",
+      "title": "Escuela, deporte, entretenimiento y trabajo",
+      "order": 3
+    },
+    {
+      "id": "child_adolescent_protection_activity_04",
+      "categoryId": "child_adolescent_protection",
+      "title": "Desaparición y señales de alerta",
+      "order": 4
+    },
+    {
+      "id": "child_adolescent_protection_activity_05",
+      "categoryId": "child_adolescent_protection",
+      "title": "Escucha y respuesta protectora",
+      "order": 5
+    },
+    {
+      "id": "child_adolescent_protection_activity_06",
+      "categoryId": "child_adolescent_protection",
+      "title": "Redes de protección y prevención cotidiana",
+      "order": 6
+    }
+  ]
+}

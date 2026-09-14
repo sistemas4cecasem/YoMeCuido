@@ -257,6 +257,28 @@
       ],
       "lessonId": "exploitation_modalities",
       "warning": "Algunos contenidos mencionan explotación sexual comercial, trabajo forzoso, servidumbre, reclutamiento delictivo y extracción ilícita de órganos. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "child_adolescent_protection",
+      "parentCategoryId": "human_trafficking",
+      "title": "Niñez, adolescencia y entornos de protección",
+      "description": "Aprende a reconocer riesgos de captación y explotación que afectan a niñas, niños y adolescentes, y a fortalecer respuestas protectoras desde personas adultas, instituciones y redes de apoyo.",
+      "iconName": "verified_user_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer la protección reforzada que requieren niñas, niños y adolescentes.",
+        "Identificar secretos, regalos, manipulación y entornos donde puede aparecer captación o explotación.",
+        "Responder de forma protectora cuando una persona menor de edad cuenta algo preocupante.",
+        "Fortalecer redes de protección y prácticas cotidianas de prevención sin culpabilizar a menores."
+      ],
+      "lessonId": "child_adolescent_protection",
+      "warning": "Algunos contenidos mencionan manipulación, grooming, desaparición, explotación y situaciones de riesgo para niñas, niños y adolescentes. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }
