@@ -235,6 +235,28 @@
       ],
       "lessonId": "digital_recruitment",
       "warning": "Algunos contenidos mencionan grooming, sextorsión, coerción digital, amenazas y captación en línea. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "exploitation_modalities",
+      "parentCategoryId": "human_trafficking",
+      "title": "Modalidades y fines de explotación",
+      "description": "Aprende a reconocer distintas modalidades de explotación, incluyendo trabajo forzoso, explotación sexual comercial, servidumbre, mendicidad forzada, actividades delictivas y extracción ilícita.",
+      "iconName": "fact_check_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer modalidades y finalidades de explotación vinculadas a la trata de personas.",
+        "Diferenciar condiciones laborales legítimas de señales de trabajo forzoso o servidumbre.",
+        "Identificar explotación sexual comercial, mendicidad forzada, matrimonio servil y reclutamiento para actividades delictivas.",
+        "Comprender que la explotación puede existir aunque la situación aparente normalidad o exista algún pago."
+      ],
+      "lessonId": "exploitation_modalities",
+      "warning": "Algunos contenidos mencionan explotación sexual comercial, trabajo forzoso, servidumbre, reclutamiento delictivo y extracción ilícita de órganos. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }
