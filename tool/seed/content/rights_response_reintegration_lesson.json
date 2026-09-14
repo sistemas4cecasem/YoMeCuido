@@ -1,0 +1,40 @@
+{
+  "lessonPages": [
+    {
+      "id": "rights_response_reintegration_rights_dignity_no_blame",
+      "order": 1,
+      "title": "Derechos, dignidad y no culpabilización",
+      "body": "Las víctimas de trata y tráfico de personas tienen derecho a recibir protección y atención respetando su dignidad, privacidad y seguridad. La responsabilidad corresponde a quienes captan, someten, explotan o se benefician del delito.\n\nLa situación migratoria, ocupación, edad, género o decisiones previas de una persona no justifican que sea explotada ni deben utilizarse para negarle ayuda."
+    },
+    {
+      "id": "rights_response_reintegration_immediate_care_protection",
+      "order": 2,
+      "title": "Atención y protección inmediata",
+      "body": "La atención inicial debe responder a necesidades urgentes: seguridad, alojamiento seguro cuando sea necesario, salud física y emocional, comunicación con personas de confianza y orientación sobre opciones disponibles.\n\nUna respuesta centrada en la víctima evita imponer decisiones que puedan aumentar el riesgo y considera sus circunstancias particulares."
+    },
+    {
+      "id": "rights_response_reintegration_reporting_authorities",
+      "order": 3,
+      "title": "Reporte, denuncia y autoridades competentes",
+      "body": "Ante hechos que puedan constituir trata o tráfico de personas, corresponde comunicar la situación a autoridades competentes para su investigación. En Bolivia pueden intervenir, según el caso, la Policía Boliviana, el Ministerio Público y servicios especializados de protección; cuando hay niñas, niños o adolescentes también intervienen instancias de protección de la niñez.\n\nNo es necesario que una persona testigo realice una investigación completa antes de reportar una sospecha razonable."
+    },
+    {
+      "id": "rights_response_reintegration_no_revictimization_information",
+      "order": 4,
+      "title": "No revictimización y manejo de información",
+      "body": "Evitar la revictimización significa no culpar, humillar, exponer ni obligar a repetir innecesariamente hechos traumáticos. La información debe manejarse con confidencialidad y compartirse solo con quienes necesitan conocerla para proteger o investigar.\n\nLa entrevista especializada busca obtener información necesaria reduciendo daño adicional."
+    },
+    {
+      "id": "rights_response_reintegration_integral_recovery",
+      "order": 5,
+      "title": "Recuperación y reintegración integral",
+      "body": "Salir de una situación de explotación no resuelve automáticamente todas sus consecuencias. La recuperación puede requerir atención de salud, apoyo psicológico, asesoría jurídica, documentación, educación, empleo, vivienda y reconstrucción de redes de apoyo.\n\nLa reintegración debe evitar estigma y favorecer autonomía, seguridad y proyectos de vida sostenibles."
+    },
+    {
+      "id": "rights_response_reintegration_followup_autonomy",
+      "order": 6,
+      "title": "Acompañamiento, seguimiento y autonomía",
+      "body": "Apoyar a una persona sobreviviente implica respetar sus tiempos, decisiones y privacidad. No conviene presionarla para contar públicamente su historia ni tomar decisiones por ella sin necesidad.\n\nEl seguimiento puede incluir revisar riesgos, protección digital, contactos, vivienda, trabajo, salud y necesidades legales. Recuperar autonomía es parte central del proceso."
+    }
+  ]
+}

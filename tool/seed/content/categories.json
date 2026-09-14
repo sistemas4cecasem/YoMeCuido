@@ -323,6 +323,28 @@
       ],
       "lessonId": "warning_prevention",
       "warning": "Algunos contenidos mencionan amenazas, explotación, riesgo físico, evidencias y actuación ante sospechas de trata. Puedes salir de la lección cuando lo necesites."
+    },
+    {
+      "id": "rights_response_reintegration",
+      "parentCategoryId": "human_trafficking",
+      "title": "Derechos, denuncia, atención y reintegración",
+      "description": "Aprende sobre derechos de las víctimas, atención inmediata, denuncia, confidencialidad, recuperación integral y acompañamiento respetuoso después de una situación de trata o tráfico.",
+      "iconName": "verified_user_outlined",
+      "status": "available",
+      "isEnabled": true,
+      "indicators": [
+        "6 actividades",
+        "60 preguntas",
+        "Examen final de 15 preguntas"
+      ],
+      "objectives": [
+        "Reconocer derechos, dignidad y no culpabilización de víctimas y sobrevivientes.",
+        "Identificar necesidades urgentes de atención y protección inmediata.",
+        "Distinguir canales adecuados de reporte, denuncia y manejo confidencial de información.",
+        "Comprender la recuperación, reintegración y acompañamiento como procesos integrales y respetuosos de la autonomía."
+      ],
+      "lessonId": "rights_response_reintegration",
+      "warning": "Algunos contenidos mencionan explotación, denuncia, trauma, protección, atención y recuperación de víctimas. Puedes salir de la lección cuando lo necesites."
     }
   ]
 }

@@ -1,0 +1,1485 @@
+{
+  "questions": [
+    {
+      "id": "rights_response_reintegration_q01",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Quién es responsable de una situación de trata?",
+      "options": [
+        {
+          "id": "q01_o1",
+          "text": "Quien capta, controla, explota o se beneficia del delito."
+        },
+        {
+          "id": "q01_o2",
+          "text": "La víctima por confiar."
+        },
+        {
+          "id": "q01_o3",
+          "text": "La familia automáticamente."
+        },
+        {
+          "id": "q01_o4",
+          "text": "Nadie."
+        }
+      ],
+      "correctAnswer": "q01_o1",
+      "acceptedAnswers": [],
+      "feedback": "La responsabilidad no recae en la persona que fue engañada o sometida.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q02",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "trueFalse",
+      "statement": "Una víctima pierde sus derechos si inicialmente aceptó viajar o trabajar.",
+      "options": [
+        {
+          "id": "q02_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q02_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q02_o2",
+      "acceptedAnswers": [],
+      "feedback": "El consentimiento inicial no justifica explotación, coacción o abuso posterior.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q03",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué principio debe orientar la atención?",
+      "options": [
+        {
+          "id": "q03_o1",
+          "text": "Respeto a la dignidad, privacidad y seguridad."
+        },
+        {
+          "id": "q03_o2",
+          "text": "Exposición pública."
+        },
+        {
+          "id": "q03_o3",
+          "text": "Castigo a la víctima."
+        },
+        {
+          "id": "q03_o4",
+          "text": "Presión para contar todo."
+        }
+      ],
+      "correctAnswer": "q03_o1",
+      "acceptedAnswers": [],
+      "feedback": "La atención debe proteger derechos y evitar daños adicionales.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q04",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "fillBlank",
+      "statement": "Tratar a una persona sin humillarla ni culparla protege su __.",
+      "options": [],
+      "correctAnswer": "dignidad",
+      "acceptedAnswers": [
+        "dignidad"
+      ],
+      "feedback": "La dignidad debe respetarse durante todo el proceso de atención.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q05",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "trueFalse",
+      "statement": "La situación migratoria irregular justifica negar ayuda a una víctima.",
+      "options": [
+        {
+          "id": "q05_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q05_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q05_o2",
+      "acceptedAnswers": [],
+      "feedback": "La situación migratoria no elimina derechos ni legitima explotación.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q06",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase es apropiada?",
+      "options": [
+        {
+          "id": "q06_o1",
+          "text": "“Lo que te hicieron no es tu culpa y podemos buscar apoyo”."
+        },
+        {
+          "id": "q06_o2",
+          "text": "“Debiste saberlo”."
+        },
+        {
+          "id": "q06_o3",
+          "text": "“Si aceptaste viajar, es tu responsabilidad”."
+        },
+        {
+          "id": "q06_o4",
+          "text": "“Mejor no digas nada”."
+        }
+      ],
+      "correctAnswer": "q06_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta debe validar sin culpabilizar.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q07",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe protegerse al compartir información sobre una víctima?",
+      "options": [
+        {
+          "id": "q07_o1",
+          "text": "Su privacidad y seguridad."
+        },
+        {
+          "id": "q07_o2",
+          "text": "El interés de las redes sociales."
+        },
+        {
+          "id": "q07_o3",
+          "text": "La curiosidad del público."
+        },
+        {
+          "id": "q07_o4",
+          "text": "La viralidad del caso."
+        }
+      ],
+      "correctAnswer": "q07_o1",
+      "acceptedAnswers": [],
+      "feedback": "La exposición innecesaria puede causar daño y aumentar riesgos.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q08",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "fillBlank",
+      "statement": "Negar ayuda por origen, género o situación migratoria sería una forma de __.",
+      "options": [],
+      "correctAnswer": "discriminación",
+      "acceptedAnswers": [
+        "discriminación",
+        "discriminacion"
+      ],
+      "feedback": "La atención debe brindarse sin discriminación.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q09",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "trueFalse",
+      "statement": "Una víctima puede necesitar tiempo antes de sentirse preparada para hablar de todo lo ocurrido.",
+      "options": [
+        {
+          "id": "q09_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q09_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q09_o1",
+      "acceptedAnswers": [],
+      "feedback": "El miedo, trauma y amenazas pueden afectar la forma y momento de relatar hechos.",
+      "capacity": "reconocer",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q10",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_01",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume un enfoque de derechos?",
+      "options": [
+        {
+          "id": "q10_o1",
+          "text": "Proteger, informar, escuchar y evitar culpabilización."
+        },
+        {
+          "id": "q10_o2",
+          "text": "Exponer, juzgar y presionar."
+        },
+        {
+          "id": "q10_o3",
+          "text": "Decidir todo por la víctima."
+        },
+        {
+          "id": "q10_o4",
+          "text": "Priorizar la publicidad del caso."
+        }
+      ],
+      "correctAnswer": "q10_o1",
+      "acceptedAnswers": [],
+      "feedback": "La persona debe ser tratada como titular de derechos, no solo como fuente de información.",
+      "capacity": "recuperar",
+      "difficulty": "básica"
+    },
+    {
+      "id": "rights_response_reintegration_q11",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe evaluarse primero ante una víctima recién identificada?",
+      "options": [
+        {
+          "id": "q11_o1",
+          "text": "Si existe peligro inmediato y qué necesita para estar segura."
+        },
+        {
+          "id": "q11_o2",
+          "text": "Cuántas entrevistas puede dar."
+        },
+        {
+          "id": "q11_o3",
+          "text": "Si quiere aparecer en medios."
+        },
+        {
+          "id": "q11_o4",
+          "text": "Qué opinan desconocidos."
+        }
+      ],
+      "correctAnswer": "q11_o1",
+      "acceptedAnswers": [],
+      "feedback": "La seguridad física y emocional es prioritaria.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q12",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "trueFalse",
+      "statement": "La atención puede incluir salud, alojamiento seguro y apoyo emocional.",
+      "options": [
+        {
+          "id": "q12_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q12_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q12_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta suele requerir varias áreas de apoyo.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q13",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "multipleChoice",
+      "statement": "Una persona teme regresar a su vivienda porque el explotador conoce la dirección. ¿Qué debe considerarse?",
+      "options": [
+        {
+          "id": "q13_o1",
+          "text": "Una alternativa segura de alojamiento y plan de protección."
+        },
+        {
+          "id": "q13_o2",
+          "text": "Obligarla a volver."
+        },
+        {
+          "id": "q13_o3",
+          "text": "Publicar la dirección."
+        },
+        {
+          "id": "q13_o4",
+          "text": "Ignorar el temor."
+        }
+      ],
+      "correctAnswer": "q13_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las decisiones deben reducir la posibilidad de represalias.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q14",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "fillBlank",
+      "statement": "Evaluar amenazas y necesidades inmediatas forma parte de la __.",
+      "options": [],
+      "correctAnswer": "protección",
+      "acceptedAnswers": [
+        "protección",
+        "proteccion"
+      ],
+      "feedback": "La protección busca reducir riesgos presentes y futuros.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q15",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "trueFalse",
+      "statement": "La atención debe ser exactamente igual para todas las víctimas sin considerar edad o situación.",
+      "options": [
+        {
+          "id": "q15_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q15_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q15_o2",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta debe adaptarse a necesidades particulares y brindar protección reforzada cuando corresponda.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q16",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué puede necesitar una persona que salió sin documentos?",
+      "options": [
+        {
+          "id": "q16_o1",
+          "text": "Apoyo para identificación y recuperación documental."
+        },
+        {
+          "id": "q16_o2",
+          "text": "Ser rechazada por no portar documentos."
+        },
+        {
+          "id": "q16_o3",
+          "text": "Publicar sus datos."
+        },
+        {
+          "id": "q16_o4",
+          "text": "Volver sola al lugar de explotación."
+        }
+      ],
+      "correctAnswer": "q16_o1",
+      "acceptedAnswers": [],
+      "feedback": "La falta de documentos puede ser consecuencia del control ejercido por terceros.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q17",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe hacerse si la persona requiere atención médica?",
+      "options": [
+        {
+          "id": "q17_o1",
+          "text": "Facilitar acceso seguro a servicios de salud."
+        },
+        {
+          "id": "q17_o2",
+          "text": "Esperar a que termine toda investigación."
+        },
+        {
+          "id": "q17_o3",
+          "text": "Exigir que relate públicamente su caso."
+        },
+        {
+          "id": "q17_o4",
+          "text": "Ignorar síntomas."
+        }
+      ],
+      "correctAnswer": "q17_o1",
+      "acceptedAnswers": [],
+      "feedback": "La salud es parte de la atención integral.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q18",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "fillBlank",
+      "statement": "Un lugar donde la persona pueda permanecer sin exposición a quien la amenaza puede ser un alojamiento __.",
+      "options": [],
+      "correctAnswer": "seguro",
+      "acceptedAnswers": [
+        "seguro"
+      ],
+      "feedback": "El alojamiento puede formar parte de las medidas de protección.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q19",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "trueFalse",
+      "statement": "La seguridad digital también puede formar parte de la protección después de salir.",
+      "options": [
+        {
+          "id": "q19_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q19_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q19_o1",
+      "acceptedAnswers": [],
+      "feedback": "Conviene revisar contraseñas, ubicación compartida y accesos si existe riesgo de seguimiento.",
+      "capacity": "recuperar",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q20",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_02",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume la atención inmediata?",
+      "options": [
+        {
+          "id": "q20_o1",
+          "text": "Seguridad, necesidades básicas, salud, apoyo y orientación."
+        },
+        {
+          "id": "q20_o2",
+          "text": "Publicidad y entrevistas."
+        },
+        {
+          "id": "q20_o3",
+          "text": "Castigo y aislamiento."
+        },
+        {
+          "id": "q20_o4",
+          "text": "Regreso automático al lugar anterior."
+        }
+      ],
+      "correctAnswer": "q20_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta inicial debe estabilizar y proteger a la persona.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q21",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "multipleChoice",
+      "statement": "Ante una posible trata, ¿quién debe realizar la investigación formal?",
+      "options": [
+        {
+          "id": "q21_o1",
+          "text": "Las autoridades competentes."
+        },
+        {
+          "id": "q21_o2",
+          "text": "Cualquier usuario de redes sociales."
+        },
+        {
+          "id": "q21_o3",
+          "text": "Solo la familia."
+        },
+        {
+          "id": "q21_o4",
+          "text": "La víctima sin apoyo."
+        }
+      ],
+      "correctAnswer": "q21_o1",
+      "acceptedAnswers": [],
+      "feedback": "La investigación requiere procedimientos y competencias institucionales.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q22",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "trueFalse",
+      "statement": "Una sospecha razonable puede comunicarse a autoridades aunque el testigo no tenga todas las pruebas.",
+      "options": [
+        {
+          "id": "q22_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q22_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q22_o1",
+      "acceptedAnswers": [],
+      "feedback": "El testigo no necesita resolver el caso antes de pedir intervención u orientación.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q23",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "multipleChoice",
+      "statement": "En Bolivia, ¿qué instituciones pueden intervenir en la investigación penal de trata y tráfico?",
+      "options": [
+        {
+          "id": "q23_o1",
+          "text": "Policía Boliviana y Ministerio Público."
+        },
+        {
+          "id": "q23_o2",
+          "text": "Solo empresas privadas."
+        },
+        {
+          "id": "q23_o3",
+          "text": "Únicamente redes sociales."
+        },
+        {
+          "id": "q23_o4",
+          "text": "Ninguna institución."
+        }
+      ],
+      "correctAnswer": "q23_o1",
+      "acceptedAnswers": [],
+      "feedback": "La Policía y el Ministerio Público cumplen funciones centrales de investigación y persecución penal.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q24",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "fillBlank",
+      "statement": "Comunicar formalmente hechos posiblemente delictivos a una autoridad puede realizarse mediante una __.",
+      "options": [],
+      "correctAnswer": "denuncia",
+      "acceptedAnswers": [
+        "denuncia"
+      ],
+      "feedback": "La denuncia permite activar procedimientos de investigación y protección.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q25",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "trueFalse",
+      "statement": "Cuando hay niñas, niños o adolescentes deben considerarse también instancias especializadas de protección de la niñez.",
+      "options": [
+        {
+          "id": "q25_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q25_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q25_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las personas menores requieren medidas específicas y coordinación institucional.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q26",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué información ayuda en un reporte?",
+      "options": [
+        {
+          "id": "q26_o1",
+          "text": "Hechos observados, fechas, lugares, contactos y riesgos inmediatos."
+        },
+        {
+          "id": "q26_o2",
+          "text": "Rumores presentados como hechos."
+        },
+        {
+          "id": "q26_o3",
+          "text": "Información inventada."
+        },
+        {
+          "id": "q26_o4",
+          "text": "Datos privados sin relación."
+        }
+      ],
+      "correctAnswer": "q26_o1",
+      "acceptedAnswers": [],
+      "feedback": "La información concreta facilita valorar la situación.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q27",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe evitar un testigo antes de denunciar?",
+      "options": [
+        {
+          "id": "q27_o1",
+          "text": "Avisar al posible tratante que será investigado si eso puede poner en riesgo a la víctima."
+        },
+        {
+          "id": "q27_o2",
+          "text": "Preservar información."
+        },
+        {
+          "id": "q27_o3",
+          "text": "Buscar un canal oficial."
+        },
+        {
+          "id": "q27_o4",
+          "text": "Describir el riesgo."
+        }
+      ],
+      "correctAnswer": "q27_o1",
+      "acceptedAnswers": [],
+      "feedback": "Alertar a responsables puede provocar represalias o traslado de la víctima.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q28",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "fillBlank",
+      "statement": "Una institución que investiga delitos y dirige la acción penal en Bolivia es el Ministerio __.",
+      "options": [],
+      "correctAnswer": "Público",
+      "acceptedAnswers": [
+        "Público",
+        "Publico"
+      ],
+      "feedback": "El Ministerio Público participa en la investigación y persecución penal.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q29",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "trueFalse",
+      "statement": "Reportar una sospecha responsable significa afirmar públicamente que una persona es culpable.",
+      "options": [
+        {
+          "id": "q29_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q29_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q29_o2",
+      "acceptedAnswers": [],
+      "feedback": "El reporte comunica hechos o sospechas; la determinación de responsabilidades corresponde al proceso legal.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q30",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_03",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es una actuación adecuada?",
+      "options": [
+        {
+          "id": "q30_o1",
+          "text": "Usar canales competentes y proteger la identidad de la posible víctima."
+        },
+        {
+          "id": "q30_o2",
+          "text": "Publicar acusaciones antes de investigar."
+        },
+        {
+          "id": "q30_o3",
+          "text": "Organizar una persecución ciudadana."
+        },
+        {
+          "id": "q30_o4",
+          "text": "Difundir documentos privados."
+        }
+      ],
+      "correctAnswer": "q30_o1",
+      "acceptedAnswers": [],
+      "feedback": "El reporte debe combinar eficacia con protección.",
+      "capacity": "responder",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q31",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué es revictimización?",
+      "options": [
+        {
+          "id": "q31_o1",
+          "text": "Causar daño adicional mediante culpa, exposición o repetición innecesaria de experiencias traumáticas."
+        },
+        {
+          "id": "q31_o2",
+          "text": "Brindar apoyo."
+        },
+        {
+          "id": "q31_o3",
+          "text": "Proteger identidad."
+        },
+        {
+          "id": "q31_o4",
+          "text": "Facilitar atención médica."
+        }
+      ],
+      "correctAnswer": "q31_o1",
+      "acceptedAnswers": [],
+      "feedback": "La respuesta institucional y social debe evitar nuevas formas de daño.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q32",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "trueFalse",
+      "statement": "Obligar a una víctima a contar repetidamente los mismos hechos puede ser revictimizante.",
+      "options": [
+        {
+          "id": "q32_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q32_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q32_o1",
+      "acceptedAnswers": [],
+      "feedback": "La coordinación y entrevista especializada ayudan a reducir repeticiones innecesarias.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q33",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué frase revictimiza?",
+      "options": [
+        {
+          "id": "q33_o1",
+          "text": "“Si no escapaste antes, entonces querías estar ahí”."
+        },
+        {
+          "id": "q33_o2",
+          "text": "“Gracias por contarlo”."
+        },
+        {
+          "id": "q33_o3",
+          "text": "“Tu seguridad importa”."
+        },
+        {
+          "id": "q33_o4",
+          "text": "“Busquemos opciones”."
+        }
+      ],
+      "correctAnswer": "q33_o1",
+      "acceptedAnswers": [],
+      "feedback": "La frase ignora amenazas, dependencia y coerción, y culpa a la víctima.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q34",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "fillBlank",
+      "statement": "Proteger la información personal de una víctima forma parte de la __.",
+      "options": [],
+      "correctAnswer": "confidencialidad",
+      "acceptedAnswers": [
+        "confidencialidad"
+      ],
+      "feedback": "La información sensible debe manejarse con cuidado y acceso limitado.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q35",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "trueFalse",
+      "statement": "Los medios o redes sociales deberían publicar siempre el rostro de una víctima para “crear conciencia”.",
+      "options": [
+        {
+          "id": "q35_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q35_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q35_o2",
+      "acceptedAnswers": [],
+      "feedback": "La exposición puede causar estigma, riesgo y daño adicional.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q36",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Quién debería acceder a información sensible?",
+      "options": [
+        {
+          "id": "q36_o1",
+          "text": "Personas o instituciones que realmente la necesitan para atención, protección o investigación."
+        },
+        {
+          "id": "q36_o2",
+          "text": "Cualquier curioso."
+        },
+        {
+          "id": "q36_o3",
+          "text": "Todos los seguidores de una página."
+        },
+        {
+          "id": "q36_o4",
+          "text": "Personas sin relación con el caso."
+        }
+      ],
+      "correctAnswer": "q36_o1",
+      "acceptedAnswers": [],
+      "feedback": "Limitar el acceso protege privacidad y seguridad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q37",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué ayuda a evitar revictimización?",
+      "options": [
+        {
+          "id": "q37_o1",
+          "text": "Coordinar para reducir interrogatorios repetidos."
+        },
+        {
+          "id": "q37_o2",
+          "text": "Hacer que cuente el caso a cada persona por separado."
+        },
+        {
+          "id": "q37_o3",
+          "text": "Culparla por decisiones previas."
+        },
+        {
+          "id": "q37_o4",
+          "text": "Difundir su historia sin autorización."
+        }
+      ],
+      "correctAnswer": "q37_o1",
+      "acceptedAnswers": [],
+      "feedback": "La coordinación institucional puede disminuir repetición innecesaria.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q38",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "fillBlank",
+      "statement": "Una entrevista realizada con cuidado para obtener información necesaria sin causar daño adicional puede ser una entrevista __.",
+      "options": [],
+      "correctAnswer": "especializada",
+      "acceptedAnswers": [
+        "especializada"
+      ],
+      "feedback": "La atención especializada considera trauma, edad y seguridad.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q39",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "trueFalse",
+      "statement": "La víctima tiene derecho a ser tratada con respeto aunque su relato tenga vacíos o confusión.",
+      "options": [
+        {
+          "id": "q39_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q39_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q39_o1",
+      "acceptedAnswers": [],
+      "feedback": "El trauma y miedo pueden afectar memoria y forma de comunicar lo ocurrido.",
+      "capacity": "prevenir",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q40",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_04",
+      "type": "multipleChoice",
+      "statement": "¿Qué resume la no revictimización?",
+      "options": [
+        {
+          "id": "q40_o1",
+          "text": "No culpar, proteger privacidad, reducir repeticiones y respetar dignidad."
+        },
+        {
+          "id": "q40_o2",
+          "text": "Exponer, presionar y juzgar."
+        },
+        {
+          "id": "q40_o3",
+          "text": "Publicar todo."
+        },
+        {
+          "id": "q40_o4",
+          "text": "Ignorar necesidades de la persona."
+        }
+      ],
+      "correctAnswer": "q40_o1",
+      "acceptedAnswers": [],
+      "feedback": "La atención debe evitar que la respuesta cause nuevos daños.",
+      "capacity": "reconocer",
+      "difficulty": "intermedia"
+    },
+    {
+      "id": "rights_response_reintegration_q41",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "trueFalse",
+      "statement": "Salir de una situación de explotación significa que todas sus consecuencias terminan de inmediato.",
+      "options": [
+        {
+          "id": "q41_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q41_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q41_o2",
+      "acceptedAnswers": [],
+      "feedback": "La recuperación puede requerir apoyo durante un periodo prolongado.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q42",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué puede formar parte de la reintegración?",
+      "options": [
+        {
+          "id": "q42_o1",
+          "text": "Salud, apoyo psicológico, educación, empleo y documentación."
+        },
+        {
+          "id": "q42_o2",
+          "text": "Solo una entrevista policial."
+        },
+        {
+          "id": "q42_o3",
+          "text": "Publicidad del caso."
+        },
+        {
+          "id": "q42_o4",
+          "text": "Aislamiento social."
+        }
+      ],
+      "correctAnswer": "q42_o1",
+      "acceptedAnswers": [],
+      "feedback": "La reintegración busca responder a varias dimensiones de la vida.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q43",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "multipleChoice",
+      "statement": "Una persona perdió documentos y empleo durante la explotación. ¿Qué apoyo puede ser útil?",
+      "options": [
+        {
+          "id": "q43_o1",
+          "text": "Recuperación documental y acceso a oportunidades económicas seguras."
+        },
+        {
+          "id": "q43_o2",
+          "text": "Culparla por no conservarlos."
+        },
+        {
+          "id": "q43_o3",
+          "text": "Negarle trámites."
+        },
+        {
+          "id": "q43_o4",
+          "text": "Exigir exposición pública."
+        }
+      ],
+      "correctAnswer": "q43_o1",
+      "acceptedAnswers": [],
+      "feedback": "Recuperar documentos y estabilidad económica favorece autonomía.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q44",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "fillBlank",
+      "statement": "El proceso de reconstruir condiciones de vida, vínculos y autonomía después de la explotación se denomina __.",
+      "options": [],
+      "correctAnswer": "reintegración",
+      "acceptedAnswers": [
+        "reintegración",
+        "reintegracion"
+      ],
+      "feedback": "La reintegración busca una recuperación sostenible y segura.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q45",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "trueFalse",
+      "statement": "El apoyo psicológico puede ser parte de la recuperación.",
+      "options": [
+        {
+          "id": "q45_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q45_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q45_o1",
+      "acceptedAnswers": [],
+      "feedback": "El impacto emocional puede requerir atención profesional.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q46",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué factor puede aumentar el riesgo de volver a una situación de explotación?",
+      "options": [
+        {
+          "id": "q46_o1",
+          "text": "Falta de vivienda, ingresos y red de apoyo."
+        },
+        {
+          "id": "q46_o2",
+          "text": "Acceso a empleo seguro."
+        },
+        {
+          "id": "q46_o3",
+          "text": "Documentación recuperada."
+        },
+        {
+          "id": "q46_o4",
+          "text": "Acompañamiento profesional."
+        }
+      ],
+      "correctAnswer": "q46_o1",
+      "acceptedAnswers": [],
+      "feedback": "La precariedad puede aumentar nuevamente vulnerabilidad y dependencia.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q47",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Qué enfoque ayuda a la reintegración?",
+      "options": [
+        {
+          "id": "q47_o1",
+          "text": "Fortalecer autonomía y opciones reales."
+        },
+        {
+          "id": "q47_o2",
+          "text": "Tomar todas las decisiones por la persona indefinidamente."
+        },
+        {
+          "id": "q47_o3",
+          "text": "Aislarla."
+        },
+        {
+          "id": "q47_o4",
+          "text": "Recordarle constantemente que fue víctima."
+        }
+      ],
+      "correctAnswer": "q47_o1",
+      "acceptedAnswers": [],
+      "feedback": "Recuperar capacidad de decisión forma parte del proceso.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q48",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "fillBlank",
+      "statement": "Contar con ingresos y vivienda segura puede reducir la __ frente a nuevas situaciones de explotación.",
+      "options": [],
+      "correctAnswer": "vulnerabilidad",
+      "acceptedAnswers": [
+        "vulnerabilidad"
+      ],
+      "feedback": "La estabilidad material amplía opciones y reduce dependencia.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q49",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "trueFalse",
+      "statement": "La reintegración debe evitar estigmatizar a la persona por lo que vivió.",
+      "options": [
+        {
+          "id": "q49_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q49_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q49_o1",
+      "acceptedAnswers": [],
+      "feedback": "El estigma puede dificultar empleo, educación, vínculos y recuperación.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q50",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_05",
+      "type": "multipleChoice",
+      "statement": "¿Cuál resume mejor una reintegración integral?",
+      "options": [
+        {
+          "id": "q50_o1",
+          "text": "Seguridad, derechos, salud, estabilidad, apoyo y autonomía."
+        },
+        {
+          "id": "q50_o2",
+          "text": "Solo investigación penal."
+        },
+        {
+          "id": "q50_o3",
+          "text": "Solo ayuda económica de un día."
+        },
+        {
+          "id": "q50_o4",
+          "text": "Exposición pública."
+        }
+      ],
+      "correctAnswer": "q50_o1",
+      "acceptedAnswers": [],
+      "feedback": "La recuperación requiere responder a necesidades diversas.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q51",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué significa acompañar respetando autonomía?",
+      "options": [
+        {
+          "id": "q51_o1",
+          "text": "Informar opciones y apoyar decisiones sin controlar innecesariamente."
+        },
+        {
+          "id": "q51_o2",
+          "text": "Decidir todo por la persona."
+        },
+        {
+          "id": "q51_o3",
+          "text": "Exigir que cuente su historia."
+        },
+        {
+          "id": "q51_o4",
+          "text": "Publicar sus avances."
+        }
+      ],
+      "correctAnswer": "q51_o1",
+      "acceptedAnswers": [],
+      "feedback": "El acompañamiento debe ayudar a recuperar capacidad de decisión.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q52",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "trueFalse",
+      "statement": "Una persona sobreviviente puede decidir no contar públicamente su experiencia.",
+      "options": [
+        {
+          "id": "q52_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q52_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q52_o1",
+      "acceptedAnswers": [],
+      "feedback": "Su historia y privacidad le pertenecen.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q53",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "multipleChoice",
+      "statement": "Después de salir de una situación, ¿qué revisión digital puede ser útil?",
+      "options": [
+        {
+          "id": "q53_o1",
+          "text": "Contraseñas, sesiones abiertas, ubicación compartida y dispositivos vinculados."
+        },
+        {
+          "id": "q53_o2",
+          "text": "Publicar nuevas contraseñas."
+        },
+        {
+          "id": "q53_o3",
+          "text": "Mantener accesos del explotador."
+        },
+        {
+          "id": "q53_o4",
+          "text": "Compartir ubicación públicamente."
+        }
+      ],
+      "correctAnswer": "q53_o1",
+      "acceptedAnswers": [],
+      "feedback": "El control digital puede continuar incluso después de una salida física.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q54",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "fillBlank",
+      "statement": "Recuperar la capacidad de decidir sobre la propia vida forma parte de recuperar la __.",
+      "options": [],
+      "correctAnswer": "autonomía",
+      "acceptedAnswers": [
+        "autonomía",
+        "autonomia"
+      ],
+      "feedback": "La autonomía es un objetivo central de la recuperación.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q55",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "trueFalse",
+      "statement": "El seguimiento puede cambiar según las necesidades de la persona.",
+      "options": [
+        {
+          "id": "q55_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q55_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q55_o1",
+      "acceptedAnswers": [],
+      "feedback": "Las necesidades pueden evolucionar con el tiempo.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q56",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Qué debe hacer una red de apoyo?",
+      "options": [
+        {
+          "id": "q56_o1",
+          "text": "Respetar decisiones, estar disponible y ayudar a identificar riesgos."
+        },
+        {
+          "id": "q56_o2",
+          "text": "Controlar cada movimiento."
+        },
+        {
+          "id": "q56_o3",
+          "text": "usar culpa para que obedezca."
+        },
+        {
+          "id": "q56_o4",
+          "text": "decidir quién puede ver."
+        }
+      ],
+      "correctAnswer": "q56_o1",
+      "acceptedAnswers": [],
+      "feedback": "El apoyo no debe reproducir dinámicas de control.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q57",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "multipleChoice",
+      "statement": "Una persona siente miedo de volver a trabajar después de una experiencia de explotación. ¿Qué enfoque ayuda?",
+      "options": [
+        {
+          "id": "q57_o1",
+          "text": "Acompañar gradualmente y facilitar oportunidades seguras y verificables."
+        },
+        {
+          "id": "q57_o2",
+          "text": "Decirle que exagera."
+        },
+        {
+          "id": "q57_o3",
+          "text": "Obligarla a aceptar el primer trabajo."
+        },
+        {
+          "id": "q57_o4",
+          "text": "prohibirle trabajar."
+        }
+      ],
+      "correctAnswer": "q57_o1",
+      "acceptedAnswers": [],
+      "feedback": "La recuperación puede requerir tiempo y apoyo adaptado.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q58",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "fillBlank",
+      "statement": "Revisar periódicamente riesgos y necesidades forma parte del __.",
+      "options": [],
+      "correctAnswer": "seguimiento",
+      "acceptedAnswers": [
+        "seguimiento"
+      ],
+      "feedback": "El seguimiento permite adaptar apoyos y medidas de protección.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q59",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "trueFalse",
+      "statement": "Ayudar a una sobreviviente significa reemplazar permanentemente sus decisiones.",
+      "options": [
+        {
+          "id": "q59_o1",
+          "text": "Verdadero"
+        },
+        {
+          "id": "q59_o2",
+          "text": "Falso"
+        }
+      ],
+      "correctAnswer": "q59_o2",
+      "acceptedAnswers": [],
+      "feedback": "El objetivo es fortalecer autonomía, no crear una nueva dependencia.",
+      "capacity": "prevenir",
+      "difficulty": "avanzada"
+    },
+    {
+      "id": "rights_response_reintegration_q60",
+      "categoryId": "rights_response_reintegration",
+      "activityId": "rights_response_reintegration_activity_06",
+      "type": "multipleChoice",
+      "statement": "¿Cuál es el objetivo final del acompañamiento?",
+      "options": [
+        {
+          "id": "q60_o1",
+          "text": "Que la persona recupere seguridad, derechos, autonomía y un proyecto de vida propio."
+        },
+        {
+          "id": "q60_o2",
+          "text": "Que dependa siempre de la institución."
+        },
+        {
+          "id": "q60_o3",
+          "text": "Que haga pública su historia."
+        },
+        {
+          "id": "q60_o4",
+          "text": "Que olvide inmediatamente lo ocurrido."
+        }
+      ],
+      "correctAnswer": "q60_o1",
+      "acceptedAnswers": [],
+      "feedback": "La recuperación busca condiciones sostenibles para vivir con libertad y seguridad.",
+      "capacity": "recuperar",
+      "difficulty": "avanzada"
+    }
+  ]
+}
