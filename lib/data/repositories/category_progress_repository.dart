@@ -5,6 +5,7 @@ import '../firestore/educational_content_firestore_mapper.dart';
 import '../models/activity_scoring_policy.dart';
 import '../models/category_progress.dart';
 import '../models/quiz_question.dart';
+import 'leaderboard_repository.dart';
 import 'user_profile_repository.dart';
 
 abstract class CategoryProgressPersistence {
@@ -202,6 +203,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           attemptId,
         );
         final userDocument = _userDocument(uid);
+        final leaderboardDocument = _leaderboardDocument(uid);
 
         return _firestore.runTransaction<CompletedQuizAttemptPersistenceResult>(
           (transaction) async {
@@ -209,6 +211,9 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             final activitySnapshot = await transaction.get(activityDocument);
             final attemptSnapshot = await transaction.get(attemptDocument);
             final userSnapshot = await transaction.get(userDocument);
+            final leaderboardSnapshot = await transaction.get(
+              leaderboardDocument,
+            );
             if (attemptSnapshot.exists) {
               return _completedAttemptResultFromSnapshots(
                 attemptSnapshot: attemptSnapshot,
@@ -300,6 +305,16 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
               'totalPoints': nextTotalPoints,
               'updatedAt': FieldValue.serverTimestamp(),
             }, SetOptions(merge: true));
+            final username =
+                _existingUserUsername(userSnapshot) ??
+                _existingLeaderboardUsername(leaderboardSnapshot);
+            if (username != null) {
+              transaction.set(leaderboardDocument, {
+                'username': username,
+                'totalPoints': nextTotalPoints,
+                'updatedAt': FieldValue.serverTimestamp(),
+              }, SetOptions(merge: true));
+            }
 
             if (!categorySnapshot.exists) {
               transaction.set(categoryDocument, {
@@ -502,6 +517,12 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         .doc(uid);
   }
 
+  DocumentReference<Map<String, dynamic>> _leaderboardDocument(String uid) {
+    return _firestore
+        .collection(LeaderboardRepository.leaderboardCollection)
+        .doc(uid);
+  }
+
   CollectionReference<Map<String, dynamic>> _progressCollection(String uid) {
     return _firestore
         .collection(UserProfileRepository.usersCollection)
@@ -698,6 +719,26 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     DocumentSnapshot<Map<String, dynamic>> snapshot,
   ) {
     return _readExistingNonNegativeInt(snapshot, 'totalPoints');
+  }
+
+  String? _existingUserUsername(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final value = snapshot.data()?['username'];
+    if (value is String && value.trim().isNotEmpty) {
+      return value.trim();
+    }
+    return null;
+  }
+
+  String? _existingLeaderboardUsername(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final value = snapshot.data()?['username'];
+    if (value is String && value.trim().isNotEmpty) {
+      return value.trim();
+    }
+    return null;
   }
 
   Map<String, QuestionScoreRecord> _existingQuestionScores(

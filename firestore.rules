@@ -23,6 +23,13 @@ service cloud.firestore {
     // Fields:
     //   - uid: string (required, owner Firebase Auth uid)
     //
+    // Collection: leaderboard
+    // Document ID: Firebase Auth uid
+    // Fields:
+    //   - username: string (required, copied from users/{uid}.username)
+    //   - totalPoints: int (required, copied from users/{uid}.totalPoints)
+    //   - updatedAt: timestamp (required)
+    //
     // Subcollection: users/{uid}/categoryProgress
     // Document ID: categoryId
     // Fields:
@@ -340,6 +347,39 @@ service cloud.firestore {
 
     function usernameReservationFields() {
       return ['uid'];
+    }
+
+    function leaderboardFields() {
+      return ['username', 'totalPoints', 'updatedAt'];
+    }
+
+    function matchingUserAfter(userId) {
+      return getAfter(/databases/$(database)/documents/users/$(userId));
+    }
+
+    function isValidLeaderboardEntry(userId) {
+      let userAfter = matchingUserAfter(userId);
+      return request.resource.data.keys().hasOnly(leaderboardFields())
+        && request.resource.data.keys().hasAll(leaderboardFields())
+        && userAfter.data.username is string
+        && request.resource.data.username == userAfter.data.username
+        && userAfter.data.totalPoints is int
+        && request.resource.data.totalPoints == userAfter.data.totalPoints
+        && request.resource.data.totalPoints >= 0
+        && request.resource.data.totalPoints <= 100000
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function leaderboardMatchesUserAfter(userId) {
+      let leaderboardAfter = getAfter(
+        /databases/$(database)/documents/leaderboard/$(userId)
+      );
+      let userAfter = matchingUserAfter(userId);
+      return leaderboardAfter.data.keys().hasOnly(leaderboardFields())
+        && leaderboardAfter.data.keys().hasAll(leaderboardFields())
+        && leaderboardAfter.data.username == userAfter.data.username
+        && leaderboardAfter.data.totalPoints == userAfter.data.totalPoints
+        && leaderboardAfter.data.updatedAt == request.time;
     }
 
     function isValidUsernameReservation(usernameNormalized) {
@@ -788,6 +828,13 @@ service cloud.firestore {
         && resource.data.uid == request.auth.uid
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized == usernameNormalized
         && getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized != usernameNormalized;
+    }
+
+    match /leaderboard/{userId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isOwner(userId)
+        && isValidLeaderboardEntry(userId);
+      allow delete: if false;
     }
 
     match /categories/{categoryId} {

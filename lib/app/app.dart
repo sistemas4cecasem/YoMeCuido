@@ -6,6 +6,7 @@ import '../data/repositories/category_progress_repository.dart';
 import '../data/repositories/content_repository.dart';
 import '../data/repositories/firebase_auth_repository.dart';
 import '../data/repositories/firestore_content_repository.dart';
+import '../data/repositories/leaderboard_repository.dart';
 import '../data/repositories/user_profile_repository.dart';
 import '../features/auth/auth_gate.dart';
 import 'app_router.dart';
@@ -17,6 +18,7 @@ class YoMeCuidoApp extends StatelessWidget {
     ContentRepository? contentRepository,
     AuthRepository? authRepository,
     UserProfileRepository? userProfileRepository,
+    LeaderboardRepository? leaderboardRepository,
     CategoryProgressController? progressController,
     Key? key,
   }) {
@@ -38,6 +40,8 @@ class YoMeCuidoApp extends StatelessWidget {
       contentRepository: contentRepository ?? FirestoreContentRepository(),
       authRepository: resolvedAuthRepository,
       userProfileRepository: resolvedUserProfileRepository,
+      leaderboardRepository:
+          leaderboardRepository ?? FirestoreLeaderboardRepository(),
       progressController: resolvedProgressController,
       key: key,
     );
@@ -47,6 +51,7 @@ class YoMeCuidoApp extends StatelessWidget {
     required ContentRepository contentRepository,
     required AuthRepository authRepository,
     required UserProfileRepository userProfileRepository,
+    required LeaderboardRepository leaderboardRepository,
     required CategoryProgressController progressController,
     super.key,
   }) : _router = AppRouter(
@@ -56,12 +61,14 @@ class YoMeCuidoApp extends StatelessWidget {
        ),
        _authRepository = authRepository,
        _userProfileRepository = userProfileRepository,
+       _leaderboardRepository = leaderboardRepository,
        _contentRepository = contentRepository,
        _progressController = progressController;
 
   final AppRouter _router;
   final AuthRepository _authRepository;
   final UserProfileRepository _userProfileRepository;
+  final LeaderboardRepository _leaderboardRepository;
   final ContentRepository _contentRepository;
   final CategoryProgressController _progressController;
 
@@ -74,6 +81,7 @@ class YoMeCuidoApp extends StatelessWidget {
       home: AuthGate(
         authRepository: _authRepository,
         userProfileRepository: _userProfileRepository,
+        leaderboardRepository: _leaderboardRepository,
         progressController: _progressController,
         contentRepository: _contentRepository,
       ),

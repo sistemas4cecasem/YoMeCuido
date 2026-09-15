@@ -275,6 +275,7 @@ void main() {
 
       final activityData = await _activityData(firestore);
       final userData = await _userData(firestore);
+      final leaderboardData = await _leaderboardData(firestore);
       final questionScores = activityData['questionScores'] as Map;
       final fourthAttempt = await _activityAttemptData(firestore, 'attempt_d');
 
@@ -301,6 +302,10 @@ void main() {
       expect(activityData['activityPoints'], 61);
       expect(activityData['bestPercentage'], 100);
       expect(userData['totalPoints'], 261);
+      expect(leaderboardData['username'], 'Persona');
+      expect(leaderboardData['totalPoints'], 261);
+      expect(leaderboardData.containsKey('email'), isFalse);
+      expect(leaderboardData.containsKey('role'), isFalse);
       expect(questionScores['q01']['pointsAwarded'], 10);
       expect(questionScores['q01']['awardedAttempt'], 1);
       expect(questionScores['q06']['pointsAwarded'], 5);
@@ -629,6 +634,8 @@ Future<void> _seedUser(
   int totalPoints = 0,
 }) {
   return _userDocument(firestore, uid: uid).set({
+    'username': 'Persona',
+    'usernameNormalized': 'persona',
     'email': 'persona@yomecuido.test',
     'role': 'user',
     'totalPoints': totalPoints,
@@ -717,6 +724,13 @@ Future<Map<String, dynamic>> _progressData(
 
 Future<Map<String, dynamic>> _userData(FakeFirebaseFirestore firestore) async {
   final snapshot = await _userDocument(firestore).get();
+  return snapshot.data()!;
+}
+
+Future<Map<String, dynamic>> _leaderboardData(
+  FakeFirebaseFirestore firestore,
+) async {
+  final snapshot = await firestore.collection('leaderboard').doc(_uid).get();
   return snapshot.data()!;
 }
 

@@ -10,11 +10,13 @@ import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
+import 'package:demo_yomecuido/data/models/leaderboard_entry.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
@@ -178,7 +180,9 @@ void main() {
     await tester.tap(find.byKey(const Key('main_nav_ranking')));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.text(AppStrings.generalRankingTitle), findsOneWidget);
+    expect(find.text(AppStrings.emptyRankingTitle), findsOneWidget);
+    expect(find.text(AppStrings.comingSoon), findsNothing);
     expect(find.byIcon(Icons.leaderboard), findsOneWidget);
     expect(observer.pushCount, pushesAfterLogin);
 
@@ -224,7 +228,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byTooltip(AppStrings.showNavigation), findsOneWidget);
-    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.text(AppStrings.generalRankingTitle), findsOneWidget);
+    expect(find.text(AppStrings.emptyRankingTitle), findsOneWidget);
     expect(find.text(AppStrings.homeTitle), findsNothing);
 
     await tester.drag(
@@ -954,6 +959,7 @@ Future<void> _pumpGate(
   CategoryProgressController? progressController,
   NavigatorObserver? navigatorObserver,
   ContentRepository? contentRepository,
+  LeaderboardRepository? leaderboardRepository,
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
@@ -972,11 +978,48 @@ Future<void> _pumpGate(
             userProfileRepository ?? _FakeUserProfileRepository(),
         progressController: resolvedProgressController,
         contentRepository: contentRepository ?? const _EmptyContentRepository(),
+        leaderboardRepository:
+            leaderboardRepository ?? _FakeLeaderboardRepository(),
       ),
       onGenerateRoute: router.onGenerateRoute,
       navigatorObservers: [?navigatorObserver],
     ),
   );
+}
+
+class _FakeLeaderboardRepository implements LeaderboardRepository {
+  @override
+  Stream<List<LeaderboardEntry>> watchTopEntries({
+    int limit = LeaderboardRepository.defaultLimit,
+  }) {
+    return Stream<List<LeaderboardEntry>>.value(const <LeaderboardEntry>[]);
+  }
+
+  @override
+  Future<LeaderboardUserPosition?> fetchUserPosition({
+    required String uid,
+    required String username,
+    required int totalPoints,
+  }) async {
+    if (totalPoints <= 0) {
+      return null;
+    }
+    return LeaderboardUserPosition(
+      entry: LeaderboardEntry(
+        userId: uid,
+        username: username,
+        totalPoints: totalPoints,
+      ),
+      position: 1,
+    );
+  }
+
+  @override
+  Future<void> ensureEntryForCurrentUser({
+    required String uid,
+    required String username,
+    required int totalPoints,
+  }) async {}
 }
 
 class _CountingNavigatorObserver extends NavigatorObserver {

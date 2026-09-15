@@ -9,6 +9,7 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
+import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../main/main_authenticated_shell.dart';
@@ -20,6 +21,7 @@ class AuthGate extends StatefulWidget {
   const AuthGate({
     required this.authRepository,
     required this.userProfileRepository,
+    required this.leaderboardRepository,
     required this.progressController,
     required this.contentRepository,
     super.key,
@@ -27,6 +29,7 @@ class AuthGate extends StatefulWidget {
 
   final AuthRepository authRepository;
   final UserProfileRepository userProfileRepository;
+  final LeaderboardRepository leaderboardRepository;
   final CategoryProgressController progressController;
   final ContentRepository contentRepository;
 
@@ -102,6 +105,7 @@ class _AuthGateState extends State<AuthGate> {
           user: user,
           profileLoadFuture: _ensureProfileLoad(user),
           userProfileRepository: widget.userProfileRepository,
+          leaderboardRepository: widget.leaderboardRepository,
           onProfileCompleted: _reloadProfile,
           onProfileChanged: (profile) {
             if (mounted && _lastUserUid == user.uid) {
@@ -195,6 +199,7 @@ class _HydratedHome extends StatelessWidget {
     required this.user,
     required this.profileLoadFuture,
     required this.userProfileRepository,
+    required this.leaderboardRepository,
     required this.onProfileCompleted,
     required this.onProfileChanged,
     required this.progressLoadProvider,
@@ -206,6 +211,7 @@ class _HydratedHome extends StatelessWidget {
   final AuthUser user;
   final Future<UserProfile?> profileLoadFuture;
   final UserProfileRepository userProfileRepository;
+  final LeaderboardRepository leaderboardRepository;
   final VoidCallback onProfileCompleted;
   final ValueChanged<UserProfile> onProfileChanged;
   final Future<void> Function(AuthUser user, {bool force}) progressLoadProvider;
@@ -235,6 +241,7 @@ class _HydratedHome extends StatelessWidget {
           user: user,
           profile: profile,
           userProfileRepository: userProfileRepository,
+          leaderboardRepository: leaderboardRepository,
           onProfileChanged: onProfileChanged,
           progressLoadFuture: progressLoadProvider(user),
           onProgressRetry: () => progressLoadProvider(user, force: true),
@@ -252,6 +259,7 @@ class _ProgressHydratedHome extends StatelessWidget {
     required this.user,
     required this.profile,
     required this.userProfileRepository,
+    required this.leaderboardRepository,
     required this.onProfileChanged,
     required this.progressLoadFuture,
     required this.onProgressRetry,
@@ -263,6 +271,7 @@ class _ProgressHydratedHome extends StatelessWidget {
   final AuthUser user;
   final UserProfile profile;
   final UserProfileRepository userProfileRepository;
+  final LeaderboardRepository leaderboardRepository;
   final ValueChanged<UserProfile> onProfileChanged;
   final Future<void> progressLoadFuture;
   final VoidCallback onProgressRetry;
@@ -283,6 +292,7 @@ class _ProgressHydratedHome extends StatelessWidget {
                 progressController.totalPointsForUser(user.uid) ??
                 profile.totalPoints,
             userProfileRepository: userProfileRepository,
+            leaderboardRepository: leaderboardRepository,
             onProfileChanged: (changedProfile) {
               progressController.hydrateTotalPointsFromProfile(
                 uid: user.uid,

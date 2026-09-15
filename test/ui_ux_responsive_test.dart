@@ -10,11 +10,13 @@ import 'package:demo_yomecuido/data/models/category.dart';
 import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
+import 'package:demo_yomecuido/data/models/leaderboard_entry.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
@@ -201,6 +203,7 @@ Future<void> _pumpDemo(
       contentRepository: contentRepository,
       authRepository: const _SignedInAuthRepository(),
       userProfileRepository: _FakeUserProfileRepository(),
+      leaderboardRepository: const _FakeLeaderboardRepository(),
       progressController: progressController,
     ),
   );
@@ -432,6 +435,33 @@ class _CachedContentRepository implements ContentRepository {
   Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
     return examConfig?.categoryId == categoryId ? examConfig : null;
   }
+}
+
+class _FakeLeaderboardRepository implements LeaderboardRepository {
+  const _FakeLeaderboardRepository();
+
+  @override
+  Stream<List<LeaderboardEntry>> watchTopEntries({
+    int limit = LeaderboardRepository.defaultLimit,
+  }) {
+    return Stream<List<LeaderboardEntry>>.value(const <LeaderboardEntry>[]);
+  }
+
+  @override
+  Future<LeaderboardUserPosition?> fetchUserPosition({
+    required String uid,
+    required String username,
+    required int totalPoints,
+  }) async {
+    return null;
+  }
+
+  @override
+  Future<void> ensureEntryForCurrentUser({
+    required String uid,
+    required String username,
+    required int totalPoints,
+  }) async {}
 }
 
 class _SignedInAuthRepository implements AuthRepository {

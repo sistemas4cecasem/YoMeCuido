@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/username.dart';
 import '../models/user_profile.dart';
+import 'leaderboard_repository.dart';
 
 class UserProfileRepository {
   UserProfileRepository({FirebaseFirestore? firestore})
@@ -21,6 +22,9 @@ class UserProfileRepository {
 
   CollectionReference<Map<String, dynamic>> get _usernames =>
       _requireFirestore.collection(usernamesCollection);
+
+  CollectionReference<Map<String, dynamic>> get _leaderboard =>
+      _requireFirestore.collection(LeaderboardRepository.leaderboardCollection);
 
   FirebaseFirestore get _requireFirestore {
     final firestore = _firestore;
@@ -126,6 +130,7 @@ class UserProfileRepository {
     final usernameNormalized = Username.normalize(trimmedUsername);
     final profileDocument = _users.doc(uid);
     final usernameDocument = _usernames.doc(usernameNormalized);
+    final leaderboardDocument = _leaderboard.doc(uid);
 
     try {
       await _requireFirestore.runTransaction<void>((transaction) async {
@@ -155,6 +160,11 @@ class UserProfileRepository {
                 'usernameNormalized': usernameNormalized,
                 'updatedAt': FieldValue.serverTimestamp(),
               });
+              transaction.set(leaderboardDocument, {
+                'username': trimmedUsername,
+                'totalPoints': profile.totalPoints,
+                'updatedAt': FieldValue.serverTimestamp(),
+              }, SetOptions(merge: true));
               if (profile.usernameNormalized != usernameNormalized) {
                 transaction.delete(_usernames.doc(profile.usernameNormalized!));
               }
@@ -191,6 +201,11 @@ class UserProfileRepository {
             'totalPoints': profileSnapshot.data()?['totalPoints'] ?? 0,
             'updatedAt': FieldValue.serverTimestamp(),
           });
+          transaction.set(leaderboardDocument, {
+            'username': trimmedUsername,
+            'totalPoints': profileSnapshot.data()?['totalPoints'] ?? 0,
+            'updatedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true));
           return;
         }
 
@@ -201,6 +216,11 @@ class UserProfileRepository {
           'role': UserProfileRole.user,
           'totalPoints': 0,
           'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+        transaction.set(leaderboardDocument, {
+          'username': trimmedUsername,
+          'totalPoints': 0,
           'updatedAt': FieldValue.serverTimestamp(),
         });
       });

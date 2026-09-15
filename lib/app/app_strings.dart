@@ -92,6 +92,18 @@ abstract final class AppStrings {
   static const homeTitle = 'Inicio';
   static const rankingTitle = 'Ranking';
   static const profileTitle = 'Perfil';
+  static const generalRankingTitle = 'Clasificación general';
+  static const yourRankingPositionTitle = 'Tu posición';
+  static const currentUserBadge = 'Tú';
+  static const emptyRankingTitle =
+      'Todavía no hay posiciones en el ranking.';
+  static const emptyRankingBody = 'Sé el primero en conseguir puntos.';
+  static const noRankingPositionTitle = 'Aún no tienes posición';
+  static const noRankingPositionBody =
+      'Completa actividades para conseguir puntos.';
+  static const rankingLoadError =
+      'No pudimos cargar el ranking. Intenta nuevamente.';
+  static const retryLater = 'Vuelve a intentarlo en unos momentos.';
   static const myProfileTitle = 'Mi perfil';
   static const accountInfoTitle = 'Información de cuenta';
   static const myProgressTitle = 'Mi progreso';

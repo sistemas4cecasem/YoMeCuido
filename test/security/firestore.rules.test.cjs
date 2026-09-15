@@ -62,6 +62,14 @@ async function main() {
     ['contenido educativo legible para autenticados', contentReadAllowed],
     ['query de contenido educativo permitida', contentQueryAllowed],
     ['teoría propia permitida y ajena denegada', ownTheoryAllowedOtherDenied],
+    ['leaderboard legible solo para autenticados', leaderboardReadRules],
+    ['leaderboard no permite modificar otro usuario', leaderboardOtherUserWriteDenied],
+    ['leaderboard rechaza puntos arbitrarios', leaderboardArbitraryPointsDenied],
+    ['leaderboard exige totalPoints de users', leaderboardMustMatchUserPoints],
+    ['leaderboard exige username de users', leaderboardMustMatchUsername],
+    ['leaderboard rechaza email y role', leaderboardPrivateFieldsDenied],
+    ['leaderboard permite sincronización legítima de puntos', leaderboardPointSyncAllowed],
+    ['leaderboard permite sincronización legítima de username', leaderboardUsernameSyncAllowed],
     ['flujo legítimo de puntuación permitido', legitimateScoringFlowAllowed],
   ];
 
@@ -85,7 +93,13 @@ function unauthDb() {
 
 async function seedUser(uid, totalPoints = 0) {
   await testEnv.withSecurityRulesDisabled(async (context) => {
-    await setDoc(doc(context.firestore(), 'users', uid), userProfile(uid, totalPoints));
+    const firestore = context.firestore();
+    const profile = userProfile(uid, totalPoints);
+    await setDoc(doc(firestore, 'users', uid), profile);
+    await setDoc(doc(firestore, 'usernames', profile.usernameNormalized), {
+      uid,
+    });
+    await setDoc(doc(firestore, 'leaderboard', uid), leaderboardEntry(profile));
   });
 }
 
@@ -177,6 +191,15 @@ function userProfile(uid, totalPoints = 0) {
     totalPoints,
     createdAt: Timestamp.fromDate(new Date('2026-09-01T00:00:00Z')),
     updatedAt: Timestamp.fromDate(new Date('2026-09-01T00:00:00Z')),
+  };
+}
+
+function leaderboardEntry(profile, overrides = {}) {
+  return {
+    username: profile.username,
+    totalPoints: profile.totalPoints,
+    updatedAt: Timestamp.fromDate(new Date('2026-09-01T00:00:00Z')),
+    ...overrides,
   };
 }
 
@@ -488,6 +511,95 @@ async function ownTheoryAllowedOtherDenied() {
     viewedLessonPageIds: arrayUnion('page_02'),
     updatedAt: serverTimestamp(),
   }));
+}
+
+async function leaderboardReadRules() {
+  await seedUser('uid-a', 50);
+  await assertSucceeds(getDocs(collection(authDb('uid-a'), 'leaderboard')));
+  await assertFails(getDocs(collection(unauthDb(), 'leaderboard')));
+}
+
+async function leaderboardOtherUserWriteDenied() {
+  await seedUser('uid-a', 50);
+  await seedUser('uid-b', 40);
+  await assertFails(setDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-b'), {
+    username: userProfile('uid-b', 40).username,
+    totalPoints: 40,
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function leaderboardArbitraryPointsDenied() {
+  await seedUser('uid-a', 50);
+  await assertFails(setDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-a'), {
+    username: userProfile('uid-a', 50).username,
+    totalPoints: 999999,
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function leaderboardMustMatchUserPoints() {
+  await seedUser('uid-a', 50);
+  await assertFails(setDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-a'), {
+    username: userProfile('uid-a', 50).username,
+    totalPoints: 51,
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function leaderboardMustMatchUsername() {
+  await seedUser('uid-a', 50);
+  await assertFails(setDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-a'), {
+    username: 'otroNombre',
+    totalPoints: 50,
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function leaderboardPrivateFieldsDenied() {
+  await seedUser('uid-a', 50);
+  await assertFails(setDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-a'), {
+    username: userProfile('uid-a', 50).username,
+    totalPoints: 50,
+    email: 'uid-a@example.com',
+    role: 'user',
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function leaderboardPointSyncAllowed() {
+  await seedUser('uid-a', 50);
+  const firestore = authDb('uid-a');
+  const batch = writeBatch(firestore);
+  batch.update(doc(firestore, 'users', 'uid-a'), {
+    totalPoints: 80,
+    updatedAt: serverTimestamp(),
+  });
+  batch.set(doc(firestore, 'leaderboard', 'uid-a'), {
+    username: userProfile('uid-a', 80).username,
+    totalPoints: 80,
+    updatedAt: serverTimestamp(),
+  });
+  await assertSucceeds(batch.commit());
+}
+
+async function leaderboardUsernameSyncAllowed() {
+  await seedUser('uid-a', 50);
+  const firestore = authDb('uid-a');
+  const batch = writeBatch(firestore);
+  batch.set(doc(firestore, 'usernames', 'diegof'), { uid: 'uid-a' });
+  batch.update(doc(firestore, 'users', 'uid-a'), {
+    username: 'diegof',
+    usernameNormalized: 'diegof',
+    updatedAt: serverTimestamp(),
+  });
+  batch.set(doc(firestore, 'leaderboard', 'uid-a'), {
+    username: 'diegof',
+    totalPoints: 50,
+    updatedAt: serverTimestamp(),
+  });
+  batch.delete(doc(firestore, 'usernames', userProfile('uid-a', 50).usernameNormalized));
+  await assertSucceeds(batch.commit());
 }
 
 async function legitimateScoringFlowAllowed() {

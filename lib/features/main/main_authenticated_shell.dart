@@ -8,10 +8,11 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
+import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
-import '../../shared/widgets/app_background.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
 import '../profile/profile_screen.dart';
+import '../ranking/ranking_screen.dart';
 
 enum MainSection { home, ranking, profile }
 
@@ -21,6 +22,7 @@ class MainAuthenticatedShell extends StatefulWidget {
     required this.userProfile,
     required this.personalTotalPoints,
     required this.userProfileRepository,
+    required this.leaderboardRepository,
     required this.onProfileChanged,
     required this.contentRepository,
     required this.progressController,
@@ -33,6 +35,7 @@ class MainAuthenticatedShell extends StatefulWidget {
   final UserProfile userProfile;
   final int? personalTotalPoints;
   final UserProfileRepository userProfileRepository;
+  final LeaderboardRepository leaderboardRepository;
   final ValueChanged<UserProfile> onProfileChanged;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
@@ -74,9 +77,12 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
           onProfileChanged: widget.onProfileChanged,
           showBackButton: false,
         ),
-        MainSection.ranking => const _PlaceholderMainSection(
-          title: AppStrings.rankingTitle,
-          icon: Icons.leaderboard_outlined,
+        MainSection.ranking => RankingScreen(
+          user: widget.user,
+          profile: widget.userProfile,
+          totalPoints:
+              widget.personalTotalPoints ?? widget.userProfile.totalPoints,
+          leaderboardRepository: widget.leaderboardRepository,
         ),
         MainSection.profile => ProfileScreen(
           user: widget.user,
@@ -316,59 +322,6 @@ class _MainNavButton extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PlaceholderMainSection extends StatelessWidget {
-  const _PlaceholderMainSection({required this.title, required this.icon});
-
-  final String title;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
-
-    return ColoredBox(
-      color: colors.background,
-      child: SafeArea(
-        child: AppBackground(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppSizing.maxContentWidth,
-              ),
-              child: Padding(
-                padding: AppInsets.screen,
-                child: Card(
-                  color: colors.surfaceStrong,
-                  child: Padding(
-                    padding: AppInsets.card,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(icon, color: colors.orangeDark, size: 36),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(title, style: textTheme.headlineSmall),
-                        const SizedBox(height: AppSpacing.xs),
-                        Text(
-                          AppStrings.comingSoon,
-                          style: textTheme.bodyLarge?.copyWith(
-                            color: colors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
         ),
