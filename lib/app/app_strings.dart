@@ -90,7 +90,10 @@ abstract final class AppStrings {
   static const activitiesTitle = 'Actividades';
   static const summaryTitle = 'Resumen y progreso';
   static const homeTitle = 'Inicio';
+  static const rankingTitle = 'Ranking';
   static const profileTitle = 'Perfil';
+  static const hideNavigation = 'Ocultar navegación';
+  static const showNavigation = 'Mostrar navegación';
   static const viewProfile = 'Ver perfil';
   static const profileUsername = 'Nombre de usuario';
   static const profileEmail = 'Correo';

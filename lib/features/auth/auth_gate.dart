@@ -9,7 +9,7 @@ import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/widgets/primary_button.dart';
-import '../high_level_categories/high_level_categories_screen.dart';
+import '../main/main_authenticated_shell.dart';
 import 'complete_profile_screen.dart';
 import 'email_verification_screen.dart';
 import '../splash/welcome_screen.dart';
@@ -266,7 +266,7 @@ class _ProgressHydratedHome extends StatelessWidget {
       return AnimatedBuilder(
         animation: progressController,
         builder: (context, child) {
-          return HighLevelCategoriesScreen(
+          return MainAuthenticatedShell(
             authRepository: authRepository,
             userProfile: profile,
             personalTotalPoints:
@@ -280,7 +280,6 @@ class _ProgressHydratedHome extends StatelessWidget {
               );
               onProfileChanged(changedProfile);
             },
-            showBackButton: false,
           );
         },
       );

@@ -134,6 +134,137 @@ void main() {
     expect(find.text(AppStrings.addAccount), findsNothing);
   });
 
+  testWidgets('authenticated shell starts on home with visible navigation', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+
+    await _pumpGate(tester, authRepository);
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.byIcon(Icons.home), findsOneWidget);
+    expect(find.text(AppStrings.homeTitle), findsOneWidget);
+    expect(find.text(AppStrings.rankingTitle), findsOneWidget);
+    expect(find.text(AppStrings.profileTitle), findsOneWidget);
+    expect(find.byTooltip(AppStrings.hideNavigation), findsOneWidget);
+  });
+
+  testWidgets('switches main sections without pushing Navigator routes', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final observer = _CountingNavigatorObserver();
+
+    await _pumpGate(tester, authRepository, navigatorObserver: observer);
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    final pushesAfterLogin = observer.pushCount;
+
+    await tester.tap(find.byKey(const Key('main_nav_ranking')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.byIcon(Icons.leaderboard), findsOneWidget);
+    expect(observer.pushCount, pushesAfterLogin);
+
+    await tester.tap(find.byKey(const Key('main_nav_ranking')));
+    await tester.pumpAndSettle();
+    expect(observer.pushCount, pushesAfterLogin);
+
+    await tester.tap(find.byKey(const Key('main_nav_profile')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.byIcon(Icons.person), findsOneWidget);
+    expect(observer.pushCount, pushesAfterLogin);
+
+    await tester.tap(find.byKey(const Key('main_nav_home')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.traffickingTitle), findsOneWidget);
+    expect(find.byIcon(Icons.home), findsOneWidget);
+    expect(observer.pushCount, pushesAfterLogin);
+  });
+
+  testWidgets('collapsing navigation keeps the selected section', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+
+    await _pumpGate(tester, authRepository);
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('main_nav_ranking')));
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.leaderboard), findsOneWidget);
+
+    await tester.tap(find.byTooltip(AppStrings.hideNavigation));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(AppStrings.showNavigation), findsOneWidget);
+    expect(find.text(AppStrings.comingSoon), findsOneWidget);
+    expect(find.text(AppStrings.homeTitle), findsNothing);
+
+    await tester.drag(
+      find.byKey(const Key('main_nav_toggle')),
+      const Offset(0, -80),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byTooltip(AppStrings.showNavigation), findsOneWidget);
+
+    await tester.tap(find.byTooltip(AppStrings.showNavigation));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(AppStrings.hideNavigation), findsOneWidget);
+    expect(find.byIcon(Icons.leaderboard), findsOneWidget);
+    expect(find.text(AppStrings.rankingTitle), findsWidgets);
+  });
+
+  testWidgets('existing educational routes still use Navigator from home', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final observer = _CountingNavigatorObserver();
+
+    await _pumpGate(tester, authRepository, navigatorObserver: observer);
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    final pushesAfterLogin = observer.pushCount;
+
+    await tester.tap(find.text(AppStrings.digitalSecurityTitle));
+    await tester.pumpAndSettle();
+
+    expect(observer.pushCount, greaterThan(pushesAfterLogin));
+    expect(find.text(AppStrings.emptyCategoryGroup), findsOneWidget);
+  });
+
   testWidgets('does not show zero progress when progress hydration fails', (
     tester,
   ) async {
@@ -334,7 +465,7 @@ void main() {
       await tester.tap(find.text(AppStrings.viewProfile));
       await tester.pumpAndSettle();
 
-      expect(find.text(AppStrings.profileTitle), findsOneWidget);
+      expect(find.text(AppStrings.profileTitle), findsWidgets);
       expect(find.text(AppStrings.profileUsername), findsOneWidget);
       expect(find.text('diegonais'), findsOneWidget);
       expect(find.text('persona@example.com'), findsOneWidget);
@@ -659,6 +790,7 @@ Future<void> _pumpGate(
   _ControllableAuthRepository authRepository, {
   UserProfileRepository? userProfileRepository,
   CategoryProgressController? progressController,
+  NavigatorObserver? navigatorObserver,
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
@@ -678,8 +810,19 @@ Future<void> _pumpGate(
         progressController: resolvedProgressController,
       ),
       onGenerateRoute: router.onGenerateRoute,
+      navigatorObservers: [?navigatorObserver],
     ),
   );
+}
+
+class _CountingNavigatorObserver extends NavigatorObserver {
+  int pushCount = 0;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushCount += 1;
+    super.didPush(route, previousRoute);
+  }
 }
 
 class _ControllableAuthRepository implements AuthRepository {
