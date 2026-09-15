@@ -45,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late UserProfile _profile = widget.profile;
   late Future<List<Category>> _categoriesFuture = _loadCategories();
   bool _isSigningOut = false;
+  String? _selectedProgressParentCategoryId;
 
   @override
   void didUpdateWidget(covariant ProfileScreen oldWidget) {
@@ -73,6 +74,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _profile = profile;
     });
     widget.onProfileChanged(profile);
+  }
+
+  void _showUsernameEditor() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (sheetContext) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: AppSpacing.screen,
+            right: AppSpacing.screen,
+            top: AppSpacing.lg,
+            bottom:
+                MediaQuery.viewInsetsOf(sheetContext).bottom +
+                AppSpacing.screen,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _SectionTitle(
+                icon: Icons.edit_outlined,
+                title: AppStrings.editUsernameTitle,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              ProfileUsernameEditor(
+                uid: widget.user.uid,
+                profile: _profile,
+                authRepository: widget.authRepository,
+                repository: widget.userProfileRepository,
+                onChanged: (profile) {
+                  _handleProfileChanged(profile);
+                  Navigator.of(sheetContext).pop();
+                },
+                startEditing: true,
+                onCancel: () => Navigator.of(sheetContext).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _confirmAndSignOut() async {
@@ -159,24 +203,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           username: _profile.username ?? '-',
                           email: email,
                           isEmailVerified: widget.user.isEmailVerified,
+                          onEditUsername: _showUsernameEditor,
                         ),
                         const SizedBox(height: AppSpacing.md),
                         _PersonalPointsCard(totalPoints: currentTotalPoints),
                         const SizedBox(height: AppSpacing.md),
-                        _AccountInfoCard(role: _profile.role),
-                        const SizedBox(height: AppSpacing.md),
                         _ProgressSection(
                           categoriesFuture: _categoriesFuture,
                           progressController: widget.progressController,
+                          selectedParentCategoryId:
+                              _selectedProgressParentCategoryId,
+                          onParentCategorySelected: (parentCategoryId) {
+                            setState(() {
+                              _selectedProgressParentCategoryId =
+                                  parentCategoryId;
+                            });
+                          },
                           onRetry: _retryCategories,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _UsernameEditorCard(
-                          user: widget.user,
-                          profile: _profile,
-                          authRepository: widget.authRepository,
-                          userProfileRepository: widget.userProfileRepository,
-                          onChanged: _handleProfileChanged,
                         ),
                         const SizedBox(height: AppSpacing.md),
                         _SignOutCard(
@@ -201,11 +244,13 @@ class _ProfileHeader extends StatelessWidget {
     required this.username,
     required this.email,
     required this.isEmailVerified,
+    required this.onEditUsername,
   });
 
   final String username;
   final String email;
   final bool isEmailVerified;
+  final VoidCallback onEditUsername;
 
   @override
   Widget build(BuildContext context) {
@@ -235,12 +280,9 @@ class _ProfileHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.md),
-            Text(
-              username,
-              textAlign: TextAlign.center,
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+            _CenteredEditableUsername(
+              username: username,
+              onEditUsername: onEditUsername,
             ),
             const SizedBox(height: AppSpacing.xxs),
             Text(
@@ -287,6 +329,74 @@ class _VerifiedStatus extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _CenteredEditableUsername extends StatelessWidget {
+  const _CenteredEditableUsername({
+    required this.username,
+    required this.onEditUsername,
+  });
+
+  final String username;
+  final VoidCallback onEditUsername;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = Theme.of(
+      context,
+    ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxTextWidth =
+            (constraints.maxWidth - AppSizing.minTouchTarget - AppSpacing.xs)
+                .clamp(0.0, constraints.maxWidth);
+        final textWidth = _measureTextWidth(
+          text: username,
+          style: textStyle,
+          maxWidth: maxTextWidth,
+          textScaler: MediaQuery.textScalerOf(context),
+        );
+        final iconLeft =
+            (constraints.maxWidth / 2) + (textWidth / 2) + AppSpacing.xxs;
+        final clampedIconLeft = iconLeft.clamp(
+          0.0,
+          constraints.maxWidth - AppSizing.minTouchTarget,
+        );
+
+        return SizedBox(
+          height: AppSizing.minTouchTarget,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: maxTextWidth),
+                  child: Text(
+                    username,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: textStyle,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: clampedIconLeft,
+                top: 0,
+                bottom: 0,
+                child: IconButton(
+                  tooltip: AppStrings.changeUsername,
+                  onPressed: onEditUsername,
+                  icon: const Icon(Icons.edit_outlined),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -338,46 +448,19 @@ class _PersonalPointsCard extends StatelessWidget {
   }
 }
 
-class _AccountInfoCard extends StatelessWidget {
-  const _AccountInfoCard({required this.role});
-
-  final String role;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: AppInsets.card,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SectionTitle(
-              icon: Icons.manage_accounts_outlined,
-              title: AppStrings.accountInfoTitle,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _InfoRow(
-              label: AppStrings.profileRole,
-              value: role == UserProfileRole.user
-                  ? AppStrings.profileUserRole
-                  : role,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _ProgressSection extends StatelessWidget {
   const _ProgressSection({
     required this.categoriesFuture,
     required this.progressController,
+    required this.selectedParentCategoryId,
+    required this.onParentCategorySelected,
     required this.onRetry,
   });
 
   final Future<List<Category>> categoriesFuture;
   final CategoryProgressController progressController;
+  final String? selectedParentCategoryId;
+  final ValueChanged<String?> onParentCategorySelected;
   final VoidCallback onRetry;
 
   @override
@@ -409,22 +492,61 @@ class _ProgressSection extends StatelessWidget {
                   return const Text(AppStrings.noProgressCategories);
                 }
 
+                final progressByCategory = {
+                  for (final category in categories)
+                    category.id: progressController.snapshotFor(category.id),
+                };
+                final summary = _ProgressSummary.fromSnapshots(
+                  progressByCategory.values,
+                );
+                final filters = _ParentCategoryProgressFilter.fromCategories(
+                  categories,
+                );
+                final selectedFilter = filters
+                    .where((filter) => filter.id == selectedParentCategoryId)
+                    .firstOrNull;
+
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    for (var index = 0; index < categories.length; index += 1)
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: index == categories.length - 1
-                              ? 0
-                              : AppSpacing.sm,
-                        ),
-                        child: _CategoryProgressCard(
-                          category: categories[index],
-                          progress: progressController.snapshotFor(
-                            categories[index].id,
+                    _OverallProgressCard(summary: summary),
+                    const SizedBox(height: AppSpacing.md),
+                    _ParentCategoryFilterMenu(
+                      filters: filters,
+                      selectedFilter: selectedFilter,
+                      onSelected: onParentCategorySelected,
+                      onClear: selectedFilter == null
+                          ? null
+                          : () => onParentCategorySelected(null),
+                    ),
+                    if (selectedFilter != null) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        AppStrings.profileCategoryBreakdown,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      for (
+                        var index = 0;
+                        index < selectedFilter.categories.length;
+                        index += 1
+                      )
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom:
+                                index == selectedFilter.categories.length - 1
+                                ? 0
+                                : AppSpacing.sm,
+                          ),
+                          child: _CategoryProgressCard(
+                            category: selectedFilter.categories[index],
+                            progress:
+                                progressByCategory[selectedFilter
+                                    .categories[index]
+                                    .id]!,
                           ),
                         ),
-                      ),
+                    ],
                   ],
                 );
               },
@@ -432,6 +554,372 @@ class _ProgressSection extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _ProgressSummary {
+  const _ProgressSummary({
+    required this.percentage,
+    required this.completedActivities,
+    required this.totalActivities,
+    required this.viewedTheoryPages,
+    required this.totalTheoryPages,
+  });
+
+  factory _ProgressSummary.fromSnapshots(
+    Iterable<CategoryProgressSnapshot> snapshots,
+  ) {
+    var completedActivities = 0;
+    var totalActivities = 0;
+    var viewedTheoryPages = 0;
+    var totalTheoryPages = 0;
+
+    for (final snapshot in snapshots) {
+      completedActivities += snapshot.completedActivities;
+      totalActivities += snapshot.totalActivities;
+      viewedTheoryPages += snapshot.viewedTheoryPages;
+      totalTheoryPages += snapshot.totalTheoryPages;
+    }
+
+    final totalSteps = totalActivities + totalTheoryPages;
+    final completedSteps = completedActivities + viewedTheoryPages;
+    final percentage = totalSteps == 0
+        ? 0
+        : ((completedSteps / totalSteps) * 100).round().clamp(0, 100);
+
+    return _ProgressSummary(
+      percentage: percentage,
+      completedActivities: completedActivities,
+      totalActivities: totalActivities,
+      viewedTheoryPages: viewedTheoryPages,
+      totalTheoryPages: totalTheoryPages,
+    );
+  }
+
+  final int percentage;
+  final int completedActivities;
+  final int totalActivities;
+  final int viewedTheoryPages;
+  final int totalTheoryPages;
+}
+
+class _ParentCategoryProgressFilter {
+  const _ParentCategoryProgressFilter({
+    required this.id,
+    required this.title,
+    required this.categories,
+  });
+
+  factory _ParentCategoryProgressFilter._fromGroup({
+    required String id,
+    required List<Category> categories,
+  }) {
+    return _ParentCategoryProgressFilter(
+      id: id,
+      title: _parentCategoryTitle(id),
+      categories: List<Category>.unmodifiable(categories),
+    );
+  }
+
+  static List<_ParentCategoryProgressFilter> fromCategories(
+    List<Category> categories,
+  ) {
+    final categoriesByParent = <String, List<Category>>{};
+    for (final category in categories) {
+      categoriesByParent
+          .putIfAbsent(category.parentCategoryId, () => <Category>[])
+          .add(category);
+    }
+
+    final orderedParentIds = <String>[
+      ParentCategoryIds.humanTrafficking,
+      ParentCategoryIds.digitalSecurity,
+      ...categoriesByParent.keys.where((id) {
+        return id != ParentCategoryIds.humanTrafficking &&
+            id != ParentCategoryIds.digitalSecurity;
+      }),
+    ];
+
+    return [
+      for (final parentId in orderedParentIds)
+        if (categoriesByParent[parentId]?.isNotEmpty ?? false)
+          _ParentCategoryProgressFilter._fromGroup(
+            id: parentId,
+            categories: categoriesByParent[parentId]!,
+          ),
+    ];
+  }
+
+  final String id;
+  final String title;
+  final List<Category> categories;
+}
+
+class _ParentCategoryFilterMenu extends StatelessWidget {
+  const _ParentCategoryFilterMenu({
+    required this.filters,
+    required this.selectedFilter,
+    required this.onSelected,
+    required this.onClear,
+  });
+
+  final List<_ParentCategoryProgressFilter> filters;
+  final _ParentCategoryProgressFilter? selectedFilter;
+  final ValueChanged<String?> onSelected;
+  final VoidCallback? onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    final selected = selectedFilter;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppStrings.profileChooseCategory,
+          style: textTheme.labelSmall?.copyWith(
+            color: colors.orangeDark,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xxs),
+        PopupMenuButton<String>(
+          tooltip: AppStrings.profileChooseCategoryHint,
+          initialValue: selected?.id,
+          onSelected: onSelected,
+          position: PopupMenuPosition.under,
+          elevation: 3,
+          color: colors.surfaceStrong,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadii.button),
+            side: BorderSide(color: colors.border),
+          ),
+          itemBuilder: (context) {
+            return [
+              for (final filter in filters)
+                PopupMenuItem(
+                  value: filter.id,
+                  child: Text(
+                    filter.title,
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontWeight: filter.id == selected?.id
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                    ),
+                  ),
+                ),
+            ];
+          },
+          child: _ParentCategoryFilterField(
+            label: selected?.title ?? AppStrings.profileChooseCategoryHint,
+            isSelected: selected != null,
+            onClear: onClear,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ParentCategoryFilterField extends StatelessWidget {
+  const _ParentCategoryFilterField({
+    required this.label,
+    required this.isSelected,
+    required this.onClear,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback? onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Semantics(
+      button: true,
+      label: AppStrings.profileChooseCategory,
+      value: label,
+      child: Container(
+        constraints: const BoxConstraints(
+          minHeight: AppSizing.primaryButtonHeight,
+        ),
+        padding: const EdgeInsets.only(
+          left: AppSpacing.md,
+          right: AppSpacing.xs,
+        ),
+        decoration: BoxDecoration(
+          color: colors.surfaceStrong,
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          border: Border.all(
+            color: isSelected ? colors.orangePrimary : colors.border,
+            width: isSelected ? 1.5 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.account_tree_outlined,
+              color: isSelected ? colors.orangeDark : colors.textSecondary,
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: isSelected ? colors.textPrimary : colors.textSecondary,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+            ),
+            if (onClear != null)
+              Tooltip(
+                message: AppStrings.profileClearCategoryFilter,
+                child: IconButton(
+                  onPressed: onClear,
+                  icon: const Icon(Icons.close_outlined),
+                  color: colors.orangeDark,
+                  constraints: const BoxConstraints.tightFor(
+                    width: AppSizing.minTouchTarget,
+                    height: AppSizing.minTouchTarget,
+                  ),
+                ),
+              )
+            else
+              const SizedBox(width: AppSpacing.xs),
+            Icon(
+              Icons.keyboard_arrow_down_outlined,
+              color: colors.textSecondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _OverallProgressCard extends StatelessWidget {
+  const _OverallProgressCard({required this.summary});
+
+  final _ProgressSummary summary;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surface,
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        border: Border.all(color: colors.border),
+      ),
+      child: Padding(
+        padding: AppInsets.card,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.profileOverallProgress,
+              style: textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            _ProgressBar(percentage: summary.percentage),
+            const SizedBox(height: AppSpacing.sm),
+            _ProgressLine(
+              icon: Icons.menu_book_outlined,
+              label: AppStrings.profileTheoryProgress,
+              value:
+                  '${summary.viewedTheoryPages} / '
+                  '${summary.totalTheoryPages}',
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            _ProgressLine(
+              icon: Icons.task_alt_outlined,
+              label: AppStrings.profileActivitiesProgress,
+              value:
+                  '${summary.completedActivities} / '
+                  '${summary.totalActivities}',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProgressBar extends StatelessWidget {
+  const _ProgressBar({required this.percentage});
+
+  final int percentage;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Semantics(
+            label: '$percentage por ciento',
+            child: LinearProgressIndicator(
+              value: percentage / 100,
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(999),
+              backgroundColor: colors.orangeSoft,
+              color: percentage == 0 ? colors.orangeDark : colors.success,
+            ),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Text('$percentage%', style: textTheme.titleSmall),
+      ],
+    );
+  }
+}
+
+class _ProgressLine extends StatelessWidget {
+  const _ProgressLine({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      children: [
+        Icon(icon, color: colors.orangeDark, size: 18),
+        const SizedBox(width: AppSpacing.xs),
+        Expanded(
+          child: Text(
+            label,
+            style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Text(
+          value,
+          style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
+      ],
     );
   }
 }
@@ -465,86 +953,22 @@ class _CategoryProgressCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
-            Row(
-              children: [
-                Expanded(
-                  child: Semantics(
-                    label: '${progress.overallPercentage} por ciento',
-                    child: LinearProgressIndicator(
-                      value: progress.overallProgress,
-                      minHeight: 8,
-                      borderRadius: BorderRadius.circular(999),
-                      backgroundColor: colors.orangeSoft,
-                      color: progress.overallPercentage == 0
-                          ? colors.orangeDark
-                          : colors.success,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Text(
-                  '${progress.overallPercentage}%',
-                  style: textTheme.titleSmall,
-                ),
-              ],
-            ),
+            _ProgressBar(percentage: progress.overallPercentage),
             const SizedBox(height: AppSpacing.sm),
-            Text(
-              '${progress.completedActivities} / '
-              '${progress.totalActivities} actividades completadas',
-              style: textTheme.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-              ),
+            _ProgressLine(
+              icon: Icons.task_alt_outlined,
+              label: AppStrings.profileActivitiesProgress,
+              value:
+                  '${progress.completedActivities} / '
+                  '${progress.totalActivities}',
             ),
-            const SizedBox(height: AppSpacing.xxs),
-            Text(
-              '${progress.viewedTheoryPages} / '
-              '${progress.totalTheoryPages} cápsulas vistas',
-              style: textTheme.bodyMedium?.copyWith(
-                color: colors.textSecondary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _UsernameEditorCard extends StatelessWidget {
-  const _UsernameEditorCard({
-    required this.user,
-    required this.profile,
-    required this.authRepository,
-    required this.userProfileRepository,
-    required this.onChanged,
-  });
-
-  final AuthUser user;
-  final UserProfile profile;
-  final AuthRepository authRepository;
-  final UserProfileRepository userProfileRepository;
-  final ValueChanged<UserProfile> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: AppInsets.card,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _SectionTitle(
-              icon: Icons.edit_outlined,
-              title: AppStrings.editUsernameTitle,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            ProfileUsernameEditor(
-              uid: user.uid,
-              profile: profile,
-              authRepository: authRepository,
-              repository: userProfileRepository,
-              onChanged: onChanged,
+            const SizedBox(height: AppSpacing.xs),
+            _ProgressLine(
+              icon: Icons.menu_book_outlined,
+              label: AppStrings.profileTheoryProgress,
+              value:
+                  '${progress.viewedTheoryPages} / '
+                  '${progress.totalTheoryPages}',
             ),
           ],
         ),
@@ -608,43 +1032,6 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: colors.textSecondary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        const SizedBox(width: AppSpacing.md),
-        Flexible(
-          child: Text(
-            value,
-            textAlign: TextAlign.right,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _IconBox extends StatelessWidget {
   const _IconBox({required this.icon});
 
@@ -700,4 +1087,27 @@ String _formatPoints(int value) {
     }
   }
   return buffer.toString();
+}
+
+String _parentCategoryTitle(String parentCategoryId) {
+  return switch (parentCategoryId) {
+    ParentCategoryIds.humanTrafficking => AppStrings.traffickingTitle,
+    ParentCategoryIds.digitalSecurity => AppStrings.digitalSecurityTitle,
+    _ => parentCategoryId,
+  };
+}
+
+double _measureTextWidth({
+  required String text,
+  required TextStyle? style,
+  required double maxWidth,
+  required TextScaler textScaler,
+}) {
+  final painter = TextPainter(
+    text: TextSpan(text: text, style: style),
+    maxLines: 1,
+    textDirection: TextDirection.ltr,
+    textScaler: textScaler,
+  )..layout(maxWidth: maxWidth);
+  return painter.size.width;
 }

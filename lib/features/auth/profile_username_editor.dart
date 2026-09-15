@@ -15,6 +15,8 @@ class ProfileUsernameEditor extends StatefulWidget {
     required this.authRepository,
     required this.repository,
     required this.onChanged,
+    this.startEditing = false,
+    this.onCancel,
     super.key,
   });
 
@@ -23,6 +25,8 @@ class ProfileUsernameEditor extends StatefulWidget {
   final AuthRepository authRepository;
   final UserProfileRepository repository;
   final ValueChanged<UserProfile> onChanged;
+  final bool startEditing;
+  final VoidCallback? onCancel;
 
   @override
   State<ProfileUsernameEditor> createState() => _ProfileUsernameEditorState();
@@ -33,7 +37,7 @@ class _ProfileUsernameEditorState extends State<ProfileUsernameEditor> {
   late final TextEditingController _text = TextEditingController(
     text: _profile.username,
   );
-  bool _editing = false;
+  late bool _editing = widget.startEditing;
   bool _saving = false;
   String? _error;
   bool _saved = false;
@@ -158,10 +162,17 @@ class _ProfileUsernameEditorState extends State<ProfileUsernameEditor> {
               TextButton(
                 onPressed: _saving
                     ? null
-                    : () => setState(() {
-                        _editing = false;
-                        _error = null;
-                      }),
+                    : () {
+                        final onCancel = widget.onCancel;
+                        if (onCancel != null) {
+                          onCancel();
+                          return;
+                        }
+                        setState(() {
+                          _editing = false;
+                          _error = null;
+                        });
+                      },
                 child: const Text(AppStrings.cancel),
               ),
             ],

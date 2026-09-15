@@ -317,15 +317,37 @@ void main() {
     expect(find.text('diegonais'), findsWidgets);
     expect(find.text('persona@example.com'), findsOneWidget);
     expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);
-    expect(find.text(AppStrings.profileUserRole), findsOneWidget);
+    expect(find.text(AppStrings.profileUserRole), findsNothing);
+    expect(find.byTooltip(AppStrings.changeUsername), findsOneWidget);
     expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
     expect(find.text('540'), findsOneWidget);
     expect(find.text(AppStrings.myProgressTitle), findsOneWidget);
+    expect(find.text(AppStrings.profileOverallProgress), findsOneWidget);
+    expect(find.text('25%'), findsOneWidget);
+    expect(find.text('3 / 12'), findsOneWidget);
+    expect(find.text('2 / 8'), findsOneWidget);
+    expect(find.text('Relaciones y violencia digital'), findsNothing);
+
+    await tester.ensureVisible(
+      find.byTooltip(AppStrings.profileChooseCategoryHint),
+    );
+    await tester.tap(find.byTooltip(AppStrings.profileChooseCategoryHint));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.profileCategoryBreakdown), findsOneWidget);
+    expect(find.text('50%'), findsOneWidget);
+    expect(find.text('3 / 6'), findsOneWidget);
+    expect(find.text('2 / 4'), findsOneWidget);
     expect(find.text('Relaciones y violencia digital'), findsOneWidget);
-    expect(find.text('3 / 6 actividades completadas'), findsOneWidget);
-    expect(find.text('2 / 4 cápsulas vistas'), findsOneWidget);
     expect(find.text('Protección de cuentas y autenticación'), findsOneWidget);
-    expect(find.text('0 / 6 actividades completadas'), findsOneWidget);
+
+    await tester.tap(find.byTooltip(AppStrings.profileClearCategoryFilter));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.profileCategoryBreakdown), findsNothing);
+    expect(find.text('Relaciones y violencia digital'), findsNothing);
   });
 
   testWidgets('profile username editor updates the profile tab immediately', (
@@ -628,11 +650,11 @@ void main() {
     await _openProfileTab(tester);
 
     expect(find.text(AppStrings.myProfileTitle), findsOneWidget);
-    expect(find.text(AppStrings.profileUsername), findsOneWidget);
+    expect(find.byTooltip(AppStrings.changeUsername), findsOneWidget);
     expect(find.text('diegonais'), findsWidgets);
     expect(find.text('persona@example.com'), findsOneWidget);
-    expect(find.text(AppStrings.profileRole), findsOneWidget);
-    expect(find.text(AppStrings.profileUserRole), findsOneWidget);
+    expect(find.text(AppStrings.profileRole), findsNothing);
+    expect(find.text(AppStrings.profileUserRole), findsNothing);
     expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
     expect(find.text('0'), findsOneWidget);
     expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);

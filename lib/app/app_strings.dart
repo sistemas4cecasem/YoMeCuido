@@ -107,6 +107,13 @@ abstract final class AppStrings {
   static const accountInfoTitle = 'Información de cuenta';
   static const myProgressTitle = 'Mi progreso';
   static const editUsernameTitle = 'Editar nombre de usuario';
+  static const profileOverallProgress = 'Progreso general';
+  static const profileChooseCategory = 'Visualizar por categoría principal';
+  static const profileChooseCategoryHint = 'Selecciona una categoría principal';
+  static const profileCategoryBreakdown = 'Subcategorías';
+  static const profileClearCategoryFilter = 'Limpiar filtro';
+  static const profileTheoryProgress = 'Cápsulas teóricas';
+  static const profileActivitiesProgress = 'Actividades';
   static const noProgressCategories =
       'Aún no hay categorías disponibles para mostrar progreso.';
   static const hideNavigation = 'Ocultar navegación';
