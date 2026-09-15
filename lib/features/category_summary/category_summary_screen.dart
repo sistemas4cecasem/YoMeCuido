@@ -9,7 +9,6 @@ import '../../data/models/category.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
-import '../../shared/widgets/demo_bottom_navigation_bar.dart';
 
 class CategorySummaryScreen extends StatefulWidget {
   const CategorySummaryScreen({
@@ -57,10 +56,6 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: widget.category.title,
-      bottomNavigationBar: DemoBottomNavigationBar(
-        selectedItem: DemoNavItem.progress,
-        category: widget.category,
-      ),
       child: FutureBuilder<void>(
         future: _contentTotalsFuture,
         builder: (context, snapshot) {

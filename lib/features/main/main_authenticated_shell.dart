@@ -69,12 +69,7 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
     return Scaffold(
       backgroundColor: context.colors.background,
       body: switch (_selectedSection) {
-        MainSection.home => HighLevelCategoriesScreen(
-          authRepository: widget.authRepository,
-          userProfile: widget.userProfile,
-          personalTotalPoints: widget.personalTotalPoints,
-          userProfileRepository: widget.userProfileRepository,
-          onProfileChanged: widget.onProfileChanged,
+        MainSection.home => const HighLevelCategoriesScreen(
           showBackButton: false,
         ),
         MainSection.ranking => RankingScreen(

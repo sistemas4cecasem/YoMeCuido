@@ -13,7 +13,6 @@ import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/character_image.dart';
-import '../../shared/widgets/demo_bottom_navigation_bar.dart';
 import '../../shared/widgets/info_card.dart';
 
 class CategoryDetailScreen extends StatefulWidget {
@@ -67,7 +66,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   Widget build(BuildContext context) {
     return AppScaffold(
       title: widget.category.title,
-      bottomNavigationBar: DemoBottomNavigationBar(category: widget.category),
       child: FutureBuilder<_CategoryDetailData>(
         future: _detailDataFuture,
         builder: (context, detailSnapshot) {

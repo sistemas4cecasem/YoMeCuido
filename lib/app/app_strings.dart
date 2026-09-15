@@ -95,8 +95,7 @@ abstract final class AppStrings {
   static const generalRankingTitle = 'Clasificación general';
   static const yourRankingPositionTitle = 'Tu posición';
   static const currentUserBadge = 'Tú';
-  static const emptyRankingTitle =
-      'Todavía no hay posiciones en el ranking.';
+  static const emptyRankingTitle = 'Todavía no hay posiciones en el ranking.';
   static const emptyRankingBody = 'Sé el primero en conseguir puntos.';
   static const noRankingPositionTitle = 'Aún no tienes posición';
   static const noRankingPositionBody =
@@ -112,7 +111,6 @@ abstract final class AppStrings {
       'Aún no hay categorías disponibles para mostrar progreso.';
   static const hideNavigation = 'Ocultar navegación';
   static const showNavigation = 'Mostrar navegación';
-  static const viewProfile = 'Ver perfil';
   static const profileUsername = 'Nombre de usuario';
   static const profileEmail = 'Correo';
   static const profileRole = 'Tipo de cuenta';
@@ -121,8 +119,6 @@ abstract final class AppStrings {
   static const profileUserRole = 'Usuario';
   static const profileVerifiedEmail = 'Correo verificado';
   static const profileUnverifiedEmail = 'Correo pendiente de verificación';
-  static const profileLockedSnackBar =
-      'El perfil no está disponible en esta demo';
   static const demoLockedSnackBar =
       'Este bloque estará disponible en una próxima etapa de la demo';
   static const completeTheoryToUnlockActivities =

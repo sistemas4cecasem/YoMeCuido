@@ -10,7 +10,6 @@ class AppScaffold extends StatelessWidget {
     this.title,
     this.actions,
     this.automaticallyImplyLeading = true,
-    this.bottomNavigationBar,
     this.floatingActionButton,
     super.key,
   });
@@ -19,7 +18,6 @@ class AppScaffold extends StatelessWidget {
   final List<Widget>? actions;
   final bool automaticallyImplyLeading;
   final Widget child;
-  final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
 
   @override
@@ -32,7 +30,7 @@ class AppScaffold extends StatelessWidget {
       left: AppSpacing.screen,
       top: AppSpacing.lg,
       right: AppSpacing.screen,
-      bottom: bottomNavigationBar == null ? AppSpacing.lg : 0,
+      bottom: AppSpacing.lg,
     );
 
     return Scaffold(
@@ -46,10 +44,8 @@ class AppScaffold extends StatelessWidget {
               title: Text(title!, maxLines: 2),
               actions: actions,
             ),
-      bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
-        bottom: bottomNavigationBar == null,
         child: AppBackground(
           child: Align(
             alignment: Alignment.topCenter,
