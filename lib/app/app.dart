@@ -56,11 +56,13 @@ class YoMeCuidoApp extends StatelessWidget {
        ),
        _authRepository = authRepository,
        _userProfileRepository = userProfileRepository,
+       _contentRepository = contentRepository,
        _progressController = progressController;
 
   final AppRouter _router;
   final AuthRepository _authRepository;
   final UserProfileRepository _userProfileRepository;
+  final ContentRepository _contentRepository;
   final CategoryProgressController _progressController;
 
   @override
@@ -73,6 +75,7 @@ class YoMeCuidoApp extends StatelessWidget {
         authRepository: _authRepository,
         userProfileRepository: _userProfileRepository,
         progressController: _progressController,
+        contentRepository: _contentRepository,
       ),
       onGenerateRoute: _router.onGenerateRoute,
     );

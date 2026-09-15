@@ -92,6 +92,12 @@ abstract final class AppStrings {
   static const homeTitle = 'Inicio';
   static const rankingTitle = 'Ranking';
   static const profileTitle = 'Perfil';
+  static const myProfileTitle = 'Mi perfil';
+  static const accountInfoTitle = 'Información de cuenta';
+  static const myProgressTitle = 'Mi progreso';
+  static const editUsernameTitle = 'Editar nombre de usuario';
+  static const noProgressCategories =
+      'Aún no hay categorías disponibles para mostrar progreso.';
   static const hideNavigation = 'Ocultar navegación';
   static const showNavigation = 'Mostrar navegación';
   static const viewProfile = 'Ver perfil';

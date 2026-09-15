@@ -83,8 +83,9 @@ void main() {
     expect(find.text('Este nombre de usuario ya está en uso.'), findsOneWidget);
     await tester.tap(find.text(AppStrings.cancel));
     await tester.pumpAndSettle();
-    expect(find.text('diegonais'), findsOneWidget);
+    expect(find.text('diegonais'), findsWidgets);
     profiles.failRename = false;
+    await tester.ensureVisible(find.byTooltip(AppStrings.changeUsername));
     await tester.tap(find.byTooltip(AppStrings.changeUsername));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'disponible');
@@ -188,8 +189,8 @@ void main() {
     await tester.tap(find.byKey(const Key('main_nav_profile')));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.comingSoon), findsOneWidget);
-    expect(find.byIcon(Icons.person), findsOneWidget);
+    expect(find.text(AppStrings.myProfileTitle), findsOneWidget);
+    expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
     expect(observer.pushCount, pushesAfterLogin);
 
     await tester.tap(find.byKey(const Key('main_nav_home')));
@@ -263,6 +264,167 @@ void main() {
 
     expect(observer.pushCount, greaterThan(pushesAfterLogin));
     expect(find.text(AppStrings.emptyCategoryGroup), findsOneWidget);
+  });
+
+  testWidgets('profile tab shows real profile data and category progress', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final progressController = CategoryProgressController()
+      ..hydrateTotalPointsFromProfile(uid: 'uid-123', totalPoints: 540)
+      ..hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _progressRecord(
+            categoryId: 'relations_violence_digital',
+            completedActivityIds: const <String>['a1', 'a2', 'a3'],
+            viewedLessonPageIds: const <String>['p1', 'p2'],
+          ),
+        ],
+      );
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: _FakeUserProfileRepository(
+        profile: const UserProfile(
+          username: 'diegonais',
+          usernameNormalized: 'diegonais',
+          email: 'persona@example.com',
+          role: UserProfileRole.user,
+          totalPoints: 540,
+          createdAt: null,
+          updatedAt: null,
+        ),
+      ),
+      progressController: progressController,
+      contentRepository: const _ProfileContentRepository(),
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('main_nav_profile')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.myProfileTitle), findsOneWidget);
+    expect(find.text('diegonais'), findsWidgets);
+    expect(find.text('persona@example.com'), findsOneWidget);
+    expect(find.text(AppStrings.profileVerifiedEmail), findsOneWidget);
+    expect(find.text(AppStrings.profileUserRole), findsOneWidget);
+    expect(find.text(AppStrings.profileTotalPoints), findsOneWidget);
+    expect(find.text('540'), findsOneWidget);
+    expect(find.text(AppStrings.myProgressTitle), findsOneWidget);
+    expect(find.text('Relaciones y violencia digital'), findsOneWidget);
+    expect(find.text('3 / 6 actividades completadas'), findsOneWidget);
+    expect(find.text('2 / 4 cápsulas vistas'), findsOneWidget);
+    expect(find.text('Protección de cuentas y autenticación'), findsOneWidget);
+    expect(find.text('0 / 6 actividades completadas'), findsOneWidget);
+  });
+
+  testWidgets('profile username editor updates the profile tab immediately', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+    final profiles = _FakeUserProfileRepository();
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      userProfileRepository: profiles,
+      contentRepository: const _ProfileContentRepository(),
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('main_nav_profile')));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.byTooltip(AppStrings.changeUsername),
+      120,
+    );
+    await tester.tap(find.byTooltip(AppStrings.changeUsername));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'NuevoNombre');
+    await tester.tap(find.text(AppStrings.saveUsername));
+    await tester.pumpAndSettle();
+
+    expect(profiles.changedUid, 'uid-123');
+    expect(find.text('NuevoNombre'), findsWidgets);
+    expect(find.text('diegonais'), findsNothing);
+  });
+
+  testWidgets('profile sign out uses the auth repository', (tester) async {
+    final authRepository = _ControllableAuthRepository();
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      contentRepository: const _ProfileContentRepository(),
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('main_nav_profile')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text(AppStrings.signOut));
+    await tester.tap(find.text(AppStrings.signOut));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.signOutTitle), findsOneWidget);
+
+    await tester.tap(find.text(AppStrings.signOut).last);
+    await tester.pumpAndSettle();
+
+    expect(authRepository.signOutCallCount, 1);
+    expect(find.text(AppStrings.loginTitle), findsOneWidget);
+  });
+
+  testWidgets('profile keeps its state when the bottom navigation is hidden', (
+    tester,
+  ) async {
+    final authRepository = _ControllableAuthRepository();
+
+    await _pumpGate(
+      tester,
+      authRepository,
+      contentRepository: const _ProfileContentRepository(),
+    );
+    authRepository.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('main_nav_profile')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip(AppStrings.hideNavigation));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(AppStrings.showNavigation), findsOneWidget);
+    expect(find.text(AppStrings.myProfileTitle), findsOneWidget);
+    expect(find.text('diegonais'), findsWidgets);
+    expect(find.text(AppStrings.homeTitle), findsNothing);
   });
 
   testWidgets('does not show zero progress when progress hydration fails', (
@@ -791,6 +953,7 @@ Future<void> _pumpGate(
   UserProfileRepository? userProfileRepository,
   CategoryProgressController? progressController,
   NavigatorObserver? navigatorObserver,
+  ContentRepository? contentRepository,
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
@@ -808,6 +971,7 @@ Future<void> _pumpGate(
         userProfileRepository:
             userProfileRepository ?? _FakeUserProfileRepository(),
         progressController: resolvedProgressController,
+        contentRepository: contentRepository ?? const _EmptyContentRepository(),
       ),
       onGenerateRoute: router.onGenerateRoute,
       navigatorObservers: [?navigatorObserver],
@@ -1023,6 +1187,85 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required int totalActivities,
   }) {
     throw UnimplementedError();
+  }
+}
+
+CategoryProgressRecord _progressRecord({
+  required String categoryId,
+  required List<String> completedActivityIds,
+  required List<String> viewedLessonPageIds,
+}) {
+  final now = DateTime.utc(2026, 9, 15, 12);
+
+  return CategoryProgressRecord(
+    categoryId: categoryId,
+    lessonId: categoryId,
+    status: CategoryProgressStatus.inProgress,
+    viewedLessonPageIds: viewedLessonPageIds,
+    completedActivityIds: completedActivityIds,
+    totalLessonPages: 4,
+    totalActivities: 6,
+    startedAt: now,
+    lastActivityAt: now,
+    completedAt: null,
+    updatedAt: now,
+    activities: const <String, ActivityProgressRecord>{},
+    exams: const <String, ExamProgressRecord>{},
+  );
+}
+
+class _ProfileContentRepository implements ContentRepository {
+  const _ProfileContentRepository();
+
+  @override
+  Future<List<Category>> loadCategories() async {
+    return const <Category>[
+      Category(
+        id: 'relations_violence_digital',
+        title: 'Relaciones y violencia digital',
+        description: 'Aprende a reconocer riesgos digitales.',
+        iconName: 'shield_outlined',
+        status: CategoryStatus.available,
+        isEnabled: true,
+        indicators: <String>['6 actividades'],
+        objectives: <String>['Reconocer señales.'],
+        lessonId: 'relations_violence',
+      ),
+      Category(
+        id: 'account_protection_authentication',
+        title: 'Protección de cuentas y autenticación',
+        description: 'Protege tus cuentas.',
+        iconName: 'lock_outline',
+        status: CategoryStatus.available,
+        isEnabled: true,
+        indicators: <String>['6 actividades'],
+        objectives: <String>['Proteger cuentas.'],
+        lessonId: 'accounts_auth',
+      ),
+    ];
+  }
+
+  @override
+  Future<List<LessonPage>> loadLessonPages(String categoryId) async {
+    return const <LessonPage>[];
+  }
+
+  @override
+  Future<List<LearningActivity>> loadActivities(String categoryId) async {
+    return const <LearningActivity>[];
+  }
+
+  @override
+  Future<List<QuizQuestion>> loadQuizQuestions(
+    String categoryId, {
+    String? activityId,
+  }) async {
+    return const <QuizQuestion>[];
+  }
+
+  @override
+  Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
+    return null;
   }
 }
 

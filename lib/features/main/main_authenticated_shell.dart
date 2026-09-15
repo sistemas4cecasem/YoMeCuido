@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../app/app_strings.dart';
+import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/widgets/app_background.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
+import '../profile/profile_screen.dart';
 
 enum MainSection { home, ranking, profile }
 
@@ -18,14 +22,20 @@ class MainAuthenticatedShell extends StatefulWidget {
     required this.personalTotalPoints,
     required this.userProfileRepository,
     required this.onProfileChanged,
+    required this.contentRepository,
+    required this.progressController,
+    required this.user,
     super.key,
   });
 
+  final AuthUser user;
   final AuthRepository authRepository;
   final UserProfile userProfile;
   final int? personalTotalPoints;
   final UserProfileRepository userProfileRepository;
   final ValueChanged<UserProfile> onProfileChanged;
+  final ContentRepository contentRepository;
+  final CategoryProgressController progressController;
 
   @override
   State<MainAuthenticatedShell> createState() => _MainAuthenticatedShellState();
@@ -68,9 +78,15 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
           title: AppStrings.rankingTitle,
           icon: Icons.leaderboard_outlined,
         ),
-        MainSection.profile => const _PlaceholderMainSection(
-          title: AppStrings.profileTitle,
-          icon: Icons.person_outline,
+        MainSection.profile => ProfileScreen(
+          user: widget.user,
+          profile: widget.userProfile,
+          personalTotalPoints: widget.personalTotalPoints,
+          authRepository: widget.authRepository,
+          userProfileRepository: widget.userProfileRepository,
+          contentRepository: widget.contentRepository,
+          progressController: widget.progressController,
+          onProfileChanged: widget.onProfileChanged,
         ),
       },
       bottomNavigationBar: _CollapsibleMainNavigation(

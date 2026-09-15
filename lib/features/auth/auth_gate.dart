@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../app/app_strings.dart';
 import '../../app/category_progress_controller.dart';
@@ -7,6 +8,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../main/main_authenticated_shell.dart';
@@ -19,12 +21,14 @@ class AuthGate extends StatefulWidget {
     required this.authRepository,
     required this.userProfileRepository,
     required this.progressController,
+    required this.contentRepository,
     super.key,
   });
 
   final AuthRepository authRepository;
   final UserProfileRepository userProfileRepository;
   final CategoryProgressController progressController;
+  final ContentRepository contentRepository;
 
   @override
   State<AuthGate> createState() => _AuthGateState();
@@ -102,13 +106,14 @@ class _AuthGateState extends State<AuthGate> {
           onProfileChanged: (profile) {
             if (mounted && _lastUserUid == user.uid) {
               setState(() {
-                _profileLoadFuture = Future.value(profile);
+                _profileLoadFuture = SynchronousFuture<UserProfile?>(profile);
               });
             }
           },
           progressLoadProvider: _ensureProgressLoad,
           progressController: widget.progressController,
           authRepository: widget.authRepository,
+          contentRepository: widget.contentRepository,
         );
       },
     );
@@ -195,6 +200,7 @@ class _HydratedHome extends StatelessWidget {
     required this.progressLoadProvider,
     required this.progressController,
     required this.authRepository,
+    required this.contentRepository,
   });
 
   final AuthUser user;
@@ -205,6 +211,7 @@ class _HydratedHome extends StatelessWidget {
   final Future<void> Function(AuthUser user, {bool force}) progressLoadProvider;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
+  final ContentRepository contentRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +240,7 @@ class _HydratedHome extends StatelessWidget {
           onProgressRetry: () => progressLoadProvider(user, force: true),
           progressController: progressController,
           authRepository: authRepository,
+          contentRepository: contentRepository,
         );
       },
     );
@@ -249,6 +257,7 @@ class _ProgressHydratedHome extends StatelessWidget {
     required this.onProgressRetry,
     required this.progressController,
     required this.authRepository,
+    required this.contentRepository,
   });
 
   final AuthUser user;
@@ -259,6 +268,7 @@ class _ProgressHydratedHome extends StatelessWidget {
   final VoidCallback onProgressRetry;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
+  final ContentRepository contentRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +290,9 @@ class _ProgressHydratedHome extends StatelessWidget {
               );
               onProfileChanged(changedProfile);
             },
+            contentRepository: contentRepository,
+            progressController: progressController,
+            user: user,
           );
         },
       );
