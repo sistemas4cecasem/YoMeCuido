@@ -7,7 +7,6 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/leaderboard_entry.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/leaderboard_repository.dart';
-import '../../shared/widgets/app_background.dart';
 
 class RankingScreen extends StatefulWidget {
   const RankingScreen({
@@ -77,76 +76,65 @@ class _RankingScreenState extends State<RankingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return ColoredBox(
-      color: colors.background,
-      child: Stack(
-        children: [
-          const Positioned.fill(child: AppBackground(child: SizedBox.expand())),
-          SafeArea(
-            child: StreamBuilder<List<LeaderboardEntry>>(
-              stream: _topEntriesStream,
-              builder: (context, snapshot) {
-                final snapshotEntries = snapshot.data;
-                if (snapshotEntries != null) {
-                  _lastTopEntries = snapshotEntries;
-                }
-                final entries = (snapshotEntries ?? _lastTopEntries)
-                    .take(_rankingLimit)
-                    .toList(growable: false);
-                final showLoadError = snapshot.hasError && entries.isEmpty;
-                final isLoading =
-                    snapshot.connectionState == ConnectionState.waiting &&
-                    !snapshot.hasData;
-                final currentUserIsInTop = entries.any(
-                  (entry) => entry.userId == widget.user.uid,
-                );
-                final showCurrentUserPosition =
-                    !isLoading &&
-                    (widget.totalPoints <= 0 || !currentUserIsInTop);
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.screen,
-                    AppSpacing.lg,
-                    AppSpacing.screen,
-                    AppSpacing.xl,
-                  ),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxWidth: AppSizing.maxContentWidth,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            AppStrings.rankingTitle,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: AppSpacing.md),
-                          _RankingCard(
-                            entries: entries,
-                            currentUserId: widget.user.uid,
-                            isLoading: isLoading,
-                            error: showLoadError ? snapshot.error : null,
-                          ),
-                          if (showCurrentUserPosition) ...[
-                            const SizedBox(height: AppSpacing.md),
-                            _CurrentUserPositionCard(
-                              positionFuture: _positionFuture,
-                              totalPoints: widget.totalPoints,
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
+    return SafeArea(
+      child: StreamBuilder<List<LeaderboardEntry>>(
+        stream: _topEntriesStream,
+        builder: (context, snapshot) {
+          final snapshotEntries = snapshot.data;
+          if (snapshotEntries != null) {
+            _lastTopEntries = snapshotEntries;
+          }
+          final entries = (snapshotEntries ?? _lastTopEntries)
+              .take(_rankingLimit)
+              .toList(growable: false);
+          final showLoadError = snapshot.hasError && entries.isEmpty;
+          final isLoading =
+              snapshot.connectionState == ConnectionState.waiting &&
+              !snapshot.hasData;
+          final currentUserIsInTop = entries.any(
+            (entry) => entry.userId == widget.user.uid,
+          );
+          final showCurrentUserPosition =
+              !isLoading && (widget.totalPoints <= 0 || !currentUserIsInTop);
+          return SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.screen,
+              AppSpacing.lg,
+              AppSpacing.screen,
+              AppSpacing.xl,
             ),
-          ),
-        ],
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizing.maxContentWidth,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      AppStrings.rankingTitle,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    _RankingCard(
+                      entries: entries,
+                      currentUserId: widget.user.uid,
+                      isLoading: isLoading,
+                      error: showLoadError ? snapshot.error : null,
+                    ),
+                    if (showCurrentUserPosition) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      _CurrentUserPositionCard(
+                        positionFuture: _positionFuture,
+                        totalPoints: widget.totalPoints,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

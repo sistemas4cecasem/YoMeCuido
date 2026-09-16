@@ -10,6 +10,7 @@ import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
+import '../../shared/widgets/app_background.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
 import '../profile/profile_screen.dart';
 import '../ranking/ranking_screen.dart';
@@ -68,28 +69,36 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colors.background,
-      body: switch (_selectedSection) {
-        MainSection.home => const HighLevelCategoriesScreen(
-          showBackButton: false,
-        ),
-        MainSection.ranking => RankingScreen(
-          user: widget.user,
-          profile: widget.userProfile,
-          totalPoints:
-              widget.personalTotalPoints ?? widget.userProfile.totalPoints,
-          leaderboardRepository: widget.leaderboardRepository,
-        ),
-        MainSection.profile => ProfileScreen(
-          user: widget.user,
-          profile: widget.userProfile,
-          personalTotalPoints: widget.personalTotalPoints,
-          authRepository: widget.authRepository,
-          userProfileRepository: widget.userProfileRepository,
-          contentRepository: widget.contentRepository,
-          progressController: widget.progressController,
-          onProfileChanged: widget.onProfileChanged,
-        ),
-      },
+      extendBody: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const Positioned.fill(child: AppBackground(child: SizedBox.expand())),
+          switch (_selectedSection) {
+            MainSection.home => const HighLevelCategoriesScreen(
+              showBackButton: false,
+              useScaffold: false,
+            ),
+            MainSection.ranking => RankingScreen(
+              user: widget.user,
+              profile: widget.userProfile,
+              totalPoints:
+                  widget.personalTotalPoints ?? widget.userProfile.totalPoints,
+              leaderboardRepository: widget.leaderboardRepository,
+            ),
+            MainSection.profile => ProfileScreen(
+              user: widget.user,
+              profile: widget.userProfile,
+              personalTotalPoints: widget.personalTotalPoints,
+              authRepository: widget.authRepository,
+              userProfileRepository: widget.userProfileRepository,
+              contentRepository: widget.contentRepository,
+              progressController: widget.progressController,
+              onProfileChanged: widget.onProfileChanged,
+            ),
+          },
+        ],
+      ),
       bottomNavigationBar: _CollapsibleMainNavigation(
         selectedSection: _selectedSection,
         isVisible: _isNavigationVisible,

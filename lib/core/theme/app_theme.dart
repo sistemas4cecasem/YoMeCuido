@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../system/app_system_ui.dart';
 import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_typography.dart';
@@ -37,6 +38,7 @@ abstract final class AppTheme {
         scrolledUnderElevation: 0,
         backgroundColor: colors.background,
         foregroundColor: colors.textPrimary,
+        systemOverlayStyle: AppSystemUi.overlayStyle,
         titleTextStyle: textTheme.titleLarge,
       ),
       cardTheme: CardThemeData(

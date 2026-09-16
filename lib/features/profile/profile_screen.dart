@@ -12,7 +12,6 @@ import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
-import '../../shared/widgets/app_background.dart';
 import '../auth/profile_username_editor.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -157,7 +156,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final email = _profile.email.isNotEmpty
         ? _profile.email
         : widget.user.email ?? '-';
@@ -166,74 +164,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
         widget.personalTotalPoints ??
         _profile.totalPoints;
 
-    return ColoredBox(
-      color: colors.background,
-      child: SafeArea(
-        child: AppBackground(
-          child: AnimatedBuilder(
-            animation: widget.progressController,
-            builder: (context, child) {
-              final currentTotalPoints =
-                  widget.progressController.totalPointsForUser(
-                    widget.user.uid,
-                  ) ??
-                  totalPoints;
+    return SafeArea(
+      child: AnimatedBuilder(
+        animation: widget.progressController,
+        builder: (context, child) {
+          final currentTotalPoints =
+              widget.progressController.totalPointsForUser(widget.user.uid) ??
+              totalPoints;
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.screen,
-                  AppSpacing.lg,
-                  AppSpacing.screen,
-                  AppSpacing.xl,
+          return SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.screen,
+              AppSpacing.lg,
+              AppSpacing.screen,
+              AppSpacing.xl,
+            ),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: AppSizing.maxContentWidth,
                 ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: AppSizing.maxContentWidth,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      AppStrings.myProfileTitle,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          AppStrings.myProfileTitle,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _ProfileHeader(
-                          username: _profile.username ?? '-',
-                          email: email,
-                          isEmailVerified: widget.user.isEmailVerified,
-                          onEditUsername: _showUsernameEditor,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _PersonalPointsCard(totalPoints: currentTotalPoints),
-                        const SizedBox(height: AppSpacing.md),
-                        _ProgressSection(
-                          categoriesFuture: _categoriesFuture,
-                          progressController: widget.progressController,
-                          selectedParentCategoryId:
-                              _selectedProgressParentCategoryId,
-                          onParentCategorySelected: (parentCategoryId) {
-                            setState(() {
-                              _selectedProgressParentCategoryId =
-                                  parentCategoryId;
-                            });
-                          },
-                          onRetry: _retryCategories,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _SignOutCard(
-                          isSigningOut: _isSigningOut,
-                          onSignOut: _confirmAndSignOut,
-                        ),
-                      ],
+                    const SizedBox(height: AppSpacing.md),
+                    _ProfileHeader(
+                      username: _profile.username ?? '-',
+                      email: email,
+                      isEmailVerified: widget.user.isEmailVerified,
+                      onEditUsername: _showUsernameEditor,
                     ),
-                  ),
+                    const SizedBox(height: AppSpacing.md),
+                    _PersonalPointsCard(totalPoints: currentTotalPoints),
+                    const SizedBox(height: AppSpacing.md),
+                    _ProgressSection(
+                      categoriesFuture: _categoriesFuture,
+                      progressController: widget.progressController,
+                      selectedParentCategoryId:
+                          _selectedProgressParentCategoryId,
+                      onParentCategorySelected: (parentCategoryId) {
+                        setState(() {
+                          _selectedProgressParentCategoryId = parentCategoryId;
+                        });
+                      },
+                      onRetry: _retryCategories,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    _SignOutCard(
+                      isSigningOut: _isSigningOut,
+                      onSignOut: _confirmAndSignOut,
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

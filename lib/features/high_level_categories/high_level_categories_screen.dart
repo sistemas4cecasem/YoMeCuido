@@ -8,9 +8,14 @@ import '../../data/models/category.dart';
 import '../../shared/widgets/app_background.dart';
 
 class HighLevelCategoriesScreen extends StatelessWidget {
-  const HighLevelCategoriesScreen({this.showBackButton = true, super.key});
+  const HighLevelCategoriesScreen({
+    this.showBackButton = true,
+    this.useScaffold = true,
+    super.key,
+  });
 
   final bool showBackButton;
+  final bool useScaffold;
 
   void _openCategoryGroup({
     required BuildContext context,
@@ -30,84 +35,110 @@ class HighLevelCategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: SafeArea(
-        child: AppBackground(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.screen,
-                  AppSpacing.xs,
-                  AppSpacing.screen,
-                  0,
-                ),
-                child: SizedBox(
-                  height: AppSizing.minTouchTarget,
-                  child: Row(
-                    children: [
-                      if (showBackButton)
-                        IconButton(
-                          onPressed: () => Navigator.of(context).maybePop(),
-                          icon: const Icon(Icons.arrow_back_outlined),
-                          tooltip: MaterialLocalizations.of(
-                            context,
-                          ).backButtonTooltip,
-                          constraints: const BoxConstraints.tightFor(
-                            width: AppSizing.minTouchTarget,
-                            height: AppSizing.minTouchTarget,
-                          ),
-                        )
-                      else
-                        const SizedBox(width: AppSizing.minTouchTarget),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.screen,
-                            AppSpacing.md,
-                            AppSpacing.screen,
-                            AppSpacing.lg,
-                          ),
-                          child: Center(
-                            child: _CenteredCategoryButtons(
-                              onTraffickingTap: () => _openCategoryGroup(
-                                context: context,
-                                parentCategoryId:
-                                    ParentCategoryIds.humanTrafficking,
-                                title: AppStrings.traffickingTitle,
-                              ),
-                              onDigitalSecurityTap: () => _openCategoryGroup(
-                                context: context,
-                                parentCategoryId:
-                                    ParentCategoryIds.digitalSecurity,
-                                title: AppStrings.digitalSecurityTitle,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+    final content = SafeArea(
+      child: _HighLevelCategoriesContent(
+        showBackButton: showBackButton,
+        onTraffickingTap: () => _openCategoryGroup(
+          context: context,
+          parentCategoryId: ParentCategoryIds.humanTrafficking,
+          title: AppStrings.traffickingTitle,
+        ),
+        onDigitalSecurityTap: () => _openCategoryGroup(
+          context: context,
+          parentCategoryId: ParentCategoryIds.digitalSecurity,
+          title: AppStrings.digitalSecurityTitle,
         ),
       ),
+    );
+
+    if (!useScaffold) {
+      return content;
+    }
+
+    return Scaffold(
+      backgroundColor: colors.background,
+      body: Stack(
+        children: [
+          const Positioned.fill(child: AppBackground(child: SizedBox.expand())),
+          content,
+        ],
+      ),
+    );
+  }
+}
+
+class _HighLevelCategoriesContent extends StatelessWidget {
+  const _HighLevelCategoriesContent({
+    required this.showBackButton,
+    required this.onTraffickingTap,
+    required this.onDigitalSecurityTap,
+  });
+
+  final bool showBackButton;
+  final VoidCallback onTraffickingTap;
+  final VoidCallback onDigitalSecurityTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.screen,
+            AppSpacing.xs,
+            AppSpacing.screen,
+            0,
+          ),
+          child: SizedBox(
+            height: AppSizing.minTouchTarget,
+            child: Row(
+              children: [
+                if (showBackButton)
+                  IconButton(
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    icon: const Icon(Icons.arrow_back_outlined),
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).backButtonTooltip,
+                    constraints: const BoxConstraints.tightFor(
+                      width: AppSizing.minTouchTarget,
+                      height: AppSizing.minTouchTarget,
+                    ),
+                  )
+                else
+                  const SizedBox(width: AppSizing.minTouchTarget),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.screen,
+                      AppSpacing.md,
+                      AppSpacing.screen,
+                      AppSpacing.lg,
+                    ),
+                    child: Center(
+                      child: _CenteredCategoryButtons(
+                        onTraffickingTap: onTraffickingTap,
+                        onDigitalSecurityTap: onDigitalSecurityTap,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
