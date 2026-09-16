@@ -344,6 +344,30 @@ void main() {
       },
     );
 
+    test(
+      'completes an activity using submitted scoring when remote questions are not seeded',
+      () async {
+        final firestore = FakeFirebaseFirestore();
+        final repository = CategoryProgressRepository(firestore: firestore);
+        await _seedUser(firestore);
+
+        final result = await _completeActivity(
+          repository,
+          attemptId: 'attempt_without_remote_questions',
+          correctQuestionIds: _ids(1, 8),
+        );
+
+        final activityData = await _activityData(firestore);
+        final userData = await _userData(firestore);
+
+        expect(result.correctAnswers, 8);
+        expect(result.earnedPoints, 80);
+        expect(activityData['bestCorrectAnswers'], 8);
+        expect(activityData['activityPoints'], 80);
+        expect(userData['totalPoints'], 80);
+      },
+    );
+
     test('registers all incorrect attempts without awarding points', () async {
       final firestore = FakeFirebaseFirestore();
       final repository = CategoryProgressRepository(firestore: firestore);
@@ -607,7 +631,7 @@ List<CategoryProgressAnswer> _answers(
           answer: correctQuestionIds.contains(questionId)
               ? 'correct'
               : 'incorrect',
-          isCorrect: false,
+          isCorrect: correctQuestionIds.contains(questionId),
           answeredAt: DateTime.utc(2026, 9, 10),
         );
       })

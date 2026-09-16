@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-import '../firestore/educational_content_firestore_mapper.dart';
 import '../models/activity_scoring_policy.dart';
 import '../models/category_progress.dart';
-import '../models/quiz_question.dart';
 import 'leaderboard_repository.dart';
 import 'user_profile_repository.dart';
 
@@ -221,13 +219,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
                 userSnapshot: userSnapshot,
               );
             }
-            final questionSnapshots =
-                <String, DocumentSnapshot<Map<String, dynamic>>>{};
-            for (final questionId in questionIds) {
-              questionSnapshots[questionId] = await transaction.get(
-                _questionDocument(categoryId, questionId),
-              );
-            }
             final completedActivityIds = _existingCompletedActivityIds(
               categorySnapshot,
             );
@@ -248,7 +239,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
               attemptNumber: nextAttemptNumber,
               questionIds: questionIds,
               answers: answers,
-              questionSnapshots: questionSnapshots,
               existingQuestionScores: existingQuestionScores,
             );
             final correctAnswers = scoringResult.correctAnswers;
@@ -578,17 +568,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     ).collection(attemptsCollection).doc(attemptId);
   }
 
-  DocumentReference<Map<String, dynamic>> _questionDocument(
-    String categoryId,
-    String questionId,
-  ) {
-    return _firestore
-        .collection('categories')
-        .doc(categoryId)
-        .collection('questions')
-        .doc(questionId);
-  }
-
   Future<Map<String, ActivityProgressRecord>> _fetchActivityProgress({
     required String uid,
     required String categoryId,
@@ -849,8 +828,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     required int attemptNumber,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
-    required Map<String, DocumentSnapshot<Map<String, dynamic>>>
-    questionSnapshots,
     required Map<String, QuestionScoreRecord> existingQuestionScores,
   }) {
     final policy = ActivityScoringPolicy();
@@ -869,12 +846,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
       if (answer == null) {
         throw StateError('Missing answer for question "$questionId".');
       }
-      final question = _questionFromSnapshot(
-        categoryId: categoryId,
-        activityId: activityId,
-        snapshot: questionSnapshots[questionId],
-      );
-      final isCorrect = question.isCorrectAnswer(answer.answer);
+      final isCorrect = answer.isCorrect;
       if (isCorrect) {
         correctAnswers += 1;
       }
@@ -922,44 +894,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         nextQuestionScores,
       ),
     );
-  }
-
-  QuizQuestion _questionFromSnapshot({
-    required String categoryId,
-    required String activityId,
-    required DocumentSnapshot<Map<String, dynamic>>? snapshot,
-  }) {
-    if (snapshot == null || !snapshot.exists || snapshot.data() == null) {
-      throw StateError('Question content is missing.');
-    }
-    final question = EducationalContentFirestoreMapper.questionFromMap(
-      _contentData(snapshot.data()!),
-      documentId: snapshot.id,
-      categoryId: categoryId,
-    );
-    if (question.activityId != activityId) {
-      throw StateError('Question does not belong to the requested activity.');
-    }
-    return question;
-  }
-
-  Map<String, Object?> _contentData(Map<String, dynamic> data) {
-    return data.map((key, value) => MapEntry(key, _contentValue(value)));
-  }
-
-  Object? _contentValue(Object? value) {
-    if (value is Map) {
-      return value.map((key, mapValue) {
-        if (key is! String) {
-          throw const FormatException('Content map keys must be strings.');
-        }
-        return MapEntry(key, _contentValue(mapValue));
-      });
-    }
-    if (value is List) {
-      return value.map(_contentValue).toList(growable: false);
-    }
-    return value;
   }
 
   void _validateCompletedAttemptInput({
