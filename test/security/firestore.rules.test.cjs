@@ -63,13 +63,16 @@ async function main() {
     ['query de contenido educativo permitida', contentQueryAllowed],
     ['teoría propia permitida y ajena denegada', ownTheoryAllowedOtherDenied],
     ['leaderboard legible solo para autenticados', leaderboardReadRules],
+    ['query ordenada de leaderboard permitida', leaderboardOrderedQueryAllowed],
     ['leaderboard no permite modificar otro usuario', leaderboardOtherUserWriteDenied],
     ['leaderboard rechaza puntos arbitrarios', leaderboardArbitraryPointsDenied],
     ['leaderboard exige totalPoints de users', leaderboardMustMatchUserPoints],
     ['leaderboard exige username de users', leaderboardMustMatchUsername],
     ['leaderboard rechaza email y role', leaderboardPrivateFieldsDenied],
     ['leaderboard permite sincronización legítima de puntos', leaderboardPointSyncAllowed],
+    ['leaderboard permite limpiar campos legacy', leaderboardLegacyCleanupAllowed],
     ['leaderboard permite sincronización legítima de username', leaderboardUsernameSyncAllowed],
+    ['lecturas propias previas a guardar progreso permitidas', ownProgressPreflightReadsAllowed],
     ['flujo legítimo de puntuación permitido', legitimateScoringFlowAllowed],
   ];
 
@@ -519,6 +522,17 @@ async function leaderboardReadRules() {
   await assertFails(getDocs(collection(unauthDb(), 'leaderboard')));
 }
 
+async function leaderboardOrderedQueryAllowed() {
+  await seedUser('uid-a', 50);
+  await seedUser('uid-b', 80);
+  const orderedRanking = query(
+    collection(authDb('uid-a'), 'leaderboard'),
+    where('totalPoints', '>', 0),
+    orderBy('totalPoints', 'desc'),
+  );
+  await assertSucceeds(getDocs(orderedRanking));
+}
+
 async function leaderboardOtherUserWriteDenied() {
   await seedUser('uid-a', 50);
   await seedUser('uid-b', 40);
@@ -583,6 +597,37 @@ async function leaderboardPointSyncAllowed() {
   await assertSucceeds(batch.commit());
 }
 
+async function leaderboardLegacyCleanupAllowed() {
+  await seedUser('uid-a', 50);
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    await setDoc(doc(context.firestore(), 'leaderboard', 'uid-a'), {
+      username: userProfile('uid-a', 50).username,
+      totalPoints: 50,
+      email: 'uid-a@example.com',
+      role: 'user',
+      updatedAt: Timestamp.fromDate(new Date('2026-09-01T00:00:00Z')),
+    });
+  });
+  const firestore = authDb('uid-a');
+  const batch = writeBatch(firestore);
+  batch.update(doc(firestore, 'users', 'uid-a'), {
+    totalPoints: 80,
+    updatedAt: serverTimestamp(),
+  });
+  batch.set(doc(firestore, 'leaderboard', 'uid-a'), {
+    username: userProfile('uid-a', 80).username,
+    totalPoints: 80,
+    updatedAt: serverTimestamp(),
+  });
+  await assertSucceeds(batch.commit());
+
+  const snapshot = await getDoc(doc(firestore, 'leaderboard', 'uid-a'));
+  const data = snapshot.data();
+  if ('email' in data || 'role' in data) {
+    throw new Error('legacy private leaderboard fields were not removed');
+  }
+}
+
 async function leaderboardUsernameSyncAllowed() {
   await seedUser('uid-a', 50);
   const firestore = authDb('uid-a');
@@ -600,6 +645,22 @@ async function leaderboardUsernameSyncAllowed() {
   });
   batch.delete(doc(firestore, 'usernames', userProfile('uid-a', 50).usernameNormalized));
   await assertSucceeds(batch.commit());
+}
+
+async function ownProgressPreflightReadsAllowed() {
+  await seedUser('uid-a');
+  const firestore = authDb('uid-a');
+  await assertSucceeds(getDoc(doc(firestore, 'users', 'uid-a', 'categoryProgress', categoryId)));
+  await assertSucceeds(getDoc(doc(
+    firestore,
+    'users',
+    'uid-a',
+    'categoryProgress',
+    categoryId,
+    'activities',
+    activityId,
+  )));
+  await assertSucceeds(getDoc(activityAttemptRef(firestore, 'uid-a', 'attempt_preflight')));
 }
 
 async function legitimateScoringFlowAllowed() {

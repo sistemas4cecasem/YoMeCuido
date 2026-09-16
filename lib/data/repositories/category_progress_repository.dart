@@ -203,155 +203,154 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         final userDocument = _userDocument(uid);
         final leaderboardDocument = _leaderboardDocument(uid);
 
-        return _firestore.runTransaction<CompletedQuizAttemptPersistenceResult>(
-          (transaction) async {
-            final categorySnapshot = await transaction.get(categoryDocument);
-            final activitySnapshot = await transaction.get(activityDocument);
-            final attemptSnapshot = await transaction.get(attemptDocument);
-            final userSnapshot = await transaction.get(userDocument);
-            final leaderboardSnapshot = await transaction.get(
-              leaderboardDocument,
-            );
-            if (attemptSnapshot.exists) {
-              return _completedAttemptResultFromSnapshots(
-                attemptSnapshot: attemptSnapshot,
-                activitySnapshot: activitySnapshot,
-                userSnapshot: userSnapshot,
-              );
-            }
-            final completedActivityIds = _existingCompletedActivityIds(
-              categorySnapshot,
-            );
-            if (!completedActivityIds.contains(activityId)) {
-              completedActivityIds.add(activityId);
-            }
-            final categoryCompleted =
-                totalActivities > 0 &&
-                completedActivityIds.length >= totalActivities;
-            final nextAttemptNumber =
-                _existingActivityAttemptCount(activitySnapshot) + 1;
-            final existingQuestionScores = _existingQuestionScores(
-              activitySnapshot,
-            );
-            final scoringResult = _scoreActivityAnswers(
+        final snapshots = await Future.wait([
+          categoryDocument.get(),
+          activityDocument.get(),
+          attemptDocument.get(),
+          userDocument.get(),
+          leaderboardDocument.get(),
+        ]);
+        final categorySnapshot = snapshots[0];
+        final activitySnapshot = snapshots[1];
+        final attemptSnapshot = snapshots[2];
+        final userSnapshot = snapshots[3];
+        final leaderboardSnapshot = snapshots[4];
+        if (attemptSnapshot.exists) {
+          return _completedAttemptResultFromSnapshots(
+            attemptSnapshot: attemptSnapshot,
+            activitySnapshot: activitySnapshot,
+            userSnapshot: userSnapshot,
+          );
+        }
+
+        final completedActivityIds = _existingCompletedActivityIds(
+          categorySnapshot,
+        );
+        if (!completedActivityIds.contains(activityId)) {
+          completedActivityIds.add(activityId);
+        }
+        final categoryCompleted =
+            totalActivities > 0 &&
+            completedActivityIds.length >= totalActivities;
+        final nextAttemptNumber =
+            _existingActivityAttemptCount(activitySnapshot) + 1;
+        final existingQuestionScores = _existingQuestionScores(
+          activitySnapshot,
+        );
+        final scoringResult = _scoreActivityAnswers(
+          categoryId: categoryId,
+          activityId: activityId,
+          attemptNumber: nextAttemptNumber,
+          questionIds: questionIds,
+          answers: answers,
+          existingQuestionScores: existingQuestionScores,
+        );
+        final correctAnswers = scoringResult.correctAnswers;
+        final totalQuestions = scoringResult.totalQuestions;
+        final percentage = scoringResult.percentage;
+        final nextActivityPoints =
+            _existingActivityPoints(activitySnapshot) +
+            scoringResult.earnedPoints;
+        final nextTotalPoints =
+            _existingUserTotalPoints(userSnapshot) + scoringResult.earnedPoints;
+        final bestPercentage = _existingBestPercentage(activitySnapshot);
+        final shouldReplaceBest = percentage >= bestPercentage;
+
+        final batch = _firestore.batch();
+        batch.set(attemptDocument, {
+          'type': QuizAttemptType.activity.firestoreValue,
+          'attemptNumber': nextAttemptNumber,
+          'categoryId': categoryId,
+          'activityId': activityId,
+          'examId': null,
+          'questionIds': questionIds,
+          'answers': _answersByQuestionId(scoringResult.answers),
+          'correctAnswers': correctAnswers,
+          'totalQuestions': totalQuestions,
+          'percentage': percentage,
+          'earnedPoints': scoringResult.earnedPoints,
+          'startedAt': Timestamp.fromDate(startedAt),
+          'completedAt': FieldValue.serverTimestamp(),
+        });
+
+        batch.set(activityDocument, {
+          'activityId': activityId,
+          'status': ActivityProgressStatus.completed.firestoreValue,
+          'attemptCount': nextAttemptNumber,
+          'activityPoints': nextActivityPoints,
+          'questionScores': _questionScoresByQuestionId(
+            scoringResult.questionScores,
+          ),
+          'bestCorrectAnswers': shouldReplaceBest
+              ? correctAnswers
+              : _existingBestCorrectAnswers(activitySnapshot),
+          'bestTotalQuestions': shouldReplaceBest
+              ? totalQuestions
+              : _existingBestTotalQuestions(activitySnapshot),
+          'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
+          'lastAttemptAt': FieldValue.serverTimestamp(),
+          'completedAt':
+              _existingActivityCompletedAt(activitySnapshot) ??
+              FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+
+        batch.set(userDocument, {
+          'totalPoints': nextTotalPoints,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+        final username =
+            _existingUserUsername(userSnapshot) ??
+            _existingLeaderboardUsername(leaderboardSnapshot);
+        if (username != null) {
+          batch.set(leaderboardDocument, {
+            'username': username,
+            'totalPoints': nextTotalPoints,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
+
+        if (!categorySnapshot.exists) {
+          batch.set(categoryDocument, {
+            ..._initialProgressData(
               categoryId: categoryId,
-              activityId: activityId,
-              attemptNumber: nextAttemptNumber,
-              questionIds: questionIds,
-              answers: answers,
-              existingQuestionScores: existingQuestionScores,
-            );
-            final correctAnswers = scoringResult.correctAnswers;
-            final totalQuestions = scoringResult.totalQuestions;
-            final percentage = scoringResult.percentage;
-            final nextActivityPoints =
-                _existingActivityPoints(activitySnapshot) +
-                scoringResult.earnedPoints;
-            final nextTotalPoints =
-                _existingUserTotalPoints(userSnapshot) +
-                scoringResult.earnedPoints;
-            final bestPercentage = _existingBestPercentage(activitySnapshot);
-            final shouldReplaceBest = percentage >= bestPercentage;
+              lessonId: lessonId,
+              totalLessonPages: totalLessonPages,
+              totalActivities: totalActivities,
+            ),
+            'status': categoryCompleted
+                ? CategoryProgressStatus.completed.firestoreValue
+                : CategoryProgressStatus.inProgress.firestoreValue,
+            'completedActivityIds': completedActivityIds,
+            'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': categoryCompleted
+                ? FieldValue.serverTimestamp()
+                : null,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        } else {
+          batch.update(categoryDocument, {
+            'categoryId': categoryId,
+            'lessonId': lessonId,
+            'status': categoryCompleted
+                ? CategoryProgressStatus.completed.firestoreValue
+                : CategoryProgressStatus.inProgress.firestoreValue,
+            'completedActivityIds': completedActivityIds,
+            'totalLessonPages': totalLessonPages,
+            'totalActivities': totalActivities,
+            'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': categoryCompleted
+                ? FieldValue.serverTimestamp()
+                : null,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
 
-            transaction.set(attemptDocument, {
-              'type': QuizAttemptType.activity.firestoreValue,
-              'attemptNumber': nextAttemptNumber,
-              'categoryId': categoryId,
-              'activityId': activityId,
-              'examId': null,
-              'questionIds': questionIds,
-              'answers': _answersByQuestionId(scoringResult.answers),
-              'correctAnswers': correctAnswers,
-              'totalQuestions': totalQuestions,
-              'percentage': percentage,
-              'earnedPoints': scoringResult.earnedPoints,
-              'startedAt': Timestamp.fromDate(startedAt),
-              'completedAt': FieldValue.serverTimestamp(),
-            });
-
-            transaction.set(activityDocument, {
-              'activityId': activityId,
-              'status': ActivityProgressStatus.completed.firestoreValue,
-              'attemptCount': nextAttemptNumber,
-              'activityPoints': nextActivityPoints,
-              'questionScores': _questionScoresByQuestionId(
-                scoringResult.questionScores,
-              ),
-              'bestCorrectAnswers': shouldReplaceBest
-                  ? correctAnswers
-                  : _existingBestCorrectAnswers(activitySnapshot),
-              'bestTotalQuestions': shouldReplaceBest
-                  ? totalQuestions
-                  : _existingBestTotalQuestions(activitySnapshot),
-              'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
-              'lastAttemptAt': FieldValue.serverTimestamp(),
-              'completedAt':
-                  _existingActivityCompletedAt(activitySnapshot) ??
-                  FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            });
-
-            transaction.set(userDocument, {
-              'totalPoints': nextTotalPoints,
-              'updatedAt': FieldValue.serverTimestamp(),
-            }, SetOptions(merge: true));
-            final username =
-                _existingUserUsername(userSnapshot) ??
-                _existingLeaderboardUsername(leaderboardSnapshot);
-            if (username != null) {
-              transaction.set(leaderboardDocument, {
-                'username': username,
-                'totalPoints': nextTotalPoints,
-                'updatedAt': FieldValue.serverTimestamp(),
-              }, SetOptions(merge: true));
-            }
-
-            if (!categorySnapshot.exists) {
-              transaction.set(categoryDocument, {
-                ..._initialProgressData(
-                  categoryId: categoryId,
-                  lessonId: lessonId,
-                  totalLessonPages: totalLessonPages,
-                  totalActivities: totalActivities,
-                ),
-                'status': categoryCompleted
-                    ? CategoryProgressStatus.completed.firestoreValue
-                    : CategoryProgressStatus.inProgress.firestoreValue,
-                'completedActivityIds': completedActivityIds,
-                'lastActivityAt': FieldValue.serverTimestamp(),
-                'completedAt': categoryCompleted
-                    ? FieldValue.serverTimestamp()
-                    : null,
-                'updatedAt': FieldValue.serverTimestamp(),
-              });
-              return scoringResult.toPersistenceResult(
-                attemptNumber: nextAttemptNumber,
-                activityPoints: nextActivityPoints,
-                totalPoints: nextTotalPoints,
-              );
-            }
-
-            transaction.update(categoryDocument, {
-              'categoryId': categoryId,
-              'lessonId': lessonId,
-              'status': categoryCompleted
-                  ? CategoryProgressStatus.completed.firestoreValue
-                  : CategoryProgressStatus.inProgress.firestoreValue,
-              'completedActivityIds': completedActivityIds,
-              'totalLessonPages': totalLessonPages,
-              'totalActivities': totalActivities,
-              'lastActivityAt': FieldValue.serverTimestamp(),
-              'completedAt': categoryCompleted
-                  ? FieldValue.serverTimestamp()
-                  : null,
-              'updatedAt': FieldValue.serverTimestamp(),
-            });
-            return scoringResult.toPersistenceResult(
-              attemptNumber: nextAttemptNumber,
-              activityPoints: nextActivityPoints,
-              totalPoints: nextTotalPoints,
-            );
-          },
+        await batch.commit();
+        return scoringResult.toPersistenceResult(
+          attemptNumber: nextAttemptNumber,
+          activityPoints: nextActivityPoints,
+          totalPoints: nextTotalPoints,
         );
       },
     );
@@ -392,103 +391,97 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         );
         final userDocument = _userDocument(uid);
 
-        return _firestore.runTransaction<CompletedQuizAttemptPersistenceResult>(
-          (transaction) async {
-            final categorySnapshot = await transaction.get(categoryDocument);
-            final examSnapshot = await transaction.get(examDocument);
-            final attemptSnapshot = await transaction.get(attemptDocument);
-            final userSnapshot = await transaction.get(userDocument);
-            final existingTotalPoints = _existingUserTotalPoints(userSnapshot);
-            if (attemptSnapshot.exists) {
-              return _completedAttemptResultFromSnapshots(
-                attemptSnapshot: attemptSnapshot,
-                userSnapshot: userSnapshot,
-              );
-            }
-            final nextAttemptNumber =
-                _existingExamAttemptCount(examSnapshot) + 1;
-            final bestPercentage = _existingExamBestPercentage(examSnapshot);
-            final shouldReplaceBest = percentage >= bestPercentage;
+        final snapshots = await Future.wait([
+          categoryDocument.get(),
+          examDocument.get(),
+          attemptDocument.get(),
+          userDocument.get(),
+        ]);
+        final categorySnapshot = snapshots[0];
+        final examSnapshot = snapshots[1];
+        final attemptSnapshot = snapshots[2];
+        final userSnapshot = snapshots[3];
+        final existingTotalPoints = _existingUserTotalPoints(userSnapshot);
+        if (attemptSnapshot.exists) {
+          return _completedAttemptResultFromSnapshots(
+            attemptSnapshot: attemptSnapshot,
+            userSnapshot: userSnapshot,
+          );
+        }
 
-            transaction.set(attemptDocument, {
-              'type': QuizAttemptType.exam.firestoreValue,
-              'attemptNumber': nextAttemptNumber,
-              'categoryId': categoryId,
-              'activityId': null,
-              'examId': examId,
-              'questionIds': questionIds,
-              'answers': _answersByQuestionId(answers),
-              'correctAnswers': correctAnswers,
-              'totalQuestions': totalQuestions,
-              'percentage': percentage,
-              'earnedPoints': 0,
-              'startedAt': Timestamp.fromDate(startedAt),
-              'completedAt': FieldValue.serverTimestamp(),
-            });
+        final nextAttemptNumber = _existingExamAttemptCount(examSnapshot) + 1;
+        final bestPercentage = _existingExamBestPercentage(examSnapshot);
+        final shouldReplaceBest = percentage >= bestPercentage;
 
-            transaction.set(examDocument, {
-              'examId': examId,
-              'status': ActivityProgressStatus.completed.firestoreValue,
-              'attemptCount': nextAttemptNumber,
-              'bestCorrectAnswers': shouldReplaceBest
-                  ? correctAnswers
-                  : _existingExamBestCorrectAnswers(examSnapshot),
-              'bestTotalQuestions': shouldReplaceBest
-                  ? totalQuestions
-                  : _existingExamBestTotalQuestions(examSnapshot),
-              'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
-              'lastAttemptAt': FieldValue.serverTimestamp(),
-              'completedAt':
-                  _existingExamCompletedAt(examSnapshot) ??
-                  FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            });
+        final batch = _firestore.batch();
+        batch.set(attemptDocument, {
+          'type': QuizAttemptType.exam.firestoreValue,
+          'attemptNumber': nextAttemptNumber,
+          'categoryId': categoryId,
+          'activityId': null,
+          'examId': examId,
+          'questionIds': questionIds,
+          'answers': _answersByQuestionId(answers),
+          'correctAnswers': correctAnswers,
+          'totalQuestions': totalQuestions,
+          'percentage': percentage,
+          'earnedPoints': 0,
+          'startedAt': Timestamp.fromDate(startedAt),
+          'completedAt': FieldValue.serverTimestamp(),
+        });
 
-            if (!categorySnapshot.exists) {
-              transaction.set(
-                categoryDocument,
-                _initialProgressData(
-                  categoryId: categoryId,
-                  lessonId: lessonId,
-                  totalLessonPages: totalLessonPages,
-                  totalActivities: totalActivities,
-                ),
-              );
-              return CompletedQuizAttemptPersistenceResult(
-                attemptNumber: nextAttemptNumber,
-                answers: List<CategoryProgressAnswer>.unmodifiable(answers),
-                correctAnswers: correctAnswers,
-                totalQuestions: totalQuestions,
-                percentage: percentage,
-                earnedPoints: 0,
-                activityPoints: null,
-                questionScores: const <String, QuestionScoreRecord>{},
-                totalPoints: existingTotalPoints,
-              );
-            }
+        batch.set(examDocument, {
+          'examId': examId,
+          'status': ActivityProgressStatus.completed.firestoreValue,
+          'attemptCount': nextAttemptNumber,
+          'bestCorrectAnswers': shouldReplaceBest
+              ? correctAnswers
+              : _existingExamBestCorrectAnswers(examSnapshot),
+          'bestTotalQuestions': shouldReplaceBest
+              ? totalQuestions
+              : _existingExamBestTotalQuestions(examSnapshot),
+          'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
+          'lastAttemptAt': FieldValue.serverTimestamp(),
+          'completedAt':
+              _existingExamCompletedAt(examSnapshot) ??
+              FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
 
-            transaction.update(categoryDocument, {
-              'categoryId': categoryId,
-              'lessonId': lessonId,
-              'status': CategoryProgressStatus.completed.firestoreValue,
-              'totalLessonPages': totalLessonPages,
-              'totalActivities': totalActivities,
-              'lastActivityAt': FieldValue.serverTimestamp(),
-              'completedAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            });
-            return CompletedQuizAttemptPersistenceResult(
-              attemptNumber: nextAttemptNumber,
-              answers: List<CategoryProgressAnswer>.unmodifiable(answers),
-              correctAnswers: correctAnswers,
-              totalQuestions: totalQuestions,
-              percentage: percentage,
-              earnedPoints: 0,
-              activityPoints: null,
-              questionScores: const <String, QuestionScoreRecord>{},
-              totalPoints: existingTotalPoints,
-            );
-          },
+        if (!categorySnapshot.exists) {
+          batch.set(
+            categoryDocument,
+            _initialProgressData(
+              categoryId: categoryId,
+              lessonId: lessonId,
+              totalLessonPages: totalLessonPages,
+              totalActivities: totalActivities,
+            ),
+          );
+        } else {
+          batch.update(categoryDocument, {
+            'categoryId': categoryId,
+            'lessonId': lessonId,
+            'status': CategoryProgressStatus.completed.firestoreValue,
+            'totalLessonPages': totalLessonPages,
+            'totalActivities': totalActivities,
+            'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
+
+        await batch.commit();
+        return CompletedQuizAttemptPersistenceResult(
+          attemptNumber: nextAttemptNumber,
+          answers: List<CategoryProgressAnswer>.unmodifiable(answers),
+          correctAnswers: correctAnswers,
+          totalQuestions: totalQuestions,
+          percentage: percentage,
+          earnedPoints: 0,
+          activityPoints: null,
+          questionScores: const <String, QuestionScoreRecord>{},
+          totalPoints: existingTotalPoints,
         );
       },
     );

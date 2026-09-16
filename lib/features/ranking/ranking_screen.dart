@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../../app/app_strings.dart';
@@ -32,13 +30,14 @@ class RankingScreen extends StatefulWidget {
 class _RankingScreenState extends State<RankingScreen> {
   late Stream<List<LeaderboardEntry>> _topEntriesStream;
   Future<LeaderboardUserPosition?>? _positionFuture;
-  String? _lastSyncKey;
+  String? _lastPositionKey;
+  List<LeaderboardEntry> _lastTopEntries = const <LeaderboardEntry>[];
 
   @override
   void initState() {
     super.initState();
     _topEntriesStream = widget.leaderboardRepository.watchTopEntries();
-    _syncCurrentUserEntry();
+    _refreshCurrentUserPosition();
   }
 
   @override
@@ -47,28 +46,22 @@ class _RankingScreenState extends State<RankingScreen> {
     if (oldWidget.leaderboardRepository != widget.leaderboardRepository) {
       _topEntriesStream = widget.leaderboardRepository.watchTopEntries();
       _positionFuture = null;
-      _lastSyncKey = null;
+      _lastPositionKey = null;
+      _lastTopEntries = const <LeaderboardEntry>[];
     }
-    _syncCurrentUserEntry();
+    _refreshCurrentUserPosition();
   }
 
-  void _syncCurrentUserEntry() {
+  void _refreshCurrentUserPosition() {
     final username = widget.profile.username?.trim();
     if (username == null || username.isEmpty) {
       return;
     }
-    final syncKey = '${widget.user.uid}|$username|${widget.totalPoints}';
-    if (_lastSyncKey == syncKey) {
+    final positionKey = '${widget.user.uid}|$username|${widget.totalPoints}';
+    if (_lastPositionKey == positionKey) {
       return;
     }
-    _lastSyncKey = syncKey;
-    unawaited(
-      widget.leaderboardRepository.ensureEntryForCurrentUser(
-        uid: widget.user.uid,
-        username: username,
-        totalPoints: widget.totalPoints,
-      ),
-    );
+    _lastPositionKey = positionKey;
     _positionFuture = widget.leaderboardRepository.fetchUserPosition(
       uid: widget.user.uid,
       username: username,
@@ -87,7 +80,12 @@ class _RankingScreenState extends State<RankingScreen> {
           child: StreamBuilder<List<LeaderboardEntry>>(
             stream: _topEntriesStream,
             builder: (context, snapshot) {
-              final entries = snapshot.data ?? const <LeaderboardEntry>[];
+              final snapshotEntries = snapshot.data;
+              if (snapshotEntries != null) {
+                _lastTopEntries = snapshotEntries;
+              }
+              final entries = snapshotEntries ?? _lastTopEntries;
+              final showLoadError = snapshot.hasError && entries.isEmpty;
               return SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.screen,
@@ -115,7 +113,7 @@ class _RankingScreenState extends State<RankingScreen> {
                               snapshot.connectionState ==
                                   ConnectionState.waiting &&
                               !snapshot.hasData,
-                          error: snapshot.error,
+                          error: showLoadError ? snapshot.error : null,
                         ),
                         const SizedBox(height: AppSpacing.md),
                         _CurrentUserPositionCard(

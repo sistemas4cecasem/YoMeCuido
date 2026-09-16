@@ -344,6 +344,32 @@ void main() {
       },
     );
 
+    test('replaces legacy leaderboard fields when saving points', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+      await _seedQuestions(firestore);
+      await firestore.collection('leaderboard').doc(_uid).set({
+        'username': 'Persona',
+        'totalPoints': 0,
+        'email': 'persona@yomecuido.test',
+        'role': 'user',
+        'updatedAt': Timestamp.fromDate(DateTime.utc(2026, 9, 1)),
+      });
+
+      await _completeActivity(
+        repository,
+        attemptId: 'attempt_legacy_leaderboard',
+        correctQuestionIds: _ids(1, 10),
+      );
+
+      final leaderboardData = await _leaderboardData(firestore);
+      expect(leaderboardData['username'], 'Persona');
+      expect(leaderboardData['totalPoints'], 100);
+      expect(leaderboardData.containsKey('email'), isFalse);
+      expect(leaderboardData.containsKey('role'), isFalse);
+    });
+
     test(
       'completes an activity using submitted scoring when remote questions are not seeded',
       () async {

@@ -41,6 +41,28 @@ void main() {
     expect(find.text(UserProfileRole.user), findsNothing);
     expect(find.byIcon(Icons.emoji_events), findsOneWidget);
     expect(find.byIcon(Icons.military_tech), findsWidgets);
+    expect(repository.ensureEntryCalls, 0);
+  });
+
+  testWidgets('keeps the last visible ranking when the stream fails later', (
+    tester,
+  ) async {
+    final repository = _FakeLeaderboardRepository();
+    await _pumpRanking(tester, repository);
+
+    repository.emit(const <LeaderboardEntry>[
+      LeaderboardEntry(userId: 'uid-a', username: 'Ana', totalPoints: 1000),
+      LeaderboardEntry(userId: 'uid-123', username: 'Dego', totalPoints: 540),
+    ]);
+    await tester.pumpAndSettle();
+
+    repository.emitError(Exception('late ranking stream failure'));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.rankingLoadError), findsNothing);
+    expect(find.text('Ana'), findsOneWidget);
+    expect(find.text('Dego'), findsWidgets);
+    expect(find.text('540 puntos'), findsWidgets);
   });
 
   testWidgets('shows an empty state when there are no participants', (
@@ -132,9 +154,14 @@ class _FakeLeaderboardRepository implements LeaderboardRepository {
 
   final LeaderboardUserPosition? position;
   final _controller = StreamController<List<LeaderboardEntry>>();
+  int ensureEntryCalls = 0;
 
   void emit(List<LeaderboardEntry> entries) {
     _controller.add(entries);
+  }
+
+  void emitError(Object error) {
+    _controller.addError(error);
   }
 
   @override
@@ -161,5 +188,7 @@ class _FakeLeaderboardRepository implements LeaderboardRepository {
     required String uid,
     required String username,
     required int totalPoints,
-  }) async {}
+  }) async {
+    ensureEntryCalls += 1;
+  }
 }

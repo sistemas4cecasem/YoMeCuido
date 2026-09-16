@@ -43,9 +43,7 @@ class FirestoreLeaderboardRepository implements LeaderboardRepository {
         .limit(resolvedLimit)
         .snapshots()
         .map((snapshot) {
-          final entries = snapshot.docs
-              .map(LeaderboardEntry.fromFirestore)
-              .toList(growable: false);
+          final entries = _validEntriesFromSnapshot(snapshot);
           return _sortTiesByUsername(entries);
         });
   }
@@ -96,8 +94,22 @@ class FirestoreLeaderboardRepository implements LeaderboardRepository {
       'username': normalizedUsername,
       'totalPoints': totalPoints,
       'updatedAt': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+    });
   }
+}
+
+List<LeaderboardEntry> _validEntriesFromSnapshot(
+  QuerySnapshot<Map<String, dynamic>> snapshot,
+) {
+  final entries = <LeaderboardEntry>[];
+  for (final document in snapshot.docs) {
+    try {
+      entries.add(LeaderboardEntry.fromFirestore(document));
+    } on FormatException {
+      continue;
+    }
+  }
+  return List<LeaderboardEntry>.unmodifiable(entries);
 }
 
 List<LeaderboardEntry> _sortTiesByUsername(List<LeaderboardEntry> entries) {

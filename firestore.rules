@@ -370,18 +370,6 @@ service cloud.firestore {
         && request.resource.data.updatedAt == request.time;
     }
 
-    function leaderboardMatchesUserAfter(userId) {
-      let leaderboardAfter = getAfter(
-        /databases/$(database)/documents/leaderboard/$(userId)
-      );
-      let userAfter = matchingUserAfter(userId);
-      return leaderboardAfter.data.keys().hasOnly(leaderboardFields())
-        && leaderboardAfter.data.keys().hasAll(leaderboardFields())
-        && leaderboardAfter.data.username == userAfter.data.username
-        && leaderboardAfter.data.totalPoints == userAfter.data.totalPoints
-        && leaderboardAfter.data.updatedAt == request.time;
-    }
-
     function isValidUsernameReservation(usernameNormalized) {
       return request.resource.data.keys().hasOnly(usernameReservationFields())
         && request.resource.data.keys().hasAll(usernameReservationFields())
@@ -752,7 +740,7 @@ service cloud.firestore {
       allow delete: if false;
 
       match /categoryProgress/{categoryId} {
-        allow get, list: if isOwner(userId) && userProfileExists(userId);
+        allow get, list: if isOwner(userId);
         allow create: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
@@ -765,7 +753,7 @@ service cloud.firestore {
         allow delete: if false;
 
         match /activities/{activityId} {
-          allow get, list: if isOwner(userId) && userProfileExists(userId);
+          allow get, list: if isOwner(userId);
           allow create: if isOwner(userId)
             && userProfileExists(userId)
             && hasValidActivityProgress(activityId)
@@ -780,7 +768,7 @@ service cloud.firestore {
           allow delete: if false;
 
           match /attempts/{attemptId} {
-            allow get, list: if isOwner(userId) && userProfileExists(userId);
+            allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
               && userProfileExists(userId)
               && hasValidActivityAttempt(categoryId, activityId)
@@ -791,7 +779,7 @@ service cloud.firestore {
         }
 
         match /exams/{examId} {
-          allow get, list: if isOwner(userId) && userProfileExists(userId);
+          allow get, list: if isOwner(userId);
           allow create: if isOwner(userId)
             && userProfileExists(userId)
             && hasValidExamProgress(examId)
@@ -805,7 +793,7 @@ service cloud.firestore {
           allow delete: if false;
 
           match /attempts/{attemptId} {
-            allow get, list: if isOwner(userId) && userProfileExists(userId);
+            allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
               && userProfileExists(userId)
               && hasValidExamAttempt(categoryId, examId)

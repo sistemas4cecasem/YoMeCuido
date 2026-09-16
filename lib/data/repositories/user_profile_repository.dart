@@ -164,7 +164,7 @@ class UserProfileRepository {
                 'username': trimmedUsername,
                 'totalPoints': profile.totalPoints,
                 'updatedAt': FieldValue.serverTimestamp(),
-              }, SetOptions(merge: true));
+              });
               if (profile.usernameNormalized != usernameNormalized) {
                 transaction.delete(_usernames.doc(profile.usernameNormalized!));
               }
@@ -205,7 +205,7 @@ class UserProfileRepository {
             'username': trimmedUsername,
             'totalPoints': profileSnapshot.data()?['totalPoints'] ?? 0,
             'updatedAt': FieldValue.serverTimestamp(),
-          }, SetOptions(merge: true));
+          });
           return;
         }
 

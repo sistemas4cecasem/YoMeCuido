@@ -36,6 +36,25 @@ void main() {
     },
   );
 
+  test('watchTopEntries skips malformed legacy entries', () async {
+    final firestore = FakeFirebaseFirestore();
+    final repository = FirestoreLeaderboardRepository(firestore: firestore);
+    await _seedLeaderboard(firestore);
+    await firestore.collection('leaderboard').doc('uid-legacy').set({
+      'username': '',
+      'totalPoints': 600,
+      'updatedAt': Timestamp.fromDate(DateTime.utc(2026, 9, 15)),
+    });
+
+    final entries = await repository.watchTopEntries().first;
+
+    expect(entries.map((entry) => entry.userId), isNot(contains('uid-legacy')));
+    expect(
+      entries.map((entry) => entry.username),
+      containsAll(<String>['Ana', 'Beto', 'Cami', 'Dani']),
+    );
+  });
+
   test('fetchUserPosition uses competitive ranking for ties', () async {
     final firestore = FakeFirebaseFirestore();
     final repository = FirestoreLeaderboardRepository(firestore: firestore);
@@ -85,6 +104,31 @@ void main() {
   test('ensureEntryForCurrentUser creates a minimal own entry', () async {
     final firestore = FakeFirebaseFirestore();
     final repository = FirestoreLeaderboardRepository(firestore: firestore);
+
+    await repository.ensureEntryForCurrentUser(
+      uid: 'uid-a',
+      username: 'Ana',
+      totalPoints: 540,
+    );
+
+    final data = (await firestore.collection('leaderboard').doc('uid-a').get())
+        .data()!;
+    expect(data['username'], 'Ana');
+    expect(data['totalPoints'], 540);
+    expect(data.containsKey('email'), isFalse);
+    expect(data.containsKey('role'), isFalse);
+  });
+
+  test('ensureEntryForCurrentUser removes legacy private fields', () async {
+    final firestore = FakeFirebaseFirestore();
+    final repository = FirestoreLeaderboardRepository(firestore: firestore);
+    await firestore.collection('leaderboard').doc('uid-a').set({
+      'username': 'Ana vieja',
+      'totalPoints': 120,
+      'email': 'ana@example.com',
+      'role': 'user',
+      'updatedAt': Timestamp.fromDate(DateTime.utc(2026, 9, 1)),
+    });
 
     await repository.ensureEntryForCurrentUser(
       uid: 'uid-a',
