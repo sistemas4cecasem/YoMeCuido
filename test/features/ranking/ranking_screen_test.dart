@@ -18,6 +18,7 @@ void main() {
     await _pumpRanking(tester, repository);
 
     expect(find.byType(CircularProgressIndicator), findsWidgets);
+    expect(repository.lastLimit, 10);
 
     repository.emit(const <LeaderboardEntry>[
       LeaderboardEntry(userId: 'uid-a', username: 'Ana', totalPoints: 1000),
@@ -32,15 +33,15 @@ void main() {
     expect(find.text(AppStrings.comingSoon), findsNothing);
     expect(find.text('Ana'), findsOneWidget);
     expect(find.text('Beto'), findsOneWidget);
-    expect(find.text('Dego'), findsWidgets);
+    expect(find.text('Dego'), findsOneWidget);
     expect(find.text('1.000 puntos'), findsOneWidget);
     expect(find.text('800 puntos'), findsWidgets);
-    expect(find.text('#2'), findsNothing);
-    expect(find.text(AppStrings.currentUserBadge), findsWidgets);
+    expect(find.text('2'), findsWidgets);
+    expect(find.text(AppStrings.currentUserBadge), findsNothing);
+    expect(find.text(AppStrings.yourRankingPositionTitle), findsNothing);
     expect(find.text('persona@example.com'), findsNothing);
     expect(find.text(UserProfileRole.user), findsNothing);
-    expect(find.byIcon(Icons.emoji_events), findsOneWidget);
-    expect(find.byIcon(Icons.military_tech), findsWidgets);
+    expect(find.byIcon(Icons.person_outline), findsWidgets);
     expect(repository.ensureEntryCalls, 0);
   });
 
@@ -61,8 +62,9 @@ void main() {
 
     expect(find.text(AppStrings.rankingLoadError), findsNothing);
     expect(find.text('Ana'), findsOneWidget);
-    expect(find.text('Dego'), findsWidgets);
-    expect(find.text('540 puntos'), findsWidgets);
+    expect(find.text('Dego'), findsOneWidget);
+    expect(find.text('540 puntos'), findsOneWidget);
+    expect(find.text(AppStrings.yourRankingPositionTitle), findsNothing);
   });
 
   testWidgets('shows an empty state when there are no participants', (
@@ -98,9 +100,32 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.yourRankingPositionTitle), findsOneWidget);
-    expect(find.text('#123'), findsOneWidget);
+    expect(find.text('123'), findsOneWidget);
     expect(find.text('Dego'), findsOneWidget);
     expect(find.text('540 puntos'), findsOneWidget);
+  });
+
+  testWidgets('shows only ten entries and hides position when user is in top', (
+    tester,
+  ) async {
+    final repository = _FakeLeaderboardRepository();
+    await _pumpRanking(tester, repository);
+
+    repository.emit(<LeaderboardEntry>[
+      for (var index = 1; index <= 12; index += 1)
+        LeaderboardEntry(
+          userId: index == 10 ? 'uid-123' : 'uid-$index',
+          username: index == 10 ? 'Dego' : 'Persona$index',
+          totalPoints: 1000 - index,
+        ),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Persona1'), findsOneWidget);
+    expect(find.text('Dego'), findsOneWidget);
+    expect(find.text('Persona11'), findsNothing);
+    expect(find.text('Persona12'), findsNothing);
+    expect(find.text(AppStrings.yourRankingPositionTitle), findsNothing);
   });
 
   testWidgets('shows no position for a current user with zero points', (
@@ -155,6 +180,7 @@ class _FakeLeaderboardRepository implements LeaderboardRepository {
   final LeaderboardUserPosition? position;
   final _controller = StreamController<List<LeaderboardEntry>>();
   int ensureEntryCalls = 0;
+  int? lastLimit;
 
   void emit(List<LeaderboardEntry> entries) {
     _controller.add(entries);
@@ -168,6 +194,7 @@ class _FakeLeaderboardRepository implements LeaderboardRepository {
   Stream<List<LeaderboardEntry>> watchTopEntries({
     int limit = LeaderboardRepository.defaultLimit,
   }) {
+    lastLimit = limit;
     return _controller.stream;
   }
 

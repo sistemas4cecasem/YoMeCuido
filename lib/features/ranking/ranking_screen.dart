@@ -28,6 +28,8 @@ class RankingScreen extends StatefulWidget {
 }
 
 class _RankingScreenState extends State<RankingScreen> {
+  static const _rankingLimit = 10;
+
   late Stream<List<LeaderboardEntry>> _topEntriesStream;
   Future<LeaderboardUserPosition?>? _positionFuture;
   String? _lastPositionKey;
@@ -36,7 +38,9 @@ class _RankingScreenState extends State<RankingScreen> {
   @override
   void initState() {
     super.initState();
-    _topEntriesStream = widget.leaderboardRepository.watchTopEntries();
+    _topEntriesStream = widget.leaderboardRepository.watchTopEntries(
+      limit: _rankingLimit,
+    );
     _refreshCurrentUserPosition();
   }
 
@@ -44,7 +48,9 @@ class _RankingScreenState extends State<RankingScreen> {
   void didUpdateWidget(covariant RankingScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.leaderboardRepository != widget.leaderboardRepository) {
-      _topEntriesStream = widget.leaderboardRepository.watchTopEntries();
+      _topEntriesStream = widget.leaderboardRepository.watchTopEntries(
+        limit: _rankingLimit,
+      );
       _positionFuture = null;
       _lastPositionKey = null;
       _lastTopEntries = const <LeaderboardEntry>[];
@@ -75,61 +81,72 @@ class _RankingScreenState extends State<RankingScreen> {
 
     return ColoredBox(
       color: colors.background,
-      child: SafeArea(
-        child: AppBackground(
-          child: StreamBuilder<List<LeaderboardEntry>>(
-            stream: _topEntriesStream,
-            builder: (context, snapshot) {
-              final snapshotEntries = snapshot.data;
-              if (snapshotEntries != null) {
-                _lastTopEntries = snapshotEntries;
-              }
-              final entries = snapshotEntries ?? _lastTopEntries;
-              final showLoadError = snapshot.hasError && entries.isEmpty;
-              return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.screen,
-                  AppSpacing.lg,
-                  AppSpacing.screen,
-                  AppSpacing.xl,
-                ),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: AppSizing.maxContentWidth,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          AppStrings.rankingTitle,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _RankingCard(
-                          entries: entries,
-                          currentUserId: widget.user.uid,
-                          isLoading:
-                              snapshot.connectionState ==
-                                  ConnectionState.waiting &&
-                              !snapshot.hasData,
-                          error: showLoadError ? snapshot.error : null,
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        _CurrentUserPositionCard(
-                          positionFuture: _positionFuture,
-                          currentUserId: widget.user.uid,
-                          topEntries: entries,
-                          totalPoints: widget.totalPoints,
-                        ),
-                      ],
+      child: Stack(
+        children: [
+          const Positioned.fill(child: AppBackground(child: SizedBox.expand())),
+          SafeArea(
+            child: StreamBuilder<List<LeaderboardEntry>>(
+              stream: _topEntriesStream,
+              builder: (context, snapshot) {
+                final snapshotEntries = snapshot.data;
+                if (snapshotEntries != null) {
+                  _lastTopEntries = snapshotEntries;
+                }
+                final entries = (snapshotEntries ?? _lastTopEntries)
+                    .take(_rankingLimit)
+                    .toList(growable: false);
+                final showLoadError = snapshot.hasError && entries.isEmpty;
+                final isLoading =
+                    snapshot.connectionState == ConnectionState.waiting &&
+                    !snapshot.hasData;
+                final currentUserIsInTop = entries.any(
+                  (entry) => entry.userId == widget.user.uid,
+                );
+                final showCurrentUserPosition =
+                    !isLoading &&
+                    (widget.totalPoints <= 0 || !currentUserIsInTop);
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.screen,
+                    AppSpacing.lg,
+                    AppSpacing.screen,
+                    AppSpacing.xl,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: AppSizing.maxContentWidth,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            AppStrings.rankingTitle,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          _RankingCard(
+                            entries: entries,
+                            currentUserId: widget.user.uid,
+                            isLoading: isLoading,
+                            error: showLoadError ? snapshot.error : null,
+                          ),
+                          if (showCurrentUserPosition) ...[
+                            const SizedBox(height: AppSpacing.md),
+                            _CurrentUserPositionCard(
+                              positionFuture: _positionFuture,
+                              totalPoints: widget.totalPoints,
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -188,23 +205,18 @@ class _RankingCard extends StatelessWidget {
 
   List<Widget> _rankedRows() {
     final rows = <Widget>[];
-    var previousPoints = -1;
-    var previousPosition = 0;
-    for (var index = 0; index < entries.length; index += 1) {
-      final entry = entries[index];
-      final position = entry.totalPoints == previousPoints
-          ? previousPosition
-          : index + 1;
-      previousPoints = entry.totalPoints;
-      previousPosition = position;
+    final rankedEntries = _rankedEntries(entries);
+    for (var index = 0; index < rankedEntries.length; index += 1) {
+      final rankedEntry = rankedEntries[index];
       if (rows.isNotEmpty) {
-        rows.add(const SizedBox(height: AppSpacing.sm));
+        rows.add(_RankingDivider());
       }
       rows.add(
         _RankingRow(
-          entry: entry,
-          position: position,
-          isCurrentUser: entry.userId == currentUserId,
+          entry: rankedEntry.entry,
+          position: rankedEntry.position,
+          isCurrentUser: rankedEntry.entry.userId == currentUserId,
+          highlight: rankedEntry.entry.userId == currentUserId,
         ),
       );
     }
@@ -215,21 +227,14 @@ class _RankingCard extends StatelessWidget {
 class _CurrentUserPositionCard extends StatelessWidget {
   const _CurrentUserPositionCard({
     required this.positionFuture,
-    required this.currentUserId,
-    required this.topEntries,
     required this.totalPoints,
   });
 
   final Future<LeaderboardUserPosition?>? positionFuture;
-  final String currentUserId;
-  final List<LeaderboardEntry> topEntries;
   final int totalPoints;
 
   @override
   Widget build(BuildContext context) {
-    final topEntry = _topEntryForCurrentUser();
-    final topPosition = topEntry == null ? null : _positionFor(topEntry);
-
     return Card(
       child: Padding(
         padding: AppInsets.card,
@@ -246,13 +251,6 @@ class _CurrentUserPositionCard extends StatelessWidget {
                 icon: Icons.flag_outlined,
                 title: AppStrings.noRankingPositionTitle,
                 body: AppStrings.noRankingPositionBody,
-              )
-            else if (topEntry != null && topPosition != null)
-              _RankingRow(
-                entry: topEntry,
-                position: topPosition,
-                isCurrentUser: true,
-                compact: true,
               )
             else
               FutureBuilder<LeaderboardUserPosition?>(
@@ -273,7 +271,7 @@ class _CurrentUserPositionCard extends StatelessWidget {
                     entry: position.entry,
                     position: position.position,
                     isCurrentUser: true,
-                    compact: true,
+                    highlight: true,
                   );
                 },
               ),
@@ -282,27 +280,6 @@ class _CurrentUserPositionCard extends StatelessWidget {
       ),
     );
   }
-
-  LeaderboardEntry? _topEntryForCurrentUser() {
-    for (final entry in topEntries) {
-      if (entry.userId == currentUserId) {
-        return entry;
-      }
-    }
-    return null;
-  }
-
-  int? _positionFor(LeaderboardEntry target) {
-    var higherScores = 0;
-    final seenScores = <int>{};
-    for (final entry in topEntries) {
-      if (entry.totalPoints > target.totalPoints) {
-        seenScores.add(entry.totalPoints);
-        higherScores += 1;
-      }
-    }
-    return higherScores + 1;
-  }
 }
 
 class _RankingRow extends StatelessWidget {
@@ -310,70 +287,69 @@ class _RankingRow extends StatelessWidget {
     required this.entry,
     required this.position,
     required this.isCurrentUser,
-    this.compact = false,
+    this.highlight = false,
   });
 
   final LeaderboardEntry entry;
   final int position;
   final bool isCurrentUser;
-  final bool compact;
+  final bool highlight;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final highlightColor = colors.orangeSoft.withValues(alpha: 0.45);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: isCurrentUser ? highlightColor : colors.surface,
-        borderRadius: BorderRadius.circular(AppRadii.button),
-        border: Border.all(
-          color: isCurrentUser ? colors.orangePrimary : colors.border,
-          width: isCurrentUser ? 1.4 : 1,
+    return Semantics(
+      label:
+          'Puesto $position, ${entry.username}, ${_formatPointsLabel(entry.totalPoints)}',
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: highlight ? colors.orangeSoft.withValues(alpha: 0.62) : null,
+          borderRadius: BorderRadius.circular(AppRadii.button),
+          border: highlight
+              ? Border.all(color: colors.orangePrimary, width: 1.2)
+              : null,
         ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(compact ? AppSpacing.sm : AppSpacing.md),
-        child: Row(
-          children: [
-            _PositionBadge(position: position),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    spacing: AppSpacing.xs,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        entry.username,
-                        style: textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm,
+            vertical: AppSpacing.xs,
+          ),
+          child: Row(
+            children: [
+              _PositionBadge(position: position),
+              const SizedBox(width: AppSpacing.sm),
+              _UserAvatar(isCurrentUser: isCurrentUser),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Wrap(
+                  spacing: AppSpacing.xs,
+                  runSpacing: AppSpacing.xxs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      entry.username,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
                       ),
-                      if (isCurrentUser)
-                        Text(
-                          AppStrings.currentUserBadge,
-                          style: textTheme.labelMedium?.copyWith(
-                            color: colors.orangeDark,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.xxs),
-                  Text(
-                    _formatPointsLabel(entry.totalPoints),
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: colors.textSecondary,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                _formatPointsLabel(entry.totalPoints),
+                textAlign: TextAlign.end,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: colors.textSecondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -388,42 +364,97 @@ class _PositionBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final isPodium = position <= 3;
-    final icon = switch (position) {
-      1 => Icons.emoji_events,
-      2 => Icons.military_tech,
-      3 => Icons.workspace_premium,
-      _ => null,
+    final badgeColor = switch (position) {
+      1 => colors.orangePrimary,
+      2 => colors.disabledText.withValues(alpha: 0.45),
+      3 => colors.orangeDark.withValues(alpha: 0.82),
+      _ => Colors.transparent,
     };
+    final textColor = position <= 3
+        ? colors.surfaceStrong
+        : colors.textSecondary;
 
     return SizedBox(
-      width: 52,
-      height: 52,
+      width: 38,
+      height: 38,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: isPodium ? colors.orangeSoft : colors.surfaceStrong,
-          borderRadius: BorderRadius.circular(AppRadii.button),
-          border: Border.all(
-            color: isPodium ? colors.orangePrimary : colors.border,
-          ),
-        ),
+        decoration: BoxDecoration(color: badgeColor, shape: BoxShape.circle),
         child: Center(
-          child: icon == null
-              ? Text(
-                  '#$position',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              : Semantics(
-                  label: '#$position',
-                  child: Icon(icon, color: colors.orangeDark),
-                ),
+          child: Text(
+            '$position',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ),
       ),
     );
   }
+}
+
+class _UserAvatar extends StatelessWidget {
+  const _UserAvatar({required this.isCurrentUser});
+
+  final bool isCurrentUser;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return SizedBox(
+      width: 42,
+      height: 42,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.orangeSoft.withValues(
+            alpha: isCurrentUser ? 0.92 : 0.7,
+          ),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.person_outline, color: colors.orangeDark, size: 24),
+      ),
+    );
+  }
+}
+
+class _RankingDivider extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 88),
+      child: Divider(
+        height: AppSpacing.sm,
+        thickness: 1,
+        color: colors.border.withValues(alpha: 0.72),
+      ),
+    );
+  }
+}
+
+class _RankedEntry {
+  const _RankedEntry({required this.entry, required this.position});
+
+  final LeaderboardEntry entry;
+  final int position;
+}
+
+List<_RankedEntry> _rankedEntries(List<LeaderboardEntry> entries) {
+  final rankedEntries = <_RankedEntry>[];
+  var previousPoints = -1;
+  var previousPosition = 0;
+  for (var index = 0; index < entries.length; index += 1) {
+    final entry = entries[index];
+    final position = entry.totalPoints == previousPoints
+        ? previousPosition
+        : index + 1;
+    previousPoints = entry.totalPoints;
+    previousPosition = position;
+    rankedEntries.add(_RankedEntry(entry: entry, position: position));
+  }
+  return rankedEntries;
 }
 
 class _SectionTitle extends StatelessWidget {
