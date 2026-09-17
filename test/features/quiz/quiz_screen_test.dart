@@ -285,7 +285,7 @@ void main() {
     expect(find.text(AppStrings.nextActivity), findsOneWidget);
   });
 
-  testWidgets('muestra retroalimentación respetuosa con respuesta esperada', (
+  testWidgets('marca la opción correcta al responder incorrectamente', (
     tester,
   ) async {
     await pumpQuiz(tester);
@@ -297,14 +297,40 @@ void main() {
     await submit(tester);
 
     expect(find.text(AppStrings.reviewAnswer), findsOneWidget);
-    expect(find.byIcon(Icons.cancel_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.cancel_outlined), findsWidgets);
     expect(find.text('Retroalimentación exacta.'), findsOneWidget);
     expect(
       find.text('${AppStrings.expectedAnswer}: Respuesta correcta'),
       findsNothing,
     );
     expect(find.text('Respuesta incorrecta'), findsOneWidget);
-    expect(find.text('Respuesta correcta'), findsNothing);
+    expect(find.text('Respuesta correcta'), findsOneWidget);
+    expect(find.byIcon(Icons.check_circle_outline), findsNothing);
+
+    final incorrectTop = tester.getTopLeft(find.text('Respuesta incorrecta'));
+    final correctTop = tester.getTopLeft(find.text('Respuesta correcta'));
+    expect(incorrectTop.dy, lessThan(correctTop.dy));
+  });
+
+  testWidgets('muestra solo la palabra correcta si se equivoca en completar', (
+    tester,
+  ) async {
+    await pumpQuiz(tester);
+
+    await answerCurrentCorrectly(tester, 1);
+    await tester.tap(find.text(AppStrings.nextActivity));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'evide');
+    await tester.pumpAndSettle();
+    await submit(tester);
+
+    expect(find.text(AppStrings.reviewAnswer), findsOneWidget);
+    expect(
+      find.text('${AppStrings.expectedAnswer}: evidencia'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('evidencia,'), findsNothing);
   });
 
   testWidgets('avanza de actividad después de la retroalimentación', (

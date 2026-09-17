@@ -83,6 +83,8 @@ class QuizController extends ChangeNotifier {
         .text;
   }
 
+  String get currentCorrectAnswerId => _currentQuestion.correctAnswer;
+
   String? get selectedOptionId => _selectedOptionId;
 
   String get writtenAnswer => _writtenAnswer;

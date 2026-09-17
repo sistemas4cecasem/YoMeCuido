@@ -664,6 +664,13 @@ class _ActivityIllustration extends StatelessWidget {
                     color: colors.textPrimary,
                   ),
                 ),
+                if (controller.isAnswerConfirmed &&
+                    controller.isCurrentAnswerCorrect == false &&
+                    controller.currentQuestionType ==
+                        QuestionType.fillBlank) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  _RecommendedAnswerText(controller: controller),
+                ],
               ],
             );
             final constrainedIllustration = SizedBox(
@@ -768,6 +775,30 @@ class _ActivityIllustration extends StatelessWidget {
     return controller.isCurrentAnswerCorrect == true
         ? colors.success
         : colors.error;
+  }
+}
+
+class _RecommendedAnswerText extends StatelessWidget {
+  const _RecommendedAnswerText({required this.controller});
+
+  final QuizController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Semantics(
+      label:
+          '${AppStrings.expectedAnswer}: ${controller.currentCorrectAnswerText}',
+      child: Text(
+        '${AppStrings.expectedAnswer}: ${controller.currentCorrectAnswerText}',
+        style: textTheme.bodyMedium?.copyWith(
+          color: colors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
   }
 }
 
@@ -890,11 +921,7 @@ class _ChoiceOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visibleOptions = controller.isAnswerConfirmed
-        ? controller.currentOptions.where((option) {
-            return option.id == controller.selectedOptionId;
-          })
-        : controller.currentOptions;
+    final visibleOptions = _visibleOptions();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -902,7 +929,7 @@ class _ChoiceOptions extends StatelessWidget {
         for (final option in visibleOptions) ...[
           AnswerOptionTile(
             text: option.text,
-            isSelected: controller.selectedOptionId == option.id,
+            state: _stateForOption(option.id),
             onTap: controller.isAnswerConfirmed
                 ? null
                 : () => controller.selectOption(option.id),
@@ -911,6 +938,43 @@ class _ChoiceOptions extends StatelessWidget {
         ],
       ],
     );
+  }
+
+  List<QuizOption> _visibleOptions() {
+    if (!controller.isAnswerConfirmed) {
+      return controller.currentOptions;
+    }
+
+    final selectedOption = controller.currentOptions.firstWhere(
+      (option) => option.id == controller.selectedOptionId,
+    );
+    final correctOption = controller.currentOptions.firstWhere(
+      (option) => option.id == controller.currentCorrectAnswerId,
+    );
+
+    if (selectedOption.id == correctOption.id) {
+      return <QuizOption>[selectedOption];
+    }
+
+    return <QuizOption>[selectedOption, correctOption];
+  }
+
+  AnswerOptionTileState _stateForOption(String optionId) {
+    if (!controller.isAnswerConfirmed) {
+      return controller.selectedOptionId == optionId
+          ? AnswerOptionTileState.selected
+          : AnswerOptionTileState.idle;
+    }
+
+    if (optionId == controller.currentCorrectAnswerId) {
+      return AnswerOptionTileState.correct;
+    }
+
+    if (optionId == controller.selectedOptionId) {
+      return AnswerOptionTileState.incorrect;
+    }
+
+    return AnswerOptionTileState.idle;
   }
 }
 

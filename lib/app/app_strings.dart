@@ -174,7 +174,7 @@ abstract final class AppStrings {
   static const seeResult = 'Ver resultado';
   static const correct = 'Correcto';
   static const reviewAnswer = 'Revisemos esta respuesta';
-  static const expectedAnswer = 'Respuesta esperada';
+  static const expectedAnswer = 'Respuesta recomendada';
   static const fillBlankHint = 'Escribe una palabra';
   static const exitLessonTitle = '¿Salir de la lección?';
   static const exitLessonBody = 'El progreso de este intento se perderá.';
