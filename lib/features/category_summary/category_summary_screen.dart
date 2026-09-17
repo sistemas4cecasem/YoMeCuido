@@ -82,6 +82,8 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
                     const SizedBox(height: AppSpacing.md),
                     _ProgressStats(progress: progress),
                     const SizedBox(height: AppSpacing.md),
+                    _PerformanceCard(progress: progress),
+                    const SizedBox(height: AppSpacing.md),
                     _EncouragementCard(progress: progress),
                   ],
                 ),
@@ -140,6 +142,9 @@ class _OverallProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
+    final completedContent =
+        progress.viewedTheoryPages + progress.completedActivities;
+    final totalContent = progress.totalTheoryPages + progress.totalActivities;
 
     return Card(
       color: colors.surfaceStrong,
@@ -174,8 +179,20 @@ class _OverallProgressCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              '${progress.completedActivities} de ${progress.totalActivities} '
-              'actividades completadas',
+              '$completedContent de $totalContent '
+              '${_pluralize(totalContent, singular: 'contenido', plural: 'contenidos')} '
+              '${_pluralize(completedContent, singular: 'completado', plural: 'completados')}',
+              style: textTheme.bodyMedium?.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              '${progress.viewedTheoryPages} '
+              '${_pluralize(progress.viewedTheoryPages, singular: 'teoría', plural: 'teorías')}'
+              ' · '
+              '${progress.completedActivities} '
+              '${_pluralize(progress.completedActivities, singular: 'actividad', plural: 'actividades')}',
               style: textTheme.bodyMedium?.copyWith(
                 color: colors.textSecondary,
               ),
@@ -208,16 +225,6 @@ class _ProgressStats extends StatelessWidget {
       value: '${progress.completedActivities} / ${progress.totalActivities}',
       caption: AppStrings.completedPlural,
     );
-    final scoreCard = _StatCard(
-      icon: Icons.verified_outlined,
-      label: 'Puntaje',
-      value: progress.result == null
-          ? AppStrings.pending
-          : '${progress.correctAnswers} / ${progress.totalActivities}',
-      caption: progress.result == null
-          ? AppStrings.available
-          : '${progress.result!.percentage}%',
-    );
 
     if (shouldStack) {
       return Column(
@@ -225,23 +232,131 @@ class _ProgressStats extends StatelessWidget {
           theoryCard,
           const SizedBox(height: AppSpacing.sm),
           activityCard,
-          const SizedBox(height: AppSpacing.sm),
-          scoreCard,
         ],
       );
     }
 
-    return Column(
+    return Row(
       children: [
-        Row(
+        Expanded(child: theoryCard),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(child: activityCard),
+      ],
+    );
+  }
+}
+
+class _PerformanceCard extends StatelessWidget {
+  const _PerformanceCard({required this.progress});
+
+  final CategoryProgressSnapshot progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    final precision = progress.result == null
+        ? '—'
+        : '${progress.result!.percentage} %';
+    final metrics = [
+      _PerformanceMetricData(
+        value: '${progress.earnedPoints} pts',
+        label: 'Puntaje',
+      ),
+      _PerformanceMetricData(
+        value: '${progress.correctAnswers}',
+        label: 'Correctas',
+      ),
+      _PerformanceMetricData(value: precision, label: 'Precisión'),
+    ];
+
+    return Card(
+      color: colors.surfaceStrong,
+      child: Padding(
+        padding: AppInsets.card,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: theoryCard),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(child: activityCard),
+            Text('Tu rendimiento', style: textTheme.titleMedium),
+            const SizedBox(height: AppSpacing.md),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 320) {
+                  return Column(
+                    children: [
+                      for (var index = 0; index < metrics.length; index += 1)
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: index == 0 ? 0 : AppSpacing.sm,
+                          ),
+                          child: _PerformanceMetric(
+                            data: metrics[index],
+                            alignment: CrossAxisAlignment.start,
+                          ),
+                        ),
+                    ],
+                  );
+                }
+
+                return Row(
+                  children: [
+                    for (var index = 0; index < metrics.length; index += 1) ...[
+                      if (index > 0) const SizedBox(width: AppSpacing.sm),
+                      Expanded(child: _PerformanceMetric(data: metrics[index])),
+                    ],
+                  ],
+                );
+              },
+            ),
           ],
         ),
-        const SizedBox(height: AppSpacing.sm),
-        scoreCard,
+      ),
+    );
+  }
+}
+
+class _PerformanceMetricData {
+  const _PerformanceMetricData({required this.value, required this.label});
+
+  final String value;
+  final String label;
+}
+
+class _PerformanceMetric extends StatelessWidget {
+  const _PerformanceMetric({
+    required this.data,
+    this.alignment = CrossAxisAlignment.center,
+  });
+
+  final _PerformanceMetricData data;
+  final CrossAxisAlignment alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+    final textAlign = alignment == CrossAxisAlignment.center
+        ? TextAlign.center
+        : TextAlign.start;
+
+    return Column(
+      crossAxisAlignment: alignment,
+      children: [
+        Text(
+          data.value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: textAlign,
+          style: textTheme.titleMedium?.copyWith(color: colors.success),
+        ),
+        const SizedBox(height: AppSpacing.xxs),
+        Text(
+          data.label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: textAlign,
+          style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+        ),
       ],
     );
   }
@@ -303,6 +418,27 @@ class _EncouragementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
+    final hasCompletedSubcategory =
+        progress.hasCompletedTheory && progress.hasCompletedActivities;
+    final state = hasCompletedSubcategory
+        ? const _EncouragementState(
+            title: 'Subcategoría completada',
+            message: 'Completaste todo el contenido de esta subcategoría.',
+            assetPath: AppAssets.girlCompleted,
+          )
+        : progress.hasCompletedTheory
+        ? const _EncouragementState(
+            title: 'Teoría completada',
+            message:
+                'Ya terminaste el contenido teórico. Continúa con las actividades para completar la subcategoría.',
+            assetPath: AppAssets.girlProgress,
+          )
+        : const _EncouragementState(
+            title: 'Sigue avanzando',
+            message:
+                'Continúa aprendiendo y practicando para fortalecer tus decisiones de autocuidado.',
+            assetPath: AppAssets.girlProgress,
+          );
 
     return Card(
       color: colors.surfaceStrong,
@@ -311,9 +447,7 @@ class _EncouragementCard extends StatelessWidget {
         child: Row(
           children: [
             CharacterImage(
-              assetPath: progress.hasResult
-                  ? AppAssets.girlCompleted
-                  : AppAssets.girlProgress,
+              assetPath: state.assetPath,
               semanticLabel: 'Personaje mostrando avance',
               height: AppSizing.characterInlineHeight,
             ),
@@ -322,18 +456,9 @@ class _EncouragementCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    progress.hasResult
-                        ? AppStrings.lessonCompleted
-                        : AppStrings.keepProgressingTitle,
-                    style: textTheme.titleMedium,
-                  ),
+                  Text(state.title, style: textTheme.titleMedium),
                   const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    progress.result?.closingMessage ??
-                        AppStrings.keepProgressingBody,
-                    style: textTheme.bodyMedium,
-                  ),
+                  Text(state.message, style: textTheme.bodyMedium),
                 ],
               ),
             ),
@@ -342,4 +467,24 @@ class _EncouragementCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _EncouragementState {
+  const _EncouragementState({
+    required this.title,
+    required this.message,
+    required this.assetPath,
+  });
+
+  final String title;
+  final String message;
+  final String assetPath;
+}
+
+String _pluralize(
+  int count, {
+  required String singular,
+  required String plural,
+}) {
+  return count == 1 ? singular : plural;
 }

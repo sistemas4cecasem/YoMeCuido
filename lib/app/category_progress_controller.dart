@@ -833,6 +833,7 @@ class CategoryProgressSnapshot {
     required this.completedActivities,
     required this.totalActivities,
     required this.correctAnswers,
+    required this.earnedPoints,
     required this.result,
     required this.viewedTheoryPageIds,
     required this.completedActivityIds,
@@ -850,6 +851,7 @@ class CategoryProgressSnapshot {
   final int completedActivities;
   final int totalActivities;
   final int correctAnswers;
+  final int earnedPoints;
   final QuizResult? result;
   final List<String> viewedTheoryPageIds;
   final List<String> completedActivityIds;
@@ -1051,6 +1053,10 @@ class _MutableCategoryProgress {
       0,
       (total, activity) => total + activity.bestTotalQuestions,
     );
+    final earnedPoints = activities.values.fold<int>(
+      0,
+      (total, activity) => total + activity.activityPoints,
+    );
     final result = totalQuestions == 0
         ? null
         : QuizResult.fromScore(
@@ -1064,6 +1070,7 @@ class _MutableCategoryProgress {
       completedActivities: completedActivityIds.length.clamp(0, activityTotal),
       totalActivities: activityTotal,
       correctAnswers: correctAnswers,
+      earnedPoints: earnedPoints,
       result: result,
       viewedTheoryPageIds: List<String>.unmodifiable(viewedTheoryPageIds),
       completedActivityIds: List<String>.unmodifiable(completedActivityIds),
