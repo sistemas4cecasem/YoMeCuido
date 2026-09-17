@@ -16,6 +16,9 @@ abstract final class AppSystemUi {
   );
 
   static Future<void> configure() async {
+    await SystemChrome.setPreferredOrientations(const <DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]);
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(overlayStyle);
   }
