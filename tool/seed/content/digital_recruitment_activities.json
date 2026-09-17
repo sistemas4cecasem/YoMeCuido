@@ -4,37 +4,79 @@
       "id": "digital_recruitment_activity_01",
       "categoryId": "digital_recruitment",
       "title": "Acercamiento y captación en redes",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "La captación en redes puede comenzar con atención, confianza o propuestas atractivas.",
+          "Los secretos y la presión para aislarte son señales de alerta.",
+          "Antes de compartir datos o encontrarte con alguien, verifica y busca apoyo."
+        ]
+      }
     },
     {
       "id": "digital_recruitment_activity_02",
       "categoryId": "digital_recruitment",
       "title": "Perfiles falsos y verificación de identidad",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "Un perfil puede ser falso aunque use fotos y datos convincentes.",
+          "Verifica identidad por canales independientes antes de confiar o desplazarte.",
+          "Las inconsistencias en historia, ubicación o contactos merecen atención."
+        ]
+      }
     },
     {
       "id": "digital_recruitment_activity_03",
       "categoryId": "digital_recruitment",
       "title": "Ofertas digitales de trabajo y viaje",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "Las ofertas digitales de trabajo o viaje deben explicar condiciones y responsables.",
+          "No aceptes traslados solo por mensajes o promesas sin verificar.",
+          "La urgencia y los beneficios exagerados pueden usarse para captar."
+        ]
+      }
     },
     {
       "id": "digital_recruitment_activity_04",
       "categoryId": "digital_recruitment",
       "title": "Manipulación afectiva y grooming",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "La manipulación afectiva puede usar elogios, secretos o dependencia emocional.",
+          "El grooming puede avanzar de confianza a presión o sexualización.",
+          "Hablar con una persona de confianza ayuda a romper el aislamiento."
+        ]
+      }
     },
     {
       "id": "digital_recruitment_activity_05",
       "categoryId": "digital_recruitment",
       "title": "Contenido íntimo, sextorsión y coerción",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "La sextorsión usa amenazas con contenido íntimo para exigir algo.",
+          "No enviar más contenido ni pagar no garantiza que la amenaza termine.",
+          "Conserva evidencia y busca apoyo seguro ante coerción digital."
+        ]
+      }
     },
     {
       "id": "digital_recruitment_activity_06",
       "categoryId": "digital_recruitment",
       "title": "Datos, ubicación, evidencia y respuesta",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Compartir datos y ubicación puede aumentar control o seguimiento.",
+          "Guarda evidencia digital sin exponerte a más contacto peligroso.",
+          "Revisa privacidad y cuentas si sospechas captación o amenazas en línea."
+        ]
+      }
     }
   ]
 }

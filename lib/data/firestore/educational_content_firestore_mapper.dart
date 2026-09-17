@@ -68,6 +68,8 @@ abstract final class EducationalContentFirestoreMapper {
       'categoryId': activity.categoryId,
       'title': activity.title,
       'order': activity.order,
+      if (activity.completion.takeaways.isNotEmpty)
+        'completion': activity.completion.toJson(),
     };
   }
 

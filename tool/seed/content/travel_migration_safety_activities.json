@@ -4,37 +4,79 @@
       "id": "travel_migration_safety_activity_01",
       "categoryId": "travel_migration_safety",
       "title": "Planificación segura de viajes",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "Antes de viajar, conoce destino, transporte, alojamiento y forma de retorno.",
+          "Comparte itinerario y contactos con una persona de confianza.",
+          "Mantener control de documentos favorece autonomía y movilidad."
+        ]
+      }
     },
     {
       "id": "travel_migration_safety_activity_02",
       "categoryId": "travel_migration_safety",
       "title": "Ofertas laborales fuera de la ciudad o país",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "Una oferta laboral verificable debe aclarar funciones, pago, horarios y responsables.",
+          "Comprueba empresa, requisitos migratorios y condiciones antes de viajar.",
+          "Promesas extraordinarias o datos cambiantes requieren verificación adicional."
+        ]
+      }
     },
     {
       "id": "travel_migration_safety_activity_03",
       "categoryId": "travel_migration_safety",
       "title": "Migración, tráfico de personas y riesgos",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "Migrar no equivale automáticamente a trata de personas.",
+          "El tráfico se relaciona con cruces ilegales y beneficio de quien facilita el paso.",
+          "Deuda, amenaza o explotación pueden transformar una ruta en una situación de trata."
+        ]
+      }
     },
     {
       "id": "travel_migration_safety_activity_04",
       "categoryId": "travel_migration_safety",
       "title": "Fronteras, transporte y alojamiento",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "Cambios de ruta o destino sin explicación pueden aumentar dependencia.",
+          "Retener documentos o impedir comunicación limita libertad y movilidad.",
+          "La seguridad y la libertad importan más que la comodidad del transporte o alojamiento."
+        ]
+      }
     },
     {
       "id": "travel_migration_safety_activity_05",
       "categoryId": "travel_migration_safety",
       "title": "Deudas, costos y promesas de pago",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "Aclara costos de transporte, vivienda, comida y contratación antes de viajar.",
+          "Una deuda indefinida o manipulada puede usarse para controlar.",
+          "Ninguna deuda justifica trabajo forzoso ni privación de libertad."
+        ]
+      }
     },
     {
       "id": "travel_migration_safety_activity_06",
       "categoryId": "travel_migration_safety",
       "title": "Seguridad durante el viaje y búsqueda de ayuda",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Ante amenazas durante un viaje, prioriza integridad y salida segura.",
+          "Mantener contactos externos permite pedir ayuda si cambian las condiciones.",
+          "El consentimiento inicial no obliga a aceptar engaños, amenazas o explotación posteriores."
+        ]
+      }
     }
   ]
 }

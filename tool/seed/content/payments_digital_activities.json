@@ -3,36 +3,78 @@
     "id": "payments_digital_activity_01",
     "categoryId": "digital_payments_consumption",
     "title": "Transferencias y códigos QR",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Antes de confirmar una transferencia, revisa beneficiario, monto y concepto.",
+        "En pagos con QR, verifica que el destinatario sea el correcto.",
+        "Una operación apresurada puede enviar dinero a una cuenta equivocada o fraudulenta."
+      ]
+    }
   },
   {
     "id": "payments_digital_activity_02",
     "categoryId": "digital_payments_consumption",
     "title": "Comprobantes falsos",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Un comprobante visual no garantiza que el dinero se haya acreditado.",
+        "Verifica el movimiento en la cuenta o aplicación oficial antes de entregar productos.",
+        "Las capturas pueden ser editadas, reenviadas o corresponder a otra operación."
+      ]
+    }
   },
   {
     "id": "payments_digital_activity_03",
     "categoryId": "digital_payments_consumption",
     "title": "Marketplace y compras entre particulares",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "Evalúa reputación, condiciones y señales del vendedor antes de comprar.",
+        "Evita adelantos si no hay garantías claras o datos verificables.",
+        "Los precios demasiado bajos pueden usarse para presionar una decisión rápida."
+      ]
+    }
   },
   {
     "id": "payments_digital_activity_04",
     "categoryId": "digital_payments_consumption",
     "title": "Tiendas y comercio electrónico",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "Compra en tiendas con identidad, condiciones y medios de contacto verificables.",
+        "Revisa dirección web, métodos de pago y políticas antes de ingresar datos.",
+        "Una tienda falsa puede copiar imágenes reales para aparentar confianza."
+      ]
+    }
   },
   {
     "id": "payments_digital_activity_05",
     "categoryId": "digital_payments_consumption",
     "title": "Suscripciones, pruebas gratuitas y patrones oscuros",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Lee condiciones de pruebas gratuitas, renovaciones y cancelaciones.",
+        "Revisa cargos recurrentes para detectar suscripciones olvidadas o no deseadas.",
+        "Los patrones oscuros buscan dificultar decisiones claras de consumo."
+      ]
+    }
   },
   {
     "id": "payments_digital_activity_06",
     "categoryId": "digital_payments_consumption",
     "title": "Respuesta ante fraude financiero",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Ante fraude financiero, actúa rápido y conserva evidencia de la operación.",
+        "Contacta canales oficiales de la entidad de pago o banco involucrado.",
+        "No sigas enviando dinero para intentar recuperar una pérdida."
+      ]
+    }
   }
 ]

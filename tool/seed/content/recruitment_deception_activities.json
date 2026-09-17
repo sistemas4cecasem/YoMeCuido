@@ -4,37 +4,79 @@
       "id": "recruitment_deception_activity_01",
       "categoryId": "recruitment_deception",
       "title": "Captación mediante ofertas y relaciones",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "La captación puede presentarse como oferta laboral, ayuda, romance o amistad.",
+          "Conocer a la persona que ofrece algo no elimina la necesidad de verificar.",
+          "Las promesas deben evaluarse con información clara y redes de apoyo."
+        ]
+      }
     },
     {
       "id": "recruitment_deception_activity_02",
       "categoryId": "recruitment_deception",
       "title": "Engaño, urgencia y secreto",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "La urgencia y el secreto pueden limitar decisiones seguras.",
+          "Las condiciones importantes deben aclararse antes de aceptar viajes o compromisos.",
+          "Desconfía de propuestas que impiden consultar con personas de confianza."
+        ]
+      }
     },
     {
       "id": "recruitment_deception_activity_03",
       "categoryId": "recruitment_deception",
       "title": "Abuso de vulnerabilidad",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "La vulnerabilidad puede ser usada para presionar aceptación de ofertas riesgosas.",
+          "Necesidad económica, aislamiento o dependencia no justifican explotación.",
+          "Una decisión segura requiere tiempo, información y apoyo externo."
+        ]
+      }
     },
     {
       "id": "recruitment_deception_activity_04",
       "categoryId": "recruitment_deception",
       "title": "Deudas, adelantos y documentos",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "Las deudas y adelantos pueden convertirse en herramientas de control.",
+          "Nadie debe retener documentos para asegurar pagos o compromisos.",
+          "Los costos y condiciones deben quedar claros antes de aceptar."
+        ]
+      }
     },
     {
       "id": "recruitment_deception_activity_05",
       "categoryId": "recruitment_deception",
       "title": "Aislamiento, amenazas y coerción",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "El aislamiento reduce la posibilidad de pedir ayuda o contrastar información.",
+          "Las amenazas y la coerción deben tomarse en serio y no enfrentarse en soledad.",
+          "Mantener contacto con redes externas ayuda a detectar cambios de riesgo."
+        ]
+      }
     },
     {
       "id": "recruitment_deception_activity_06",
       "categoryId": "recruitment_deception",
       "title": "Verificación y decisiones seguras",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Verifica identidad, condiciones y responsables antes de aceptar una oferta.",
+          "Comparte planes con personas de confianza para conservar apoyo externo.",
+          "Decidir con información reduce dependencia de quien hace la propuesta."
+        ]
+      }
     }
   ]
 }

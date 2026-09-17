@@ -12,6 +12,7 @@ import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/features/quiz/exam_question_selector.dart';
 import 'package:demo_yomecuido/features/quiz/quiz_screen.dart';
+import 'package:demo_yomecuido/shared/widgets/character_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,7 +27,10 @@ void main() {
     );
   });
 
-  Future<void> pumpQuiz(WidgetTester tester) async {
+  Future<void> pumpQuiz(
+    WidgetTester tester, {
+    LearningActivity activity = _activity,
+  }) async {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.data(),
@@ -38,7 +42,7 @@ void main() {
                   MaterialPageRoute<void>(
                     builder: (context) => QuizScreen.activity(
                       category: _category,
-                      activity: _activity,
+                      activity: activity,
                       contentRepository: repository,
                       progressController: progressController,
                       shuffleQuestions: false,
@@ -107,6 +111,20 @@ void main() {
     await submit(tester);
   }
 
+  Future<void> answerCurrentIncorrectly(WidgetTester tester) async {
+    if (find.byType(TextField).evaluate().isNotEmpty) {
+      await tester.enterText(find.byType(TextField), 'respuesta');
+      await tester.pumpAndSettle();
+    } else {
+      final option = find.text('Respuesta incorrecta').first;
+      await tester.ensureVisible(option);
+      await tester.tap(option);
+      await tester.pumpAndSettle();
+    }
+
+    await submit(tester);
+  }
+
   Future<void> completeQuiz(WidgetTester tester) async {
     for (var activity = 1; activity <= 10; activity += 1) {
       await answerCurrentCorrectly(tester, activity);
@@ -116,6 +134,29 @@ void main() {
       } else {
         await tester.tap(find.text(AppStrings.seeResult));
       }
+      await tester.pumpAndSettle();
+    }
+  }
+
+  Future<void> completeQuizWithCorrectAnswers(
+    WidgetTester tester, {
+    required int correctAnswers,
+    int totalQuestions = 10,
+  }) async {
+    for (var question = 1; question <= totalQuestions; question += 1) {
+      if (question <= correctAnswers) {
+        await answerCurrentCorrectly(tester, question);
+      } else {
+        await answerCurrentIncorrectly(tester);
+      }
+
+      await tester.tap(
+        find.text(
+          question == totalQuestions
+              ? AppStrings.seeResult
+              : AppStrings.nextActivity,
+        ),
+      );
       await tester.pumpAndSettle();
     }
   }
@@ -166,7 +207,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('10 de 10'), findsOneWidget);
+    expect(find.text('10 de 10 correctas'), findsOneWidget);
   });
 
   testWidgets('muestra error de carga para una lista vacía', (tester) async {
@@ -397,15 +438,137 @@ void main() {
     await completeQuiz(tester);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('10 de 10'), findsOneWidget);
+    expect(find.text('10 de 10 correctas'), findsOneWidget);
     expect(find.text('100%'), findsOneWidget);
-    expect(find.text('preguntas'), findsOneWidget);
-    expect(find.text('correctas'), findsOneWidget);
-    expect(find.text('por reforzar'), findsOneWidget);
+    expect(find.text('preguntas'), findsNothing);
+    expect(find.text('correctas'), findsNothing);
+    expect(find.text('por reforzar'), findsNothing);
+    expect(
+      find.text(
+        'Muy bien. Reconoces varias señales de riesgo y acciones de protección.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(CharacterImage), findsOneWidget);
     expect(find.text(AppStrings.backToActivities), findsOneWidget);
     expect(find.text(AppStrings.viewCategorySummary), findsNothing);
     expect(find.text(AppStrings.repeatLesson), findsOneWidget);
     expect(find.text(AppStrings.backToCategories), findsNothing);
+  });
+
+  testWidgets(
+    'resultado medio muestra resumen compacto sin métricas duplicadas',
+    (tester) async {
+      progressController.hydrateTotalPointsFromProfile(
+        uid: 'uid-123',
+        totalPoints: 260,
+      );
+      await pumpQuiz(tester);
+
+      await completeQuizWithCorrectAnswers(tester, correctAnswers: 6);
+
+      expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+      expect(find.text('60%'), findsOneWidget);
+      expect(find.text('6 de 10 correctas'), findsOneWidget);
+      expect(
+        find.text(
+          'Buen trabajo. Sigue practicando para fortalecer tus decisiones de autocuidado.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('+60'), findsOneWidget);
+      expect(find.text('320'), findsOneWidget);
+      expect(find.text(AppStrings.takeawaysTitle), findsOneWidget);
+      expect(find.text('Aprendizaje 1'), findsOneWidget);
+      expect(find.text('preguntas'), findsNothing);
+      expect(find.text('por reforzar'), findsNothing);
+      expect(find.byType(CharacterImage), findsOneWidget);
+    },
+  );
+
+  testWidgets('resultado bajo conserva estado y mensaje correspondiente', (
+    tester,
+  ) async {
+    await pumpQuiz(tester);
+
+    await completeQuizWithCorrectAnswers(tester, correctAnswers: 5);
+
+    expect(find.text('50%'), findsOneWidget);
+    expect(find.text('5 de 10 correctas'), findsOneWidget);
+    expect(find.text('Necesita refuerzo'), findsOneWidget);
+    expect(
+      find.text(
+        'Has completado la lección. Puedes repetirla y revisar nuevamente las recomendaciones.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.byType(CharacterImage), findsOneWidget);
+  });
+
+  testWidgets('muestra takeaways específicos de la actividad en resultado', (
+    tester,
+  ) async {
+    await pumpQuiz(tester);
+
+    await completeQuiz(tester);
+
+    expect(find.text(AppStrings.takeawaysTitle), findsOneWidget);
+    expect(find.text('Recuerda'), findsNothing);
+    expect(find.text('Aprendizaje 1'), findsOneWidget);
+    expect(find.text('Aprendizaje 2'), findsOneWidget);
+    expect(find.text('Aprendizaje 3'), findsOneWidget);
+    expect(find.text('Protege tus cuentas y revisa accesos.'), findsNothing);
+    expect(find.text('Guarda evidencia ante amenazas o acoso.'), findsNothing);
+    expect(find.text('Busca apoyo y prioriza tu seguridad.'), findsNothing);
+  });
+
+  testWidgets('oculta cierre pedagógico si la actividad no tiene takeaways', (
+    tester,
+  ) async {
+    await pumpQuiz(tester, activity: _legacyActivity);
+
+    await completeQuiz(tester);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text(AppStrings.takeawaysTitle), findsNothing);
+    expect(find.text('Recuerda'), findsNothing);
+    expect(find.text('Protege tus cuentas y revisa accesos.'), findsNothing);
+    expect(find.text('Guarda evidencia ante amenazas o acoso.'), findsNothing);
+    expect(find.text('Busca apoyo y prioriza tu seguridad.'), findsNothing);
+  });
+
+  testWidgets('actividades distintas muestran takeaways distintos', (
+    tester,
+  ) async {
+    repository.quizQuestions = _buildQuizQuestions(
+      10,
+      activityId: _secondActivity.id,
+    );
+
+    await pumpQuiz(tester, activity: _secondActivity);
+    await completeQuiz(tester);
+
+    expect(find.text(AppStrings.takeawaysTitle), findsOneWidget);
+    expect(find.text('Segundo aprendizaje 1'), findsOneWidget);
+    expect(find.text('Segundo aprendizaje 2'), findsOneWidget);
+    expect(find.text('Segundo aprendizaje 3'), findsOneWidget);
+    expect(find.text('Aprendizaje 1'), findsNothing);
+  });
+
+  testWidgets('el resultado de examen no muestra cierre pedagógico', (
+    tester,
+  ) async {
+    repository.quizQuestions = _buildMultipleChoiceQuestions(18);
+
+    await pumpExam(tester);
+    await completeVisibleQuiz(tester, totalQuestions: 15);
+
+    expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
+    expect(find.text(AppStrings.takeawaysTitle), findsNothing);
+    expect(find.text('Recuerda'), findsNothing);
+    expect(find.text('Protege tus cuentas y revisa accesos.'), findsNothing);
+    expect(find.text('Guarda evidencia ante amenazas o acoso.'), findsNothing);
+    expect(find.text('Busca apoyo y prioriza tu seguridad.'), findsNothing);
   });
 
   testWidgets('muestra puntos del intento separados del total personal', (
@@ -504,6 +667,30 @@ const _activity = LearningActivity(
   categoryId: 'relations_violence_digital',
   title: 'Actividad 1',
   order: 1,
+  completion: ActivityCompletion(
+    takeaways: <String>['Aprendizaje 1', 'Aprendizaje 2', 'Aprendizaje 3'],
+  ),
+);
+
+const _legacyActivity = LearningActivity(
+  id: 'relations_violence_activity_01',
+  categoryId: 'relations_violence_digital',
+  title: 'Actividad 1',
+  order: 1,
+);
+
+const _secondActivity = LearningActivity(
+  id: 'relations_violence_activity_02',
+  categoryId: 'relations_violence_digital',
+  title: 'Actividad 2',
+  order: 2,
+  completion: ActivityCompletion(
+    takeaways: <String>[
+      'Segundo aprendizaje 1',
+      'Segundo aprendizaje 2',
+      'Segundo aprendizaje 3',
+    ],
+  ),
 );
 
 const _category = Category(
@@ -517,35 +704,38 @@ const _category = Category(
   objectives: <String>[],
 );
 
-List<QuizQuestion> _buildQuizQuestions(int count) {
+List<QuizQuestion> _buildQuizQuestions(
+  int count, {
+  String activityId = 'relations_violence_activity_01',
+}) {
   return <QuizQuestion>[
     if (count >= 1)
-      const QuizQuestion(
+      QuizQuestion(
         id: 'activity_1',
         categoryId: 'relations_violence_digital',
-        activityId: 'relations_violence_activity_01',
+        activityId: activityId,
         type: QuestionType.multipleChoice,
         statement: 'Pregunta de opción múltiple',
-        options: <QuizOption>[
+        options: const <QuizOption>[
           QuizOption(id: 'correct', text: 'Respuesta correcta'),
           QuizOption(id: 'incorrect', text: 'Respuesta incorrecta'),
         ],
         correctAnswer: 'correct',
-        acceptedAnswers: <String>['correct'],
+        acceptedAnswers: const <String>['correct'],
         feedback: 'Retroalimentación exacta.',
         capacity: 'reconocer',
         difficulty: 'básica',
       ),
     if (count >= 2)
-      const QuizQuestion(
+      QuizQuestion(
         id: 'activity_2',
         categoryId: 'relations_violence_digital',
-        activityId: 'relations_violence_activity_01',
+        activityId: activityId,
         type: QuestionType.fillBlank,
         statement: 'Las capturas pueden servir como ______.',
-        options: <QuizOption>[],
+        options: const <QuizOption>[],
         correctAnswer: 'evidencia',
-        acceptedAnswers: <String>['evidencia'],
+        acceptedAnswers: const <String>['evidencia'],
         feedback: 'La palabra se valida sin depender de mayúsculas.',
         capacity: 'responder',
         difficulty: 'básica',
@@ -554,7 +744,7 @@ List<QuizQuestion> _buildQuizQuestions(int count) {
       QuizQuestion(
         id: 'activity_$index',
         categoryId: 'relations_violence_digital',
-        activityId: 'relations_violence_activity_01',
+        activityId: activityId,
         type: QuestionType.multipleChoice,
         statement: 'Pregunta $index',
         options: <QuizOption>[

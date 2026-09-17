@@ -4,37 +4,79 @@
       "id": "rights_response_reintegration_activity_01",
       "categoryId": "rights_response_reintegration",
       "title": "Derechos, dignidad y no culpabilización",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "Las víctimas tienen derechos y deben ser tratadas con dignidad.",
+          "La culpa corresponde a quienes explotan, no a la persona afectada.",
+          "El lenguaje respetuoso reduce daño y evita revictimización."
+        ]
+      }
     },
     {
       "id": "rights_response_reintegration_activity_02",
       "categoryId": "rights_response_reintegration",
       "title": "Atención y protección inmediata",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "La atención inmediata debe priorizar seguridad, salud y necesidades básicas.",
+          "No es necesario conocer todos los detalles para activar protección.",
+          "La respuesta debe evitar exponer más a la persona afectada."
+        ]
+      }
     },
     {
       "id": "rights_response_reintegration_activity_03",
       "categoryId": "rights_response_reintegration",
       "title": "Reporte, denuncia y autoridades",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "Reportar o denunciar debe hacerse por canales adecuados y con información clara.",
+          "La persona afectada no debe asumir sola la investigación del caso.",
+          "Datos concretos pueden orientar la respuesta sin reemplazar a las autoridades competentes."
+        ]
+      }
     },
     {
       "id": "rights_response_reintegration_activity_04",
       "categoryId": "rights_response_reintegration",
       "title": "No revictimización y confidencialidad",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "La confidencialidad protege privacidad, seguridad y dignidad de la víctima.",
+          "Repetir relatos traumáticos innecesariamente puede causar más daño.",
+          "Evita publicar nombres, imágenes o detalles que permitan identificar a la persona."
+        ]
+      }
     },
     {
       "id": "rights_response_reintegration_activity_05",
       "categoryId": "rights_response_reintegration",
       "title": "Recuperación y reintegración integral",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "La recuperación es un proceso integral, no solo una solución inmediata.",
+          "Apoyo emocional, social, educativo o laboral puede formar parte de la reintegración.",
+          "Las decisiones deben respetar tiempos, dignidad y autonomía de la persona."
+        ]
+      }
     },
     {
       "id": "rights_response_reintegration_activity_06",
       "categoryId": "rights_response_reintegration",
       "title": "Acompañamiento, seguimiento y autonomía",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Acompañar implica escuchar, respetar decisiones y evitar imponer caminos.",
+          "El seguimiento debe fortalecer autonomía y redes de apoyo.",
+          "La ayuda sostenida requiere cuidado, confidencialidad y trato no culpabilizante."
+        ]
+      }
     }
   ]
 }

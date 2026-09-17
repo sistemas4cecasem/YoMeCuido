@@ -420,6 +420,8 @@ class _QuizFlowState extends State<_QuizFlow> {
                 : widget.progressController.attemptFor(_completedAttemptId!);
             return _ResultView(
               result: _controller.generateResult(),
+              takeaways:
+                  widget.activity?.completion.takeaways ?? const <String>[],
               earnedPoints: completedAttempt?.earnedPoints,
               totalPoints: widget.progressController.currentTotalPoints,
               onBackToActivities: _backToActivities,
@@ -1019,6 +1021,7 @@ class _FillBlankInput extends StatelessWidget {
 class _ResultView extends StatelessWidget {
   const _ResultView({
     required this.result,
+    required this.takeaways,
     required this.earnedPoints,
     required this.totalPoints,
     required this.onBackToActivities,
@@ -1026,6 +1029,7 @@ class _ResultView extends StatelessWidget {
   });
 
   final QuizResult result;
+  final List<String> takeaways;
   final int? earnedPoints;
   final int? totalPoints;
   final VoidCallback onBackToActivities;
@@ -1040,6 +1044,7 @@ class _ResultView extends StatelessWidget {
           child: SingleChildScrollView(
             child: ResultSummaryCard(
               result: result,
+              takeaways: takeaways,
               earnedPoints: earnedPoints,
               totalPoints: totalPoints,
             ),

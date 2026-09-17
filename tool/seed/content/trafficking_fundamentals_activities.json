@@ -4,37 +4,79 @@
       "id": "trafficking_fundamentals_activity_01",
       "categoryId": "trafficking_fundamentals",
       "title": "Qué es la trata de personas",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "La trata de personas implica explotación y no se reduce a un solo tipo de caso.",
+          "Puede incluir engaño, amenaza, control o abuso de vulnerabilidad.",
+          "La responsabilidad recae en quienes captan, trasladan, controlan o explotan."
+        ]
+      }
     },
     {
       "id": "trafficking_fundamentals_activity_02",
       "categoryId": "trafficking_fundamentals",
       "title": "Qué es el tráfico de personas y cómo se diferencia",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "El tráfico de personas se relaciona con facilitar cruces ilegales con beneficio.",
+          "La trata se diferencia porque tiene como elemento central la explotación.",
+          "Una situación puede cambiar si aparecen deuda, coacción o explotación."
+        ]
+      }
     },
     {
       "id": "trafficking_fundamentals_activity_03",
       "categoryId": "trafficking_fundamentals",
       "title": "Acción, medios y finalidad",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "La trata puede analizarse mediante acción, medios y finalidad.",
+          "Los medios pueden incluir engaño, amenazas, abuso de poder o vulnerabilidad.",
+          "La finalidad de explotación es clave para reconocer el delito."
+        ]
+      }
     },
     {
       "id": "trafficking_fundamentals_activity_04",
       "categoryId": "trafficking_fundamentals",
       "title": "Consentimiento y vulnerabilidad",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "El consentimiento inicial no valida una situación basada en engaño o amenaza.",
+          "La vulnerabilidad puede ser aprovechada para limitar decisiones libres.",
+          "Culpar a la víctima oculta la responsabilidad de quien explota."
+        ]
+      }
     },
     {
       "id": "trafficking_fundamentals_activity_05",
       "categoryId": "trafficking_fundamentals",
       "title": "Trata interna, transnacional y movimiento",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "La trata puede ocurrir dentro del país o cruzando fronteras.",
+          "El movimiento no siempre es indispensable para reconocer explotación.",
+          "Lo importante es evaluar control, medios utilizados y finalidad de explotación."
+        ]
+      }
     },
     {
       "id": "trafficking_fundamentals_activity_06",
       "categoryId": "trafficking_fundamentals",
       "title": "Mitos, lenguaje y enfoque de protección",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Los mitos y estereotipos dificultan reconocer situaciones reales de trata.",
+          "Un enfoque protector evita culpar a víctimas y respeta su privacidad.",
+          "La prevención combina información, verificación y redes de apoyo."
+        ]
+      }
     }
   ]
 }

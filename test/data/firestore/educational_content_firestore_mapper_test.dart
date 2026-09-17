@@ -68,6 +68,9 @@ void main() {
         categoryId: 'relations_violence_digital',
         title: 'Actividad 1',
         order: 1,
+        completion: ActivityCompletion(
+          takeaways: <String>['Mensaje 1', 'Mensaje 2', 'Mensaje 3'],
+        ),
       );
 
       final data = EducationalContentFirestoreMapper.activityToMap(activity);
@@ -80,6 +83,26 @@ void main() {
       expect(rebuilt.id, activity.id);
       expect(rebuilt.categoryId, activity.categoryId);
       expect(rebuilt.order, activity.order);
+      expect(rebuilt.completion.takeaways, <String>[
+        'Mensaje 1',
+        'Mensaje 2',
+        'Mensaje 3',
+      ]);
+    });
+
+    test('maps legacy activity documents without completion', () {
+      final rebuilt = EducationalContentFirestoreMapper.activityFromMap(
+        const <String, Object?>{
+          'id': 'relations_violence_activity_01',
+          'categoryId': 'relations_violence_digital',
+          'title': 'Actividad 1',
+          'order': 1,
+        },
+        documentId: 'relations_violence_activity_01',
+        categoryId: 'relations_violence_digital',
+      );
+
+      expect(rebuilt.completion.takeaways, isEmpty);
     });
 
     test(

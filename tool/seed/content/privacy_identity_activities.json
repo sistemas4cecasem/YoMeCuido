@@ -3,36 +3,78 @@
     "id": "privacy_identity_activity_01",
     "categoryId": "personal_data_privacy_identity",
     "title": "Compartir solo lo necesario",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Comparte solo los datos necesarios para cada trámite o servicio.",
+        "Antes de entregar información, verifica quién la solicita y para qué la usará.",
+        "Publicar datos personales puede facilitar suplantaciones o contactos no deseados."
+      ]
+    }
   },
   {
     "id": "privacy_identity_activity_02",
     "categoryId": "personal_data_privacy_identity",
     "title": "Fotografías de documentos",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Las fotos de documentos contienen datos que deben protegerse con cuidado.",
+        "Envía documentos solo por canales confiables y cuando sea realmente necesario.",
+        "Evita publicar cédulas, licencias o comprobantes con información visible."
+      ]
+    }
   },
   {
     "id": "privacy_identity_activity_03",
     "categoryId": "personal_data_privacy_identity",
     "title": "Ubicación, rutinas y exposición cotidiana",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "La ubicación y las rutinas pueden revelar hábitos, lugares frecuentes y horarios.",
+        "Revisa quién puede ver tus publicaciones, historias y ubicación en tiempo real.",
+        "Compartir menos detalles cotidianos reduce posibilidades de seguimiento o presión."
+      ]
+    }
   },
   {
     "id": "privacy_identity_activity_04",
     "categoryId": "personal_data_privacy_identity",
     "title": "Suplantación de identidad",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "La suplantación usa datos o imágenes para hacerse pasar por otra persona.",
+        "Reporta perfiles falsos y avisa a contactos por canales confiables.",
+        "Guardar capturas y enlaces ayuda a documentar una suplantación."
+      ]
+    }
   },
   {
     "id": "privacy_identity_activity_05",
     "categoryId": "personal_data_privacy_identity",
     "title": "Consentimiento y contenido compartido",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Compartir contenido con alguien no autoriza su publicación o reenvío.",
+        "El consentimiento puede cambiar y debe respetarse en todo momento.",
+        "Difundir contenido ajeno sin permiso vulnera la privacidad y puede causar daño."
+      ]
+    }
   },
   {
     "id": "privacy_identity_activity_06",
     "categoryId": "personal_data_privacy_identity",
     "title": "Recuperar control después de una exposición",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Después de una exposición, prioriza recuperar control de cuentas y publicaciones.",
+        "Documenta lo ocurrido antes de eliminar evidencias importantes.",
+        "Pide apoyo si la exposición genera amenazas, acoso o suplantación."
+      ]
+    }
   }
 ]

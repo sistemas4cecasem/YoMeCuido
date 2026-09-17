@@ -566,7 +566,7 @@ void main() {
     await completeActivities(tester, correctAnswers: 10);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('10 de 10'), findsOneWidget);
+    expect(find.text('10 de 10 correctas'), findsOneWidget);
 
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
@@ -587,7 +587,7 @@ void main() {
     await completeActivities(tester, correctAnswers: 0);
 
     expect(find.text(AppStrings.lessonCompleted), findsOneWidget);
-    expect(find.text('0 de 10'), findsOneWidget);
+    expect(find.text('0 de 10 correctas'), findsOneWidget);
     expect(find.text('0%'), findsOneWidget);
     expect(
       find.text(

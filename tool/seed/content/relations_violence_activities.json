@@ -3,36 +3,78 @@
     "id": "relations_violence_activity_01",
     "categoryId": "relations_violence_digital",
     "title": "Control, privacidad y límites digitales",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Exigir contraseñas o revisar mensajes sin permiso puede ser control digital.",
+        "El afecto no elimina el derecho a la privacidad y a poner límites.",
+        "Compartir ubicación o accesos con alguien controlador puede aumentar el riesgo."
+      ]
+    }
   },
   {
     "id": "relations_violence_activity_02",
     "categoryId": "relations_violence_digital",
     "title": "Consentimiento y contenido íntimo",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Compartir una imagen íntima no autoriza su publicación o reenvío.",
+        "Amenazar con difundir contenido íntimo vulnera el consentimiento.",
+        "No enfrentes la presión en soledad; guarda evidencia y busca apoyo."
+      ]
+    }
   },
   {
     "id": "relations_violence_activity_03",
     "categoryId": "relations_violence_digital",
     "title": "Acoso, aislamiento y violencia digital",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "El ciberacoso puede incluir vigilancia, aislamiento, insultos o presión constante.",
+        "Documentar, bloquear y reportar puede reducir contacto y conservar pruebas.",
+        "Ninguna persona merece violencia digital por poner límites."
+      ]
+    }
   },
   {
     "id": "relations_violence_activity_04",
     "categoryId": "relations_violence_digital",
     "title": "Grooming y suplantación de identidad",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "El grooming usa manipulación progresiva para ganar confianza y control.",
+        "La suplantación puede servir para acosar, engañar o dañar reputación.",
+        "Señales como secretos, presión o sexualización requieren buscar apoyo seguro."
+      ]
+    }
   },
   {
     "id": "relations_violence_activity_05",
     "categoryId": "relations_violence_digital",
     "title": "Amenazas, evidencia y respuesta segura",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Ante amenazas digitales, guarda capturas, enlaces, fechas y mensajes relevantes.",
+        "Responder con más amenazas puede aumentar el riesgo.",
+        "La evidencia debe conservarse de forma segura y sin alterarla."
+      ]
+    }
   },
   {
     "id": "relations_violence_activity_06",
     "categoryId": "relations_violence_digital",
     "title": "Recuperación, apoyo y seguridad inmediata",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Recuperar control puede incluir cambiar contraseñas y revisar sesiones.",
+        "Las redes de apoyo ayudan a no enfrentar amenazas o acoso en soledad.",
+        "Si hay riesgo físico inmediato, la prioridad es llegar a un lugar seguro."
+      ]
+    }
   }
 ]

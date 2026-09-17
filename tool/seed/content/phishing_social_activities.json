@@ -3,36 +3,78 @@
     "id": "phishing_social_activity_01",
     "categoryId": "phishing_social_engineering",
     "title": "Phishing, smishing y vishing",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "El phishing puede llegar por correo, mensajes, llamadas o sitios falsos.",
+        "No entregues datos ni claves por presión de un mensaje inesperado.",
+        "Verifica el canal oficial antes de abrir enlaces o responder solicitudes."
+      ]
+    }
   },
   {
     "id": "phishing_social_activity_02",
     "categoryId": "phishing_social_engineering",
     "title": "Señales frecuentes de engaño",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "La urgencia, el miedo y las promesas demasiado buenas son señales de engaño.",
+        "Errores, enlaces extraños o remitentes dudosos merecen verificación adicional.",
+        "Un logo conocido no confirma que un mensaje sea legítimo."
+      ]
+    }
   },
   {
     "id": "phishing_social_activity_03",
     "categoryId": "phishing_social_engineering",
     "title": "Método básico de verificación",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "Verifica por un canal independiente antes de actuar ante una solicitud sensible.",
+        "Escribe tú mismo la dirección oficial en lugar de seguir enlaces sospechosos.",
+        "Pausar y comprobar reduce errores provocados por presión o sorpresa."
+      ]
+    }
   },
   {
     "id": "phishing_social_activity_04",
     "categoryId": "phishing_social_engineering",
     "title": "Códigos de verificación",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "Los códigos de verificación son llaves temporales y no deben compartirse.",
+        "Un supuesto soporte no necesita que le dictes códigos ni contraseñas.",
+        "Usa los códigos solo dentro del proceso oficial que tú iniciaste."
+      ]
+    }
   },
   {
     "id": "phishing_social_activity_05",
     "categoryId": "phishing_social_engineering",
     "title": "Falsos familiares y falsos funcionarios",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Los engaños pueden hacerse pasar por familiares, autoridades o personal de soporte.",
+        "Confirma la identidad por otro canal antes de enviar dinero o datos.",
+        "No actúes solo por presión emocional o amenazas repentinas."
+      ]
+    }
   },
   {
     "id": "phishing_social_activity_06",
     "categoryId": "phishing_social_engineering",
     "title": "Empleos, premios, bonos y ofertas engañosas",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Premios, bonos, empleos u ofertas inesperadas requieren verificación.",
+        "No pagues adelantos ni entregues datos por una oportunidad no comprobada.",
+        "Las propuestas legítimas deben explicar condiciones, responsables y canales claros."
+      ]
+    }
   }
 ]

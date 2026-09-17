@@ -3,36 +3,78 @@
     "id": "device_security_activity_01",
     "categoryId": "device_app_security",
     "title": "Bloqueo de pantalla y biometría",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Un bloqueo de pantalla fuerte reduce el acceso no autorizado al dispositivo.",
+        "La biometría debe combinarse con un PIN o clave que no sea fácil de adivinar.",
+        "Evita compartir códigos de desbloqueo o dejarlos visibles para otras personas."
+      ]
+    }
   },
   {
     "id": "device_security_activity_02",
     "categoryId": "device_app_security",
     "title": "Actualizaciones",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Las actualizaciones corrigen fallas que pueden ser aprovechadas por atacantes.",
+        "Mantén al día el sistema y las aplicaciones desde fuentes oficiales.",
+        "Ignorar alertas de actualización puede dejar el dispositivo expuesto."
+      ]
+    }
   },
   {
     "id": "device_security_activity_03",
     "categoryId": "device_app_security",
     "title": "Permisos de las aplicaciones",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "Otorga a cada aplicación solo los permisos que realmente necesita.",
+        "Revisa permisos sensibles como ubicación, cámara, micrófono y contactos.",
+        "Si una app pide permisos sin relación con su función, conviene desconfiar."
+      ]
+    }
   },
   {
     "id": "device_security_activity_04",
     "categoryId": "device_app_security",
     "title": "Aplicaciones falsas o modificadas",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "Instala aplicaciones desde tiendas oficiales o fuentes confiables.",
+        "Las apps falsas o modificadas pueden robar datos o instalar malware.",
+        "Desconfía de enlaces que prometen versiones gratis, premios o funciones desbloqueadas."
+      ]
+    }
   },
   {
     "id": "device_security_activity_05",
     "categoryId": "device_app_security",
     "title": "Copias de seguridad, pérdida y robo",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Las copias de seguridad ayudan a recuperar información ante pérdida o robo.",
+        "Activa opciones de bloqueo, localización o borrado remoto cuando estén disponibles.",
+        "Si pierdes el dispositivo, protege cuentas vinculadas y no solo el aparato."
+      ]
+    }
   },
   {
     "id": "device_security_activity_06",
     "categoryId": "device_app_security",
     "title": "Wi-Fi público y conexiones",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Evita operaciones sensibles en redes Wi-Fi públicas o desconocidas.",
+        "Una red con nombre conocido no siempre pertenece al lugar que aparenta.",
+        "Desactiva conexiones innecesarias y verifica la red antes de compartir datos."
+      ]
+    }
   }
 ]

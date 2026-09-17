@@ -4,37 +4,79 @@
       "id": "warning_prevention_activity_01",
       "categoryId": "warning_prevention",
       "title": "Señales de alerta y contexto",
-      "order": 1
+      "order": 1,
+      "completion": {
+        "takeaways": [
+          "Las señales de alerta deben analizarse en contexto y en conjunto.",
+          "Retención de documentos, control de dinero o aislamiento pueden indicar sometimiento.",
+          "Evita estereotipos y céntrate en hechos observables."
+        ]
+      }
     },
     {
       "id": "warning_prevention_activity_02",
       "categoryId": "warning_prevention",
       "title": "Conversación segura",
-      "order": 2
+      "order": 2,
+      "completion": {
+        "takeaways": [
+          "Una conversación segura requiere privacidad, calma y preguntas neutrales.",
+          "No presiones a la persona para contar todos los detalles.",
+          "El objetivo inicial es evaluar seguridad y conectar con ayuda."
+        ]
+      }
     },
     {
       "id": "warning_prevention_activity_03",
       "categoryId": "warning_prevention",
       "title": "Prevención comunitaria",
-      "order": 3
+      "order": 3,
+      "completion": {
+        "takeaways": [
+          "La prevención comunitaria informa sin generar pánico ni estigma.",
+          "Escuelas, transporte, familias e instituciones pueden fortalecer redes de apoyo.",
+          "Prevenir busca movilidad y oportunidades informadas, no prohibirlas."
+        ]
+      }
     },
     {
       "id": "warning_prevention_activity_04",
       "categoryId": "warning_prevention",
       "title": "Riesgo inmediato y seguridad",
-      "order": 4
+      "order": 4,
+      "completion": {
+        "takeaways": [
+          "Ante riesgo físico, la integridad de las personas es la prioridad.",
+          "Confrontar sin plan puede aumentar el peligro para la víctima y testigos.",
+          "La discreción y la planificación ayudan a intervenir de forma prudente."
+        ]
+      }
     },
     {
       "id": "warning_prevention_activity_05",
       "categoryId": "warning_prevention",
       "title": "Evidencia, reporte y privacidad",
-      "order": 5
+      "order": 5,
+      "completion": {
+        "takeaways": [
+          "La evidencia útil puede incluir datos concretos, capturas, enlaces y contexto.",
+          "No te expongas ni cometas actos ilegales para conseguir pruebas.",
+          "Proteger la privacidad evita revictimización y riesgos adicionales."
+        ]
+      }
     },
     {
       "id": "warning_prevention_activity_06",
       "categoryId": "warning_prevention",
       "title": "Actuación segura como testigo",
-      "order": 6
+      "order": 6,
+      "completion": {
+        "takeaways": [
+          "Un testigo puede reportar sospechas razonables sin investigar por cuenta propia.",
+          "Difundir rumores o alertar a responsables puede aumentar el riesgo.",
+          "Una actuación responsable combina observación, apoyo y prudencia."
+        ]
+      }
     }
   ]
 }

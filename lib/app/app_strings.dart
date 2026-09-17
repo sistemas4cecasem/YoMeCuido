@@ -185,8 +185,5 @@ abstract final class AppStrings {
   static const totalPoints = 'Puntuación total';
   static const repeatLesson = 'Repetir lección';
   static const backToCategories = 'Volver a categorías';
-  static const remindersTitle = 'Recuerda';
-  static const reminderAccounts = 'Protege tus cuentas y revisa accesos.';
-  static const reminderEvidence = 'Guarda evidencia ante amenazas o acoso.';
-  static const reminderSupport = 'Busca apoyo y prioriza tu seguridad.';
+  static const takeawaysTitle = 'Qué debes llevarte';
 }

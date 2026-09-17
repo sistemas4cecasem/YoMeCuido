@@ -3,36 +3,78 @@
     "id": "accounts_auth_activity_01",
     "categoryId": "account_protection_authentication",
     "title": "Contraseñas largas, únicas y difíciles de adivinar",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Usa contraseñas largas, únicas y difíciles de relacionar contigo.",
+        "Evita reutilizar claves porque una filtración puede afectar varias cuentas.",
+        "Los datos personales y cambios previsibles no hacen segura una contraseña."
+      ]
+    }
   },
   {
     "id": "accounts_auth_activity_02",
     "categoryId": "account_protection_authentication",
     "title": "Frases de acceso y gestores de contraseñas",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Una frase de acceso puede ser larga, memorable y poco relacionada contigo.",
+        "Un gestor ayuda a mantener contraseñas diferentes para cada servicio.",
+        "Protege la contraseña maestra y no compartas claves fuera del gestor."
+      ]
+    }
   },
   {
     "id": "accounts_auth_activity_03",
     "categoryId": "account_protection_authentication",
     "title": "Verificación en dos pasos y autenticación multifactor",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "La verificación en dos pasos agrega una barrera además de la contraseña.",
+        "Los códigos temporales son secretos y solo deben usarse en procesos oficiales.",
+        "Rechaza solicitudes de acceso que no hayas iniciado o no reconozcas."
+      ]
+    }
   },
   {
     "id": "accounts_auth_activity_04",
     "categoryId": "account_protection_authentication",
     "title": "Recuperación de cuentas",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "Mantén bajo tu control el correo, teléfono y métodos de recuperación.",
+        "Inicia recuperaciones desde canales oficiales, no desde enlaces recibidos por mensaje.",
+        "Guarda los códigos de respaldo como credenciales privadas."
+      ]
+    }
   },
   {
     "id": "accounts_auth_activity_05",
     "categoryId": "account_protection_authentication",
     "title": "Sesiones, dispositivos y alertas de acceso",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Revisa sesiones y dispositivos para detectar accesos que no reconoces.",
+        "Cierra sesiones sospechosas o de dispositivos que ya no controlas.",
+        "Una alerta desconocida justifica revisar recuperación y seguridad de la cuenta."
+      ]
+    }
   },
   {
     "id": "accounts_auth_activity_06",
     "categoryId": "account_protection_authentication",
     "title": "Respuesta ante una cuenta comprometida",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Ante una cuenta comprometida, protege primero el correo y la recuperación.",
+        "Cambia contraseñas desde canales oficiales y cierra sesiones desconocidas.",
+        "Avisa a tus contactos si la cuenta pudo usarse para engañar."
+      ]
+    }
   }
 ]

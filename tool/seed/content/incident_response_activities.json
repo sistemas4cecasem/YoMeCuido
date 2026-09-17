@@ -3,36 +3,78 @@
     "id": "incident_response_activity_01",
     "categoryId": "incident_response_recovery",
     "title": "Método de respuesta: contener, proteger, documentar, informar y recuperar",
-    "order": 1
+    "order": 1,
+    "completion": {
+      "takeaways": [
+        "Un incidente se atiende mejor con orden: contener, proteger, documentar, informar y recuperar.",
+        "Primero reduce el daño activo antes de intentar entender todos los detalles.",
+        "Registrar lo ocurrido ayuda a tomar decisiones y pedir apoyo adecuado."
+      ]
+    }
   },
   {
     "id": "incident_response_activity_02",
     "categoryId": "incident_response_recovery",
     "title": "Cuenta robada",
-    "order": 2
+    "order": 2,
+    "completion": {
+      "takeaways": [
+        "Ante una cuenta robada, protege el correo principal y la recuperación.",
+        "Cambia credenciales desde canales oficiales y cierra sesiones desconocidas.",
+        "Revisa cambios en métodos de acceso y avisa si la cuenta fue usada para engañar."
+      ]
+    }
   },
   {
     "id": "incident_response_activity_03",
     "categoryId": "incident_response_recovery",
     "title": "Transferencia o fraude financiero",
-    "order": 3
+    "order": 3,
+    "completion": {
+      "takeaways": [
+        "Ante fraude financiero, conserva comprobantes, conversaciones y datos de la operación.",
+        "Comunícate con canales oficiales de la entidad involucrada cuanto antes.",
+        "No envíes más dinero por promesas de desbloqueo, devolución o ayuda."
+      ]
+    }
   },
   {
     "id": "incident_response_activity_04",
     "categoryId": "incident_response_recovery",
     "title": "Malware o aplicación sospechosa",
-    "order": 4
+    "order": 4,
+    "completion": {
+      "takeaways": [
+        "Si sospechas de malware, reduce permisos y desinstala aplicaciones dudosas cuando sea seguro.",
+        "Actualiza el dispositivo y revisa cuentas usadas desde ese equipo.",
+        "Evita seguir ingresando claves en un dispositivo que podría estar comprometido."
+      ]
+    }
   },
   {
     "id": "incident_response_activity_05",
     "categoryId": "incident_response_recovery",
     "title": "Violencia, amenaza o riesgo físico",
-    "order": 5
+    "order": 5,
+    "completion": {
+      "takeaways": [
+        "Ante amenazas o riesgo físico, la seguridad personal va primero.",
+        "No confrontes a la persona agresora si eso puede aumentar el peligro.",
+        "Busca apoyo y conserva evidencia solo cuando hacerlo no te exponga más."
+      ]
+    }
   },
   {
     "id": "incident_response_activity_06",
     "categoryId": "incident_response_recovery",
     "title": "Recuperación y prevención después del incidente",
-    "order": 6
+    "order": 6,
+    "completion": {
+      "takeaways": [
+        "Después de un incidente, revisa qué accesos, permisos o hábitos permitieron el daño.",
+        "Fortalece contraseñas, recuperación, actualizaciones y copias según lo ocurrido.",
+        "La recuperación incluye reducir la posibilidad de que el incidente se repita."
+      ]
+    }
   }
 ]

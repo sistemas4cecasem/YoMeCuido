@@ -12,9 +12,41 @@ import 'character_image.dart';
 class ResultSummaryCard extends StatelessWidget {
   const ResultSummaryCard({
     required this.result,
+    this.takeaways = const <String>[],
     this.earnedPoints,
     this.totalPoints,
     super.key,
+  });
+
+  final QuizResult result;
+  final List<String> takeaways;
+  final int? earnedPoints;
+  final int? totalPoints;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _MainResultPanel(
+          result: result,
+          earnedPoints: earnedPoints,
+          totalPoints: totalPoints,
+        ),
+        if (takeaways.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          _TakeawaysPanel(takeaways: takeaways),
+        ],
+      ],
+    );
+  }
+}
+
+class _MainResultPanel extends StatelessWidget {
+  const _MainResultPanel({
+    required this.result,
+    required this.earnedPoints,
+    required this.totalPoints,
   });
 
   final QuizResult result;
@@ -24,6 +56,7 @@ class ResultSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
 
     return Card(
       color: colors.surfaceStrong,
@@ -32,23 +65,25 @@ class ResultSummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _ResultHero(result: result),
-            const SizedBox(height: AppSpacing.lg),
-            _MetricsPanel(result: result),
+            _ResultHeader(result: result),
+            const SizedBox(height: AppSpacing.md),
+            Center(child: _ScoreRing(result: result)),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              result.closingMessage,
+              textAlign: TextAlign.center,
+              style: textTheme.titleMedium?.copyWith(
+                color: colors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             if (earnedPoints != null || totalPoints != null) ...[
-              const SizedBox(height: AppSpacing.lg),
-              _PointsPanel(
+              const SizedBox(height: AppSpacing.md),
+              _CompactPointsSummary(
                 earnedPoints: earnedPoints,
                 totalPoints: totalPoints,
               ),
             ],
-            const SizedBox(height: AppSpacing.lg),
-            _ClosingMessageCard(
-              message: result.closingMessage,
-              level: result.level,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            const _RemindersPanel(),
           ],
         ),
       ),
@@ -56,135 +91,89 @@ class ResultSummaryCard extends StatelessWidget {
   }
 }
 
-class _PointsPanel extends StatelessWidget {
-  const _PointsPanel({required this.earnedPoints, required this.totalPoints});
-
-  final int? earnedPoints;
-  final int? totalPoints;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.orangeSoft.withValues(alpha: 0.38),
-        borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: colors.border),
-      ),
-      child: Padding(
-        padding: AppInsets.card,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final tiles = <Widget>[
-              if (earnedPoints != null)
-                _MetricTile(
-                  icon: Icons.add_circle_outline,
-                  iconColor: colors.orangeDark,
-                  value: _formatEarnedPoints(earnedPoints!),
-                  label: AppStrings.earnedPoints.toLowerCase(),
-                  highlight: earnedPoints! > 0,
-                ),
-              if (totalPoints != null)
-                _MetricTile(
-                  icon: Icons.stacked_line_chart_outlined,
-                  iconColor: colors.purpleSecondary,
-                  value: _formatPoints(totalPoints!),
-                  label: AppStrings.totalPoints.toLowerCase(),
-                ),
-            ];
-
-            if (constraints.maxWidth < 380 || tiles.length == 1) {
-              return Column(
-                children: [
-                  for (final tile in tiles) ...[
-                    tile,
-                    if (tile != tiles.last)
-                      const SizedBox(height: AppSpacing.sm),
-                  ],
-                ],
-              );
-            }
-
-            return Row(
-              children: [
-                for (final tile in tiles) ...[
-                  Expanded(child: tile),
-                  if (tile != tiles.last) const SizedBox(width: AppSpacing.sm),
-                ],
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class _ResultHero extends StatelessWidget {
-  const _ResultHero({required this.result});
+class _ResultHeader extends StatelessWidget {
+  const _ResultHeader({required this.result});
 
   final QuizResult result;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final accentColor = _accentColorForResult(colors, result);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final useVerticalLayout = constraints.maxWidth < 300 || textScale > 1.3;
-        final heading = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _AchievementChip(
-              color: accentColor,
-              label: result.achievementLabel,
-              icon: _chipIconForResult(result),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(AppStrings.lessonCompleted, style: textTheme.displaySmall),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              result.headlineMessage,
-              style: textTheme.titleMedium?.copyWith(
-                color: colors.textSecondary,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
+        final useVerticalLayout = constraints.maxWidth < 320 || textScale > 1.3;
+        final heading = _ResultHeading(
+          result: result,
+          accentColor: accentColor,
         );
         final character = CharacterImage(
           assetPath: _characterAssetForResult(result),
           semanticLabel: _characterSemanticLabelForResult(result),
-          height: AppSizing.characterFeatureHeight,
+          height: useVerticalLayout
+              ? AppSizing.characterInlineHeight
+              : AppSizing.characterFeatureHeight,
         );
 
-        if (useVerticalLayout) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              heading,
-              const SizedBox(height: AppSpacing.md),
-              Center(child: character),
-            ],
-          );
-        }
-
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(flex: 3, child: heading),
-            const SizedBox(width: AppSpacing.md),
-            Flexible(
-              flex: 2,
-              child: Align(alignment: Alignment.centerRight, child: character),
-            ),
-          ],
-        );
+        return useVerticalLayout
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heading,
+                  const SizedBox(height: AppSpacing.sm),
+                  Center(child: character),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(child: heading),
+                  const SizedBox(width: AppSpacing.md),
+                  Flexible(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: character,
+                    ),
+                  ),
+                ],
+              );
       },
+    );
+  }
+}
+
+class _ResultHeading extends StatelessWidget {
+  const _ResultHeading({required this.result, required this.accentColor});
+
+  final QuizResult result;
+  final Color accentColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _AchievementChip(
+          color: accentColor,
+          label: result.achievementLabel,
+          icon: _chipIconForResult(result),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(AppStrings.lessonCompleted, style: textTheme.displaySmall),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          result.headlineMessage,
+          style: textTheme.titleMedium?.copyWith(
+            color: colors.textSecondary,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -237,84 +226,6 @@ class _AchievementChip extends StatelessWidget {
   }
 }
 
-class _MetricsPanel extends StatelessWidget {
-  const _MetricsPanel({required this.result});
-
-  final QuizResult result;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final needsPractice = result.totalQuestions - result.correctAnswers;
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: colors.border),
-      ),
-      child: Padding(
-        padding: AppInsets.card,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final useStackedLayout = constraints.maxWidth < 520;
-            final stats = [
-              _MetricTile(
-                icon: Icons.help_outline,
-                iconColor: colors.orangePrimary,
-                value: '${result.totalQuestions}',
-                label: 'preguntas',
-              ),
-              _MetricTile(
-                icon: Icons.check_circle_outline,
-                iconColor: colors.success,
-                value: '${result.correctAnswers}',
-                label: 'correctas',
-                highlight: true,
-              ),
-              _MetricTile(
-                icon: Icons.refresh_outlined,
-                iconColor: colors.orangeDark,
-                value: '$needsPractice',
-                label: 'por reforzar',
-              ),
-            ];
-
-            if (useStackedLayout) {
-              return Column(
-                children: [
-                  _ScoreRing(result: result),
-                  const SizedBox(height: AppSpacing.md),
-                  Row(
-                    children: [
-                      for (final stat in stats) ...[
-                        Expanded(child: stat),
-                        if (stat != stats.last)
-                          const SizedBox(width: AppSpacing.xs),
-                      ],
-                    ],
-                  ),
-                ],
-              );
-            }
-
-            return Row(
-              children: [
-                Expanded(flex: 4, child: _ScoreRing(result: result)),
-                const SizedBox(width: AppSpacing.md),
-                for (final stat in stats) ...[
-                  Expanded(flex: 3, child: stat),
-                  if (stat != stats.last) const SizedBox(width: AppSpacing.sm),
-                ],
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
 class _ScoreRing extends StatelessWidget {
   const _ScoreRing({required this.result});
 
@@ -353,15 +264,9 @@ class _ScoreRing extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.xxs),
                     Text(
-                      '${result.correctAnswers} de ${result.totalQuestions}',
-                      style: textTheme.titleSmall,
-                    ),
-                    Text(
-                      'respuestas correctas',
+                      '${result.correctAnswers} de ${result.totalQuestions} correctas',
                       textAlign: TextAlign.center,
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: colors.textPrimary,
-                      ),
+                      style: textTheme.titleSmall,
                     ),
                   ],
                 ),
@@ -415,108 +320,105 @@ class _ScoreRingPainter extends CustomPainter {
   }
 }
 
-class _MetricTile extends StatelessWidget {
-  const _MetricTile({
-    required this.icon,
-    required this.iconColor,
-    required this.value,
-    required this.label,
-    this.highlight = false,
+class _CompactPointsSummary extends StatelessWidget {
+  const _CompactPointsSummary({
+    required this.earnedPoints,
+    required this.totalPoints,
   });
 
-  final IconData icon;
-  final Color iconColor;
-  final String value;
-  final String label;
-  final bool highlight;
+  final int? earnedPoints;
+  final int? totalPoints;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final textTheme = Theme.of(context).textTheme;
+    final items = <Widget>[
+      if (earnedPoints != null)
+        _PointPill(
+          icon: Icons.add_circle_outline,
+          label: AppStrings.earnedPoints,
+          value: _formatEarnedPoints(earnedPoints!),
+          color: colors.orangeDark,
+        ),
+      if (totalPoints != null)
+        _PointPill(
+          icon: Icons.stacked_line_chart_outlined,
+          label: AppStrings.totalPoints,
+          value: _formatPoints(totalPoints!),
+          color: colors.purpleSecondary,
+        ),
+    ];
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: highlight
-            ? colors.success.withValues(alpha: 0.08)
-            : colors.surfaceStrong,
-        borderRadius: BorderRadius.circular(AppRadii.button),
-        border: Border.all(
-          color: highlight
-              ? colors.success.withValues(alpha: 0.28)
-              : colors.border,
-        ),
+        color: colors.orangeSoft.withValues(alpha: 0.32),
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        border: Border.all(color: colors.border),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.xs,
-          vertical: AppSpacing.md,
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
         ),
-        child: Column(
-          children: [
-            Icon(icon, color: iconColor, size: 32),
-            const SizedBox(height: AppSpacing.sm),
-            Text(value, style: textTheme.headlineMedium),
-            const SizedBox(height: AppSpacing.xxs),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(color: colors.textPrimary),
-            ),
-          ],
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.sm,
+          children: items,
         ),
       ),
     );
   }
 }
 
-class _ClosingMessageCard extends StatelessWidget {
-  const _ClosingMessageCard({required this.message, required this.level});
+class _PointPill extends StatelessWidget {
+  const _PointPill({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
 
-  final String message;
-  final QuizResultLevel level;
+  final IconData icon;
+  final String label;
+  final String value;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final accentColor = switch (level) {
-      QuizResultLevel.high => colors.success,
-      QuizResultLevel.medium => colors.orangeDark,
-      QuizResultLevel.low => colors.error,
-    };
-    final icon = switch (level) {
-      QuizResultLevel.high => Icons.star_outlined,
-      QuizResultLevel.medium => Icons.trending_up_outlined,
-      QuizResultLevel.low => Icons.refresh_outlined,
-    };
+    final textTheme = Theme.of(context).textTheme;
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: accentColor.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: accentColor.withValues(alpha: 0.28)),
-      ),
-      child: Padding(
-        padding: AppInsets.card,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CircleAvatar(
-              radius: 24,
-              backgroundColor: accentColor.withValues(alpha: 0.14),
-              child: Icon(icon, color: accentColor),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 240),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color, size: 22),
+          const SizedBox(width: AppSpacing.xs),
+          Flexible(
+            child: Wrap(
+              spacing: AppSpacing.xxs,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  value,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  label.toLowerCase(),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Text(
-                message,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(color: colors.textPrimary),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -556,8 +458,10 @@ String _characterSemanticLabelForResult(QuizResult result) {
   };
 }
 
-class _RemindersPanel extends StatelessWidget {
-  const _RemindersPanel();
+class _TakeawaysPanel extends StatelessWidget {
+  const _TakeawaysPanel({required this.takeaways});
+
+  final List<String> takeaways;
 
   @override
   Widget build(BuildContext context) {
@@ -575,15 +479,14 @@ class _RemindersPanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppStrings.remindersTitle,
+              AppStrings.takeawaysTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: AppSpacing.sm),
-            const _Reminder(text: AppStrings.reminderAccounts),
-            Divider(color: colors.border),
-            const _Reminder(text: AppStrings.reminderEvidence),
-            Divider(color: colors.border),
-            const _Reminder(text: AppStrings.reminderSupport),
+            for (var index = 0; index < takeaways.length; index += 1) ...[
+              _Reminder(text: takeaways[index]),
+              if (index < takeaways.length - 1) Divider(color: colors.border),
+            ],
           ],
         ),
       ),
