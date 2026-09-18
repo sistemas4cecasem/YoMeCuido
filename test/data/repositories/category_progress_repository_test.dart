@@ -540,6 +540,78 @@ void main() {
     });
 
     test(
+      'marks category completed only after theory activities and exam pass',
+      () async {
+        final firestore = FakeFirebaseFirestore();
+        final repository = CategoryProgressRepository(firestore: firestore);
+        await _seedUser(firestore, totalPoints: 300);
+
+        for (final pageId in ['page_01', 'page_02', 'page_03', 'page_04']) {
+          await repository.markTheoryPageViewed(
+            uid: _uid,
+            categoryId: _categoryId,
+            lessonId: _lessonId,
+            pageId: pageId,
+            totalLessonPages: 4,
+            totalActivities: 6,
+          );
+        }
+        for (final activity in [
+          _activityId,
+          _secondActivityId,
+          _thirdActivityId,
+          'relations_violence_activity_04',
+          'relations_violence_activity_05',
+          'relations_violence_activity_06',
+        ]) {
+          await _completeActivity(
+            repository,
+            activityId: activity,
+            attemptId: 'attempt_$activity',
+            correctQuestionIds: _ids(1, 8),
+          );
+        }
+
+        var progressData = await _progressData(firestore);
+        expect(
+          progressData['status'],
+          CategoryProgressStatus.inProgress.firestoreValue,
+        );
+        expect(progressData['completedAt'], isNull);
+
+        await _completeExam(
+          repository,
+          attemptId: 'exam_attempt_11',
+          correctAnswers: 11,
+        );
+        progressData = await _progressData(firestore);
+        var examData = await _examData(firestore);
+
+        expect(examData['bestPercentage'], 73);
+        expect(
+          progressData['status'],
+          CategoryProgressStatus.inProgress.firestoreValue,
+        );
+        expect(progressData['completedAt'], isNull);
+
+        await _completeExam(
+          repository,
+          attemptId: 'exam_attempt_12',
+          correctAnswers: 12,
+        );
+        progressData = await _progressData(firestore);
+        examData = await _examData(firestore);
+
+        expect(examData['bestPercentage'], 80);
+        expect(
+          progressData['status'],
+          CategoryProgressStatus.completed.firestoreValue,
+        );
+        expect(progressData['completedAt'], isA<Timestamp>());
+      },
+    );
+
+    test(
       'keeps totalPoints equal to the sum of multiple activity points',
       () async {
         final firestore = FakeFirebaseFirestore();
@@ -641,6 +713,32 @@ Future<CompletedQuizAttemptPersistenceResult> _completeActivity(
     startedAt: DateTime.utc(2026, 9, 10),
     questionIds: resolvedQuestionIds,
     answers: _answers(correctQuestionIds, questionIds: resolvedQuestionIds),
+    totalLessonPages: 4,
+    totalActivities: 6,
+  );
+}
+
+Future<CompletedQuizAttemptPersistenceResult> _completeExam(
+  CategoryProgressRepository repository, {
+  required String attemptId,
+  required int correctAnswers,
+}) {
+  final questionIds = _prefixedIds('exam', end: 15).toList();
+  return repository.completeExamAttempt(
+    uid: _uid,
+    categoryId: _categoryId,
+    lessonId: _lessonId,
+    examId: _examId,
+    attemptId: attemptId,
+    startedAt: DateTime.utc(2026, 9, 10),
+    questionIds: questionIds,
+    answers: _answers(
+      questionIds.take(correctAnswers).toSet(),
+      questionIds: questionIds,
+    ),
+    correctAnswers: correctAnswers,
+    totalQuestions: questionIds.length,
+    percentage: ((correctAnswers / questionIds.length) * 100).round(),
     totalLessonPages: 4,
     totalActivities: 6,
   );
@@ -761,6 +859,13 @@ Future<Map<String, dynamic>> _examAttemptData(
       .collection('attempts')
       .doc(attemptId)
       .get();
+  return snapshot.data()!;
+}
+
+Future<Map<String, dynamic>> _examData(FakeFirebaseFirestore firestore) async {
+  final snapshot = await _progressDocument(
+    firestore,
+  ).collection('exams').doc(_examId).get();
   return snapshot.data()!;
 }
 

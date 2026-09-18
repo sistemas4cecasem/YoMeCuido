@@ -14,6 +14,7 @@ import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
+import 'package:demo_yomecuido/shared/widgets/lesson_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -121,8 +122,11 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> openDetail(WidgetTester tester) async {
-    await openCategories(tester);
+  Future<void> openDetail(
+    WidgetTester tester, {
+    CategoryProgressController? progressController,
+  }) async {
+    await openCategories(tester, progressController: progressController);
     await tester.tap(find.text('Relaciones y violencia digital'));
     await tester.pumpAndSettle();
   }
@@ -263,6 +267,75 @@ void main() {
     },
   );
 
+  testWidgets(
+    'un examen no aprobado mantiene bloqueada la siguiente categoría',
+    (tester) async {
+      final progressController = CategoryProgressController();
+      progressController.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _completedActivitiesRecord(
+            repository.activities,
+            includeCompletedExam: true,
+            examBestPercentage: 73,
+          ),
+        ],
+      );
+
+      await openCategories(tester, progressController: progressController);
+
+      expect(
+        progressController
+            .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+            .examPassed(FinalExamConfigs.relationsViolence.id),
+        isFalse,
+      );
+      await tester.tap(find.text('Protección de cuentas y autenticación'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(AppStrings.categoryLockedByProgressSnackBar),
+        findsOneWidget,
+      );
+      expect(find.text(AppStrings.theoryTitle), findsNothing);
+    },
+  );
+
+  testWidgets('un status antiguo completed sin examen aprobado no desbloquea', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _completedActivitiesRecord(repository.activities),
+      ],
+    );
+
+    await openCategories(tester, progressController: progressController);
+
+    expect(
+      progressController
+          .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+          .status,
+      CategoryProgressStatus.completed,
+    );
+    expect(
+      progressController
+          .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+          .subcategoryCompleted,
+      isFalse,
+    );
+    await tester.tap(find.text('Protección de cuentas y autenticación'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(AppStrings.categoryLockedByProgressSnackBar),
+      findsOneWidget,
+    );
+    expect(find.text(AppStrings.theoryTitle), findsNothing);
+  });
+
   testWidgets('abre el detalle desde la categoría habilitada', (tester) async {
     await openDetail(tester);
 
@@ -290,7 +363,117 @@ void main() {
     expect(find.text(AppStrings.sensitiveContentWarningTitle), findsOneWidget);
     expect(find.text(AppStrings.theoryTitle), findsOneWidget);
     expect(find.text(AppStrings.activitiesTitle), findsOneWidget);
+    expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
     expect(find.text(AppStrings.summaryTitle), findsWidgets);
+    expect(
+      find.byKey(const ValueKey<String>('learning_route_step_1')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('learning_route_step_2')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('learning_route_step_3')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('learning_route_step_4')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('la ruta de aprendizaje muestra examen bloqueado', (
+    tester,
+  ) async {
+    await openDetail(tester);
+
+    expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
+    expect(find.text(AppStrings.finalExamLocked), findsOneWidget);
+
+    await tester.ensureVisible(find.text(AppStrings.finalExamTitle));
+    await tester.tap(
+      find.byKey(const ValueKey<String>('learning_route_step_3')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.finalExamLocked), findsWidgets);
+    expect(find.text('Pregunta 1 de 15'), findsNothing);
+  });
+
+  testWidgets('la ruta de aprendizaje muestra examen disponible', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _completedActivitiesRecord(repository.activities),
+      ],
+    );
+
+    await openDetail(tester, progressController: progressController);
+
+    expect(
+      find.text(
+        '${FinalExamConfigs.relationsViolence.questionCount} preguntas · '
+        '${AppStrings.available}',
+      ),
+      findsOneWidget,
+    );
+
+    await tester.ensureVisible(find.text(AppStrings.finalExamTitle));
+    await tester.tap(
+      find.byKey(const ValueKey<String>('learning_route_step_3')),
+    );
+    await tester.pumpAndSettle();
+
+    final progressBar = tester.widget<LessonProgressBar>(
+      find.byType(LessonProgressBar),
+    );
+    expect(progressBar.currentStep, 1);
+    expect(
+      progressBar.totalSteps,
+      FinalExamConfigs.relationsViolence.questionCount,
+    );
+  });
+
+  testWidgets('la ruta de aprendizaje muestra reintento de examen', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _completedActivitiesRecord(
+          repository.activities,
+          includeCompletedExam: true,
+          examBestPercentage: 73,
+        ),
+      ],
+    );
+
+    await openDetail(tester, progressController: progressController);
+
+    expect(find.text('Reintentar · Mejor resultado 73%'), findsOneWidget);
+  });
+
+  testWidgets('la ruta de aprendizaje muestra examen aprobado', (tester) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _completedActivitiesRecord(
+          repository.activities,
+          includeCompletedExam: true,
+          examBestPercentage: 87,
+        ),
+      ],
+    );
+
+    await openDetail(tester, progressController: progressController);
+
+    expect(find.text('Aprobado · Mejor resultado 87%'), findsOneWidget);
   });
 
   testWidgets('el detalle corrige totales antiguos con contenido real', (
@@ -335,7 +518,7 @@ void main() {
     expect(find.text('4 de 4 cápsulas vistas'), findsNothing);
     expect(find.text(AppStrings.activitiesLockedByTheory), findsOneWidget);
     expect(find.text('0 de 12 actividades completadas'), findsNothing);
-    expect(find.text('33%'), findsOneWidget);
+    expect(find.text('7%'), findsOneWidget);
     expect(
       progressController
           .snapshotFor('relations_violence_digital')
@@ -348,6 +531,131 @@ void main() {
           .totalActivities,
       6,
     );
+  });
+
+  testWidgets('detalle y resumen muestran el mismo progreso ponderado', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _completedActivitiesRecord(repository.activities),
+      ],
+    );
+
+    await openDetail(tester, progressController: progressController);
+
+    expect(find.text('85%'), findsOneWidget);
+    await tester.ensureVisible(find.text(AppStrings.summaryTitle).last);
+    await tester.tap(find.text(AppStrings.summaryTitle).last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('85%'), findsOneWidget);
+  });
+
+  testWidgets(
+    'el resumen separa progreso, actividades aprobadas, rendimiento y puntaje',
+    (tester) async {
+      final progressController = CategoryProgressController();
+      progressController.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _summaryProgressRecord(
+            repository.activities,
+            activityBestPercentages: const <int>[80, 90, 100, 80, 85, 70],
+            activityAttemptCounts: const <int>[1, 1, 3, 1, 1, 1],
+            activityPoints: const <int>[70, 80, 120, 70, 80, 30],
+          ),
+        ],
+      );
+
+      await _openCategorySummary(tester, progressController);
+
+      expect(find.text('73%'), findsOneWidget);
+      expect(find.text('5 / 6'), findsOneWidget);
+      expect(find.text('Aprobadas'), findsOneWidget);
+      expect(find.text('450 pts'), findsOneWidget);
+      expect(find.text('8'), findsOneWidget);
+      expect(find.text('Intentos'), findsOneWidget);
+      expect(find.text('100%'), findsOneWidget);
+      expect(find.text('Mejor resultado'), findsOneWidget);
+      expect(find.text('En progreso'), findsOneWidget);
+      expect(find.text('Subcategoría completada'), findsNothing);
+      expect(find.text('Examen final: Bloqueado'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'el resumen muestra examen disponible sin completar subcategoría',
+    (tester) async {
+      final progressController = CategoryProgressController();
+      progressController.hydrateFromRecords(
+        uid: 'uid-123',
+        records: <CategoryProgressRecord>[
+          _summaryProgressRecord(
+            repository.activities,
+            activityBestPercentages: const <int>[80, 80, 80, 80, 80, 80],
+          ),
+        ],
+      );
+
+      await _openCategorySummary(tester, progressController);
+
+      expect(find.text('85%'), findsOneWidget);
+      expect(find.text('6 / 6'), findsWidgets);
+      expect(find.text('Examen final: Disponible'), findsOneWidget);
+      expect(find.text('En progreso'), findsOneWidget);
+      expect(find.text('Subcategoría completada'), findsNothing);
+    },
+  );
+
+  testWidgets('el resumen diferencia examen reprobado y examen aprobado', (
+    tester,
+  ) async {
+    final failedController = CategoryProgressController();
+    failedController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _summaryProgressRecord(
+          repository.activities,
+          activityBestPercentages: const <int>[80, 80, 80, 80, 80, 80],
+          examBestPercentage: 73,
+        ),
+      ],
+    );
+
+    await _openCategorySummary(tester, failedController);
+
+    expect(find.text('85%'), findsOneWidget);
+    expect(
+      find.text(
+        'Examen final: No aprobado / Reintentar · Mejor resultado: 73%',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Subcategoría completada'), findsNothing);
+
+    final passedController = CategoryProgressController();
+    passedController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _summaryProgressRecord(
+          repository.activities,
+          activityBestPercentages: const <int>[80, 80, 80, 80, 80, 80],
+          examBestPercentage: 80,
+        ),
+      ],
+    );
+
+    await _openCategorySummary(tester, passedController);
+
+    expect(find.text('100%'), findsOneWidget);
+    expect(
+      find.text('Examen final: Aprobado · Mejor resultado: 80%'),
+      findsOneWidget,
+    );
+    expect(find.text('Subcategoría completada'), findsOneWidget);
   });
 
   testWidgets('el detalle muestra objetivos en una ventana flotante', (
@@ -484,8 +792,8 @@ void main() {
     expect(find.text('Actividad 4'), findsOneWidget);
     expect(find.text('Actividad 5'), findsOneWidget);
     expect(find.text('Actividad 6'), findsOneWidget);
-    expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
-    expect(find.text(AppStrings.finalExamLocked), findsOneWidget);
+    expect(find.text(AppStrings.finalExamTitle), findsNothing);
+    expect(find.text(AppStrings.finalExamLocked), findsNothing);
     expect(find.text(AppStrings.locked), findsNWidgets(5));
 
     await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
@@ -515,19 +823,24 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Relaciones y violencia digital'));
       await tester.pumpAndSettle();
-      await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
-      await tester.tap(find.text(AppStrings.activitiesTitle));
-      await tester.pumpAndSettle();
-
       await tester.ensureVisible(find.text(AppStrings.finalExamTitle));
 
       expect(find.text(AppStrings.finalExamLocked), findsNothing);
       expect(find.text(AppStrings.finalExamTitle), findsOneWidget);
 
-      await tester.tap(find.text(AppStrings.finalExamTitle));
+      await tester.tap(
+        find.byKey(const ValueKey<String>('learning_route_step_3')),
+      );
       await tester.pumpAndSettle();
 
-      expect(find.text('Pregunta 1 de 15'), findsNothing);
+      final progressBar = tester.widget<LessonProgressBar>(
+        find.byType(LessonProgressBar),
+      );
+      expect(progressBar.currentStep, 1);
+      expect(
+        progressBar.totalSteps,
+        FinalExamConfigs.relationsViolence.questionCount,
+      );
       expect(
         progressController
             .examProgressFor(
@@ -539,6 +852,272 @@ void main() {
       );
     },
   );
+
+  testWidgets('el examen final exige teoría completa y actividades aprobadas', (
+    tester,
+  ) async {
+    final now = DateTime.utc(2026, 8, 27, 12);
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        CategoryProgressRecord(
+          categoryId: FinalExamConfigs.relationsViolence.categoryId,
+          lessonId: 'relations_violence',
+          status: CategoryProgressStatus.inProgress,
+          viewedLessonPageIds: const <String>[
+            'what_is_digital_violence',
+            'control_is_not_care',
+          ],
+          completedActivityIds: repository.activities
+              .map((activity) => activity.id)
+              .toList(),
+          totalLessonPages: 6,
+          totalActivities: repository.activities.length,
+          startedAt: now,
+          lastActivityAt: now,
+          completedAt: null,
+          updatedAt: now,
+          activities: _passedActivityRecords(repository.activities, now),
+          exams: const <String, ExamProgressRecord>{},
+        ),
+      ],
+    );
+
+    expect(
+      progressController
+          .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+          .examUnlocked,
+      isFalse,
+    );
+
+    final incompleteActivityController = CategoryProgressController();
+    incompleteActivityController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{
+            for (final activity in repository.activities)
+              activity.id: activity == repository.activities.last ? 70 : 80,
+          },
+        ),
+      ],
+    );
+
+    expect(
+      incompleteActivityController
+          .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+          .examUnlocked,
+      isFalse,
+    );
+  });
+
+  testWidgets('una actividad no aprobada no desbloquea la siguiente', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{repository.activities[0].id: 70},
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    expect(find.text('Reintentar'), findsOneWidget);
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.completePreviousActivity), findsOneWidget);
+    expect(
+      find.text('¿Cuál es un ejemplo de violencia digital?'),
+      findsNothing,
+    );
+  });
+
+  testWidgets('una actividad aprobada desbloquea la siguiente', (tester) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{repository.activities[0].id: 80},
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    expect(find.text('Completada'), findsOneWidget);
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+  });
+
+  testWidgets('un reintento aprobado desbloquea la siguiente actividad', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{repository.activities[0].id: 90},
+          attemptCounts: <String, int>{repository.activities[0].id: 2},
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    expect(
+      progressController
+          .activityProgressFor(
+            categoryId: FinalExamConfigs.relationsViolence.categoryId,
+            activityId: repository.activities[0].id,
+          )
+          .bestPercentage,
+      90,
+    );
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+  });
+
+  testWidgets('un intento posterior peor no revierte el desbloqueo', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{repository.activities[0].id: 90},
+          attemptCounts: <String, int>{repository.activities[0].id: 2},
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    final firstProgress = progressController.activityProgressFor(
+      categoryId: FinalExamConfigs.relationsViolence.categoryId,
+      activityId: repository.activities[0].id,
+    );
+    expect(firstProgress.bestPercentage, 90);
+    expect(firstProgress.isPassed, isTrue);
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+  });
+
+  testWidgets('una segunda actividad no aprobada no desbloquea la tercera', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{
+            repository.activities[0].id: 80,
+            repository.activities[1].id: 70,
+          },
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    await tester.ensureVisible(find.text(AppStrings.thirdActivityBlock));
+    await tester.tap(find.text(AppStrings.thirdActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.completePreviousActivity), findsOneWidget);
+    expect(
+      find.text('¿Cuál es un ejemplo de violencia digital?'),
+      findsNothing,
+    );
+    await tester.ensureVisible(find.text(AppStrings.secondActivityBlock));
+    await tester.tap(find.text(AppStrings.secondActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+  });
+
+  testWidgets('una segunda actividad aprobada desbloquea la tercera', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{
+            repository.activities[0].id: 80,
+            repository.activities[1].id: 80,
+          },
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    await tester.ensureVisible(find.text(AppStrings.thirdActivityBlock));
+    await tester.tap(find.text(AppStrings.thirdActivityBlock));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.quizTitle), findsOneWidget);
+  });
+
+  testWidgets('el desbloqueo secuencial recorre todas las actividades reales', (
+    tester,
+  ) async {
+    final progressController = CategoryProgressController();
+    progressController.hydrateFromRecords(
+      uid: 'uid-123',
+      records: <CategoryProgressRecord>[
+        _activitySequenceRecord(
+          repository.activities,
+          bestPercentages: <String, int>{
+            for (final activity in repository.activities) activity.id: 80,
+          },
+        ),
+      ],
+    );
+
+    await _openActivitiesMenu(tester, progressController);
+
+    for (final activity in repository.activities) {
+      expect(
+        progressController
+            .snapshotFor(FinalExamConfigs.relationsViolence.categoryId)
+            .activityPassed(activity.id),
+        isTrue,
+      );
+      await tester.ensureVisible(find.text(activity.title));
+      expect(find.text(activity.title), findsOneWidget);
+    }
+
+    expect(find.text(AppStrings.locked), findsNothing);
+  });
 
   testWidgets('volver desde actividades abre el detalle de categorÃ­a', (
     tester,
@@ -632,25 +1211,177 @@ Finder _firstVisibleText(WidgetTester tester, List<Finder> candidates) {
   fail('No visible answer option matched the expected candidates.');
 }
 
-CategoryProgressRecord _completedActivitiesRecord(
+Future<void> _openActivitiesMenu(
+  WidgetTester tester,
+  CategoryProgressController progressController,
+) async {
+  await tester.pumpWidget(
+    YoMeCuidoApp(
+      contentRepository: _FakeContentRepository(),
+      authRepository: const _SignedInAuthRepository(),
+      userProfileRepository: _FakeUserProfileRepository(),
+      leaderboardRepository: const _FakeLeaderboardRepository(),
+      progressController: progressController,
+    ),
+  );
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Relaciones y violencia digital'));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.text(AppStrings.activitiesTitle));
+  await tester.tap(find.text(AppStrings.activitiesTitle));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openCategorySummary(
+  WidgetTester tester,
+  CategoryProgressController progressController,
+) async {
+  await tester.pumpWidget(const SizedBox.shrink());
+  await tester.pumpAndSettle();
+  await tester.pumpWidget(
+    YoMeCuidoApp(
+      contentRepository: _FakeContentRepository(),
+      authRepository: const _SignedInAuthRepository(),
+      userProfileRepository: _FakeUserProfileRepository(),
+      leaderboardRepository: const _FakeLeaderboardRepository(),
+      progressController: progressController,
+    ),
+  );
+  await tester.pumpAndSettle();
+  await tester.tap(find.text(AppStrings.digitalSecurityTitle).last);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Relaciones y violencia digital'));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.text(AppStrings.summaryTitle).last);
+  await tester.tap(find.text(AppStrings.summaryTitle).last);
+  await tester.pumpAndSettle();
+}
+
+CategoryProgressRecord _activitySequenceRecord(
   List<LearningActivity> activities, {
-  bool includeCompletedExam = false,
+  required Map<String, int> bestPercentages,
+  Map<String, int> attemptCounts = const <String, int>{},
 }) {
   final now = DateTime.utc(2026, 8, 27, 12);
   final activityRecords = <String, ActivityProgressRecord>{
     for (final activity in activities)
-      activity.id: ActivityProgressRecord(
-        activityId: activity.id,
+      if (bestPercentages.containsKey(activity.id))
+        activity.id: ActivityProgressRecord(
+          activityId: activity.id,
+          status: ActivityProgressStatus.completed,
+          attemptCount: attemptCounts[activity.id] ?? 1,
+          bestCorrectAnswers: (bestPercentages[activity.id]! / 10).round(),
+          bestTotalQuestions: 10,
+          bestPercentage: bestPercentages[activity.id]!,
+          lastAttemptAt: now,
+          completedAt: now,
+          updatedAt: now,
+        ),
+  };
+
+  return CategoryProgressRecord(
+    categoryId: FinalExamConfigs.relationsViolence.categoryId,
+    lessonId: 'relations_violence',
+    status: CategoryProgressStatus.inProgress,
+    viewedLessonPageIds: const <String>[
+      'what_is_digital_violence',
+      'control_is_not_care',
+      'consent_and_intimate_content',
+      'how_to_act',
+      'threats_evidence_safe_response',
+      'recovery_support_immediate_safety',
+    ],
+    completedActivityIds: bestPercentages.keys.toList(),
+    totalLessonPages: 6,
+    totalActivities: activities.length,
+    startedAt: now,
+    lastActivityAt: now,
+    completedAt: null,
+    updatedAt: now,
+    activities: activityRecords,
+    exams: const <String, ExamProgressRecord>{},
+  );
+}
+
+CategoryProgressRecord _summaryProgressRecord(
+  List<LearningActivity> activities, {
+  required List<int> activityBestPercentages,
+  List<int> activityAttemptCounts = const <int>[],
+  List<int> activityPoints = const <int>[],
+  int? examBestPercentage,
+}) {
+  final now = DateTime.utc(2026, 8, 27, 12);
+  final activityRecords = <String, ActivityProgressRecord>{
+    for (
+      var index = 0;
+      index < activities.length && index < activityBestPercentages.length;
+      index += 1
+    )
+      activities[index].id: ActivityProgressRecord(
+        activityId: activities[index].id,
         status: ActivityProgressStatus.completed,
-        attemptCount: 1,
-        bestCorrectAnswers: 2,
-        bestTotalQuestions: 2,
-        bestPercentage: 100,
+        attemptCount: index < activityAttemptCounts.length
+            ? activityAttemptCounts[index]
+            : 1,
+        activityPoints: index < activityPoints.length
+            ? activityPoints[index]
+            : 0,
+        bestCorrectAnswers: (activityBestPercentages[index] / 10).round(),
+        bestTotalQuestions: 10,
+        bestPercentage: activityBestPercentages[index],
         lastAttemptAt: now,
         completedAt: now,
         updatedAt: now,
       ),
   };
+
+  return CategoryProgressRecord(
+    categoryId: FinalExamConfigs.relationsViolence.categoryId,
+    lessonId: 'relations_violence',
+    status: CategoryProgressStatus.inProgress,
+    viewedLessonPageIds: const <String>[
+      'what_is_digital_violence',
+      'control_is_not_care',
+      'consent_and_intimate_content',
+      'how_to_act',
+      'threats_evidence_safe_response',
+      'recovery_support_immediate_safety',
+    ],
+    completedActivityIds: activityRecords.keys.toList(),
+    totalLessonPages: 6,
+    totalActivities: activities.length,
+    startedAt: now,
+    lastActivityAt: now,
+    completedAt: null,
+    updatedAt: now,
+    activities: activityRecords,
+    exams: examBestPercentage == null
+        ? const <String, ExamProgressRecord>{}
+        : <String, ExamProgressRecord>{
+            FinalExamConfigs.relationsViolence.id: ExamProgressRecord(
+              examId: FinalExamConfigs.relationsViolence.id,
+              status: ActivityProgressStatus.completed,
+              attemptCount: 1,
+              bestCorrectAnswers: (examBestPercentage * 15 / 100).round(),
+              bestTotalQuestions: 15,
+              bestPercentage: examBestPercentage,
+              lastAttemptAt: now,
+              completedAt: now,
+              updatedAt: now,
+            ),
+          },
+  );
+}
+
+CategoryProgressRecord _completedActivitiesRecord(
+  List<LearningActivity> activities, {
+  bool includeCompletedExam = false,
+  int examBestPercentage = 100,
+}) {
+  final now = DateTime.utc(2026, 8, 27, 12);
+  final activityRecords = _passedActivityRecords(activities, now);
 
   return CategoryProgressRecord(
     categoryId: FinalExamConfigs.relationsViolence.categoryId,
@@ -678,9 +1409,9 @@ CategoryProgressRecord _completedActivitiesRecord(
               examId: FinalExamConfigs.relationsViolence.id,
               status: ActivityProgressStatus.completed,
               attemptCount: 1,
-              bestCorrectAnswers: 15,
+              bestCorrectAnswers: (examBestPercentage * 15 / 100).round(),
               bestTotalQuestions: 15,
-              bestPercentage: 100,
+              bestPercentage: examBestPercentage,
               lastAttemptAt: now,
               completedAt: now,
               updatedAt: now,
@@ -688,6 +1419,26 @@ CategoryProgressRecord _completedActivitiesRecord(
           }
         : const <String, ExamProgressRecord>{},
   );
+}
+
+Map<String, ActivityProgressRecord> _passedActivityRecords(
+  List<LearningActivity> activities,
+  DateTime now,
+) {
+  return <String, ActivityProgressRecord>{
+    for (final activity in activities)
+      activity.id: ActivityProgressRecord(
+        activityId: activity.id,
+        status: ActivityProgressStatus.completed,
+        attemptCount: 1,
+        bestCorrectAnswers: 8,
+        bestTotalQuestions: 10,
+        bestPercentage: 80,
+        lastAttemptAt: now,
+        completedAt: now,
+        updatedAt: now,
+      ),
+  };
 }
 
 class _FakeLeaderboardRepository implements LeaderboardRepository {
@@ -1027,62 +1778,65 @@ class _FakeContentRepository implements ContentRepository {
 
 List<QuizQuestion> _buildQuizQuestions() {
   return <QuizQuestion>[
-    const QuizQuestion(
-      id: 'activity_1',
-      categoryId: 'relations_violence_digital',
-      activityId: 'relations_violence_activity_01',
-      type: QuestionType.multipleChoice,
-      statement: '¿Cuál es un ejemplo de violencia digital?',
-      options: <QuizOption>[
-        QuizOption(
-          id: 'control_passwords_threaten_messages',
-          text: 'Controlar contraseñas y amenazar por mensajes.',
+    for (var activity = 1; activity <= 6; activity += 1)
+      for (var question = 1; question <= 10; question += 1)
+        QuizQuestion(
+          id: 'activity_${activity}_q$question',
+          categoryId: 'relations_violence_digital',
+          activityId:
+              'relations_violence_activity_${activity.toString().padLeft(2, '0')}',
+          type: question == 2
+              ? QuestionType.fillBlank
+              : QuestionType.multipleChoice,
+          statement: question == 1
+              ? '¿Cuál es un ejemplo de violencia digital?'
+              : question == 2
+              ? 'Las capturas pueden servir como ______.'
+              : 'Actividad de práctica $activity.$question',
+          options: question == 2
+              ? const <QuizOption>[]
+              : <QuizOption>[
+                  QuizOption(
+                    id: 'safe_action_${activity}_$question',
+                    text: question == 1
+                        ? 'Controlar contraseñas y amenazar por mensajes.'
+                        : 'Acción segura $activity.$question.',
+                  ),
+                  QuizOption(
+                    id: 'unsafe_action_${activity}_$question',
+                    text: question == 1
+                        ? 'Actualizar una aplicación.'
+                        : 'Acción insegura $activity.$question.',
+                  ),
+                ],
+          correctAnswer: question == 2
+              ? 'evidencia'
+              : 'safe_action_${activity}_$question',
+          acceptedAnswers: question == 2
+              ? const <String>['evidencia']
+              : <String>['safe_action_${activity}_$question'],
+          feedback: question == 2
+              ? 'Conviene almacenar las pruebas de manera segura.'
+              : 'Esta acción ayuda a proteger y buscar apoyo.',
+          capacity: 'responder',
+          difficulty: question.isOdd ? 'básica' : 'intermedia',
         ),
-        QuizOption(
-          id: 'update_application',
-          text: 'Actualizar una aplicación.',
-        ),
-      ],
-      correctAnswer: 'control_passwords_threaten_messages',
-      acceptedAnswers: <String>['control_passwords_threaten_messages'],
-      feedback:
-          'El control, la vigilancia y las amenazas mediante tecnología son '
-          'formas de violencia.',
-      capacity: 'reconocer',
-      difficulty: 'básica',
-    ),
-    const QuizQuestion(
-      id: 'activity_2',
-      categoryId: 'relations_violence_digital',
-      activityId: 'relations_violence_activity_01',
-      type: QuestionType.fillBlank,
-      statement: 'Las capturas pueden servir como ______.',
-      options: <QuizOption>[],
-      correctAnswer: 'evidencia',
-      acceptedAnswers: <String>['evidencia'],
-      feedback: 'Conviene almacenar las pruebas de manera segura.',
-      capacity: 'responder',
-      difficulty: 'básica',
-    ),
-    for (var index = 3; index <= 60; index += 1)
+    for (var index = 1; index <= 18; index += 1)
       QuizQuestion(
-        id: 'activity_$index',
+        id: 'exam_question_$index',
         categoryId: 'relations_violence_digital',
-        activityId: 'relations_violence_activity_01',
+        activityId: 'relations_violence_exam_bank',
         type: QuestionType.multipleChoice,
-        statement: 'Actividad de práctica $index',
+        statement: 'Pregunta de examen $index',
         options: <QuizOption>[
-          QuizOption(id: 'safe_action_$index', text: 'Acción segura $index.'),
-          QuizOption(
-            id: 'unsafe_action_$index',
-            text: 'Acción insegura $index.',
-          ),
+          QuizOption(id: 'exam_correct_$index', text: 'Respuesta correcta'),
+          QuizOption(id: 'exam_incorrect_$index', text: 'Respuesta incorrecta'),
         ],
-        correctAnswer: 'safe_action_$index',
-        acceptedAnswers: <String>['safe_action_$index'],
-        feedback: 'Esta acción ayuda a proteger y buscar apoyo.',
+        correctAnswer: 'exam_correct_$index',
+        acceptedAnswers: <String>['exam_correct_$index'],
+        feedback: 'Retroalimentación de examen.',
         capacity: 'responder',
-        difficulty: 'básica',
+        difficulty: index <= 6 ? 'básica' : 'intermedia',
       ),
   ];
 }

@@ -142,9 +142,6 @@ class _OverallProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final completedContent =
-        progress.viewedTheoryPages + progress.completedActivities;
-    final totalContent = progress.totalTheoryPages + progress.totalActivities;
 
     return Card(
       color: colors.surfaceStrong,
@@ -179,20 +176,16 @@ class _OverallProgressCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              '$completedContent de $totalContent '
-              '${_pluralize(totalContent, singular: 'contenido', plural: 'contenidos')} '
-              '${_pluralize(completedContent, singular: 'completado', plural: 'completados')}',
+              'Avance validado por teoría, actividades aprobadas y examen.',
               style: textTheme.bodyMedium?.copyWith(
                 color: colors.textSecondary,
               ),
             ),
             const SizedBox(height: AppSpacing.xxs),
             Text(
-              '${progress.viewedTheoryPages} '
-              '${_pluralize(progress.viewedTheoryPages, singular: 'teoría', plural: 'teorías')}'
+              '${progress.viewedTheoryPages} de ${progress.totalTheoryPages} cápsulas vistas'
               ' · '
-              '${progress.completedActivities} '
-              '${_pluralize(progress.completedActivities, singular: 'actividad', plural: 'actividades')}',
+              '${progress.passedActivities} de ${progress.totalActivities} actividades aprobadas',
               style: textTheme.bodyMedium?.copyWith(
                 color: colors.textSecondary,
               ),
@@ -222,8 +215,8 @@ class _ProgressStats extends StatelessWidget {
     final activityCard = _StatCard(
       icon: Icons.edit_outlined,
       label: AppStrings.activitiesTitle,
-      value: '${progress.completedActivities} / ${progress.totalActivities}',
-      caption: AppStrings.completedPlural,
+      value: '${progress.passedActivities} / ${progress.totalActivities}',
+      caption: 'Aprobadas',
     );
 
     if (shouldStack) {
@@ -255,19 +248,18 @@ class _PerformanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final precision = progress.result == null
-        ? '—'
-        : '${progress.result!.percentage} %';
+    final attemptCount = _attemptCount(progress);
+    final bestResult = _bestResult(progress);
     final metrics = [
       _PerformanceMetricData(
         value: '${progress.earnedPoints} pts',
         label: 'Puntaje',
       ),
+      _PerformanceMetricData(value: '$attemptCount', label: 'Intentos'),
       _PerformanceMetricData(
-        value: '${progress.correctAnswers}',
-        label: 'Correctas',
+        value: bestResult == null ? '—' : '$bestResult%',
+        label: 'Mejor resultado',
       ),
-      _PerformanceMetricData(value: precision, label: 'Precisión'),
     ];
 
     return Card(
@@ -312,6 +304,32 @@ class _PerformanceCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  int _attemptCount(CategoryProgressSnapshot progress) {
+    return progress.activityProgress.values.fold<int>(
+          0,
+          (total, activity) => total + activity.attemptCount,
+        ) +
+        progress.examProgress.values.fold<int>(
+          0,
+          (total, exam) => total + exam.attemptCount,
+        );
+  }
+
+  int? _bestResult(CategoryProgressSnapshot progress) {
+    final percentages = <int>[
+      for (final activity in progress.activityProgress.values)
+        if (activity.attemptCount > 0) activity.bestPercentage,
+      for (final exam in progress.examProgress.values)
+        if (exam.attemptCount > 0) exam.bestPercentage,
+    ];
+
+    if (percentages.isEmpty) {
+      return null;
+    }
+
+    return percentages.reduce((best, value) => value > best ? value : best);
   }
 }
 
@@ -418,23 +436,22 @@ class _EncouragementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textTheme = Theme.of(context).textTheme;
-    final hasCompletedSubcategory =
-        progress.hasCompletedTheory && progress.hasCompletedActivities;
-    final state = hasCompletedSubcategory
+    final state = progress.subcategoryCompleted
         ? const _EncouragementState(
             title: 'Subcategoría completada',
-            message: 'Completaste todo el contenido de esta subcategoría.',
+            message:
+                'Completaste la teoría, aprobaste las actividades y aprobaste el examen final.',
             assetPath: AppAssets.girlCompleted,
           )
         : progress.hasCompletedTheory
         ? const _EncouragementState(
-            title: 'Teoría completada',
+            title: 'En progreso',
             message:
-                'Ya terminaste el contenido teórico. Continúa con las actividades para completar la subcategoría.',
+                'Continúa con las actividades aprobadas y el examen final para completar la subcategoría.',
             assetPath: AppAssets.girlProgress,
           )
         : const _EncouragementState(
-            title: 'Sigue avanzando',
+            title: 'En progreso',
             message:
                 'Continúa aprendiendo y practicando para fortalecer tus decisiones de autocuidado.',
             assetPath: AppAssets.girlProgress,
@@ -459,6 +476,8 @@ class _EncouragementCard extends StatelessWidget {
                   Text(state.title, style: textTheme.titleMedium),
                   const SizedBox(height: AppSpacing.xs),
                   Text(state.message, style: textTheme.bodyMedium),
+                  const SizedBox(height: AppSpacing.sm),
+                  _ExamStatus(progress: progress),
                 ],
               ),
             ),
@@ -481,10 +500,79 @@ class _EncouragementState {
   final String assetPath;
 }
 
-String _pluralize(
-  int count, {
-  required String singular,
-  required String plural,
-}) {
-  return count == 1 ? singular : plural;
+class _ExamStatus extends StatelessWidget {
+  const _ExamStatus({required this.progress});
+
+  final CategoryProgressSnapshot progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final exam = _bestExamProgress;
+    final status = progress.hasPassedExam
+        ? 'Aprobado'
+        : exam == null
+        ? progress.examUnlocked
+              ? 'Disponible'
+              : 'Bloqueado'
+        : 'No aprobado / Reintentar';
+    final bestText = exam == null
+        ? null
+        : 'Mejor resultado: ${exam.bestPercentage}%';
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surface,
+        borderRadius: BorderRadius.circular(AppRadii.sm),
+        border: Border.all(color: colors.border),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.xs,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              progress.hasPassedExam
+                  ? Icons.check_circle_outline
+                  : progress.examUnlocked
+                  ? Icons.fact_check_outlined
+                  : Icons.lock_outline,
+              color: progress.hasPassedExam
+                  ? colors.success
+                  : progress.examUnlocked
+                  ? colors.orangeDark
+                  : colors.disabledText,
+              size: 20,
+            ),
+            const SizedBox(width: AppSpacing.xs),
+            Expanded(
+              child: Text(
+                bestText == null
+                    ? 'Examen final: $status'
+                    : 'Examen final: $status · $bestText',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ExamProgressSnapshot? get _bestExamProgress {
+    ExamProgressSnapshot? best;
+    for (final exam in progress.examProgress.values) {
+      if (exam.attemptCount == 0) {
+        continue;
+      }
+      if (best == null || exam.bestPercentage > best.bestPercentage) {
+        best = exam;
+      }
+    }
+    return best;
+  }
 }

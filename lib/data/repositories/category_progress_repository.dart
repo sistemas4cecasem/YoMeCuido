@@ -223,15 +223,6 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           );
         }
 
-        final completedActivityIds = _existingCompletedActivityIds(
-          categorySnapshot,
-        );
-        if (!completedActivityIds.contains(activityId)) {
-          completedActivityIds.add(activityId);
-        }
-        final categoryCompleted =
-            totalActivities > 0 &&
-            completedActivityIds.length >= totalActivities;
         final nextAttemptNumber =
             _existingActivityAttemptCount(activitySnapshot) + 1;
         final existingQuestionScores = _existingQuestionScores(
@@ -255,6 +246,37 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
             _existingUserTotalPoints(userSnapshot) + scoringResult.earnedPoints;
         final bestPercentage = _existingBestPercentage(activitySnapshot);
         final shouldReplaceBest = percentage >= bestPercentage;
+        final nextBestPercentage = shouldReplaceBest
+            ? percentage
+            : bestPercentage;
+        final completedActivityIds = _existingCompletedActivityIds(
+          categorySnapshot,
+        );
+        if (!completedActivityIds.contains(activityId)) {
+          completedActivityIds.add(activityId);
+        }
+        final existingActivities = await _fetchActivityProgress(
+          uid: uid,
+          categoryId: categoryId,
+        );
+        final existingExams = await _fetchExamProgress(
+          uid: uid,
+          categoryId: categoryId,
+        );
+        final categoryCompleted = _isSubcategoryCompleted(
+          categorySnapshot: categorySnapshot,
+          totalLessonPages: totalLessonPages,
+          totalActivities: totalActivities,
+          activityBestPercentages: <String, int>{
+            for (final activity in existingActivities.values)
+              activity.activityId: activity.bestPercentage,
+            activityId: nextBestPercentage,
+          },
+          examBestPercentages: <String, int>{
+            for (final exam in existingExams.values)
+              exam.examId: exam.bestPercentage,
+          },
+        );
 
         final batch = _firestore.batch();
         batch.set(attemptDocument, {
@@ -287,7 +309,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           'bestTotalQuestions': shouldReplaceBest
               ? totalQuestions
               : _existingBestTotalQuestions(activitySnapshot),
-          'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
+          'bestPercentage': nextBestPercentage,
           'lastAttemptAt': FieldValue.serverTimestamp(),
           'completedAt':
               _existingActivityCompletedAt(activitySnapshot) ??
@@ -412,6 +434,31 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         final nextAttemptNumber = _existingExamAttemptCount(examSnapshot) + 1;
         final bestPercentage = _existingExamBestPercentage(examSnapshot);
         final shouldReplaceBest = percentage >= bestPercentage;
+        final nextBestPercentage = shouldReplaceBest
+            ? percentage
+            : bestPercentage;
+        final existingActivities = await _fetchActivityProgress(
+          uid: uid,
+          categoryId: categoryId,
+        );
+        final existingExams = await _fetchExamProgress(
+          uid: uid,
+          categoryId: categoryId,
+        );
+        final categoryCompleted = _isSubcategoryCompleted(
+          categorySnapshot: categorySnapshot,
+          totalLessonPages: totalLessonPages,
+          totalActivities: totalActivities,
+          activityBestPercentages: <String, int>{
+            for (final activity in existingActivities.values)
+              activity.activityId: activity.bestPercentage,
+          },
+          examBestPercentages: <String, int>{
+            for (final exam in existingExams.values)
+              exam.examId: exam.bestPercentage,
+            examId: nextBestPercentage,
+          },
+        );
 
         final batch = _firestore.batch();
         batch.set(attemptDocument, {
@@ -440,7 +487,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
           'bestTotalQuestions': shouldReplaceBest
               ? totalQuestions
               : _existingExamBestTotalQuestions(examSnapshot),
-          'bestPercentage': shouldReplaceBest ? percentage : bestPercentage,
+          'bestPercentage': nextBestPercentage,
           'lastAttemptAt': FieldValue.serverTimestamp(),
           'completedAt':
               _existingExamCompletedAt(examSnapshot) ??
@@ -449,24 +496,35 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
         });
 
         if (!categorySnapshot.exists) {
-          batch.set(
-            categoryDocument,
-            _initialProgressData(
+          batch.set(categoryDocument, {
+            ..._initialProgressData(
               categoryId: categoryId,
               lessonId: lessonId,
               totalLessonPages: totalLessonPages,
               totalActivities: totalActivities,
             ),
-          );
+            'status': categoryCompleted
+                ? CategoryProgressStatus.completed.firestoreValue
+                : CategoryProgressStatus.inProgress.firestoreValue,
+            'lastActivityAt': FieldValue.serverTimestamp(),
+            'completedAt': categoryCompleted
+                ? FieldValue.serverTimestamp()
+                : null,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
         } else {
           batch.update(categoryDocument, {
             'categoryId': categoryId,
             'lessonId': lessonId,
-            'status': CategoryProgressStatus.completed.firestoreValue,
+            'status': categoryCompleted
+                ? CategoryProgressStatus.completed.firestoreValue
+                : CategoryProgressStatus.inProgress.firestoreValue,
             'totalLessonPages': totalLessonPages,
             'totalActivities': totalActivities,
             'lastActivityAt': FieldValue.serverTimestamp(),
-            'completedAt': FieldValue.serverTimestamp(),
+            'completedAt': categoryCompleted
+                ? FieldValue.serverTimestamp()
+                : null,
             'updatedAt': FieldValue.serverTimestamp(),
           });
         }
@@ -945,6 +1003,41 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     }
 
     return value.whereType<String>().toList();
+  }
+
+  List<String> _existingViewedLessonPageIds(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+  ) {
+    final value = snapshot.data()?['viewedLessonPageIds'];
+    if (value is! List<Object?>) {
+      return <String>[];
+    }
+
+    return value.whereType<String>().toList();
+  }
+
+  bool _isSubcategoryCompleted({
+    required DocumentSnapshot<Map<String, dynamic>> categorySnapshot,
+    required int totalLessonPages,
+    required int totalActivities,
+    required Map<String, int> activityBestPercentages,
+    required Map<String, int> examBestPercentages,
+  }) {
+    final theoryCompleted = ProgressApprovalRules.theoryCompleted(
+      viewedTheoryPages: _existingViewedLessonPageIds(categorySnapshot).length,
+      totalTheoryPages: totalLessonPages,
+    );
+    final allActivitiesPassed = totalActivities <= 0
+        ? true
+        : activityBestPercentages.values
+                  .where(ProgressApprovalRules.hasPassingPercentage)
+                  .length >=
+              totalActivities;
+    final examPassed = examBestPercentages.values.any(
+      ProgressApprovalRules.hasPassingPercentage,
+    );
+
+    return theoryCompleted && allActivitiesPassed && examPassed;
   }
 
   CategoryProgressStatus _existingCategoryStatus(

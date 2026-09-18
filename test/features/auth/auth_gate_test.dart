@@ -323,7 +323,7 @@ void main() {
     expect(find.text('540'), findsOneWidget);
     expect(find.text(AppStrings.myProgressTitle), findsOneWidget);
     expect(find.text(AppStrings.profileOverallProgress), findsOneWidget);
-    expect(find.text('25%'), findsOneWidget);
+    expect(find.text('3%'), findsOneWidget);
     expect(find.text('3 / 12'), findsOneWidget);
     expect(find.text('2 / 8'), findsOneWidget);
     expect(find.text('Relaciones y violencia digital'), findsNothing);
@@ -337,7 +337,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.profileCategoryBreakdown), findsOneWidget);
-    expect(find.text('50%'), findsOneWidget);
+    expect(find.text('5%'), findsOneWidget);
     expect(find.text('3 / 6'), findsOneWidget);
     expect(find.text('2 / 4'), findsOneWidget);
     expect(find.text('Relaciones y violencia digital'), findsOneWidget);

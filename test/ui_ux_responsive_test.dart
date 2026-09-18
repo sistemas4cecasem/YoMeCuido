@@ -355,12 +355,30 @@ List<CategoryProgressRecord> _completedRecordsBeforeRelations(
       (index) => '${category.id}_activity_${index + 1}',
       growable: false,
     );
+    final activityProgress = <String, ActivityProgressRecord>{
+      for (final activityId in completedActivityIds)
+        activityId: ActivityProgressRecord(
+          activityId: activityId,
+          status: ActivityProgressStatus.completed,
+          attemptCount: 1,
+          bestCorrectAnswers: 8,
+          bestTotalQuestions: 10,
+          bestPercentage: 80,
+          lastAttemptAt: now,
+          completedAt: now,
+          updatedAt: now,
+        ),
+    };
     records.add(
       CategoryProgressRecord(
         categoryId: category.id,
         lessonId: lessonId,
         status: CategoryProgressStatus.completed,
-        viewedLessonPageIds: const <String>[],
+        viewedLessonPageIds: List<String>.generate(
+          6,
+          (index) => '${category.id}_page_${index + 1}',
+          growable: false,
+        ),
         completedActivityIds: completedActivityIds,
         totalLessonPages: 6,
         totalActivities: completedActivityIds.length,
@@ -368,7 +386,7 @@ List<CategoryProgressRecord> _completedRecordsBeforeRelations(
         lastActivityAt: now,
         completedAt: now,
         updatedAt: now,
-        activities: const <String, ActivityProgressRecord>{},
+        activities: activityProgress,
         exams: <String, ExamProgressRecord>{
           examConfig.id: ExamProgressRecord(
             examId: examConfig.id,

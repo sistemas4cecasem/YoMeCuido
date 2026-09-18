@@ -6,7 +6,6 @@ import '../../app/app_strings.dart';
 import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
-import '../../data/models/final_exam.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/widgets/app_scaffold.dart';
@@ -140,19 +139,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   bool _hasCompletedCategory(Category category) {
     final progress = widget.progressController.snapshotFor(category.id);
-    final exam = category.lessonId == null
-        ? null
-        : FinalExamConfigs.forCategoryLesson(
-            categoryId: category.id,
-            lessonId: category.lessonId!,
-          );
-    final completedActivities =
-        progress.totalActivities > 0 &&
-        progress.completedActivities >= progress.totalActivities;
-    final completedExam =
-        exam == null || progress.examProgress[exam.id]?.isCompleted == true;
-
-    return completedActivities && completedExam;
+    return progress.subcategoryCompleted;
   }
 
   String _lockedLabelFor(Category category) {

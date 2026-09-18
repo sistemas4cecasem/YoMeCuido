@@ -7,6 +7,7 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/models/final_exam.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
@@ -47,6 +48,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     final activities = await widget.contentRepository.loadActivities(
       widget.category.id,
     );
+    final exam = await widget.contentRepository.loadFinalExamConfig(
+      widget.category.id,
+    );
     widget.progressController.updateTheoryTotal(
       categoryId: widget.category.id,
       totalPages: lessonPages.length,
@@ -59,6 +63,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     return _CategoryDetailData(
       theoryPageCount: lessonPages.length,
       activityCount: activities.length,
+      exam: exam,
     );
   }
 
@@ -87,6 +92,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
               );
               final theoryPageCount = detailData?.theoryPageCount;
               final activityCount = detailData?.activityCount;
+              final exam = detailData?.exam;
               final displayProgress = _DisplayProgress(
                 progress: progress,
                 theoryPageCount: theoryPageCount,
@@ -106,6 +112,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     _LearningRoute(
                       category: widget.category,
                       displayProgress: displayProgress,
+                      exam: exam,
                       onOpenTheory: () => Navigator.of(
                         context,
                       ).pushNamed(AppRoutes.lesson, arguments: widget.category),
@@ -118,6 +125,16 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                               context,
                               AppStrings.completeTheoryToUnlockActivities,
                             ),
+                      onOpenExam: exam == null
+                          ? null
+                          : () => _openExam(
+                              exam,
+                              activityCount ?? displayProgress.totalActivities,
+                            ),
+                      onLockedExam: () => AppToast.showInfo(
+                        context,
+                        AppStrings.finalExamLocked,
+                      ),
                       onOpenSummary: () => Navigator.of(context).pushNamed(
                         AppRoutes.categorySummary,
                         arguments: widget.category,
@@ -145,16 +162,29 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       _detailDataFuture = _loadDetailData();
     });
   }
+
+  void _openExam(FinalExamConfig exam, int totalActivities) {
+    Navigator.of(context).pushNamed(
+      AppRoutes.quiz,
+      arguments: QuizRouteArguments.exam(
+        category: widget.category,
+        exam: exam,
+        totalActivities: totalActivities,
+      ),
+    );
+  }
 }
 
 class _CategoryDetailData {
   const _CategoryDetailData({
     required this.theoryPageCount,
     required this.activityCount,
+    required this.exam,
   });
 
   final int theoryPageCount;
   final int activityCount;
+  final FinalExamConfig? exam;
 }
 
 class _DisplayProgress {
@@ -181,25 +211,16 @@ class _DisplayProgress {
   int get totalActivities => activityCount ?? progress.totalActivities;
 
   int get completedActivities {
-    return progress.completedActivities.clamp(0, totalActivities);
+    return progress.passedActivities.clamp(0, totalActivities);
   }
 
   bool get hasCompletedActivities {
-    return totalActivities > 0 && completedActivities >= totalActivities;
+    return progress.allActivitiesPassed;
   }
 
-  int get overallPercentage {
-    final totalSteps = totalTheoryPages + totalActivities;
-    if (totalSteps == 0) {
-      return 0;
-    }
+  int get overallPercentage => progress.overallPercentage;
 
-    return (((viewedTheoryPages + completedActivities) / totalSteps) * 100)
-        .round()
-        .clamp(0, 100);
-  }
-
-  double get overallProgress => overallPercentage / 100;
+  double get overallProgress => progress.overallProgress;
 }
 
 List<String> _indicatorsWithActivityCount(
@@ -560,15 +581,21 @@ class _LearningRoute extends StatelessWidget {
   const _LearningRoute({
     required this.category,
     required this.displayProgress,
+    required this.exam,
     required this.onOpenTheory,
     required this.onOpenActivities,
+    required this.onOpenExam,
+    required this.onLockedExam,
     required this.onOpenSummary,
   });
 
   final Category category;
   final _DisplayProgress displayProgress;
+  final FinalExamConfig? exam;
   final VoidCallback onOpenTheory;
   final VoidCallback onOpenActivities;
+  final VoidCallback? onOpenExam;
+  final VoidCallback onLockedExam;
   final VoidCallback onOpenSummary;
 
   @override
@@ -605,8 +632,26 @@ class _LearningRoute extends StatelessWidget {
           onTap: onOpenActivities,
         ),
         const SizedBox(height: AppSpacing.sm),
+        if (exam != null) ...[
+          _RouteStepCard(
+            number: 3,
+            title: exam!.title,
+            subtitle: _examSubtitle(displayProgress.progress, exam!),
+            icon: Icons.fact_check_outlined,
+            completed: displayProgress.progress.examPassed(exam!.id),
+            enabled:
+                displayProgress.progress.examUnlocked ||
+                displayProgress.progress.examPassed(exam!.id),
+            onTap:
+                displayProgress.progress.examUnlocked ||
+                    displayProgress.progress.examPassed(exam!.id)
+                ? onOpenExam ?? onLockedExam
+                : onLockedExam,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         _RouteStepCard(
-          number: 3,
+          number: exam == null ? 3 : 4,
           title: AppStrings.summaryTitle,
           subtitle: 'Consulta tu avance y el resultado de la categoría',
           icon: Icons.insights_outlined,
@@ -616,6 +661,29 @@ class _LearningRoute extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _examSubtitle(
+    CategoryProgressSnapshot progress,
+    FinalExamConfig exam,
+  ) {
+    final examProgress = progress.examProgress[exam.id];
+    final attempts = examProgress?.attemptCount ?? 0;
+    final bestPercentage = examProgress?.bestPercentage ?? 0;
+
+    if (!progress.examUnlocked && !progress.examPassed(exam.id)) {
+      return AppStrings.finalExamLocked;
+    }
+
+    if (progress.examPassed(exam.id)) {
+      return 'Aprobado · Mejor resultado $bestPercentage%';
+    }
+
+    if (attempts > 0) {
+      return 'Reintentar · Mejor resultado $bestPercentage%';
+    }
+
+    return '${exam.questionCount} preguntas · ${AppStrings.available}';
   }
 }
 
@@ -646,6 +714,7 @@ class _RouteStepCard extends StatelessWidget {
     final accentColor = enabled ? colors.orangeDark : colors.disabledText;
 
     return Card(
+      key: ValueKey<String>('learning_route_step_$number'),
       color: enabled ? colors.surface : colors.disabledSurface,
       child: InkWell(
         onTap: onTap,

@@ -8,7 +8,6 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
-import '../../data/models/final_exam.dart';
 import '../../data/models/learning_activity.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
@@ -66,14 +65,9 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
           categoryId: widget.category.id,
           activities: sortedActivities,
         );
-    final exam = await widget.contentRepository.loadFinalExamConfig(
-      widget.category.id,
-    );
-
     return _ActivitiesMenuData(
       activities: sortedActivities,
       questionCountsByActivityId: questionCounts,
-      exam: exam,
     );
   }
 
@@ -83,17 +77,6 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
       arguments: QuizRouteArguments.activity(
         category: widget.category,
         activity: activity,
-        totalActivities: totalActivities,
-      ),
-    );
-  }
-
-  void _openExam(FinalExamConfig exam, int totalActivities) {
-    Navigator.of(context).pushNamed(
-      AppRoutes.quiz,
-      arguments: QuizRouteArguments.exam(
-        category: widget.category,
-        exam: exam,
         totalActivities: totalActivities,
       ),
     );
@@ -161,17 +144,6 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
                               : AppStrings.completeTheoryToUnlockActivities,
                         ),
                       ),
-                    if (menuData.exam != null)
-                      _FinalExamBlock(
-                        exam: menuData.exam!,
-                        activities: menuData.activities,
-                        progress: progress,
-                        onOpen: (exam) {
-                          _openExam(exam, menuData.activities.length);
-                        },
-                        onLocked: () =>
-                            _showLockedMessage(AppStrings.finalExamLocked),
-                      ),
                   ],
                 ),
               );
@@ -195,9 +167,8 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
       return true;
     }
 
-    final completedIds = progress.completedActivityIds.toSet();
-    return completedIds.contains(activities[index].id) ||
-        completedIds.contains(activities[index - 1].id);
+    return progress.activityPassed(activities[index].id) ||
+        progress.activityPassed(activities[index - 1].id);
   }
 }
 
@@ -252,64 +223,13 @@ class _ActivitiesMenuData {
   const _ActivitiesMenuData({
     required this.activities,
     required this.questionCountsByActivityId,
-    required this.exam,
   });
 
   final List<LearningActivity> activities;
   final Map<String, int> questionCountsByActivityId;
-  final FinalExamConfig? exam;
 
   int questionCountFor(String activityId) {
     return questionCountsByActivityId[activityId] ?? 0;
-  }
-}
-
-class _FinalExamBlock extends StatelessWidget {
-  const _FinalExamBlock({
-    required this.exam,
-    required this.activities,
-    required this.progress,
-    required this.onOpen,
-    required this.onLocked,
-  });
-
-  final FinalExamConfig exam;
-  final List<LearningActivity> activities;
-  final CategoryProgressSnapshot progress;
-  final ValueChanged<FinalExamConfig> onOpen;
-  final VoidCallback onLocked;
-
-  bool get _isUnlocked {
-    final completedIds = progress.completedActivityIds.toSet();
-    return activities.isNotEmpty &&
-        activities.every((activity) => completedIds.contains(activity.id));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final examProgress = progress.examProgress[exam.id];
-    final completed = examProgress?.isCompleted == true;
-    final attempts = examProgress?.attemptCount ?? 0;
-    final progressLabel = !_isUnlocked
-        ? AppStrings.finalExamLocked
-        : completed
-        ? AppStrings.finalExamCompleted
-        : attempts > 0
-        ? AppStrings.finalExamStarted
-        : 'Pendiente';
-
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.sm),
-      child: _ActivityBlockCard(
-        title: exam.title,
-        subtitle: AppStrings.finalExamSubtitle,
-        progressLabel: progressLabel,
-        icon: _isUnlocked ? Icons.fact_check_outlined : Icons.lock_outline,
-        unlocked: _isUnlocked,
-        completed: completed,
-        onTap: _isUnlocked ? () => onOpen(exam) : onLocked,
-      ),
-    );
   }
 }
 
@@ -335,14 +255,17 @@ class _ActivityBlock extends StatelessWidget {
     final questionCount = menuData.questionCountFor(activity.id);
     final hasQuestions = questionCount > 0;
     final activityProgress = progress.activityProgress[activity.id];
-    final completed =
-        progress.completedActivityIds.contains(activity.id) ||
-        activityProgress?.isCompleted == true;
+    final completed = activityProgress?.isPassed == true;
+    final needsRetry =
+        activityProgress?.isCompleted == true &&
+        activityProgress?.isPassed != true;
     final attempts = activityProgress?.attemptCount ?? 0;
     final progressLabel = !unlocked || !hasQuestions
         ? null
         : completed
         ? 'Completada'
+        : needsRetry
+        ? 'Reintentar'
         : attempts > 0
         ? 'Intento iniciado'
         : 'Pendiente';

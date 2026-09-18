@@ -184,19 +184,8 @@ class CategoryProgressController extends ChangeNotifier {
     }
 
     progress.activityTotal = normalizedTotal;
-    final hasCompletedAll =
-        normalizedTotal > 0 &&
-        progress.completedActivityIds.length >= normalizedTotal;
-    if (hasCompletedAll) {
-      progress
-        ..status = CategoryProgressStatus.completed
-        ..completedAt ??= DateTime.now();
-    } else if (progress.status == CategoryProgressStatus.completed) {
-      progress
-        ..status = CategoryProgressStatus.inProgress
-        ..completedAt = null;
-    }
     progress.updatedAt = DateTime.now();
+    _syncCategoryCompletion(progress, progress.updatedAt!);
     notifyListeners();
   }
 
@@ -211,13 +200,8 @@ class CategoryProgressController extends ChangeNotifier {
     }
 
     progress.theoryTotal = normalizedTotal;
-    if (progress.status == CategoryProgressStatus.completed &&
-        progress.viewedTheoryPageIds.length < normalizedTotal) {
-      progress
-        ..status = CategoryProgressStatus.inProgress
-        ..completedAt = null;
-    }
     progress.updatedAt = DateTime.now();
+    _syncCategoryCompletion(progress, progress.updatedAt!);
     notifyListeners();
   }
 
@@ -251,10 +235,8 @@ class CategoryProgressController extends ChangeNotifier {
 
     progress.theoryTotal = normalizedTotalPages;
     progress.viewedTheoryPageIds.add(pageId);
-    if (progress.status != CategoryProgressStatus.completed) {
-      progress.status = CategoryProgressStatus.inProgress;
-    }
     progress.updatedAt = DateTime.now();
+    _syncCategoryCompletion(progress, progress.updatedAt!);
     notifyListeners();
     return true;
   }
@@ -424,14 +406,9 @@ class CategoryProgressController extends ChangeNotifier {
 
     progress.completedActivityIds.add(activityId);
     progress
-      ..status = progress.completedActivityIds.length >= progress.activityTotal
-          ? CategoryProgressStatus.completed
-          : CategoryProgressStatus.inProgress
       ..lastActivityAt = now
-      ..completedAt = progress.status == CategoryProgressStatus.completed
-          ? now
-          : null
       ..updatedAt = now;
+    _syncCategoryCompletion(progress, now);
     notifyListeners();
     return true;
   }
@@ -531,10 +508,9 @@ class CategoryProgressController extends ChangeNotifier {
     }
 
     progress
-      ..status = CategoryProgressStatus.completed
       ..lastActivityAt = now
-      ..completedAt = now
       ..updatedAt = now;
+    _syncCategoryCompletion(progress, now);
     notifyListeners();
     return true;
   }
@@ -824,6 +800,31 @@ class CategoryProgressController extends ChangeNotifier {
       _MutableCategoryProgress.new,
     );
   }
+
+  void _syncCategoryCompletion(
+    _MutableCategoryProgress progress,
+    DateTime now,
+  ) {
+    if (progress.snapshot.subcategoryCompleted) {
+      progress
+        ..status = CategoryProgressStatus.completed
+        ..completedAt ??= now;
+      return;
+    }
+
+    if (progress.snapshot.viewedTheoryPages > 0 ||
+        progress.completedActivityIds.isNotEmpty ||
+        progress.activities.isNotEmpty ||
+        progress.exams.isNotEmpty) {
+      progress
+        ..status = CategoryProgressStatus.inProgress
+        ..completedAt = null;
+    } else {
+      progress
+        ..status = CategoryProgressStatus.notStarted
+        ..completedAt = null;
+    }
+  }
 }
 
 class CategoryProgressSnapshot {
@@ -854,6 +855,7 @@ class CategoryProgressSnapshot {
   final int earnedPoints;
   final QuizResult? result;
   final List<String> viewedTheoryPageIds;
+  // Phase 1: completed ids still represent finished attempts, not approval.
   final List<String> completedActivityIds;
   final CategoryProgressStatus status;
   final Map<String, ActivityProgressSnapshot> activityProgress;
@@ -863,24 +865,71 @@ class CategoryProgressSnapshot {
   final DateTime? completedAt;
   final DateTime? updatedAt;
 
-  bool get hasCompletedTheory => viewedTheoryPages >= totalTheoryPages;
+  bool get hasCompletedTheory => ProgressApprovalRules.theoryCompleted(
+    viewedTheoryPages: viewedTheoryPages,
+    totalTheoryPages: totalTheoryPages,
+  );
 
-  bool get hasCompletedActivities => completedActivities >= totalActivities;
+  bool get hasCompletedActivities => allActivitiesPassed;
 
   bool get hasResult => result != null;
 
-  int get overallPercentage {
-    final totalSteps = totalTheoryPages + totalActivities;
-    if (totalSteps == 0) {
-      return 0;
-    }
-
-    return (((viewedTheoryPages + completedActivities) / totalSteps) * 100)
-        .round()
-        .clamp(0, 100);
+  bool activityPassed(String activityId) {
+    final progress = activityProgress[activityId];
+    return progress != null && progress.isPassed;
   }
 
-  double get overallProgress => overallPercentage / 100;
+  bool examPassed(String examId) {
+    final progress = examProgress[examId];
+    return progress != null && progress.isPassed;
+  }
+
+  int get passedActivities {
+    return activityProgress.values
+        .where((activity) => activity.isPassed)
+        .length;
+  }
+
+  bool get allActivitiesPassed {
+    if (totalActivities <= 0) {
+      return true;
+    }
+
+    return passedActivities >= totalActivities;
+  }
+
+  bool get hasPassedExam {
+    return examProgress.values.any((exam) => exam.isPassed);
+  }
+
+  bool get examUnlocked {
+    return hasCompletedTheory && allActivitiesPassed;
+  }
+
+  bool get subcategoryCompleted {
+    return hasCompletedTheory && allActivitiesPassed && hasPassedExam;
+  }
+
+  double get overallRawPercentage {
+    final theoryRatio = totalTheoryPages <= 0
+        ? 0.0
+        : (viewedTheoryPages.clamp(0, totalTheoryPages) / totalTheoryPages)
+              .clamp(0.0, 1.0);
+    final activitiesRatio = totalActivities <= 0
+        ? 0.0
+        : (passedActivities.clamp(0, totalActivities) / totalActivities).clamp(
+            0.0,
+            1.0,
+          );
+    final examRatio = hasPassedExam ? 1.0 : 0.0;
+
+    return ((theoryRatio * 10) + (activitiesRatio * 75) + (examRatio * 15))
+        .clamp(0.0, 100.0);
+  }
+
+  int get overallPercentage => overallRawPercentage.round().clamp(0, 100);
+
+  double get overallProgress => (overallRawPercentage / 100).clamp(0.0, 1.0);
 }
 
 class ActivityProgressSnapshot {
@@ -911,6 +960,10 @@ class ActivityProgressSnapshot {
   final DateTime? updatedAt;
 
   bool get isCompleted => status == ActivityProgressStatus.completed;
+
+  bool get isPassed {
+    return ProgressApprovalRules.hasPassingPercentage(bestPercentage);
+  }
 }
 
 class ExamProgressSnapshot {
@@ -937,6 +990,10 @@ class ExamProgressSnapshot {
   final DateTime? updatedAt;
 
   bool get isCompleted => status == ActivityProgressStatus.completed;
+
+  bool get isPassed {
+    return ProgressApprovalRules.hasPassingPercentage(bestPercentage);
+  }
 }
 
 class QuizAttemptSnapshot {

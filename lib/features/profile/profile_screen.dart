@@ -564,19 +564,21 @@ class _ProgressSummary {
     var totalActivities = 0;
     var viewedTheoryPages = 0;
     var totalTheoryPages = 0;
+    var weightedTotal = 0.0;
+    var snapshotCount = 0;
 
     for (final snapshot in snapshots) {
       completedActivities += snapshot.completedActivities;
       totalActivities += snapshot.totalActivities;
       viewedTheoryPages += snapshot.viewedTheoryPages;
       totalTheoryPages += snapshot.totalTheoryPages;
+      weightedTotal += snapshot.overallRawPercentage;
+      snapshotCount += 1;
     }
 
-    final totalSteps = totalActivities + totalTheoryPages;
-    final completedSteps = completedActivities + viewedTheoryPages;
-    final percentage = totalSteps == 0
+    final percentage = snapshotCount == 0
         ? 0
-        : ((completedSteps / totalSteps) * 100).round().clamp(0, 100);
+        : (weightedTotal / snapshotCount).round().clamp(0, 100);
 
     return _ProgressSummary(
       percentage: percentage,

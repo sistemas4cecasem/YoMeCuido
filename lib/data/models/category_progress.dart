@@ -2,6 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'activity_scoring_policy.dart';
 
+class ProgressApprovalRules {
+  const ProgressApprovalRules._();
+
+  static const int passingPercentage = 80;
+
+  static bool hasPassingPercentage(int bestPercentage) {
+    return bestPercentage >= passingPercentage;
+  }
+
+  static bool theoryCompleted({
+    required int viewedTheoryPages,
+    required int totalTheoryPages,
+  }) {
+    if (totalTheoryPages <= 0) {
+      return true;
+    }
+
+    return viewedTheoryPages >= totalTheoryPages;
+  }
+}
+
 enum CategoryProgressStatus {
   notStarted('notStarted'),
   inProgress('inProgress'),
