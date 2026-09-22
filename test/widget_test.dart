@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:demo_yomecuido/app/app.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
@@ -14,6 +16,7 @@ import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
+import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:demo_yomecuido/shared/widgets/lesson_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,6 +39,7 @@ void main() {
         userProfileRepository: _FakeUserProfileRepository(),
         leaderboardRepository: const _FakeLeaderboardRepository(),
         progressController: progressController ?? CategoryProgressController(),
+        connectivityService: _onlineConnectivityService(),
       ),
     );
     await tester.pumpAndSettle();
@@ -64,6 +68,8 @@ void main() {
     await advanceTheoryToActivities(tester);
     await tester.ensureVisible(find.text(AppStrings.firstActivityBlock));
     await tester.tap(find.text(AppStrings.firstActivityBlock));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startAttempt));
     await tester.pumpAndSettle();
   }
 
@@ -426,6 +432,8 @@ void main() {
     await tester.tap(
       find.byKey(const ValueKey<String>('learning_route_step_3')),
     );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startAttempt));
     await tester.pumpAndSettle();
 
     final progressBar = tester.widget<LessonProgressBar>(
@@ -832,6 +840,8 @@ void main() {
         find.byKey(const ValueKey<String>('learning_route_step_3')),
       );
       await tester.pumpAndSettle();
+      await tester.tap(find.text(AppStrings.startAttempt));
+      await tester.pumpAndSettle();
 
       final progressBar = tester.widget<LessonProgressBar>(
         find.byType(LessonProgressBar),
@@ -1211,6 +1221,33 @@ Finder _firstVisibleText(WidgetTester tester, List<Finder> candidates) {
   fail('No visible answer option matched the expected candidates.');
 }
 
+ConnectivityService _onlineConnectivityService() {
+  return ConnectivityService(
+    networkMonitor: _FakeNetworkInterfaceMonitor(),
+    backendProbe: _FakeBackendConnectivityProbe(),
+  );
+}
+
+class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  final _controller = StreamController<bool>.broadcast();
+
+  @override
+  Future<bool> hasNetworkInterface() async => true;
+
+  @override
+  Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
+
+  @override
+  Future<void> dispose() async {
+    await _controller.close();
+  }
+}
+
+class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
+  @override
+  Future<bool> canReachBackend({required Duration timeout}) async => true;
+}
+
 Future<void> _openActivitiesMenu(
   WidgetTester tester,
   CategoryProgressController progressController,
@@ -1222,6 +1259,7 @@ Future<void> _openActivitiesMenu(
       userProfileRepository: _FakeUserProfileRepository(),
       leaderboardRepository: const _FakeLeaderboardRepository(),
       progressController: progressController,
+      connectivityService: _onlineConnectivityService(),
     ),
   );
   await tester.pumpAndSettle();
@@ -1247,6 +1285,7 @@ Future<void> _openCategorySummary(
       userProfileRepository: _FakeUserProfileRepository(),
       leaderboardRepository: const _FakeLeaderboardRepository(),
       progressController: progressController,
+      connectivityService: _onlineConnectivityService(),
     ),
   );
   await tester.pumpAndSettle();

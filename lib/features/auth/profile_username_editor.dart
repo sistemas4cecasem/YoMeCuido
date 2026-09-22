@@ -17,6 +17,7 @@ class ProfileUsernameEditor extends StatefulWidget {
     required this.onChanged,
     this.startEditing = false,
     this.onCancel,
+    this.canSubmit,
     super.key,
   });
 
@@ -27,6 +28,7 @@ class ProfileUsernameEditor extends StatefulWidget {
   final ValueChanged<UserProfile> onChanged;
   final bool startEditing;
   final VoidCallback? onCancel;
+  final bool Function()? canSubmit;
 
   @override
   State<ProfileUsernameEditor> createState() => _ProfileUsernameEditorState();
@@ -50,6 +52,14 @@ class _ProfileUsernameEditorState extends State<ProfileUsernameEditor> {
 
   Future<void> _save() async {
     if (_saving) return;
+    final canSubmit = widget.canSubmit;
+    if (canSubmit != null && !canSubmit()) {
+      setState(() {
+        _error = AppStrings.profileEditConnectionRequired;
+        _saved = false;
+      });
+      return;
+    }
     final validation = Username.validate(_text.text);
     final user = widget.authRepository.currentUser;
     setState(() {

@@ -38,11 +38,14 @@ async function main() {
   });
 
   const tests = [
+    ['default deny bloquea rutas no autorizadas', defaultDenyUnknownPath],
     ['usuario A puede leer su perfil', ownProfileReadAllowed],
     ['usuario A no puede leer perfil de B', otherProfileReadDenied],
     ['usuario A no puede modificar perfil de B', otherProfileWriteDenied],
+    ['usuario no autenticado no crea ni modifica perfil', unauthenticatedProfileWritesDenied],
     ['usuario no autenticado no lee progreso', unauthenticatedProgressReadDenied],
     ['usuario normal no puede escalar rol', roleEscalationDenied],
+    ['variantes de rol privilegiado denegadas', privilegedRoleVariantsDenied],
     ['creación de perfil admin denegada', adminProfileCreationDenied],
     ['totalPoints inicial manipulado denegado', manipulatedInitialPointsDenied],
     ['perfil antiguo puede recibir primera puntuación', legacyProfileFirstScoringAllowed],
@@ -55,6 +58,7 @@ async function main() {
     ['intento 4 con puntos denegado', fourthAttemptWithPointsDenied],
     ['porcentaje inválido denegado', invalidPercentageDenied],
     ['correctas superiores al total denegadas', correctAboveTotalDenied],
+    ['usuario A no crea progreso ni intentos en usuario B', crossUserProgressWritesDenied],
     ['modificar intento histórico denegado', historicalAttemptUpdateDenied],
     ['eliminar intento denegado', attemptDeleteDenied],
     ['eliminar progreso denegado', progressDeleteDenied],
@@ -299,6 +303,13 @@ async function ownProfileReadAllowed() {
   await assertSucceeds(getDoc(doc(authDb('uid-a'), 'users', 'uid-a')));
 }
 
+async function defaultDenyUnknownPath() {
+  await assertFails(getDoc(doc(authDb('uid-a'), 'privateAuditProbe', 'doc-a')));
+  await assertFails(setDoc(doc(authDb('uid-a'), 'privateAuditProbe', 'doc-a'), {
+    value: true,
+  }));
+}
+
 async function otherProfileReadDenied() {
   await seedUser('uid-a');
   await seedUser('uid-b');
@@ -314,6 +325,23 @@ async function otherProfileWriteDenied() {
   }));
 }
 
+async function unauthenticatedProfileWritesDenied() {
+  await seedUser('uid-a');
+  await assertFails(updateDoc(doc(unauthDb(), 'users', 'uid-a'), {
+    username: 'intruso',
+    updatedAt: serverTimestamp(),
+  }));
+  await assertFails(setDoc(doc(unauthDb(), 'users', 'uid-new'), {
+    username: 'Anonimo',
+    usernameNormalized: 'anonimo',
+    email: 'anonimo@example.com',
+    role: 'user',
+    totalPoints: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  }));
+}
+
 async function unauthenticatedProgressReadDenied() {
   await seedProgress('uid-a');
   await assertFails(getDoc(doc(unauthDb(), 'users', 'uid-a', 'categoryProgress', categoryId)));
@@ -325,6 +353,20 @@ async function roleEscalationDenied() {
     role: 'admin',
     updatedAt: serverTimestamp(),
   }));
+  await assertFails(setDoc(doc(authDb('uid-a'), 'users', 'uid-a'), {
+    role: 'admin',
+    updatedAt: serverTimestamp(),
+  }, { merge: true }));
+}
+
+async function privilegedRoleVariantsDenied() {
+  await seedUser('uid-a');
+  for (const role of ['ADMIN', 'Admin', 'administrator', 'moderator']) {
+    await assertFails(updateDoc(doc(authDb('uid-a'), 'users', 'uid-a'), {
+      role,
+      updatedAt: serverTimestamp(),
+    }));
+  }
 }
 
 async function adminProfileCreationDenied() {
@@ -449,6 +491,22 @@ async function correctAboveTotalDenied() {
   await assertFails(setDoc(
     activityAttemptRef(authDb('uid-a'), 'uid-a', 'attempt_bad'),
     activityAttemptData({ correctAnswers: 11, totalQuestions: 10 }),
+  ));
+}
+
+async function crossUserProgressWritesDenied() {
+  await seedActivity('uid-b');
+  await assertFails(setDoc(
+    doc(authDb('uid-a'), 'users', 'uid-b', 'categoryProgress', categoryId),
+    progressData({
+      viewedLessonPageIds: ['page_01'],
+      startedAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    }),
+  ));
+  await assertFails(setDoc(
+    activityAttemptRef(authDb('uid-a'), 'uid-b', 'attempt_cross_user'),
+    activityAttemptData(),
   ));
 }
 

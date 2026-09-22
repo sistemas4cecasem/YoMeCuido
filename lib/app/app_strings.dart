@@ -46,6 +46,10 @@ abstract final class AppStrings {
       'Enviamos nuevamente el correo de verificación.';
   static const emailVerificationError =
       'No pudimos verificar el estado del correo. Intenta nuevamente.';
+  static const emailVerificationConnectionError =
+      'Necesitas conexión para verificar el estado del correo.';
+  static const emailVerificationResendConnectionError =
+      'Necesitas conexión para reenviar el correo de verificación.';
   static const emailLabel = 'Correo electrónico';
   static const passwordLabel = 'Contraseña';
   static const confirmPasswordLabel = 'Confirmar contraseña';
@@ -83,6 +87,53 @@ abstract final class AppStrings {
   static const progressLoadError =
       'No pudimos cargar tu progreso. Intenta nuevamente.';
   static const retry = 'Reintentar';
+  static const offlineBannerTitle = 'Sin conexión';
+  static const offlineBannerBody =
+      'Algunas funciones pueden no estar disponibles.';
+  static const connectionRestored = 'Conexión restablecida.';
+  static const connectionRequired = 'Requiere conexión';
+  static const connectionRequiredForCurrentInfo =
+      'Necesitas conexión para ver información actualizada.';
+  static const checkingConnection = 'Comprobando conexión...';
+  static const categoryConnectionRequiredSnackBar =
+      'Necesitas conexión para abrir esta categoría.';
+  static const offlineActivityTitle = 'Actividad sin conexión';
+  static const offlineActivityDescription =
+      'Practica autocuidado digital con contenido disponible en el dispositivo.';
+  static const offlineActivityIntroTitle = 'Práctica local';
+  static const offlineActivityIntroBody =
+      'Esta actividad está disponible sin conexión. Sus resultados no afectan tu puntuación, ranking ni progreso.';
+  static const offlineActivityStart = 'Iniciar actividad';
+  static const offlineActivityQuestionCounter = 'Pregunta';
+  static const offlineActivityResultTitle = 'Resultado local';
+  static const offlineActivityCorrectAnswers = 'Respuestas correctas';
+  static const offlineActivityResultHigh =
+      'Muy bien. Reconoces acciones importantes de autocuidado y prevención.';
+  static const offlineActivityResultMedium =
+      'Buen trabajo. Sigue practicando para fortalecer tus decisiones digitales.';
+  static const offlineActivityResultLow =
+      'Has completado la actividad. Puedes repetirla para revisar las recomendaciones.';
+  static const offlineActivityRepeat = 'Repetir actividad';
+  static const offlineActivityBackHome = 'Volver al inicio';
+  static const offlineActivityLoadError =
+      'No pudimos cargar la actividad sin conexión.';
+  static const offlineActivityCorrectFeedback =
+      'Tu respuesta es correcta. Puedes continuar con la siguiente pregunta.';
+  static const offlineActivityIncorrectFeedback =
+      'Esta opción no es la recomendada. Revisa la respuesta correcta antes de continuar.';
+  static const exitOfflineActivityTitle = '¿Salir de la actividad?';
+  static const exitOfflineActivityBody =
+      'Se perderán las respuestas de esta sesión.';
+  static const exitOfflineActivity = 'Salir';
+  static const startAttemptTitle = '¿Deseas iniciar esta actividad?';
+  static const startExamAttemptTitle = '¿Deseas iniciar el examen?';
+  static const startAttemptBody = 'Una vez iniciada se considerará un intento.';
+  static const startAttempt = 'Iniciar';
+  static const startAttemptConnectionError =
+      'Necesitas conexión a Internet para iniciar esta actividad.';
+  static const pendingSyncTitle = 'Pendiente de sincronización';
+  static const pendingSyncBody =
+      'Tus resultados se guardaron en el dispositivo y se sincronizarán cuando vuelva Internet.';
   static const categoryDetailTitle = 'Relaciones y violencia digital';
   static const learningRouteTitle = 'Ruta de aprendizaje';
   static const categoryProgress = 'Progreso de la categoría';
@@ -102,6 +153,9 @@ abstract final class AppStrings {
       'Completa actividades para conseguir puntos.';
   static const rankingLoadError =
       'No pudimos cargar el ranking. Intenta nuevamente.';
+  static const rankingConnectionRequiredTitle = 'El ranking requiere conexión';
+  static const rankingConnectionRequiredBody =
+      'No mostraremos datos guardados para evitar información desactualizada.';
   static const retryLater = 'Vuelve a intentarlo en unos momentos.';
   static const myProfileTitle = 'Mi perfil';
   static const accountInfoTitle = 'Información de cuenta';
@@ -116,6 +170,12 @@ abstract final class AppStrings {
   static const profileActivitiesProgress = 'Actividades';
   static const noProgressCategories =
       'Aún no hay categorías disponibles para mostrar progreso.';
+  static const profileEditConnectionRequired =
+      'Necesitas conexión para cambiar tu nombre de usuario.';
+  static const profileProgressConnectionRequiredTitle =
+      'Tu progreso requiere conexión';
+  static const profileProgressConnectionRequiredBody =
+      'Cuando se restablezca la conexión actualizaremos tu avance.';
   static const hideNavigation = 'Ocultar navegación';
   static const showNavigation = 'Mostrar navegación';
   static const profileUsername = 'Nombre de usuario';
@@ -177,9 +237,10 @@ abstract final class AppStrings {
   static const expectedAnswer = 'Respuesta recomendada';
   static const fillBlankHint = 'Escribe una palabra';
   static const exitLessonTitle = '¿Salir de la lección?';
-  static const exitLessonBody = 'El progreso de este intento se perderá.';
-  static const keepLearning = 'Continuar aprendiendo';
-  static const exit = 'Salir';
+  static const exitLessonBody =
+      'El intento finalizará con las respuestas realizadas hasta este momento.';
+  static const keepLearning = 'Continuar actividad';
+  static const exit = 'Salir y finalizar intento';
   static const lessonCompleted = 'Lección completada';
   static const earnedPoints = 'Puntos obtenidos';
   static const totalPoints = 'Puntuación total';

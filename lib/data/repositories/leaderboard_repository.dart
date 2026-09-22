@@ -41,7 +41,8 @@ class FirestoreLeaderboardRepository implements LeaderboardRepository {
         .where('totalPoints', isGreaterThan: 0)
         .orderBy('totalPoints', descending: true)
         .limit(resolvedLimit)
-        .snapshots()
+        .snapshots(includeMetadataChanges: true)
+        .where((snapshot) => !snapshot.metadata.isFromCache)
         .map((snapshot) {
           final entries = _validEntriesFromSnapshot(snapshot);
           return _sortTiesByUsername(entries);

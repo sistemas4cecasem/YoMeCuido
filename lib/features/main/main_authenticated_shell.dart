@@ -10,6 +10,7 @@ import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_background.dart';
 import '../high_level_categories/high_level_categories_screen.dart';
 import '../profile/profile_screen.dart';
@@ -28,6 +29,7 @@ class MainAuthenticatedShell extends StatefulWidget {
     required this.contentRepository,
     required this.progressController,
     required this.user,
+    required this.connectivityService,
     super.key,
   });
 
@@ -40,6 +42,7 @@ class MainAuthenticatedShell extends StatefulWidget {
   final ValueChanged<UserProfile> onProfileChanged;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+  final ConnectivityService connectivityService;
 
   @override
   State<MainAuthenticatedShell> createState() => _MainAuthenticatedShellState();
@@ -48,6 +51,16 @@ class MainAuthenticatedShell extends StatefulWidget {
 class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
   MainSection _selectedSection = MainSection.home;
   bool _isNavigationVisible = true;
+  late UserProfile _userProfile = widget.userProfile;
+
+  @override
+  void didUpdateWidget(covariant MainAuthenticatedShell oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.user.uid != widget.user.uid ||
+        oldWidget.userProfile != widget.userProfile) {
+      _userProfile = widget.userProfile;
+    }
+  }
 
   void _selectSection(MainSection section) {
     if (_selectedSection == section) {
@@ -75,26 +88,33 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
         children: [
           const Positioned.fill(child: AppBackground(child: SizedBox.expand())),
           switch (_selectedSection) {
-            MainSection.home => const HighLevelCategoriesScreen(
+            MainSection.home => HighLevelCategoriesScreen(
               showBackButton: false,
               useScaffold: false,
+              connectivityService: widget.connectivityService,
             ),
             MainSection.ranking => RankingScreen(
               user: widget.user,
-              profile: widget.userProfile,
+              profile: _userProfile,
               totalPoints:
-                  widget.personalTotalPoints ?? widget.userProfile.totalPoints,
+                  widget.personalTotalPoints ?? _userProfile.totalPoints,
               leaderboardRepository: widget.leaderboardRepository,
+              connectivityService: widget.connectivityService,
             ),
             MainSection.profile => ProfileScreen(
               user: widget.user,
-              profile: widget.userProfile,
+              profile: _userProfile,
               personalTotalPoints: widget.personalTotalPoints,
               authRepository: widget.authRepository,
               userProfileRepository: widget.userProfileRepository,
               contentRepository: widget.contentRepository,
               progressController: widget.progressController,
-              onProfileChanged: widget.onProfileChanged,
+              onProfileChanged: (profile) {
+                setState(() {
+                  _userProfile = profile;
+                });
+              },
+              connectivityService: widget.connectivityService,
             ),
           },
         ],

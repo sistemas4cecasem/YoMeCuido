@@ -142,6 +142,15 @@ class QuizController extends ChangeNotifier {
     return result;
   }
 
+  QuizResult get partialResult {
+    return QuizResult.fromScore(
+      correctAnswers: _submittedAnswers.values
+          .where((answer) => answer.isCorrect)
+          .length,
+      totalQuestions: totalQuestions,
+    );
+  }
+
   void selectOption(String optionId) {
     if (_isAnswerConfirmed || _isFinished) {
       return;

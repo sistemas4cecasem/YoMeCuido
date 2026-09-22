@@ -5,15 +5,19 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../shared/feedback/app_toast.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_background.dart';
 
 class HighLevelCategoriesScreen extends StatelessWidget {
   const HighLevelCategoriesScreen({
+    required this.connectivityService,
     this.showBackButton = true,
     this.useScaffold = true,
     super.key,
   });
 
+  final ConnectivityService connectivityService;
   final bool showBackButton;
   final bool useScaffold;
 
@@ -22,6 +26,11 @@ class HighLevelCategoriesScreen extends StatelessWidget {
     required String parentCategoryId,
     required String title,
   }) {
+    if (!connectivityService.isOnline) {
+      AppToast.showInfo(context, AppStrings.categoryConnectionRequiredSnackBar);
+      return;
+    }
+
     Navigator.of(context).pushNamed(
       AppRoutes.categories,
       arguments: CategoriesRouteArguments(
@@ -35,20 +44,31 @@ class HighLevelCategoriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    final content = SafeArea(
-      child: _HighLevelCategoriesContent(
-        showBackButton: showBackButton,
-        onTraffickingTap: () => _openCategoryGroup(
-          context: context,
-          parentCategoryId: ParentCategoryIds.humanTrafficking,
-          title: AppStrings.traffickingTitle,
-        ),
-        onDigitalSecurityTap: () => _openCategoryGroup(
-          context: context,
-          parentCategoryId: ParentCategoryIds.digitalSecurity,
-          title: AppStrings.digitalSecurityTitle,
-        ),
-      ),
+    final content = AnimatedBuilder(
+      animation: connectivityService,
+      builder: (context, child) {
+        final isOnline =
+            connectivityService.status == ConnectivityStatus.online;
+        return SafeArea(
+          child: _HighLevelCategoriesContent(
+            showBackButton: showBackButton,
+            isOnline: isOnline,
+            onTraffickingTap: () => _openCategoryGroup(
+              context: context,
+              parentCategoryId: ParentCategoryIds.humanTrafficking,
+              title: AppStrings.traffickingTitle,
+            ),
+            onDigitalSecurityTap: () => _openCategoryGroup(
+              context: context,
+              parentCategoryId: ParentCategoryIds.digitalSecurity,
+              title: AppStrings.digitalSecurityTitle,
+            ),
+            onOfflineActivityTap: () {
+              Navigator.of(context).pushNamed(AppRoutes.offlineActivity);
+            },
+          ),
+        );
+      },
     );
 
     if (!useScaffold) {
@@ -70,13 +90,17 @@ class HighLevelCategoriesScreen extends StatelessWidget {
 class _HighLevelCategoriesContent extends StatelessWidget {
   const _HighLevelCategoriesContent({
     required this.showBackButton,
+    required this.isOnline,
     required this.onTraffickingTap,
     required this.onDigitalSecurityTap,
+    required this.onOfflineActivityTap,
   });
 
   final bool showBackButton;
+  final bool isOnline;
   final VoidCallback onTraffickingTap;
   final VoidCallback onDigitalSecurityTap;
+  final VoidCallback onOfflineActivityTap;
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +154,8 @@ class _HighLevelCategoriesContent extends StatelessWidget {
                       child: _CenteredCategoryButtons(
                         onTraffickingTap: onTraffickingTap,
                         onDigitalSecurityTap: onDigitalSecurityTap,
+                        onOfflineActivityTap: onOfflineActivityTap,
+                        isOnline: isOnline,
                       ),
                     ),
                   ),
@@ -147,10 +173,14 @@ class _CenteredCategoryButtons extends StatelessWidget {
   const _CenteredCategoryButtons({
     required this.onTraffickingTap,
     required this.onDigitalSecurityTap,
+    required this.onOfflineActivityTap,
+    required this.isOnline,
   });
 
   final VoidCallback onTraffickingTap;
   final VoidCallback onDigitalSecurityTap;
+  final VoidCallback onOfflineActivityTap;
+  final bool isOnline;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +195,8 @@ class _CenteredCategoryButtons extends StatelessWidget {
               title: AppStrings.traffickingTitle,
               description: AppStrings.traffickingDescription,
               icon: Icons.health_and_safety_outlined,
-              enabled: true,
+              enabled: isOnline,
+              lockedLabel: AppStrings.connectionRequired,
               onTap: onTraffickingTap,
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -173,8 +204,17 @@ class _CenteredCategoryButtons extends StatelessWidget {
               title: AppStrings.digitalSecurityTitle,
               description: AppStrings.digitalSecurityDescription,
               icon: Icons.shield_outlined,
-              enabled: true,
+              enabled: isOnline,
+              lockedLabel: AppStrings.connectionRequired,
               onTap: onDigitalSecurityTap,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            _HighLevelCategoryCard(
+              title: AppStrings.offlineActivityTitle,
+              description: AppStrings.offlineActivityDescription,
+              icon: Icons.offline_bolt_outlined,
+              enabled: true,
+              onTap: onOfflineActivityTap,
             ),
           ],
         ),
@@ -190,6 +230,7 @@ class _HighLevelCategoryCard extends StatelessWidget {
     required this.enabled,
     required this.onTap,
     this.description,
+    this.lockedLabel = AppStrings.comingSoon,
   });
 
   final String title;
@@ -197,6 +238,7 @@ class _HighLevelCategoryCard extends StatelessWidget {
   final IconData icon;
   final bool enabled;
   final VoidCallback onTap;
+  final String lockedLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -209,14 +251,16 @@ class _HighLevelCategoryCard extends StatelessWidget {
     final borderColor = enabled ? colors.orangePrimary : colors.border;
     final textScale = MediaQuery.textScalerOf(context).scale(1);
     final compact = textScale > 1.25;
-    final cardHeight = compact ? 164.0 : 152.0;
+    final cardHeight = !enabled
+        ? (compact ? 190.0 : 176.0)
+        : (compact ? 164.0 : 152.0);
     final iconSize = compact ? 58.0 : 68.0;
     final padding = compact ? AppSpacing.md : AppSpacing.lg;
 
     return Semantics(
       button: true,
       enabled: enabled,
-      label: enabled ? title : '$title, ${AppStrings.comingSoon}',
+      label: enabled ? title : '$title, $lockedLabel',
       child: Card(
         color: cardColor,
         elevation: enabled ? 2 : 0,
@@ -265,7 +309,7 @@ class _HighLevelCategoryCard extends StatelessWidget {
                     const SizedBox(height: AppSpacing.xs),
                     Text(
                       description!,
-                      maxLines: 2,
+                      maxLines: enabled ? 2 : 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyLarge?.copyWith(
                         color: secondaryColor,
@@ -275,7 +319,7 @@ class _HighLevelCategoryCard extends StatelessWidget {
                   ],
                   if (!enabled) ...[
                     const SizedBox(height: AppSpacing.sm),
-                    const _ComingSoonPill(),
+                    _ComingSoonPill(label: lockedLabel),
                   ],
                 ],
               );
@@ -319,7 +363,9 @@ class _SingleLineTitle extends StatelessWidget {
 }
 
 class _ComingSoonPill extends StatelessWidget {
-  const _ComingSoonPill();
+  const _ComingSoonPill({required this.label});
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +393,7 @@ class _ComingSoonPill extends StatelessWidget {
               color: colors.disabledText,
             ),
             Text(
-              AppStrings.comingSoon,
+              label,
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: colors.disabledText),

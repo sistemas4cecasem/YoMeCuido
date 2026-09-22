@@ -5,10 +5,14 @@ import '../../data/repositories/auth_repository.dart';
 import 'auth_email_validator.dart';
 
 class LoginController extends ChangeNotifier {
-  LoginController({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  LoginController({
+    required AuthRepository authRepository,
+    Future<bool> Function()? checkConnection,
+  }) : _authRepository = authRepository,
+       _checkConnection = checkConnection ?? _alwaysOnline;
 
   final AuthRepository _authRepository;
+  final Future<bool> Function() _checkConnection;
 
   bool _isLoading = false;
   AuthUser? _signedInUser;
@@ -49,6 +53,14 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final isOnline = await _checkConnection();
+      if (!isOnline) {
+        _submitError = const AuthException(
+          AuthFailureReason.networkRequestFailed,
+        ).userMessage;
+        return null;
+      }
+
       final user = await _authRepository.signInWithEmailAndPassword(
         email: normalizedEmail,
         password: password,
@@ -65,6 +77,13 @@ class LoginController extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void resetFormState() {
+    _isLoading = false;
+    _signedInUser = null;
+    _clearFeedback();
+    notifyListeners();
   }
 
   void _clearFeedback() {
@@ -88,4 +107,6 @@ class LoginController extends ChangeNotifier {
   bool get _hasValidationErrors {
     return _emailError != null || _passwordError != null;
   }
+
+  static Future<bool> _alwaysOnline() async => true;
 }

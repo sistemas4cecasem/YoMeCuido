@@ -6,6 +6,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../shared/feedback/app_toast.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/secondary_button.dart';
@@ -15,11 +16,13 @@ import 'sign_out_button.dart';
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({
     required this.authRepository,
+    required this.connectivityService,
     required this.onVerificationChecked,
     super.key,
   });
 
   final AuthRepository authRepository;
+  final ConnectivityService connectivityService;
   final ValueChanged<AuthUser?> onVerificationChecked;
 
   @override
@@ -45,6 +48,21 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
 
     try {
+      final isOnline = await widget.connectivityService.checkConnection();
+      if (!isOnline) {
+        if (mounted) {
+          setState(() {
+            _message = AppStrings.emailVerificationConnectionError;
+            _isError = true;
+          });
+          AppToast.showError(
+            context,
+            AppStrings.emailVerificationConnectionError,
+          );
+        }
+        return;
+      }
+
       final user = await widget.authRepository.reloadCurrentUser();
       widget.onVerificationChecked(user);
       if (mounted && user?.isEmailVerified != true) {
@@ -83,6 +101,21 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
 
     try {
+      final isOnline = await widget.connectivityService.checkConnection();
+      if (!isOnline) {
+        if (mounted) {
+          setState(() {
+            _message = AppStrings.emailVerificationResendConnectionError;
+            _isError = true;
+          });
+          AppToast.showError(
+            context,
+            AppStrings.emailVerificationResendConnectionError,
+          );
+        }
+        return;
+      }
+
       await widget.authRepository.sendEmailVerification();
       if (mounted) {
         setState(() {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../app/app_strings.dart';
@@ -12,6 +14,7 @@ import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../auth/profile_username_editor.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class ProfileScreen extends StatefulWidget {
     required this.contentRepository,
     required this.progressController,
     required this.onProfileChanged,
+    required this.connectivityService,
     super.key,
   });
 
@@ -35,6 +39,7 @@ class ProfileScreen extends StatefulWidget {
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
   final ValueChanged<UserProfile> onProfileChanged;
+  final ConnectivityService connectivityService;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -45,6 +50,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late Future<List<Category>> _categoriesFuture = _loadCategories();
   bool _isSigningOut = false;
   String? _selectedProgressParentCategoryId;
+  ConnectivityStatus? _lastConnectivityStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastConnectivityStatus = widget.connectivityService.status;
+    widget.connectivityService.addListener(_handleConnectivityChanged);
+  }
 
   @override
   void didUpdateWidget(covariant ProfileScreen oldWidget) {
@@ -54,6 +67,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     if (oldWidget.contentRepository != widget.contentRepository) {
       _categoriesFuture = _loadCategories();
+    }
+    if (oldWidget.connectivityService != widget.connectivityService) {
+      oldWidget.connectivityService.removeListener(_handleConnectivityChanged);
+      _lastConnectivityStatus = widget.connectivityService.status;
+      widget.connectivityService.addListener(_handleConnectivityChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.connectivityService.removeListener(_handleConnectivityChanged);
+    super.dispose();
+  }
+
+  void _handleConnectivityChanged() {
+    final nextStatus = widget.connectivityService.status;
+    final wasOffline = _lastConnectivityStatus != ConnectivityStatus.online;
+    _lastConnectivityStatus = nextStatus;
+    if (nextStatus == ConnectivityStatus.online && wasOffline) {
+      unawaited(
+        widget.progressController.loadPersistedProgressForUser(widget.user.uid),
+      );
+      _retryCategories();
+      return;
+    }
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -76,6 +116,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showUsernameEditor() {
+    if (widget.connectivityService.status != ConnectivityStatus.online) {
+      AppToast.showInfo(context, AppStrings.profileEditConnectionRequired);
+      return;
+    }
+
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -105,10 +150,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 authRepository: widget.authRepository,
                 repository: widget.userProfileRepository,
                 onChanged: (profile) {
-                  _handleProfileChanged(profile);
                   Navigator.of(sheetContext).pop();
+                  _handleProfileChanged(profile);
                 },
                 startEditing: true,
+                canSubmit: () =>
+                    widget.connectivityService.status ==
+                    ConnectivityStatus.online,
                 onCancel: () => Navigator.of(sheetContext).pop(),
               ),
             ],
@@ -166,8 +214,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return SafeArea(
       child: AnimatedBuilder(
-        animation: widget.progressController,
+        animation: Listenable.merge([
+          widget.progressController,
+          widget.connectivityService,
+        ]),
         builder: (context, child) {
+          final isOnline =
+              widget.connectivityService.status == ConnectivityStatus.online;
           final currentTotalPoints =
               widget.progressController.totalPointsForUser(widget.user.uid) ??
               totalPoints;
@@ -197,22 +250,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       email: email,
                       isEmailVerified: widget.user.isEmailVerified,
                       onEditUsername: _showUsernameEditor,
+                      canEditUsername: isOnline,
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    _PersonalPointsCard(totalPoints: currentTotalPoints),
-                    const SizedBox(height: AppSpacing.md),
-                    _ProgressSection(
-                      categoriesFuture: _categoriesFuture,
-                      progressController: widget.progressController,
-                      selectedParentCategoryId:
-                          _selectedProgressParentCategoryId,
-                      onParentCategorySelected: (parentCategoryId) {
-                        setState(() {
-                          _selectedProgressParentCategoryId = parentCategoryId;
-                        });
-                      },
-                      onRetry: _retryCategories,
-                    ),
+                    if (isOnline) ...[
+                      _PersonalPointsCard(totalPoints: currentTotalPoints),
+                      const SizedBox(height: AppSpacing.md),
+                      _ProgressSection(
+                        categoriesFuture: _categoriesFuture,
+                        progressController: widget.progressController,
+                        selectedParentCategoryId:
+                            _selectedProgressParentCategoryId,
+                        onParentCategorySelected: (parentCategoryId) {
+                          setState(() {
+                            _selectedProgressParentCategoryId =
+                                parentCategoryId;
+                          });
+                        },
+                        onRetry: _retryCategories,
+                      ),
+                    ] else
+                      const _ProfileConnectionStateCard(),
                     const SizedBox(height: AppSpacing.md),
                     _SignOutCard(
                       isSigningOut: _isSigningOut,
@@ -235,12 +293,14 @@ class _ProfileHeader extends StatelessWidget {
     required this.email,
     required this.isEmailVerified,
     required this.onEditUsername,
+    required this.canEditUsername,
   });
 
   final String username;
   final String email;
   final bool isEmailVerified;
   final VoidCallback onEditUsername;
+  final bool canEditUsername;
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +332,7 @@ class _ProfileHeader extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             _CenteredEditableUsername(
               username: username,
-              onEditUsername: onEditUsername,
+              onEditUsername: canEditUsername ? onEditUsername : null,
             ),
             const SizedBox(height: AppSpacing.xxs),
             Text(
@@ -330,7 +390,7 @@ class _CenteredEditableUsername extends StatelessWidget {
   });
 
   final String username;
-  final VoidCallback onEditUsername;
+  final VoidCallback? onEditUsername;
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +438,9 @@ class _CenteredEditableUsername extends StatelessWidget {
                 top: 0,
                 bottom: 0,
                 child: IconButton(
-                  tooltip: AppStrings.changeUsername,
+                  tooltip: onEditUsername == null
+                      ? AppStrings.profileEditConnectionRequired
+                      : AppStrings.changeUsername,
                   onPressed: onEditUsername,
                   icon: const Icon(Icons.edit_outlined),
                 ),
@@ -387,6 +449,43 @@ class _CenteredEditableUsername extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _ProfileConnectionStateCard extends StatelessWidget {
+  const _ProfileConnectionStateCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      child: Padding(
+        padding: AppInsets.card,
+        child: Column(
+          children: [
+            Icon(Icons.cloud_off_outlined, color: colors.orangeDark),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              AppStrings.profileProgressConnectionRequiredTitle,
+              textAlign: TextAlign.center,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xxs),
+            Text(
+              AppStrings.profileProgressConnectionRequiredBody,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium?.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -9,7 +9,14 @@ void main() {
   group('RegisterController', () {
     test('validates an empty email before calling the repository', () async {
       final repository = _FakeAuthRepository();
-      final controller = RegisterController(authRepository: repository);
+      var checkConnectionCallCount = 0;
+      final controller = RegisterController(
+        authRepository: repository,
+        checkConnection: () async {
+          checkConnectionCallCount += 1;
+          return true;
+        },
+      );
 
       final user = await controller.submit(
         username: 'diegonais',
@@ -20,6 +27,7 @@ void main() {
 
       expect(user, isNull);
       expect(controller.emailError, 'Ingresa tu correo electrónico.');
+      expect(checkConnectionCallCount, 0);
       expect(repository.registerCallCount, 0);
     });
 
@@ -128,6 +136,7 @@ void main() {
           password: '123456',
           confirmPassword: '123456',
         );
+        await Future<void>.delayed(Duration.zero);
 
         expect(controller.isLoading, isTrue);
         expect(repository.lastUsername, 'DiegoNais');
@@ -222,6 +231,61 @@ void main() {
 
       expect(user, isNull);
       expect(controller.submitError, 'Este nombre de usuario ya está en uso.');
+    });
+
+    test(
+      'does not call the repository when connectivity check is offline',
+      () async {
+        final repository = _FakeAuthRepository();
+        var checkConnectionCallCount = 0;
+        final controller = RegisterController(
+          authRepository: repository,
+          checkConnection: () async {
+            checkConnectionCallCount += 1;
+            return false;
+          },
+        );
+
+        final user = await controller.submit(
+          username: 'diegonais',
+          email: 'persona@example.com',
+          password: '123456',
+          confirmPassword: '123456',
+        );
+
+        expect(user, isNull);
+        expect(checkConnectionCallCount, 1);
+        expect(repository.registerCallCount, 0);
+        expect(repository.sendVerificationCallCount, 0);
+        expect(
+          controller.submitError,
+          'No pudimos conectar con el servicio. Revisa tu conexión.',
+        );
+      },
+    );
+
+    test('online connectivity keeps the normal registration flow', () async {
+      final repository = _FakeAuthRepository();
+      var checkConnectionCallCount = 0;
+      final controller = RegisterController(
+        authRepository: repository,
+        checkConnection: () async {
+          checkConnectionCallCount += 1;
+          return true;
+        },
+      );
+
+      final user = await controller.submit(
+        username: 'diegonais',
+        email: 'persona@example.com',
+        password: '123456',
+        confirmPassword: '123456',
+      );
+
+      expect(user?.uid, 'uid-123');
+      expect(checkConnectionCallCount, 1);
+      expect(repository.registerCallCount, 1);
+      expect(repository.sendVerificationCallCount, 1);
     });
   });
 }

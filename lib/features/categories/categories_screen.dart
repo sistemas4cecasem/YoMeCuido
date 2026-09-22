@@ -8,6 +8,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/category_card.dart';
 import '../../shared/widgets/primary_button.dart';
@@ -18,6 +19,7 @@ class CategoriesScreen extends StatefulWidget {
     required this.title,
     required this.contentRepository,
     required this.progressController,
+    required this.connectivityService,
     super.key,
   });
 
@@ -25,6 +27,7 @@ class CategoriesScreen extends StatefulWidget {
   final String title;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+  final ConnectivityService connectivityService;
 
   @override
   State<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -45,7 +48,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
   }
 
-  void _openCategory(Category category, {required bool unlocked}) {
+  void _openCategory(
+    Category category, {
+    required bool unlocked,
+    required bool isOnline,
+  }) {
+    if (!isOnline) {
+      AppToast.showInfo(context, AppStrings.categoryConnectionRequiredSnackBar);
+      return;
+    }
+
     if (!category.isEnabled) {
       AppToast.showInfo(context, AppStrings.comingSoonSnackBar);
       return;
@@ -91,8 +103,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           }
 
           return AnimatedBuilder(
-            animation: widget.progressController,
+            animation: Listenable.merge([
+              widget.progressController,
+              widget.connectivityService,
+            ]),
             builder: (context, child) {
+              final isOnline =
+                  widget.connectivityService.status ==
+                  ConnectivityStatus.online;
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,12 +123,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       CategoryCard(
                         key: ValueKey(categories[index].id),
                         category: categories[index],
-                        isUnlocked: _isCategoryUnlocked(categories, index),
-                        isCompleted: _hasCompletedCategory(categories[index]),
-                        lockedLabel: _lockedLabelFor(categories[index]),
+                        isUnlocked:
+                            isOnline && _isCategoryUnlocked(categories, index),
+                        isCompleted:
+                            isOnline &&
+                            _hasCompletedCategory(categories[index]),
+                        lockedLabel: _lockedLabelFor(
+                          categories[index],
+                          isOnline: isOnline,
+                        ),
                         onTap: () => _openCategory(
                           categories[index],
                           unlocked: _isCategoryUnlocked(categories, index),
+                          isOnline: isOnline,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.md),
@@ -142,7 +167,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return progress.subcategoryCompleted;
   }
 
-  String _lockedLabelFor(Category category) {
+  String _lockedLabelFor(Category category, {required bool isOnline}) {
+    if (!isOnline) {
+      return AppStrings.connectionRequired;
+    }
     if (!category.isEnabled) {
       return AppStrings.comingSoon;
     }

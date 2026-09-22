@@ -7,6 +7,7 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/leaderboard_entry.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/leaderboard_repository.dart';
+import '../../shared/services/connectivity_service.dart';
 
 class RankingScreen extends StatefulWidget {
   const RankingScreen({
@@ -14,6 +15,7 @@ class RankingScreen extends StatefulWidget {
     required this.profile,
     required this.totalPoints,
     required this.leaderboardRepository,
+    required this.connectivityService,
     super.key,
   });
 
@@ -21,6 +23,7 @@ class RankingScreen extends StatefulWidget {
   final UserProfile profile;
   final int totalPoints;
   final LeaderboardRepository leaderboardRepository;
+  final ConnectivityService connectivityService;
 
   @override
   State<RankingScreen> createState() => _RankingScreenState();
@@ -29,7 +32,7 @@ class RankingScreen extends StatefulWidget {
 class _RankingScreenState extends State<RankingScreen> {
   static const _rankingLimit = 10;
 
-  late Stream<List<LeaderboardEntry>> _topEntriesStream;
+  Stream<List<LeaderboardEntry>>? _topEntriesStream;
   Future<LeaderboardUserPosition?>? _positionFuture;
   String? _lastPositionKey;
   List<LeaderboardEntry> _lastTopEntries = const <LeaderboardEntry>[];
@@ -37,23 +40,49 @@ class _RankingScreenState extends State<RankingScreen> {
   @override
   void initState() {
     super.initState();
-    _topEntriesStream = widget.leaderboardRepository.watchTopEntries(
-      limit: _rankingLimit,
-    );
-    _refreshCurrentUserPosition();
+    widget.connectivityService.addListener(_handleConnectivityChanged);
+    _syncRankingReads();
   }
 
   @override
   void didUpdateWidget(covariant RankingScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.connectivityService != widget.connectivityService) {
+      oldWidget.connectivityService.removeListener(_handleConnectivityChanged);
+      widget.connectivityService.addListener(_handleConnectivityChanged);
+      _topEntriesStream = null;
+    }
     if (oldWidget.leaderboardRepository != widget.leaderboardRepository) {
-      _topEntriesStream = widget.leaderboardRepository.watchTopEntries(
-        limit: _rankingLimit,
-      );
+      _topEntriesStream = null;
       _positionFuture = null;
       _lastPositionKey = null;
       _lastTopEntries = const <LeaderboardEntry>[];
     }
+    _syncRankingReads();
+  }
+
+  @override
+  void dispose() {
+    widget.connectivityService.removeListener(_handleConnectivityChanged);
+    super.dispose();
+  }
+
+  void _handleConnectivityChanged() {
+    setState(_syncRankingReads);
+  }
+
+  void _syncRankingReads() {
+    if (widget.connectivityService.status != ConnectivityStatus.online) {
+      _topEntriesStream = null;
+      _positionFuture = null;
+      _lastPositionKey = null;
+      _lastTopEntries = const <LeaderboardEntry>[];
+      return;
+    }
+
+    _topEntriesStream ??= widget.leaderboardRepository.watchTopEntries(
+      limit: _rankingLimit,
+    );
     _refreshCurrentUserPosition();
   }
 
@@ -76,6 +105,28 @@ class _RankingScreenState extends State<RankingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final connectivityStatus = widget.connectivityService.status;
+    if (connectivityStatus != ConnectivityStatus.online) {
+      return SafeArea(
+        child: _RankingPage(
+          children: [
+            Text(
+              AppStrings.rankingTitle,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _RankingCard(
+              entries: const <LeaderboardEntry>[],
+              currentUserId: widget.user.uid,
+              isLoading: connectivityStatus == ConnectivityStatus.checking,
+              error: null,
+              offline: connectivityStatus == ConnectivityStatus.offline,
+            ),
+          ],
+        ),
+      );
+    }
+
     return SafeArea(
       child: StreamBuilder<List<LeaderboardEntry>>(
         stream: _topEntriesStream,
@@ -96,45 +147,58 @@ class _RankingScreenState extends State<RankingScreen> {
           );
           final showCurrentUserPosition =
               !isLoading && (widget.totalPoints <= 0 || !currentUserIsInTop);
-          return SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.screen,
-              AppSpacing.lg,
-              AppSpacing.screen,
-              AppSpacing.xl,
-            ),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: AppSizing.maxContentWidth,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      AppStrings.rankingTitle,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    _RankingCard(
-                      entries: entries,
-                      currentUserId: widget.user.uid,
-                      isLoading: isLoading,
-                      error: showLoadError ? snapshot.error : null,
-                    ),
-                    if (showCurrentUserPosition) ...[
-                      const SizedBox(height: AppSpacing.md),
-                      _CurrentUserPositionCard(
-                        positionFuture: _positionFuture,
-                        totalPoints: widget.totalPoints,
-                      ),
-                    ],
-                  ],
-                ),
+          return _RankingPage(
+            children: [
+              Text(
+                AppStrings.rankingTitle,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-            ),
+              const SizedBox(height: AppSpacing.md),
+              _RankingCard(
+                entries: entries,
+                currentUserId: widget.user.uid,
+                isLoading: isLoading,
+                error: showLoadError ? snapshot.error : null,
+              ),
+              if (showCurrentUserPosition) ...[
+                const SizedBox(height: AppSpacing.md),
+                _CurrentUserPositionCard(
+                  positionFuture: _positionFuture,
+                  totalPoints: widget.totalPoints,
+                ),
+              ],
+            ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _RankingPage extends StatelessWidget {
+  const _RankingPage({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.screen,
+        AppSpacing.lg,
+        AppSpacing.screen,
+        AppSpacing.xl,
+      ),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppSizing.maxContentWidth,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: children,
+          ),
+        ),
       ),
     );
   }
@@ -146,12 +210,14 @@ class _RankingCard extends StatelessWidget {
     required this.currentUserId,
     required this.isLoading,
     required this.error,
+    this.offline = false,
   });
 
   final List<LeaderboardEntry> entries;
   final String currentUserId;
   final bool isLoading;
   final Object? error;
+  final bool offline;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +235,13 @@ class _RankingCard extends StatelessWidget {
               title: AppStrings.generalRankingTitle,
             ),
             const SizedBox(height: AppSpacing.md),
-            if (isLoading)
+            if (offline)
+              const _MessageState(
+                icon: Icons.cloud_off_outlined,
+                title: AppStrings.rankingConnectionRequiredTitle,
+                body: AppStrings.rankingConnectionRequiredBody,
+              )
+            else if (isLoading)
               const _LoadingState()
             else if (error != null)
               const _MessageState(

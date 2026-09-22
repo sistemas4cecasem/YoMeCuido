@@ -4,14 +4,20 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import 'auth_form_layout.dart';
 import 'register_controller.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({required this.authRepository, super.key});
+  const RegisterScreen({
+    required this.authRepository,
+    required this.connectivityService,
+    super.key,
+  });
 
   final AuthRepository authRepository;
+  final ConnectivityService connectivityService;
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -30,7 +36,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = RegisterController(authRepository: widget.authRepository);
+    _controller = RegisterController(
+      authRepository: widget.authRepository,
+      checkConnection: widget.connectivityService.checkConnection,
+    );
   }
 
   @override

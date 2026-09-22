@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_theme.dart';
@@ -7,19 +9,24 @@ import '../data/repositories/content_repository.dart';
 import '../data/repositories/firebase_auth_repository.dart';
 import '../data/repositories/firestore_content_repository.dart';
 import '../data/repositories/leaderboard_repository.dart';
+import '../data/repositories/pending_quiz_attempt_repository.dart';
 import '../data/repositories/user_profile_repository.dart';
 import '../features/auth/auth_gate.dart';
+import '../shared/services/connectivity_service.dart';
+import '../shared/services/pending_quiz_attempt_sync_service.dart';
+import '../shared/widgets/connectivity_status_view.dart';
 import 'app_router.dart';
 import 'app_strings.dart';
 import 'category_progress_controller.dart';
 
-class YoMeCuidoApp extends StatelessWidget {
+class YoMeCuidoApp extends StatefulWidget {
   factory YoMeCuidoApp({
     ContentRepository? contentRepository,
     AuthRepository? authRepository,
     UserProfileRepository? userProfileRepository,
     LeaderboardRepository? leaderboardRepository,
     CategoryProgressController? progressController,
+    ConnectivityService? connectivityService,
     Key? key,
   }) {
     final resolvedUserProfileRepository =
@@ -35,6 +42,14 @@ class YoMeCuidoApp extends StatelessWidget {
           persistence: CategoryProgressRepository(),
           currentUserIdProvider: () => resolvedAuthRepository.currentUser?.uid,
         );
+    final resolvedConnectivityService =
+        connectivityService ?? ConnectivityService();
+    final pendingQuizAttemptSyncService = PendingQuizAttemptSyncService(
+      authRepository: resolvedAuthRepository,
+      connectivityService: resolvedConnectivityService,
+      progressController: resolvedProgressController,
+      repository: SharedPreferencesPendingQuizAttemptRepository(),
+    );
 
     return YoMeCuidoApp._(
       contentRepository: contentRepository ?? FirestoreContentRepository(),
@@ -43,6 +58,8 @@ class YoMeCuidoApp extends StatelessWidget {
       leaderboardRepository:
           leaderboardRepository ?? FirestoreLeaderboardRepository(),
       progressController: resolvedProgressController,
+      connectivityService: resolvedConnectivityService,
+      pendingQuizAttemptSyncService: pendingQuizAttemptSyncService,
       key: key,
     );
   }
@@ -53,17 +70,23 @@ class YoMeCuidoApp extends StatelessWidget {
     required UserProfileRepository userProfileRepository,
     required LeaderboardRepository leaderboardRepository,
     required CategoryProgressController progressController,
+    required ConnectivityService connectivityService,
+    required PendingQuizAttemptSyncService pendingQuizAttemptSyncService,
     super.key,
   }) : _router = AppRouter(
          contentRepository: contentRepository,
          authRepository: authRepository,
          progressController: progressController,
+         connectivityService: connectivityService,
+         pendingQuizAttemptSyncService: pendingQuizAttemptSyncService,
        ),
        _authRepository = authRepository,
        _userProfileRepository = userProfileRepository,
        _leaderboardRepository = leaderboardRepository,
        _contentRepository = contentRepository,
-       _progressController = progressController;
+       _progressController = progressController,
+       _connectivityService = connectivityService,
+       _pendingQuizAttemptSyncService = pendingQuizAttemptSyncService;
 
   final AppRouter _router;
   final AuthRepository _authRepository;
@@ -71,21 +94,53 @@ class YoMeCuidoApp extends StatelessWidget {
   final LeaderboardRepository _leaderboardRepository;
   final ContentRepository _contentRepository;
   final CategoryProgressController _progressController;
+  final ConnectivityService _connectivityService;
+  final PendingQuizAttemptSyncService _pendingQuizAttemptSyncService;
+
+  @override
+  State<YoMeCuidoApp> createState() => _YoMeCuidoAppState();
+}
+
+class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
+  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(widget._connectivityService.start());
+    unawaited(widget._pendingQuizAttemptSyncService.start());
+  }
+
+  @override
+  void dispose() {
+    widget._connectivityService.dispose();
+    unawaited(widget._pendingQuizAttemptSyncService.dispose());
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: _scaffoldMessengerKey,
       theme: AppTheme.data(),
+      builder: (context, child) {
+        return ConnectivityStatusView(
+          connectivityService: widget._connectivityService,
+          scaffoldMessengerKey: _scaffoldMessengerKey,
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       home: AuthGate(
-        authRepository: _authRepository,
-        userProfileRepository: _userProfileRepository,
-        leaderboardRepository: _leaderboardRepository,
-        progressController: _progressController,
-        contentRepository: _contentRepository,
+        authRepository: widget._authRepository,
+        userProfileRepository: widget._userProfileRepository,
+        leaderboardRepository: widget._leaderboardRepository,
+        progressController: widget._progressController,
+        contentRepository: widget._contentRepository,
+        connectivityService: widget._connectivityService,
       ),
-      onGenerateRoute: _router.onGenerateRoute,
+      onGenerateRoute: widget._router.onGenerateRoute,
     );
   }
 }

@@ -5,14 +5,20 @@ import '../../app/app_strings.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import 'auth_form_layout.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({required this.authRepository, super.key});
+  const LoginScreen({
+    required this.authRepository,
+    required this.connectivityService,
+    super.key,
+  });
 
   final AuthRepository authRepository;
+  final ConnectivityService connectivityService;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -27,7 +33,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = LoginController(authRepository: widget.authRepository);
+    _controller = LoginController(
+      authRepository: widget.authRepository,
+      checkConnection: widget.connectivityService.checkConnection,
+    );
   }
 
   @override
@@ -46,8 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _openRegister() {
-    Navigator.of(context).pushNamed(AppRoutes.register);
+  Future<void> _openRegister() async {
+    await Navigator.of(context).pushNamed(AppRoutes.register);
+    if (!mounted) {
+      return;
+    }
+    _emailController.clear();
+    _passwordController.clear();
+    setState(() {
+      _isPasswordVisible = false;
+    });
+    _controller.resetFormState();
   }
 
   void _openForgotPassword() {

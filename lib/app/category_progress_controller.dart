@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import '../data/models/activity_scoring_policy.dart';
 import '../data/models/category_progress.dart';
+import '../data/models/pending_quiz_attempt.dart';
 import '../data/models/quiz_result.dart';
 import '../data/repositories/category_progress_repository.dart';
 
@@ -247,12 +248,14 @@ class CategoryProgressController extends ChangeNotifier {
     required String activityId,
     required List<String> questionIds,
     required int totalActivities,
+    String? attemptId,
+    DateTime? startedAt,
   }) {
-    final attemptId = _attemptIdGenerator();
-    final now = DateTime.now();
+    final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
+    final now = startedAt ?? DateTime.now();
     _entryFor(categoryId).activityTotal = totalActivities;
-    _attemptsById[attemptId] = _MutableQuizAttempt(
-      id: attemptId,
+    _attemptsById[resolvedAttemptId] = _MutableQuizAttempt(
+      id: resolvedAttemptId,
       type: QuizAttemptType.activity,
       attemptNumber: 1,
       categoryId: categoryId,
@@ -262,7 +265,7 @@ class CategoryProgressController extends ChangeNotifier {
       startedAt: now,
     );
     notifyListeners();
-    return attemptId;
+    return resolvedAttemptId;
   }
 
   String startExamAttempt({
@@ -271,12 +274,14 @@ class CategoryProgressController extends ChangeNotifier {
     required String examId,
     required List<String> questionIds,
     required int totalActivities,
+    String? attemptId,
+    DateTime? startedAt,
   }) {
-    final attemptId = _attemptIdGenerator();
-    final now = DateTime.now();
+    final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
+    final now = startedAt ?? DateTime.now();
     _entryFor(categoryId).activityTotal = totalActivities;
-    _attemptsById[attemptId] = _MutableQuizAttempt(
-      id: attemptId,
+    _attemptsById[resolvedAttemptId] = _MutableQuizAttempt(
+      id: resolvedAttemptId,
       type: QuizAttemptType.exam,
       attemptNumber: 1,
       categoryId: categoryId,
@@ -286,7 +291,7 @@ class CategoryProgressController extends ChangeNotifier {
       startedAt: now,
     );
     notifyListeners();
-    return attemptId;
+    return resolvedAttemptId;
   }
 
   void discardAttempt(String attemptId) {
@@ -337,15 +342,14 @@ class CategoryProgressController extends ChangeNotifier {
       throw StateError('Unknown attempt id "$attemptId".');
     }
     if (attempt.completedAt != null) {
-      return false;
+      return true;
     }
     if (attempt.type != QuizAttemptType.activity ||
         attempt.categoryId != categoryId ||
         attempt.activityId != activityId) {
       throw StateError('Attempt does not belong to the requested activity.');
     }
-    if (attempt.answers.length != result.totalQuestions ||
-        attempt.questionIds.length != result.totalQuestions) {
+    if (attempt.questionIds.length != result.totalQuestions) {
       throw StateError('Cannot complete an attempt with pending answers.');
     }
 
@@ -452,15 +456,14 @@ class CategoryProgressController extends ChangeNotifier {
       throw StateError('Unknown attempt id "$attemptId".');
     }
     if (attempt.completedAt != null) {
-      return false;
+      return true;
     }
     if (attempt.type != QuizAttemptType.exam ||
         attempt.categoryId != categoryId ||
         attempt.examId != examId) {
       throw StateError('Attempt does not belong to the requested exam.');
     }
-    if (attempt.answers.length != result.totalQuestions ||
-        attempt.questionIds.length != result.totalQuestions) {
+    if (attempt.questionIds.length != result.totalQuestions) {
       throw StateError('Cannot complete an attempt with pending answers.');
     }
 
@@ -560,6 +563,87 @@ class CategoryProgressController extends ChangeNotifier {
     );
   }
 
+  Future<bool> syncPendingQuizAttempt(PendingQuizAttempt pending) async {
+    final currentUid = _currentUserIdProvider?.call()?.trim();
+    if (currentUid == null || currentUid != pending.uid) {
+      return false;
+    }
+
+    _restorePendingAttempt(pending);
+    final result = QuizResult.fromScore(
+      correctAnswers: pending.correctAnswers,
+      totalQuestions: pending.totalQuestions,
+    );
+
+    if (pending.type == QuizAttemptType.exam) {
+      final examId = pending.examId;
+      if (examId == null) {
+        return false;
+      }
+      return completeExamAttempt(
+        categoryId: pending.categoryId,
+        lessonId: pending.lessonId,
+        examId: examId,
+        attemptId: pending.attemptId,
+        result: result,
+        totalActivities: pending.totalActivities,
+      );
+    }
+
+    final activityId = pending.activityId;
+    if (activityId == null) {
+      return false;
+    }
+    return completeActivityAttempt(
+      categoryId: pending.categoryId,
+      lessonId: pending.lessonId,
+      activityId: activityId,
+      attemptId: pending.attemptId,
+      result: result,
+      totalActivities: pending.totalActivities,
+    );
+  }
+
+  void _restorePendingAttempt(PendingQuizAttempt pending) {
+    final existing = _attemptsById[pending.attemptId];
+    if (existing != null) {
+      return;
+    }
+
+    if (pending.type == QuizAttemptType.exam) {
+      startExamAttempt(
+        categoryId: pending.categoryId,
+        lessonId: pending.lessonId,
+        examId: pending.examId!,
+        questionIds: pending.questionIds,
+        totalActivities: pending.totalActivities,
+        attemptId: pending.attemptId,
+        startedAt: pending.startedAt,
+      );
+    } else {
+      startActivityAttempt(
+        categoryId: pending.categoryId,
+        lessonId: pending.lessonId,
+        activityId: pending.activityId!,
+        questionIds: pending.questionIds,
+        totalActivities: pending.totalActivities,
+        attemptId: pending.attemptId,
+        startedAt: pending.startedAt,
+      );
+    }
+
+    final restored = _attemptsById[pending.attemptId]!;
+    restored.answers
+      ..clear()
+      ..addEntries(
+        pending.answers.map((answer) => MapEntry(answer.questionId, answer)),
+      );
+    restored
+      ..correctAnswers = pending.correctAnswers
+      ..totalQuestions = pending.totalQuestions
+      ..percentage = pending.percentage;
+  }
+
   CompletedQuizAttemptPersistenceResult _localCompletedActivityResult(
     _MutableQuizAttempt attempt,
     _MutableActivityProgress activity,
@@ -568,6 +652,10 @@ class CategoryProgressController extends ChangeNotifier {
     final scoredAnswers = <CategoryProgressAnswer>[];
     final questionScores = <String, QuestionScoreRecord>{};
     var earnedPoints = 0;
+
+    for (final score in activity.questionScores.values) {
+      questionScores[score.questionId] = score;
+    }
 
     for (final answer in attempt.answers.values) {
       final pointsEarned = policy.earnedPointsForAnswer(

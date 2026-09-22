@@ -295,6 +295,136 @@ void main() {
       },
     );
 
+    test(
+      'partial finalized attempt scores answered correct questions only',
+      () async {
+        final controller = CategoryProgressController(
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final attemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>[
+            'question_01',
+            'question_02',
+            'question_03',
+            'question_04',
+          ],
+          totalActivities: 6,
+        );
+        await _recordActivityAnswer(
+          controller,
+          attemptId,
+          questionId: 'question_01',
+          isCorrect: true,
+        );
+        await _recordActivityAnswer(
+          controller,
+          attemptId,
+          questionId: 'question_02',
+          isCorrect: false,
+        );
+        await _recordActivityAnswer(
+          controller,
+          attemptId,
+          questionId: 'question_03',
+          isCorrect: true,
+        );
+
+        final completed = await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: attemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 4),
+          totalActivities: 6,
+        );
+
+        final progress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        final attempt = controller.attemptFor(attemptId)!;
+        expect(completed, isTrue);
+        expect(progress.attemptCount, 1);
+        expect(progress.activityPoints, 20);
+        expect(progress.bestCorrectAnswers, 2);
+        expect(progress.bestTotalQuestions, 4);
+        expect(progress.bestPercentage, 50);
+        expect(attempt.answers, hasLength(3));
+        expect(attempt.earnedPoints, 20);
+      },
+    );
+
+    test(
+      'next attempt does not award points again for already scored questions',
+      () async {
+        final controller = CategoryProgressController(
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+        final firstAttemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await _recordActivityAnswer(
+          controller,
+          firstAttemptId,
+          questionId: 'question_01',
+          isCorrect: true,
+        );
+        await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: firstAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 1, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final secondAttemptId = controller.startActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01', 'question_02'],
+          totalActivities: 6,
+        );
+        await _recordActivityAnswer(
+          controller,
+          secondAttemptId,
+          questionId: 'question_01',
+          isCorrect: true,
+        );
+        await _recordActivityAnswer(
+          controller,
+          secondAttemptId,
+          questionId: 'question_02',
+          isCorrect: true,
+        );
+        await controller.completeActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: secondAttemptId,
+          result: QuizResult.fromScore(correctAnswers: 2, totalQuestions: 2),
+          totalActivities: 6,
+        );
+
+        final progress = controller.activityProgressFor(
+          categoryId: _categoryId,
+          activityId: _activityId,
+        );
+        expect(controller.attemptFor(firstAttemptId)?.earnedPoints, 10);
+        expect(controller.attemptFor(secondAttemptId)?.earnedPoints, 5);
+        expect(progress.activityPoints, 15);
+        expect(progress.questionScores['question_01']?.pointsAwarded, 10);
+        expect(progress.questionScores['question_02']?.pointsAwarded, 5);
+      },
+    );
+
     test('discarded activity attempts do not affect progress', () async {
       final persistence = _FakeProgressPersistence();
       final controller = CategoryProgressController(
@@ -516,7 +646,7 @@ void main() {
           activityId: _activityId,
         );
         expect(first, isTrue);
-        expect(second, isFalse);
+        expect(second, isTrue);
         expect(activityProgress.attemptCount, 1);
         expect(persistence.completeCalls, hasLength(1));
       },
@@ -1129,6 +1259,22 @@ Future<void> _recordTwoActivityAnswers(
     questionId: 'question_02',
     answer: 'unsafe_option',
     isCorrect: secondCorrect,
+  );
+}
+
+Future<void> _recordActivityAnswer(
+  CategoryProgressController controller,
+  String attemptId, {
+  required String questionId,
+  required bool isCorrect,
+}) async {
+  await controller.recordAnswer(
+    categoryId: _categoryId,
+    activityId: _activityId,
+    attemptId: attemptId,
+    questionId: questionId,
+    answer: isCorrect ? 'safe_option' : 'unsafe_option',
+    isCorrect: isCorrect,
   );
 }
 

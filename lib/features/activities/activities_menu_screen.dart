@@ -11,6 +11,7 @@ import '../../data/models/category.dart';
 import '../../data/models/learning_activity.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_toast.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
 import '../quiz/activity_question_selector.dart';
@@ -20,12 +21,14 @@ class ActivitiesMenuScreen extends StatefulWidget {
     required this.category,
     required this.contentRepository,
     required this.progressController,
+    this.connectivityService,
     super.key,
   });
 
   final Category category;
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
+  final ConnectivityService? connectivityService;
 
   @override
   State<ActivitiesMenuScreen> createState() => _ActivitiesMenuScreenState();

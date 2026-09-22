@@ -11,12 +11,17 @@ import '../../app/category_progress_controller.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../data/models/category.dart';
+import '../../data/models/category_progress.dart';
 import '../../data/models/final_exam.dart';
 import '../../data/models/learning_activity.dart';
+import '../../data/models/pending_quiz_attempt.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
+import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
+import '../../shared/services/connectivity_service.dart';
+import '../../shared/services/pending_quiz_attempt_sync_service.dart';
 import '../../shared/widgets/answer_option_tile.dart';
 import '../../shared/widgets/app_scaffold.dart';
 import '../../shared/widgets/character_image.dart';
@@ -37,6 +42,10 @@ class QuizScreen extends StatefulWidget {
     this.totalActivities = 1,
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
+    this.connectivityService,
+    this.authRepository,
+    this.pendingSyncService,
+    this.requireStartConfirmation = false,
     super.key,
   }) : exam = null,
        examQuestionSelector = null;
@@ -50,6 +59,10 @@ class QuizScreen extends StatefulWidget {
     this.examQuestionSelector,
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
+    this.connectivityService,
+    this.authRepository,
+    this.pendingSyncService,
+    this.requireStartConfirmation = false,
     super.key,
   }) : activity = null;
 
@@ -62,6 +75,10 @@ class QuizScreen extends StatefulWidget {
   final ExamQuestionSelector? examQuestionSelector;
   final bool shuffleQuestions;
   final bool shuffleOptions;
+  final ConnectivityService? connectivityService;
+  final AuthRepository? authRepository;
+  final PendingQuizAttemptSyncService? pendingSyncService;
+  final bool requireStartConfirmation;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -144,6 +161,10 @@ class _QuizScreenState extends State<QuizScreen> {
             totalActivities: widget.totalActivities,
             shuffleQuestions: widget.shuffleQuestions,
             shuffleOptions: widget.shuffleOptions,
+            connectivityService: widget.connectivityService,
+            authRepository: widget.authRepository,
+            pendingSyncService: widget.pendingSyncService,
+            requireStartConfirmation: widget.requireStartConfirmation,
             onRestartRequested: _retry,
             onResultVisibilityChanged: _handleResultVisibilityChanged,
           );
@@ -172,6 +193,10 @@ class _QuizFlow extends StatefulWidget {
     required this.totalActivities,
     required this.shuffleQuestions,
     required this.shuffleOptions,
+    required this.connectivityService,
+    required this.authRepository,
+    required this.pendingSyncService,
+    required this.requireStartConfirmation,
     required this.onRestartRequested,
     required this.onResultVisibilityChanged,
   });
@@ -184,6 +209,10 @@ class _QuizFlow extends StatefulWidget {
   final int totalActivities;
   final bool shuffleQuestions;
   final bool shuffleOptions;
+  final ConnectivityService? connectivityService;
+  final AuthRepository? authRepository;
+  final PendingQuizAttemptSyncService? pendingSyncService;
+  final bool requireStartConfirmation;
   final VoidCallback onRestartRequested;
   final ValueChanged<bool> onResultVisibilityChanged;
 
@@ -191,7 +220,7 @@ class _QuizFlow extends StatefulWidget {
   State<_QuizFlow> createState() => _QuizFlowState();
 }
 
-class _QuizFlowState extends State<_QuizFlow> {
+class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
   late final QuizController _controller;
   final TextEditingController _answerTextController = TextEditingController();
   final math.Random _characterRandom = math.Random();
@@ -200,7 +229,12 @@ class _QuizFlowState extends State<_QuizFlow> {
   bool _allowPop = false;
   bool _showResult = false;
   bool _isCompletingAttempt = false;
+  bool _isCheckingStart = false;
+  bool _attemptStarted = false;
+  bool _resultPendingSync = false;
+  QuizResult? _completedResult;
   String? _completedAttemptId;
+  String? _activeAttemptId;
 
   @override
   void initState() {
@@ -210,13 +244,34 @@ class _QuizFlowState extends State<_QuizFlow> {
       shuffleQuestions: widget.shuffleQuestions,
       shuffleOptions: widget.shuffleOptions,
     );
+    WidgetsBinding.instance.addObserver(this);
+    if (!widget.requireStartConfirmation) {
+      _beginAttempt();
+    }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
     _answerTextController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!_attemptStarted ||
+        _showResult ||
+        _isCompletingAttempt ||
+        _activeAttemptId == null) {
+      return;
+    }
+
+    if (state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.paused ||
+        state == AppLifecycleState.detached) {
+      unawaited(_finalizeCurrentAttempt(showResult: true));
+    }
   }
 
   Future<void> _handleBackIntent() async {
@@ -224,7 +279,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       return;
     }
 
-    if (_controller.answeredQuestions == 0) {
+    if (!_attemptStarted) {
       _popQuizRoute();
       return;
     }
@@ -240,7 +295,7 @@ class _QuizFlowState extends State<_QuizFlow> {
     );
 
     if (mounted && shouldExit) {
-      _popQuizRoute();
+      await _finalizeCurrentAttempt(popOnComplete: true);
     }
   }
 
@@ -257,7 +312,9 @@ class _QuizFlowState extends State<_QuizFlow> {
 
   void _submitAnswer() {
     FocusManager.instance.primaryFocus?.unfocus();
-    _controller.submitAnswer();
+    if (_controller.submitAnswer()) {
+      unawaited(_persistSubmittedAnswers());
+    }
   }
 
   Future<void> _completeAttemptAndShowResult() async {
@@ -268,54 +325,113 @@ class _QuizFlowState extends State<_QuizFlow> {
       return;
     }
 
+    await _finalizeCurrentAttempt(showResult: true);
+  }
+
+  Future<void> _finalizeCurrentAttempt({
+    bool showResult = false,
+    bool popOnComplete = false,
+  }) async {
+    if (_isCompletingAttempt || _showResult) {
+      return;
+    }
+
     setState(() {
       _isCompletingAttempt = true;
     });
 
-    final attemptId = _startAttempt();
-    for (final answer in _controller.submittedAnswers) {
-      await widget.progressController.recordAnswer(
-        categoryId: widget.category.id,
-        activityId: widget.activity?.id,
-        examId: widget.exam?.id,
-        attemptId: attemptId,
-        questionId: answer.questionId,
-        answer: answer.answer,
-        isCorrect: answer.isCorrect,
+    final attemptId = _activeAttemptId;
+    if (attemptId == null) {
+      return;
+    }
+    await _persistSubmittedAnswers(
+      status: PendingQuizAttemptSyncStatus.abandonedPendingFinalization,
+    );
+
+    final result = _controller.isFinished
+        ? _controller.quizResult
+        : _controller.partialResult;
+
+    final isOnline =
+        widget.connectivityService == null ||
+        await widget.connectivityService!.checkConnection();
+    if (!isOnline) {
+      final saved = await _saveAttemptSnapshot(
+        status: PendingQuizAttemptSyncStatus.pendingSync,
+        completedAt: DateTime.now(),
       );
+      if (!mounted) {
+        return;
+      }
+      if (!saved) {
+        setState(() {
+          _isCompletingAttempt = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(AppStrings.progressSaveError)),
+        );
+        return;
+      }
+
+      setState(() {
+        _isCompletingAttempt = false;
+        _showResult = showResult;
+        _resultPendingSync = true;
+        _completedResult = result;
+        _completedAttemptId = attemptId;
+      });
+      widget.onResultVisibilityChanged(showResult);
+      if (popOnComplete) {
+        _popQuizRoute();
+      }
+      return;
     }
 
-    final completed = await _completeStartedAttempt(attemptId);
+    final completed = await _completeStartedAttempt(attemptId, result);
     if (!mounted) {
       return;
     }
     if (!completed) {
-      widget.progressController.discardAttempt(attemptId);
+      await _saveAttemptSnapshot(
+        status: PendingQuizAttemptSyncStatus.pendingSync,
+        completedAt: DateTime.now(),
+      );
       setState(() {
         _isCompletingAttempt = false;
+        _resultPendingSync = true;
+        _completedResult = result;
+        _completedAttemptId = attemptId;
+        _showResult = showResult;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.progressSaveError)),
-      );
+      widget.onResultVisibilityChanged(showResult);
+      if (popOnComplete) {
+        _popQuizRoute();
+      }
       return;
     }
+    await widget.pendingSyncService?.removeLocalAttempt(attemptId);
 
     setState(() {
       _isCompletingAttempt = false;
-      _showResult = true;
+      _showResult = showResult;
+      _resultPendingSync = false;
+      _completedResult = result;
       _completedAttemptId = attemptId;
     });
-    widget.onResultVisibilityChanged(true);
+    widget.onResultVisibilityChanged(showResult);
+    if (popOnComplete) {
+      _popQuizRoute();
+    }
   }
 
-  Future<bool> _completeStartedAttempt(String attemptId) {
+  Future<bool> _completeStartedAttempt(String attemptId, QuizResult result) {
     if (widget.exam != null) {
       return widget.progressController.completeExamAttempt(
         categoryId: widget.category.id,
         lessonId: widget.category.lessonId ?? widget.category.id,
         examId: widget.exam!.id,
         attemptId: attemptId,
-        result: _controller.quizResult,
+        result: result,
         totalActivities: widget.totalActivities,
       );
     }
@@ -325,7 +441,7 @@ class _QuizFlowState extends State<_QuizFlow> {
       lessonId: widget.category.lessonId ?? widget.category.id,
       activityId: widget.activity!.id,
       attemptId: attemptId,
-      result: _controller.quizResult,
+      result: result,
       totalActivities: widget.totalActivities,
     );
   }
@@ -341,6 +457,9 @@ class _QuizFlowState extends State<_QuizFlow> {
   }
 
   void _repeatLesson() {
+    if (_resultPendingSync) {
+      return;
+    }
     if (widget.exam != null) {
       widget.onResultVisibilityChanged(false);
       widget.onRestartRequested();
@@ -354,8 +473,13 @@ class _QuizFlowState extends State<_QuizFlow> {
       _allowPop = false;
       _showResult = false;
       _isCompletingAttempt = false;
+      _attemptStarted = false;
+      _resultPendingSync = false;
       _completedAttemptId = null;
+      _activeAttemptId = null;
+      _completedResult = null;
     });
+    _beginAttempt();
     widget.onResultVisibilityChanged(false);
   }
 
@@ -381,6 +505,47 @@ class _QuizFlowState extends State<_QuizFlow> {
     );
   }
 
+  void _beginAttempt() {
+    if (_attemptStarted) {
+      return;
+    }
+    _activeAttemptId = _startAttempt();
+    _attemptStarted = true;
+    unawaited(
+      _saveAttemptSnapshot(status: PendingQuizAttemptSyncStatus.inProgress),
+    );
+  }
+
+  Future<void> _confirmAndStartAttempt() async {
+    if (_isCheckingStart || _attemptStarted) {
+      return;
+    }
+    setState(() {
+      _isCheckingStart = true;
+    });
+
+    final isOnline =
+        widget.connectivityService == null ||
+        await widget.connectivityService!.checkConnection();
+    if (!mounted) {
+      return;
+    }
+    if (!isOnline) {
+      setState(() {
+        _isCheckingStart = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.startAttemptConnectionError)),
+      );
+      return;
+    }
+
+    setState(() {
+      _beginAttempt();
+      _isCheckingStart = false;
+    });
+  }
+
   String _startAttempt() {
     final exam = widget.exam;
     if (exam != null) {
@@ -402,6 +567,82 @@ class _QuizFlowState extends State<_QuizFlow> {
     );
   }
 
+  Future<void> _persistSubmittedAnswers({
+    PendingQuizAttemptSyncStatus status =
+        PendingQuizAttemptSyncStatus.inProgress,
+  }) async {
+    final attemptId = _activeAttemptId;
+    if (attemptId == null) {
+      return;
+    }
+
+    for (final answer in _controller.submittedAnswers) {
+      await widget.progressController.recordAnswer(
+        categoryId: widget.category.id,
+        activityId: widget.activity?.id,
+        examId: widget.exam?.id,
+        attemptId: attemptId,
+        questionId: answer.questionId,
+        answer: answer.answer,
+        isCorrect: answer.isCorrect,
+      );
+    }
+    await _saveAttemptSnapshot(status: status);
+  }
+
+  Future<bool> _saveAttemptSnapshot({
+    required PendingQuizAttemptSyncStatus status,
+    DateTime? completedAt,
+  }) async {
+    final syncService = widget.pendingSyncService;
+    final user = widget.authRepository?.currentUser;
+    final attemptId = _activeAttemptId;
+    if (syncService == null || user == null) {
+      return false;
+    }
+    if (attemptId == null) {
+      return false;
+    }
+
+    final attempt = widget.progressController.attemptFor(attemptId);
+    if (attempt == null) {
+      return false;
+    }
+    final result = _controller.partialResult;
+    final answeredAt = DateTime.now();
+    final type = widget.exam == null
+        ? QuizAttemptType.activity
+        : QuizAttemptType.exam;
+    final pending = PendingQuizAttempt(
+      uid: user.uid,
+      attemptId: attemptId,
+      type: type,
+      categoryId: widget.category.id,
+      lessonId: widget.category.lessonId ?? widget.category.id,
+      activityId: widget.activity?.id,
+      examId: widget.exam?.id,
+      questionIds: _controller.questionIds,
+      answers: [
+        for (final answer in _controller.submittedAnswers)
+          CategoryProgressAnswer(
+            questionId: answer.questionId,
+            answer: answer.answer,
+            isCorrect: answer.isCorrect,
+            answeredAt: completedAt ?? answeredAt,
+          ),
+      ],
+      correctAnswers: result.correctAnswers,
+      totalQuestions: result.totalQuestions,
+      percentage: result.percentage,
+      totalActivities: widget.totalActivities,
+      startedAt: attempt.startedAt,
+      completedAt: completedAt,
+      status: status,
+    );
+    await syncService.savePending(pending);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope<void>(
@@ -419,13 +660,23 @@ class _QuizFlowState extends State<_QuizFlow> {
                 ? null
                 : widget.progressController.attemptFor(_completedAttemptId!);
             return _ResultView(
-              result: _controller.generateResult(),
+              result: _completedResult ?? _controller.generateResult(),
               takeaways:
                   widget.activity?.completion.takeaways ?? const <String>[],
               earnedPoints: completedAttempt?.earnedPoints,
               totalPoints: widget.progressController.currentTotalPoints,
+              pendingSync: _resultPendingSync,
               onBackToActivities: _backToActivities,
               onRepeatLesson: _repeatLesson,
+            );
+          }
+
+          if (!_attemptStarted) {
+            return _StartAttemptView(
+              isExam: widget.exam != null,
+              isChecking: _isCheckingStart,
+              onStart: _confirmAndStartAttempt,
+              onCancel: _popQuizRoute,
             );
           }
 
@@ -516,6 +767,78 @@ class _ActivityView extends StatelessWidget {
             child: _CompactSubmitButton(onPressed: onSubmitAnswer),
           ),
       ],
+    );
+  }
+}
+
+class _StartAttemptView extends StatelessWidget {
+  const _StartAttemptView({
+    required this.isExam,
+    required this.isChecking,
+    required this.onStart,
+    required this.onCancel,
+  });
+
+  final bool isExam;
+  final bool isChecking;
+  final VoidCallback onStart;
+  final VoidCallback onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Center(
+      child: SingleChildScrollView(
+        child: Card(
+          color: colors.surfaceStrong,
+          child: Padding(
+            padding: AppInsets.card,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.assignment_turned_in_outlined,
+                  color: colors.orangeDark,
+                  size: 36,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Text(
+                  isExam
+                      ? AppStrings.startExamAttemptTitle
+                      : AppStrings.startAttemptTitle,
+                  textAlign: TextAlign.center,
+                  style: textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  AppStrings.startAttemptBody,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                PrimaryButton(
+                  label: AppStrings.startAttempt,
+                  icon: Icons.play_arrow_outlined,
+                  onPressed: isChecking ? null : onStart,
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                SecondaryButton(
+                  label: AppStrings.cancel,
+                  icon: Icons.close_outlined,
+                  onPressed: isChecking ? null : onCancel,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -1024,6 +1347,7 @@ class _ResultView extends StatelessWidget {
     required this.takeaways,
     required this.earnedPoints,
     required this.totalPoints,
+    required this.pendingSync,
     required this.onBackToActivities,
     required this.onRepeatLesson,
   });
@@ -1032,6 +1356,7 @@ class _ResultView extends StatelessWidget {
   final List<String> takeaways;
   final int? earnedPoints;
   final int? totalPoints;
+  final bool pendingSync;
   final VoidCallback onBackToActivities;
   final VoidCallback onRepeatLesson;
 
@@ -1050,6 +1375,10 @@ class _ResultView extends StatelessWidget {
             ),
           ),
         ),
+        if (pendingSync) ...[
+          const SizedBox(height: AppSpacing.md),
+          const _PendingSyncNotice(),
+        ],
         const SizedBox(height: AppSpacing.md),
         PrimaryButton(
           label: AppStrings.backToActivities,
@@ -1060,9 +1389,44 @@ class _ResultView extends StatelessWidget {
         SecondaryButton(
           label: AppStrings.repeatLesson,
           icon: Icons.refresh_outlined,
-          onPressed: onRepeatLesson,
+          onPressed: pendingSync ? null : onRepeatLesson,
         ),
       ],
+    );
+  }
+}
+
+class _PendingSyncNotice extends StatelessWidget {
+  const _PendingSyncNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Card(
+      color: colors.orangeSoft,
+      child: Padding(
+        padding: AppInsets.card,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.sync_outlined, color: colors.orangeDark),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppStrings.pendingSyncTitle,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.xxs),
+                  Text(AppStrings.pendingSyncBody),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

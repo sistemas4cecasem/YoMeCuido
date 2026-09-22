@@ -895,7 +895,7 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
     for (final questionId in questionIds) {
       final answer = answersById[questionId];
       if (answer == null) {
-        throw StateError('Missing answer for question "$questionId".');
+        continue;
       }
       final isCorrect = answer.isCorrect;
       if (isCorrect) {
@@ -960,11 +960,10 @@ class CategoryProgressRepository implements CategoryProgressPersistence {
       throw StateError('Question order does not match total questions.');
     }
     final answerIds = answers.map((answer) => answer.questionId).toSet();
-    if (answerIds.length != answers.length ||
-        answerIds.length != expectedTotalQuestions) {
+    if (answerIds.length != answers.length) {
       throw StateError('Attempt answers do not match total questions.');
     }
-    if (!questionIds.every(answerIds.contains)) {
+    if (!answerIds.every(questionIds.contains)) {
       throw StateError('Attempt answers do not match question order.');
     }
   }

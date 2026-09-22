@@ -9,12 +9,20 @@ void main() {
   group('LoginController', () {
     test('validates an empty email before calling the repository', () async {
       final repository = _FakeAuthRepository();
-      final controller = LoginController(authRepository: repository);
+      var checkConnectionCallCount = 0;
+      final controller = LoginController(
+        authRepository: repository,
+        checkConnection: () async {
+          checkConnectionCallCount += 1;
+          return true;
+        },
+      );
 
       final user = await controller.submit(email: ' ', password: '123456');
 
       expect(user, isNull);
       expect(controller.emailError, 'Ingresa tu correo electrónico.');
+      expect(checkConnectionCallCount, 0);
       expect(repository.signInCallCount, 0);
     });
 
@@ -55,6 +63,7 @@ void main() {
         email: ' persona@example.com ',
         password: '123456',
       );
+      await Future<void>.delayed(Duration.zero);
 
       expect(controller.isLoading, isTrue);
       expect(repository.lastEmail, 'persona@example.com');
@@ -137,6 +146,56 @@ void main() {
         controller.submitError,
         'No pudimos conectar con el servicio. Revisa tu conexión.',
       );
+    });
+
+    test(
+      'does not call the repository when connectivity check is offline',
+      () async {
+        final repository = _FakeAuthRepository();
+        var checkConnectionCallCount = 0;
+        final controller = LoginController(
+          authRepository: repository,
+          checkConnection: () async {
+            checkConnectionCallCount += 1;
+            return false;
+          },
+        );
+
+        final user = await controller.submit(
+          email: 'persona@example.com',
+          password: '123456',
+        );
+
+        expect(user, isNull);
+        expect(checkConnectionCallCount, 1);
+        expect(repository.signInCallCount, 0);
+        expect(
+          controller.submitError,
+          'No pudimos conectar con el servicio. Revisa tu conexión.',
+        );
+      },
+    );
+
+    test('allows a second attempt after connectivity is restored', () async {
+      final repository = _FakeAuthRepository();
+      var isOnline = false;
+      final controller = LoginController(
+        authRepository: repository,
+        checkConnection: () async => isOnline,
+      );
+
+      await controller.submit(email: 'persona@example.com', password: '123456');
+      expect(repository.signInCallCount, 0);
+
+      isOnline = true;
+      final user = await controller.submit(
+        email: 'persona@example.com',
+        password: '123456',
+      );
+
+      expect(user?.uid, 'uid-123');
+      expect(repository.signInCallCount, 1);
+      expect(controller.submitError, isNull);
     });
   });
 }

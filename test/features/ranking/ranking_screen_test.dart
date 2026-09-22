@@ -7,6 +7,7 @@ import 'package:demo_yomecuido/data/models/leaderboard_entry.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/features/ranking/ranking_screen.dart';
+import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -148,8 +149,15 @@ Future<void> _pumpRanking(
   WidgetTester tester,
   _FakeLeaderboardRepository repository, {
   int totalPoints = 540,
-}) {
-  return tester.pumpWidget(
+}) async {
+  final connectivityService = ConnectivityService(
+    networkMonitor: _FakeNetworkInterfaceMonitor(),
+    backendProbe: _FakeBackendConnectivityProbe(),
+  );
+  addTearDown(connectivityService.dispose);
+  await connectivityService.checkConnection();
+
+  await tester.pumpWidget(
     MaterialApp(
       theme: AppTheme.data(),
       home: RankingScreen(
@@ -169,9 +177,30 @@ Future<void> _pumpRanking(
         ),
         totalPoints: totalPoints,
         leaderboardRepository: repository,
+        connectivityService: connectivityService,
       ),
     ),
   );
+}
+
+class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  final _controller = StreamController<bool>.broadcast();
+
+  @override
+  Future<bool> hasNetworkInterface() async => true;
+
+  @override
+  Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
+
+  @override
+  Future<void> dispose() async {
+    await _controller.close();
+  }
+}
+
+class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
+  @override
+  Future<bool> canReachBackend({required Duration timeout}) async => true;
 }
 
 class _FakeLeaderboardRepository implements LeaderboardRepository {

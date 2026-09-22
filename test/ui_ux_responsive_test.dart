@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'dart:io';
 
 import 'package:demo_yomecuido/app/app.dart';
@@ -18,6 +19,7 @@ import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
+import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -194,6 +196,11 @@ Future<void> _pumpDemo(
       records: _completedRecordsBeforeRelations(contentRepository.categories),
     );
   }
+  final connectivityService = ConnectivityService(
+    networkMonitor: _FakeNetworkInterfaceMonitor(),
+    backendProbe: _FakeBackendConnectivityProbe(),
+  );
+  await connectivityService.checkConnection();
 
   await tester.pumpWidget(const SizedBox.shrink());
   await tester.pump();
@@ -205,9 +212,30 @@ Future<void> _pumpDemo(
       userProfileRepository: _FakeUserProfileRepository(),
       leaderboardRepository: const _FakeLeaderboardRepository(),
       progressController: progressController,
+      connectivityService: connectivityService,
     ),
   );
   await _pumpRouteFrame(tester);
+}
+
+class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  final _controller = StreamController<bool>.broadcast();
+
+  @override
+  Future<bool> hasNetworkInterface() async => true;
+
+  @override
+  Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
+
+  @override
+  Future<void> dispose() async {
+    await _controller.close();
+  }
+}
+
+class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
+  @override
+  Future<bool> canReachBackend({required Duration timeout}) async => true;
 }
 
 Future<void> _openCategories(WidgetTester tester) async {
@@ -246,6 +274,8 @@ Future<void> _openQuiz(WidgetTester tester) async {
   await tester.ensureVisible(find.text(firstActivityTitle));
   await tester.tap(find.text(firstActivityTitle));
   await _pumpUntilFound(tester, find.text(AppStrings.quizTitle));
+  await tester.tap(find.text(AppStrings.startAttempt));
+  await _pumpRouteFrame(tester);
 }
 
 Future<void> _answerActivity(WidgetTester tester, int activity) async {

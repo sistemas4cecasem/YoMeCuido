@@ -6,12 +6,16 @@ import '../../data/repositories/auth_repository.dart';
 import 'auth_email_validator.dart';
 
 class RegisterController extends ChangeNotifier {
-  RegisterController({required AuthRepository authRepository})
-    : _authRepository = authRepository;
+  RegisterController({
+    required AuthRepository authRepository,
+    Future<bool> Function()? checkConnection,
+  }) : _authRepository = authRepository,
+       _checkConnection = checkConnection ?? _alwaysOnline;
 
   static const minPasswordLength = 6;
 
   final AuthRepository _authRepository;
+  final Future<bool> Function() _checkConnection;
 
   bool _isLoading = false;
   AuthUser? _registeredUser;
@@ -65,6 +69,14 @@ class RegisterController extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final isOnline = await _checkConnection();
+      if (!isOnline) {
+        _submitError = const AuthException(
+          AuthFailureReason.networkRequestFailed,
+        ).userMessage;
+        return null;
+      }
+
       final user = await _authRepository.registerWithEmailAndPassword(
         username: username.trim(),
         email: normalizedEmail,
@@ -86,6 +98,13 @@ class RegisterController extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void resetFormState() {
+    _isLoading = false;
+    _registeredUser = null;
+    _clearFeedback();
+    notifyListeners();
   }
 
   void _clearFeedback() {
@@ -133,4 +152,6 @@ class RegisterController extends ChangeNotifier {
         _passwordError != null ||
         _confirmPasswordError != null;
   }
+
+  static Future<bool> _alwaysOnline() async => true;
 }

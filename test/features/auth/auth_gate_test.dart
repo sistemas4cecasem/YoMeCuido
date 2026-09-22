@@ -11,14 +11,18 @@ import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/leaderboard_entry.dart';
+import 'package:demo_yomecuido/data/models/pending_quiz_attempt.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
+import 'package:demo_yomecuido/data/repositories/pending_quiz_attempt_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
+import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
+import 'package:demo_yomecuido/shared/services/pending_quiz_attempt_sync_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -972,10 +976,23 @@ Future<void> _pumpGate(
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
+  final connectivityService = ConnectivityService(
+    networkMonitor: _FakeNetworkInterfaceMonitor(),
+    backendProbe: _FakeBackendConnectivityProbe(),
+  );
+  addTearDown(connectivityService.dispose);
+  await connectivityService.checkConnection();
   final router = AppRouter(
     contentRepository: const _EmptyContentRepository(),
     authRepository: authRepository,
     progressController: resolvedProgressController,
+    connectivityService: connectivityService,
+    pendingQuizAttemptSyncService: PendingQuizAttemptSyncService(
+      authRepository: authRepository,
+      connectivityService: connectivityService,
+      progressController: resolvedProgressController,
+      repository: _InMemoryPendingQuizAttemptRepository(),
+    ),
   );
 
   await tester.pumpWidget(
@@ -989,11 +1006,45 @@ Future<void> _pumpGate(
         contentRepository: contentRepository ?? const _EmptyContentRepository(),
         leaderboardRepository:
             leaderboardRepository ?? _FakeLeaderboardRepository(),
+        connectivityService: connectivityService,
       ),
       onGenerateRoute: router.onGenerateRoute,
       navigatorObservers: [?navigatorObserver],
     ),
   );
+}
+
+class _InMemoryPendingQuizAttemptRepository
+    implements PendingQuizAttemptRepository {
+  @override
+  Future<List<PendingQuizAttempt>> loadAll() async =>
+      const <PendingQuizAttempt>[];
+
+  @override
+  Future<void> remove(String attemptId) async {}
+
+  @override
+  Future<void> upsert(PendingQuizAttempt attempt) async {}
+}
+
+class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  final StreamController<bool> _controller = StreamController<bool>.broadcast();
+
+  @override
+  Future<bool> hasNetworkInterface() async => true;
+
+  @override
+  Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
+
+  @override
+  Future<void> dispose() async {
+    await _controller.close();
+  }
+}
+
+class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
+  @override
+  Future<bool> canReachBackend({required Duration timeout}) async => true;
 }
 
 class _FakeLeaderboardRepository implements LeaderboardRepository {

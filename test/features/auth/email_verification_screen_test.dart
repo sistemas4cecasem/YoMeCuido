@@ -4,59 +4,70 @@ import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
-import 'package:demo_yomecuido/features/auth/register_screen.dart';
+import 'package:demo_yomecuido/features/auth/email_verification_screen.dart';
 import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('creates an account through AuthRepository and shows success', (
+  testWidgets('offline check does not reload the Firebase user', (
     tester,
   ) async {
     final repository = _FakeAuthRepository();
-    final connectivity = _onlineConnectivityService();
+    final connectivity = _offlineConnectivityService();
     addTearDown(connectivity.dispose);
 
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.data(),
-        home: RegisterScreen(
+        home: EmailVerificationScreen(
           authRepository: repository,
           connectivityService: connectivity,
+          onVerificationChecked: (_) {},
         ),
       ),
     );
 
-    await tester.enterText(
-      find.widgetWithText(TextField, AppStrings.usernameLabel),
-      ' DiegoNais ',
-    );
-    await tester.enterText(
-      find.widgetWithText(TextField, AppStrings.emailLabel),
-      ' persona@example.com ',
-    );
-    await tester.enterText(
-      find.widgetWithText(TextField, AppStrings.passwordLabel),
-      '123456',
-    );
-    await tester.enterText(
-      find.widgetWithText(TextField, AppStrings.confirmPasswordLabel),
-      '123456',
-    );
-    await tester.tap(
-      find.widgetWithText(ElevatedButton, AppStrings.createAccount),
-    );
+    await tester.tap(find.text(AppStrings.emailVerificationCheck));
     await tester.pumpAndSettle();
 
-    expect(repository.registerCallCount, 1);
-    expect(repository.sendVerificationCallCount, 1);
-    expect(repository.lastUsername, 'DiegoNais');
-    expect(repository.lastEmail, 'persona@example.com');
-    expect(find.text(AppStrings.registerSuccessMessage), findsOneWidget);
+    expect(repository.reloadCallCount, 0);
+    expect(
+      find.text(AppStrings.emailVerificationConnectionError),
+      findsWidgets,
+    );
+  });
+
+  testWidgets('offline resend does not send a verification email', (
+    tester,
+  ) async {
+    final repository = _FakeAuthRepository();
+    final connectivity = _offlineConnectivityService();
+    addTearDown(connectivity.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.data(),
+        home: EmailVerificationScreen(
+          authRepository: repository,
+          connectivityService: connectivity,
+          onVerificationChecked: (_) {},
+        ),
+      ),
+    );
+
+    await tester.tap(find.text(AppStrings.emailVerificationResend));
+    await tester.pumpAndSettle();
+
+    expect(repository.sendVerificationCallCount, 0);
+    expect(
+      find.text(AppStrings.emailVerificationResendConnectionError),
+      findsWidgets,
+    );
   });
 }
 
-ConnectivityService _onlineConnectivityService() {
+ConnectivityService _offlineConnectivityService() {
   return ConnectivityService(
     networkMonitor: _FakeNetworkInterfaceMonitor(),
     backendProbe: _FakeBackendConnectivityProbe(),
@@ -67,7 +78,7 @@ class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
   final _controller = StreamController<bool>.broadcast();
 
   @override
-  Future<bool> hasNetworkInterface() async => true;
+  Future<bool> hasNetworkInterface() async => false;
 
   @override
   Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
@@ -84,27 +95,24 @@ class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
 }
 
 class _FakeAuthRepository implements AuthRepository {
-  int registerCallCount = 0;
+  int reloadCallCount = 0;
   int sendVerificationCallCount = 0;
-  String? lastUsername;
-  String? lastEmail;
 
   @override
-  AuthUser? get currentUser => null;
+  AuthUser? get currentUser {
+    return const AuthUser(uid: 'uid-123', email: 'persona@example.com');
+  }
 
   @override
-  Stream<AuthUser?> authStateChanges() => const Stream.empty();
+  Stream<AuthUser?> authStateChanges() => Stream<AuthUser?>.value(currentUser);
 
   @override
   Future<AuthUser> registerWithEmailAndPassword({
     required String username,
     required String email,
     required String password,
-  }) async {
-    registerCallCount += 1;
-    lastUsername = username;
-    lastEmail = email;
-    return AuthUser(uid: 'uid-123', email: email);
+  }) {
+    throw UnimplementedError();
   }
 
   @override
@@ -116,7 +124,10 @@ class _FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<AuthUser?> reloadCurrentUser() async => currentUser;
+  Future<AuthUser?> reloadCurrentUser() async {
+    reloadCallCount += 1;
+    return currentUser;
+  }
 
   @override
   Future<AuthUser> signInWithEmailAndPassword({

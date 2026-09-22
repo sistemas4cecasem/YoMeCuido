@@ -14,8 +14,11 @@ import '../features/category_detail/category_detail_screen.dart';
 import '../features/category_summary/category_summary_screen.dart';
 import '../features/high_level_categories/high_level_categories_screen.dart';
 import '../features/lesson/lesson_screen.dart';
+import '../features/offline_activity/offline_activity_screen.dart';
 import '../features/quiz/quiz_screen.dart';
 import '../features/splash/welcome_screen.dart';
+import '../shared/services/connectivity_service.dart';
+import '../shared/services/pending_quiz_attempt_sync_service.dart';
 import '../shared/widgets/app_scaffold.dart';
 import 'app_strings.dart';
 import 'category_progress_controller.dart';
@@ -32,6 +35,7 @@ abstract final class AppRoutes {
   static const activities = '/activities';
   static const quiz = '/quiz';
   static const categorySummary = '/category-summary';
+  static const offlineActivity = '/offline-activity';
 }
 
 class AppRouter {
@@ -39,13 +43,19 @@ class AppRouter {
     required ContentRepository contentRepository,
     required AuthRepository authRepository,
     required CategoryProgressController progressController,
+    required ConnectivityService connectivityService,
+    required PendingQuizAttemptSyncService pendingQuizAttemptSyncService,
   }) : _contentRepository = contentRepository,
        _authRepository = authRepository,
-       _progressController = progressController;
+       _progressController = progressController,
+       _connectivityService = connectivityService,
+       _pendingQuizAttemptSyncService = pendingQuizAttemptSyncService;
 
   final ContentRepository _contentRepository;
   final AuthRepository _authRepository;
   final CategoryProgressController _progressController;
+  final ConnectivityService _connectivityService;
+  final PendingQuizAttemptSyncService _pendingQuizAttemptSyncService;
 
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute<void>(
@@ -53,12 +63,21 @@ class AppRouter {
       builder: (context) {
         return switch (settings.name) {
           AppRoutes.home || null => const WelcomeScreen(),
-          AppRoutes.login => LoginScreen(authRepository: _authRepository),
-          AppRoutes.register => RegisterScreen(authRepository: _authRepository),
+          AppRoutes.login => LoginScreen(
+            authRepository: _authRepository,
+            connectivityService: _connectivityService,
+          ),
+          AppRoutes.register => RegisterScreen(
+            authRepository: _authRepository,
+            connectivityService: _connectivityService,
+          ),
           AppRoutes.forgotPassword => ForgotPasswordScreen(
             authRepository: _authRepository,
           ),
-          AppRoutes.highLevelCategories => const HighLevelCategoriesScreen(),
+          AppRoutes.highLevelCategories => HighLevelCategoriesScreen(
+            connectivityService: _connectivityService,
+          ),
+          AppRoutes.offlineActivity => const OfflineActivityScreen(),
           AppRoutes.categories => _buildCategoriesScreen(settings),
           AppRoutes.categoryDetail => CategoryDetailScreen(
             category: settings.arguments! as Category,
@@ -74,6 +93,7 @@ class AppRouter {
             category: settings.arguments! as Category,
             contentRepository: _contentRepository,
             progressController: _progressController,
+            connectivityService: _connectivityService,
           ),
           AppRoutes.quiz => _buildQuizScreen(settings),
           AppRoutes.categorySummary => CategorySummaryScreen(
@@ -98,6 +118,10 @@ class AppRouter {
         contentRepository: _contentRepository,
         progressController: _progressController,
         totalActivities: arguments.totalActivities,
+        connectivityService: _connectivityService,
+        authRepository: _authRepository,
+        pendingSyncService: _pendingQuizAttemptSyncService,
+        requireStartConfirmation: true,
       );
     }
 
@@ -107,6 +131,10 @@ class AppRouter {
       contentRepository: _contentRepository,
       progressController: _progressController,
       totalActivities: arguments.totalActivities,
+      connectivityService: _connectivityService,
+      authRepository: _authRepository,
+      pendingSyncService: _pendingQuizAttemptSyncService,
+      requireStartConfirmation: true,
     );
   }
 
@@ -124,6 +152,7 @@ class AppRouter {
       title: routeArguments.title,
       contentRepository: _contentRepository,
       progressController: _progressController,
+      connectivityService: _connectivityService,
     );
   }
 }

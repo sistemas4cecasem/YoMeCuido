@@ -96,7 +96,7 @@ class AnswerOptionTile extends StatelessWidget {
 
   IconData? get _icon {
     return switch (state) {
-      AnswerOptionTileState.correct => null,
+      AnswerOptionTileState.correct => Icons.check_circle_outline,
       AnswerOptionTileState.incorrect => Icons.cancel_outlined,
       AnswerOptionTileState.selected => Icons.radio_button_checked_outlined,
       AnswerOptionTileState.idle => null,

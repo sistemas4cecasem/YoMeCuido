@@ -11,6 +11,7 @@ import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
+import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../main/main_authenticated_shell.dart';
 import 'complete_profile_screen.dart';
@@ -24,6 +25,7 @@ class AuthGate extends StatefulWidget {
     required this.leaderboardRepository,
     required this.progressController,
     required this.contentRepository,
+    required this.connectivityService,
     super.key,
   });
 
@@ -32,6 +34,7 @@ class AuthGate extends StatefulWidget {
   final LeaderboardRepository leaderboardRepository;
   final CategoryProgressController progressController;
   final ContentRepository contentRepository;
+  final ConnectivityService connectivityService;
 
   @override
   State<AuthGate> createState() => _AuthGateState();
@@ -90,6 +93,7 @@ class _AuthGateState extends State<AuthGate> {
         if (!user.isEmailVerified) {
           return EmailVerificationScreen(
             authRepository: widget.authRepository,
+            connectivityService: widget.connectivityService,
             onVerificationChecked: (checkedUser) {
               if (mounted) {
                 setState(() {
@@ -118,6 +122,7 @@ class _AuthGateState extends State<AuthGate> {
           progressController: widget.progressController,
           authRepository: widget.authRepository,
           contentRepository: widget.contentRepository,
+          connectivityService: widget.connectivityService,
         );
       },
     );
@@ -206,6 +211,7 @@ class _HydratedHome extends StatelessWidget {
     required this.progressController,
     required this.authRepository,
     required this.contentRepository,
+    required this.connectivityService,
   });
 
   final AuthUser user;
@@ -218,6 +224,7 @@ class _HydratedHome extends StatelessWidget {
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
+  final ConnectivityService connectivityService;
 
   @override
   Widget build(BuildContext context) {
@@ -243,29 +250,31 @@ class _HydratedHome extends StatelessWidget {
           userProfileRepository: userProfileRepository,
           leaderboardRepository: leaderboardRepository,
           onProfileChanged: onProfileChanged,
-          progressLoadFuture: progressLoadProvider(user),
+          progressLoadProvider: () => progressLoadProvider(user),
           onProgressRetry: () => progressLoadProvider(user, force: true),
           progressController: progressController,
           authRepository: authRepository,
           contentRepository: contentRepository,
+          connectivityService: connectivityService,
         );
       },
     );
   }
 }
 
-class _ProgressHydratedHome extends StatelessWidget {
+class _ProgressHydratedHome extends StatefulWidget {
   const _ProgressHydratedHome({
     required this.user,
     required this.profile,
     required this.userProfileRepository,
     required this.leaderboardRepository,
     required this.onProfileChanged,
-    required this.progressLoadFuture,
+    required this.progressLoadProvider,
     required this.onProgressRetry,
     required this.progressController,
     required this.authRepository,
     required this.contentRepository,
+    required this.connectivityService,
   });
 
   final AuthUser user;
@@ -273,61 +282,112 @@ class _ProgressHydratedHome extends StatelessWidget {
   final UserProfileRepository userProfileRepository;
   final LeaderboardRepository leaderboardRepository;
   final ValueChanged<UserProfile> onProfileChanged;
-  final Future<void> progressLoadFuture;
-  final VoidCallback onProgressRetry;
+  final Future<void> Function() progressLoadProvider;
+  final Future<void> Function() onProgressRetry;
   final CategoryProgressController progressController;
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
+  final ConnectivityService connectivityService;
+
+  @override
+  State<_ProgressHydratedHome> createState() => _ProgressHydratedHomeState();
+}
+
+class _ProgressHydratedHomeState extends State<_ProgressHydratedHome> {
+  ConnectivityStatus? _lastStatus;
+  Future<void>? _reconnectProgressLoad;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastStatus = widget.connectivityService.status;
+    widget.connectivityService.addListener(_handleConnectivityChanged);
+  }
+
+  @override
+  void didUpdateWidget(covariant _ProgressHydratedHome oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.connectivityService != widget.connectivityService) {
+      oldWidget.connectivityService.removeListener(_handleConnectivityChanged);
+      _lastStatus = widget.connectivityService.status;
+      widget.connectivityService.addListener(_handleConnectivityChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.connectivityService.removeListener(_handleConnectivityChanged);
+    super.dispose();
+  }
+
+  void _handleConnectivityChanged() {
+    final nextStatus = widget.connectivityService.status;
+    final wasOffline = _lastStatus != ConnectivityStatus.online;
+    _lastStatus = nextStatus;
+
+    if (nextStatus == ConnectivityStatus.online &&
+        wasOffline &&
+        !widget.progressController.hasResolvedProgressFor(widget.user.uid)) {
+      _reconnectProgressLoad = widget.onProgressRetry();
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget home() {
       return AnimatedBuilder(
-        animation: progressController,
+        animation: widget.progressController,
         builder: (context, child) {
           return MainAuthenticatedShell(
-            authRepository: authRepository,
-            userProfile: profile,
+            authRepository: widget.authRepository,
+            userProfile: widget.profile,
             personalTotalPoints:
-                progressController.totalPointsForUser(user.uid) ??
-                profile.totalPoints,
-            userProfileRepository: userProfileRepository,
-            leaderboardRepository: leaderboardRepository,
+                widget.progressController.totalPointsForUser(widget.user.uid) ??
+                widget.profile.totalPoints,
+            userProfileRepository: widget.userProfileRepository,
+            leaderboardRepository: widget.leaderboardRepository,
             onProfileChanged: (changedProfile) {
-              progressController.hydrateTotalPointsFromProfile(
-                uid: user.uid,
+              widget.progressController.hydrateTotalPointsFromProfile(
+                uid: widget.user.uid,
                 totalPoints: changedProfile.totalPoints,
               );
-              onProfileChanged(changedProfile);
+              widget.onProfileChanged(changedProfile);
             },
-            contentRepository: contentRepository,
-            progressController: progressController,
-            user: user,
+            contentRepository: widget.contentRepository,
+            progressController: widget.progressController,
+            user: widget.user,
+            connectivityService: widget.connectivityService,
           );
         },
       );
     }
 
-    if (progressController.hasResolvedProgressFor(user.uid)) {
+    if (widget.progressController.hasResolvedProgressFor(widget.user.uid) ||
+        widget.connectivityService.status != ConnectivityStatus.online) {
       return home();
     }
 
-    if (progressController.hydratedUserId == user.uid &&
-        progressController.hydrationStatus == ProgressHydrationStatus.error) {
-      return _ProgressLoadErrorView(onRetry: onProgressRetry);
+    if (widget.progressController.hydratedUserId == widget.user.uid &&
+        widget.progressController.hydrationStatus ==
+            ProgressHydrationStatus.error) {
+      return _ProgressLoadErrorView(onRetry: widget.onProgressRetry);
     }
 
     return FutureBuilder<void>(
-      future: progressLoadFuture,
+      future: _reconnectProgressLoad ?? widget.progressLoadProvider(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const _AuthLoadingView();
         }
 
-        if (progressController.hydratedUserId == user.uid &&
-            progressController.hydrationStatus ==
+        if (widget.progressController.hydratedUserId == widget.user.uid &&
+            widget.progressController.hydrationStatus ==
                 ProgressHydrationStatus.error) {
-          return _ProgressLoadErrorView(onRetry: onProgressRetry);
+          return _ProgressLoadErrorView(onRetry: widget.onProgressRetry);
         }
 
         return home();

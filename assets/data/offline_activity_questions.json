@@ -1,0 +1,222 @@
+[
+  {
+    "id": "offline_activity_q01",
+    "statement": "¿Qué acción ayuda a proteger una cuenta personal?",
+    "options": [
+      {"id": "a", "text": "Usar una contraseña única y activar verificación en dos pasos."},
+      {"id": "b", "text": "Compartir la contraseña con amistades cercanas."},
+      {"id": "c", "text": "Usar la misma contraseña en todas las cuentas."},
+      {"id": "d", "text": "Guardar códigos de acceso en publicaciones visibles."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q02",
+    "statement": "Si una persona exige revisar tus mensajes privados, ¿qué puede indicar?",
+    "options": [
+      {"id": "a", "text": "Una actualización de seguridad."},
+      {"id": "b", "text": "Control digital sobre tu privacidad."},
+      {"id": "c", "text": "Una regla técnica obligatoria."},
+      {"id": "d", "text": "Una forma segura de cuidar tus datos."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q03",
+    "statement": "¿Qué conviene hacer ante un mensaje sospechoso que pide datos personales?",
+    "options": [
+      {"id": "a", "text": "Responder de inmediato para evitar problemas."},
+      {"id": "b", "text": "Enviar solo una parte de la información."},
+      {"id": "c", "text": "Verificar la fuente por un canal oficial."},
+      {"id": "d", "text": "Reenviarlo a todos los contactos."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q04",
+    "statement": "¿Cuál es una señal de posible trata o captación engañosa en línea?",
+    "options": [
+      {"id": "a", "text": "Una oferta que explica tareas, horarios y condiciones."},
+      {"id": "b", "text": "Una invitación a pedir referencias verificables."},
+      {"id": "c", "text": "Una propuesta que promete mucho dinero y presiona para viajar rápido."},
+      {"id": "d", "text": "Una entrevista formal con información clara."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q05",
+    "statement": "¿Qué práctica reduce riesgos al instalar aplicaciones?",
+    "options": [
+      {"id": "a", "text": "Instalar archivos de cualquier enlace."},
+      {"id": "b", "text": "Revisar permisos y usar tiendas oficiales."},
+      {"id": "c", "text": "Aceptar todos los permisos sin leer."},
+      {"id": "d", "text": "Desactivar las actualizaciones de seguridad."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q06",
+    "statement": "¿Qué significa consentimiento al compartir contenido íntimo?",
+    "options": [
+      {"id": "a", "text": "Que se puede reenviar si ya fue recibido una vez."},
+      {"id": "b", "text": "Que cada uso o reenvío requiere permiso."},
+      {"id": "c", "text": "Que la confianza elimina el derecho a decidir."},
+      {"id": "d", "text": "Que solo importa si el contenido se vuelve viral."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q07",
+    "statement": "Si pierdes acceso a una cuenta, ¿qué acción es prioritaria?",
+    "options": [
+      {"id": "a", "text": "Publicar más datos personales para demostrar identidad."},
+      {"id": "b", "text": "Pedir ayuda al atacante."},
+      {"id": "c", "text": "Usar opciones oficiales de recuperación y cambiar contraseñas vinculadas."},
+      {"id": "d", "text": "Ignorar alertas de inicio de sesión."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q08",
+    "statement": "¿Qué información conviene evitar publicar abiertamente?",
+    "options": [
+      {"id": "a", "text": "Ubicación en tiempo real y rutinas diarias."},
+      {"id": "b", "text": "Consejos generales de autocuidado."},
+      {"id": "c", "text": "Contenido educativo verificado."},
+      {"id": "d", "text": "Preferencias generales sin datos personales."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q09",
+    "statement": "Ante acoso digital, ¿qué respuesta puede ayudar?",
+    "options": [
+      {"id": "a", "text": "Responder con amenazas."},
+      {"id": "b", "text": "Guardar evidencia, bloquear o reportar cuando sea seguro y buscar apoyo."},
+      {"id": "c", "text": "Entregar contraseñas para calmar la situación."},
+      {"id": "d", "text": "Aislarse sin contárselo a nadie."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q10",
+    "statement": "¿Qué es una noticia o publicación desinformativa?",
+    "options": [
+      {"id": "a", "text": "Información siempre publicada por instituciones."},
+      {"id": "b", "text": "Contenido falso o engañoso que puede manipular decisiones."},
+      {"id": "c", "text": "Una opinión personal claramente identificada."},
+      {"id": "d", "text": "Un aviso que cita fuentes verificables."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q11",
+    "statement": "¿Qué dato puede servir como evidencia ante amenazas digitales?",
+    "options": [
+      {"id": "a", "text": "Capturas, fechas, enlaces y nombres de usuario."},
+      {"id": "b", "text": "Rumores sin contexto."},
+      {"id": "c", "text": "Contraseñas personales."},
+      {"id": "d", "text": "Códigos de verificación enviados por SMS."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q12",
+    "statement": "¿Qué ayuda a identificar una oferta laboral segura?",
+    "options": [
+      {"id": "a", "text": "Presión para viajar sin informar a nadie."},
+      {"id": "b", "text": "Falta de datos de la empresa."},
+      {"id": "c", "text": "Contrato claro, datos verificables y posibilidad de consultar con alguien de confianza."},
+      {"id": "d", "text": "Promesas de pago sin explicar tareas."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q13",
+    "statement": "¿Cuál es una medida de autocuidado digital?",
+    "options": [
+      {"id": "a", "text": "Compartir la ubicación permanentemente por presión."},
+      {"id": "b", "text": "Revisar privacidad, cerrar sesiones desconocidas y pedir apoyo si hay riesgo."},
+      {"id": "c", "text": "Aceptar solicitudes de personas desconocidas sin revisar."},
+      {"id": "d", "text": "Enviar documentos personales por cualquier chat."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q14",
+    "statement": "¿Qué conviene hacer antes de compartir una publicación alarmante?",
+    "options": [
+      {"id": "a", "text": "Comprobar fecha, fuente y contexto."},
+      {"id": "b", "text": "Compartirla rápido para que llegue a más personas."},
+      {"id": "c", "text": "Agregar datos no confirmados."},
+      {"id": "d", "text": "Eliminar cualquier fuente citada."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q15",
+    "statement": "Si alguien amenaza con publicar contenido íntimo, ¿qué opción es más segura?",
+    "options": [
+      {"id": "a", "text": "Pagar de inmediato y quedarse en silencio."},
+      {"id": "b", "text": "Enviar más contenido."},
+      {"id": "c", "text": "Guardar pruebas, buscar apoyo y evitar enfrentar la situación en soledad."},
+      {"id": "d", "text": "Publicar datos personales de la otra persona."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q16",
+    "statement": "¿Qué permiso de una app merece especial atención?",
+    "options": [
+      {"id": "a", "text": "Acceso a ubicación, cámara, micrófono o contactos sin necesidad clara."},
+      {"id": "b", "text": "Cambio de tamaño de letra."},
+      {"id": "c", "text": "Selección de color de interfaz."},
+      {"id": "d", "text": "Orden de botones en una pantalla."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q17",
+    "statement": "¿Qué acción protege mejor tus cuentas compartidas previamente con una expareja?",
+    "options": [
+      {"id": "a", "text": "Mantener las contraseñas para evitar conflicto."},
+      {"id": "b", "text": "Cambiar contraseñas y revisar dispositivos vinculados."},
+      {"id": "c", "text": "Enviar nuevos códigos de verificación."},
+      {"id": "d", "text": "Ignorar inicios de sesión desconocidos."}
+    ],
+    "correctAnswer": "b"
+  },
+  {
+    "id": "offline_activity_q18",
+    "statement": "¿Cuál es una señal de manipulación en línea hacia niñas, niños o adolescentes?",
+    "options": [
+      {"id": "a", "text": "Pedir guardar secretos y aislar de personas de confianza."},
+      {"id": "b", "text": "Recomendar hablar con una persona adulta de confianza."},
+      {"id": "c", "text": "Promover privacidad saludable."},
+      {"id": "d", "text": "Sugerir bloquear a quien incomoda."}
+    ],
+    "correctAnswer": "a"
+  },
+  {
+    "id": "offline_activity_q19",
+    "statement": "¿Qué prioridad existe si hay riesgo físico inmediato?",
+    "options": [
+      {"id": "a", "text": "Continuar discutiendo en línea."},
+      {"id": "b", "text": "Proteger primero una publicación."},
+      {"id": "c", "text": "Llegar a un lugar seguro y solicitar ayuda de emergencia."},
+      {"id": "d", "text": "Esperar a recuperar todas las contraseñas."}
+    ],
+    "correctAnswer": "c"
+  },
+  {
+    "id": "offline_activity_q20",
+    "statement": "¿Qué describe mejor esta actividad sin conexión?",
+    "options": [
+      {"id": "a", "text": "Una práctica local que no modifica puntos, ranking ni progreso."},
+      {"id": "b", "text": "Un examen final que desbloquea categorías."},
+      {"id": "c", "text": "Un intento que se sincroniza al volver Internet."},
+      {"id": "d", "text": "Una tarea que requiere Firestore para calcular resultados."}
+    ],
+    "correctAnswer": "a"
+  }
+]

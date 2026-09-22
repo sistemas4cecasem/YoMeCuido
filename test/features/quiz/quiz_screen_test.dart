@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:demo_yomecuido/app/app_strings.dart';
@@ -8,10 +9,16 @@ import 'package:demo_yomecuido/data/models/category_progress.dart';
 import 'package:demo_yomecuido/data/models/final_exam.dart';
 import 'package:demo_yomecuido/data/models/learning_activity.dart';
 import 'package:demo_yomecuido/data/models/lesson_page.dart';
+import 'package:demo_yomecuido/data/models/auth_user.dart';
+import 'package:demo_yomecuido/data/models/pending_quiz_attempt.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
+import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
+import 'package:demo_yomecuido/data/repositories/pending_quiz_attempt_repository.dart';
 import 'package:demo_yomecuido/features/quiz/exam_question_selector.dart';
 import 'package:demo_yomecuido/features/quiz/quiz_screen.dart';
+import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
+import 'package:demo_yomecuido/shared/services/pending_quiz_attempt_sync_service.dart';
 import 'package:demo_yomecuido/shared/widgets/character_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -182,7 +189,7 @@ void main() {
   testWidgets('botón Responder no se muestra sin selección', (tester) async {
     await pumpQuiz(tester);
 
-    expect(progressController.attemptFor('attempt_1'), isNull);
+    expect(progressController.attemptFor('attempt_1'), isNotNull);
     expect(find.text(AppStrings.submitAnswer), findsNothing);
     expect(find.text('Pregunta 1 de 10'), findsNothing);
   });
@@ -263,13 +270,13 @@ void main() {
     final selector = ExamQuestionSelector(random: math.Random(8));
 
     await pumpExam(tester, selector: selector);
-    expect(progressController.attemptFor('attempt_1'), isNull);
+    expect(progressController.attemptFor('attempt_1'), isNotNull);
 
     await completeVisibleQuiz(tester, totalQuestions: 15);
     final firstAttempt = progressController.attemptFor('attempt_1');
     await tester.tap(find.text(AppStrings.repeatLesson));
     await tester.pumpAndSettle();
-    expect(progressController.attemptFor('attempt_2'), isNull);
+    expect(progressController.attemptFor('attempt_2'), isNotNull);
     await completeVisibleQuiz(tester, totalQuestions: 15);
 
     final secondAttempt = progressController.attemptFor('attempt_2');
@@ -346,7 +353,7 @@ void main() {
     );
     expect(find.text('Respuesta incorrecta'), findsOneWidget);
     expect(find.text('Respuesta correcta'), findsOneWidget);
-    expect(find.byIcon(Icons.check_circle_outline), findsNothing);
+    expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
 
     final incorrectTop = tester.getTopLeft(find.text('Respuesta incorrecta'));
     final correctTop = tester.getTopLeft(find.text('Respuesta correcta'));
@@ -571,6 +578,69 @@ void main() {
     expect(find.text('Busca apoyo y prioriza tu seguridad.'), findsNothing);
   });
 
+  testWidgets(
+    'snapshot online se crea, se actualiza y salir offline queda pendingSync',
+    (tester) async {
+      repository.quizQuestions = _buildQuizQuestions(3);
+      final auth = _FakeAuthRepository();
+      final pendingRepository = _MemoryPendingQuizAttemptRepository();
+      final connectivityProbe = _FakeBackendConnectivityProbe(reachable: true);
+      final connectivity = await _connectivityService(
+        backendProbe: connectivityProbe,
+      );
+      addTearDown(connectivity.dispose);
+      final syncService = PendingQuizAttemptSyncService(
+        authRepository: auth,
+        connectivityService: connectivity,
+        progressController: progressController,
+        repository: pendingRepository,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.data(),
+          home: QuizScreen.activity(
+            category: _category,
+            activity: _activity,
+            contentRepository: repository,
+            progressController: progressController,
+            shuffleQuestions: false,
+            shuffleOptions: false,
+            connectivityService: connectivity,
+            authRepository: auth,
+            pendingSyncService: syncService,
+            requireStartConfirmation: true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(await pendingRepository.loadAll(), isEmpty);
+
+      await tester.tap(find.text(AppStrings.startAttempt));
+      await tester.pumpAndSettle();
+      var snapshots = await pendingRepository.loadAll();
+      expect(snapshots.single.status, PendingQuizAttemptSyncStatus.inProgress);
+      expect(snapshots.single.answers, isEmpty);
+
+      await answerCurrentCorrectly(tester, 1);
+      snapshots = await pendingRepository.loadAll();
+      expect(snapshots.single.answers, hasLength(1));
+      expect(snapshots.single.correctAnswers, 1);
+
+      connectivityProbe.reachable = false;
+      await connectivity.checkConnection();
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(AppStrings.exit));
+      await tester.pumpAndSettle();
+
+      snapshots = await pendingRepository.loadAll();
+      expect(snapshots.single.status, PendingQuizAttemptSyncStatus.pendingSync);
+      expect(snapshots.single.answers, hasLength(1));
+      expect(snapshots.single.completedAt, isNotNull);
+    },
+  );
+
   testWidgets('muestra puntos del intento separados del total personal', (
     tester,
   ) async {
@@ -660,6 +730,101 @@ class _FakeQuizRepository implements ContentRepository {
   Future<FinalExamConfig?> loadFinalExamConfig(String categoryId) async {
     return FinalExamConfigs.forCategory(categoryId);
   }
+}
+
+class _FakeAuthRepository implements AuthRepository {
+  final _controller = StreamController<AuthUser?>.broadcast();
+
+  @override
+  AuthUser? get currentUser => const AuthUser(
+    uid: 'uid-123',
+    email: 'persona@example.com',
+    isEmailVerified: true,
+  );
+
+  @override
+  Stream<AuthUser?> authStateChanges() => _controller.stream;
+
+  @override
+  Future<AuthUser> registerWithEmailAndPassword({
+    required String username,
+    required String email,
+    required String password,
+  }) => throw UnimplementedError();
+
+  @override
+  Future<AuthUser?> reloadCurrentUser() async => currentUser;
+
+  @override
+  Future<void> sendEmailVerification() => throw UnimplementedError();
+
+  @override
+  Future<void> sendPasswordResetEmail({required String email}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> signOut() => throw UnimplementedError();
+
+  @override
+  Future<AuthUser> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) => throw UnimplementedError();
+}
+
+class _MemoryPendingQuizAttemptRepository
+    implements PendingQuizAttemptRepository {
+  final List<PendingQuizAttempt> _attempts = <PendingQuizAttempt>[];
+
+  @override
+  Future<List<PendingQuizAttempt>> loadAll() async =>
+      List<PendingQuizAttempt>.unmodifiable(_attempts);
+
+  @override
+  Future<void> remove(String attemptId) async {
+    _attempts.removeWhere((attempt) => attempt.attemptId == attemptId);
+  }
+
+  @override
+  Future<void> upsert(PendingQuizAttempt attempt) async {
+    _attempts.removeWhere((item) => item.attemptId == attempt.attemptId);
+    _attempts.add(attempt);
+  }
+}
+
+Future<ConnectivityService> _connectivityService({
+  required _FakeBackendConnectivityProbe backendProbe,
+}) async {
+  final service = ConnectivityService(
+    networkMonitor: _FakeNetworkInterfaceMonitor(),
+    backendProbe: backendProbe,
+  );
+  await service.checkConnection();
+  return service;
+}
+
+class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  final _controller = StreamController<bool>.broadcast();
+
+  @override
+  Future<bool> hasNetworkInterface() async => true;
+
+  @override
+  Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
+
+  @override
+  Future<void> dispose() async {
+    await _controller.close();
+  }
+}
+
+class _FakeBackendConnectivityProbe implements BackendConnectivityProbe {
+  _FakeBackendConnectivityProbe({required this.reachable});
+
+  bool reachable;
+
+  @override
+  Future<bool> canReachBackend({required Duration timeout}) async => reachable;
 }
 
 const _activity = LearningActivity(
