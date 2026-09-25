@@ -759,7 +759,7 @@ void main() {
     await tester.tap(find.text(AppStrings.firstActivityBlock));
     await tester.pumpAndSettle();
 
-    expect(repository.loadQuizQuestionsCalls, 2);
+    expect(repository.loadQuizQuestionsCalls, 1);
     expect(find.text(AppStrings.quizTitle), findsOneWidget);
     expect(find.text('Actividad 1 de 12'), findsNothing);
     expect(find.text('Pregunta 1 de 10'), findsNothing);
@@ -858,7 +858,7 @@ void main() {
               examId: FinalExamConfigs.relationsViolence.id,
             )
             .attemptCount,
-        0,
+        1,
       );
     },
   );

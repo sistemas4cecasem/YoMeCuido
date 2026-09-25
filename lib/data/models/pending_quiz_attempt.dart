@@ -26,6 +26,8 @@ class PendingQuizAttempt {
   const PendingQuizAttempt({
     required this.uid,
     required this.attemptId,
+    this.attemptNumber = 1,
+    this.pointValue,
     required this.type,
     required this.categoryId,
     required this.lessonId,
@@ -33,6 +35,7 @@ class PendingQuizAttempt {
     required this.examId,
     required this.questionIds,
     required this.answers,
+    this.correctQuestionIds = const <String>[],
     required this.correctAnswers,
     required this.totalQuestions,
     required this.percentage,
@@ -48,6 +51,8 @@ class PendingQuizAttempt {
     return PendingQuizAttempt(
       uid: _readString(json, 'uid'),
       attemptId: _readString(json, 'attemptId'),
+      attemptNumber: _readOptionalAttemptNumber(json, 'attemptNumber') ?? 1,
+      pointValue: json['pointValue'] is int ? json['pointValue'] as int : null,
       type: QuizAttemptType.fromFirestore(_readString(json, 'type')),
       categoryId: _readString(json, 'categoryId'),
       lessonId: _readString(json, 'lessonId'),
@@ -70,6 +75,10 @@ class PendingQuizAttempt {
           );
         }),
       ),
+      correctQuestionIds: List<String>.unmodifiable(
+        (json['correctQuestionIds'] as List<Object?>? ?? const [])
+            .whereType<String>(),
+      ),
       correctAnswers: _readInt(json, 'correctAnswers'),
       totalQuestions: _readInt(json, 'totalQuestions'),
       percentage: _readInt(json, 'percentage'),
@@ -86,6 +95,8 @@ class PendingQuizAttempt {
 
   final String uid;
   final String attemptId;
+  final int attemptNumber;
+  final int? pointValue;
   final QuizAttemptType type;
   final String categoryId;
   final String lessonId;
@@ -93,6 +104,7 @@ class PendingQuizAttempt {
   final String? examId;
   final List<String> questionIds;
   final List<CategoryProgressAnswer> answers;
+  final List<String> correctQuestionIds;
   final int correctAnswers;
   final int totalQuestions;
   final int percentage;
@@ -132,6 +144,8 @@ class PendingQuizAttempt {
     return PendingQuizAttempt(
       uid: uid,
       attemptId: attemptId,
+      attemptNumber: attemptNumber,
+      pointValue: pointValue,
       type: type,
       categoryId: categoryId,
       lessonId: lessonId,
@@ -139,6 +153,7 @@ class PendingQuizAttempt {
       examId: examId,
       questionIds: questionIds,
       answers: answers ?? this.answers,
+      correctQuestionIds: correctQuestionIds,
       correctAnswers: correctAnswers ?? this.correctAnswers,
       totalQuestions: totalQuestions ?? this.totalQuestions,
       percentage: percentage ?? this.percentage,
@@ -153,6 +168,8 @@ class PendingQuizAttempt {
     return {
       'uid': uid,
       'attemptId': attemptId,
+      'attemptNumber': attemptNumber,
+      'pointValue': pointValue,
       'type': type.firestoreValue,
       'categoryId': categoryId,
       'lessonId': lessonId,
@@ -168,6 +185,7 @@ class PendingQuizAttempt {
             'answeredAt': answer.answeredAt.toIso8601String(),
           },
       ],
+      'correctQuestionIds': correctQuestionIds,
       'correctAnswers': correctAnswers,
       'totalQuestions': totalQuestions,
       'percentage': percentage,
@@ -201,6 +219,17 @@ String? _readNullableString(Map<Object?, Object?> data, String key) {
 int _readInt(Map<Object?, Object?> data, String key) {
   final value = data[key];
   if (value is int) {
+    return value;
+  }
+  throw FormatException('Invalid pending quiz attempt "$key".');
+}
+
+int? _readOptionalAttemptNumber(Map<Object?, Object?> data, String key) {
+  final value = data[key];
+  if (value == null) {
+    return null;
+  }
+  if (value is int && value >= 1) {
     return value;
   }
   throw FormatException('Invalid pending quiz attempt "$key".');

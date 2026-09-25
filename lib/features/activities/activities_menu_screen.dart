@@ -59,19 +59,7 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
       categoryId: widget.category.id,
       totalActivities: sortedActivities.length,
     );
-    final questions = await widget.contentRepository.loadQuizQuestions(
-      widget.category.id,
-    );
-    final questionCounts = const ActivityQuestionSelector()
-        .countQuestionsByActivity(
-          questions: questions,
-          categoryId: widget.category.id,
-          activities: sortedActivities,
-        );
-    return _ActivitiesMenuData(
-      activities: sortedActivities,
-      questionCountsByActivityId: questionCounts,
-    );
+    return _ActivitiesMenuData(activities: sortedActivities);
   }
 
   void _openQuiz(LearningActivity activity, int totalActivities) {
@@ -223,16 +211,12 @@ class _IntroCard extends StatelessWidget {
 }
 
 class _ActivitiesMenuData {
-  const _ActivitiesMenuData({
-    required this.activities,
-    required this.questionCountsByActivityId,
-  });
+  const _ActivitiesMenuData({required this.activities});
 
   final List<LearningActivity> activities;
-  final Map<String, int> questionCountsByActivityId;
 
   int questionCountFor(String activityId) {
-    return questionCountsByActivityId[activityId] ?? 0;
+    return const ActivityQuestionSelector().questionsPerActivity;
   }
 }
 

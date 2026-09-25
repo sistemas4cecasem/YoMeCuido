@@ -208,7 +208,10 @@ void main() {
       expect(data['status'], 'completed');
       expect(data['attemptCount'], 3);
       expect(data['activityPoints'], 61);
-      expect(data['questionScores'], contains('question_01'));
+      expect(data['scoredAt10QuestionIds'], contains('question_01'));
+      expect(data['scoredAt5QuestionIds'], contains('question_06'));
+      expect(data['scoredAt1QuestionIds'], contains('question_08'));
+      expect(data.containsKey('questionScores'), isFalse);
       expect(data['bestPercentage'], 80);
     });
 
@@ -294,9 +297,9 @@ void main() {
 
       expect(rebuilt.attemptCount, 3);
       expect(rebuilt.activityPoints, 61);
-      expect(rebuilt.questionScores, hasLength(10));
+      expect(rebuilt.questionScores, hasLength(8));
       expect(rebuilt.questionScores['q08']?.pointsAwarded, 1);
-      expect(rebuilt.questionScores['q09']?.awardedAttempt, isNull);
+      expect(rebuilt.questionScores.containsKey('q09'), isFalse);
       expect(rebuilt.bestPercentage, 80);
     });
 

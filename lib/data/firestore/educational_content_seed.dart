@@ -51,6 +51,8 @@ class EducationalContentSeedPlan {
 
   int get questionCount => _countByCollection(_questionsCollection);
 
+  int get answerKeyCount => _countByCollection('answerKeys');
+
   int get examConfigCount => _countByCollection(_examConfigCollection);
 
   List<String> get paths {
@@ -77,6 +79,7 @@ abstract final class EducationalContentSeedBuilder {
   static const lessonPagesCollection = _lessonPagesCollection;
   static const activitiesCollection = _activitiesCollection;
   static const questionsCollection = _questionsCollection;
+  static const answerKeysCollection = 'answerKeys';
   static const examConfigCollection = _examConfigCollection;
   static const finalExamDocumentId = _finalExamDocumentId;
 
@@ -132,8 +135,89 @@ abstract final class EducationalContentSeedBuilder {
         );
       }
 
+      final questions = bundle.questionsByCategory[categoryId] ?? const [];
+      for (final activity
+          in bundle.activitiesByCategory[categoryId] ?? const []) {
+        final activityQuestions =
+            questions
+                .where((question) => question.activityId == activity.id)
+                .toList(growable: false)
+              ..sort((a, b) => a.id.compareTo(b.id));
+        if (activityQuestions.length != 10) {
+          continue;
+        }
+        documents.add(
+          EducationalContentSeedDocument(
+            path:
+                '$categoriesCollection/$categoryId/'
+                '$answerKeysCollection/${activity.id}',
+            data: {
+              'categoryId': categoryId,
+              'activityId': activity.id,
+              'questionIds': [
+                for (final question in activityQuestions) question.id,
+              ],
+              'correctAnswersByQuestionId': {
+                for (final question in activityQuestions)
+                  question.id: question.correctAnswer,
+              },
+              'acceptedAnswersByQuestionId': {
+                for (final question in activityQuestions)
+                  if (question.type == QuestionType.fillBlank)
+                    question.id: [
+                      for (final answer in question.acceptedAnswers)
+                        answer.trim().toLowerCase(),
+                    ],
+              },
+              'fillBlankQuestionIds': [
+                for (final question in activityQuestions)
+                  if (question.type == QuestionType.fillBlank) question.id,
+              ],
+            },
+          ),
+        );
+      }
+
       final examConfig = bundle.examConfigsByCategory[categoryId];
       if (examConfig != null) {
+        final examQuestions = questions.toList(growable: false)
+          ..sort((a, b) => a.id.compareTo(b.id));
+        final activityIds = [
+          for (final activity
+              in bundle.activitiesByCategory[categoryId] ?? const [])
+            activity.id,
+        ]..sort();
+        documents.add(
+          EducationalContentSeedDocument(
+            path:
+                '$categoriesCollection/$categoryId/'
+                '$answerKeysCollection/${examConfig.id}',
+            data: {
+              'categoryId': categoryId,
+              'examId': examConfig.id,
+              'questionIds': [
+                for (final question in examQuestions) question.id,
+              ],
+              'activityIds': activityIds,
+              'correctAnswersByQuestionId': {
+                for (final question in examQuestions)
+                  question.id: question.correctAnswer,
+              },
+              'acceptedAnswersByQuestionId': {
+                for (final question in examQuestions)
+                  if (question.type == QuestionType.fillBlank)
+                    question.id: [
+                      for (final answer in question.acceptedAnswers)
+                        answer.trim().toLowerCase(),
+                    ],
+              },
+              'fillBlankQuestionIds': [
+                for (final question in examQuestions)
+                  if (question.type == QuestionType.fillBlank) question.id,
+              ],
+            },
+          ),
+        );
         documents.add(
           EducationalContentSeedDocument(
             path:

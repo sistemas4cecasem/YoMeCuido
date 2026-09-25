@@ -59,7 +59,13 @@ La ejecución prepara documentos solo bajo `categories/...`:
 - 6 páginas teóricas por categoría habilitada;
 - 6 actividades por categoría habilitada;
 - 60 preguntas por categoría habilitada;
+- 6 answer keys protegidos de actividades y 1 del examen, derivados de esas preguntas;
 - 1 configuración de examen final por categoría habilitada.
+
+El answer key del examen contiene los 60 IDs elegibles, las respuestas
+canónicas y los 6 IDs de actividades requeridas para la aprobación. El cliente
+no puede leerlo. La Subfase 3.7 solo preparó este plan: no se ejecutó la
+escritura remota.
 
 El script usa operaciones `set` mediante `batchWrite`, por lo que una segunda
 ejecución actualiza los mismos paths y no crea duplicados.

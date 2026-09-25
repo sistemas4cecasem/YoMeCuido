@@ -276,7 +276,9 @@ void main() {
       final activityData = await _activityData(firestore);
       final userData = await _userData(firestore);
       final leaderboardData = await _leaderboardData(firestore);
-      final questionScores = activityData['questionScores'] as Map;
+      final scoredAt10 = activityData['scoredAt10QuestionIds'] as List;
+      final scoredAt5 = activityData['scoredAt5QuestionIds'] as List;
+      final scoredAt1 = activityData['scoredAt1QuestionIds'] as List;
       final fourthAttempt = await _activityAttemptData(firestore, 'attempt_d');
 
       expect(first.attemptNumber, 1);
@@ -306,18 +308,15 @@ void main() {
       expect(leaderboardData['totalPoints'], 261);
       expect(leaderboardData.containsKey('email'), isFalse);
       expect(leaderboardData.containsKey('role'), isFalse);
-      expect(questionScores['q01']['pointsAwarded'], 10);
-      expect(questionScores['q01']['awardedAttempt'], 1);
-      expect(questionScores['q06']['pointsAwarded'], 5);
-      expect(questionScores['q06']['awardedAttempt'], 2);
-      expect(questionScores['q08']['pointsAwarded'], 1);
-      expect(questionScores['q08']['awardedAttempt'], 3);
-      expect(questionScores['q09']['pointsAwarded'], 0);
-      expect(questionScores['q09']['awardedAttempt'], isNull);
-      expect(fourthAttempt['earnedPoints'], 0);
+      expect(scoredAt10, contains('q01'));
+      expect(scoredAt5, contains('q06'));
+      expect(scoredAt1, contains('q08'));
+      expect(scoredAt10, isNot(contains('q09')));
+      expect(activityData.containsKey('questionScores'), isFalse);
+      expect(fourthAttempt.containsKey('earnedPoints'), isFalse);
       expect(fourthAttempt['correctAnswers'], 10);
       expect(fourthAttempt['percentage'], 100);
-      expect(fourthAttempt['answers']['q01']['pointsEarned'], 0);
+      expect(fourthAttempt['correct'][0], isTrue);
     });
 
     test(
@@ -428,7 +427,7 @@ void main() {
     });
 
     test(
-      'derives attempt number and scoring from persisted progress',
+      'reads legacy scores locally without migrating the remote document',
       () async {
         final firestore = FakeFirebaseFirestore();
         final repository = CategoryProgressRepository(firestore: firestore);
@@ -454,26 +453,21 @@ void main() {
           'updatedAt': Timestamp.fromDate(DateTime.utc(2026, 9, 1)),
         });
 
-        final result = await _completeActivity(
-          repository,
-          attemptId: 'attempt_from_persisted',
-          correctQuestionIds: <String>{'q01', 'q02'},
-        );
-
         final activityData = await _activityData(firestore);
-        final userData = await _userData(firestore);
-        final questionScores = activityData['questionScores'] as Map;
-
-        expect(result.attemptNumber, 3);
-        expect(result.earnedPoints, 1);
-        expect(result.totalPoints, 41);
-        expect(activityData['attemptCount'], 3);
-        expect(activityData['activityPoints'], 11);
-        expect(userData['totalPoints'], 41);
-        expect(questionScores['q01']['pointsAwarded'], 10);
-        expect(questionScores['q01']['awardedAttempt'], 1);
-        expect(questionScores['q02']['pointsAwarded'], 1);
-        expect(questionScores['q02']['awardedAttempt'], 3);
+        final local = ActivityProgressRecord.fromMap(activityData);
+        expect(local.questionScores['q01']?.pointsAwarded, 10);
+        await expectLater(
+          repository.reserveActivityAttempt(
+            uid: _uid,
+            categoryId: _categoryId,
+            activityId: _activityId,
+            attemptId: 'attempt_from_persisted',
+          ),
+          throwsA(isA<CategoryProgressException>()),
+        );
+        final remote = await _activityData(firestore);
+        expect(remote.containsKey('questionScores'), isTrue);
+        expect(remote.containsKey('scoredAt10QuestionIds'), isFalse);
       },
     );
 
@@ -494,6 +488,7 @@ void main() {
           repository,
           attemptId: 'attempt_once',
           correctQuestionIds: _ids(1, 10),
+          reserve: false,
         );
 
         final activityData = await _activityData(firestore);
@@ -509,10 +504,172 @@ void main() {
       },
     );
 
+    test('persists submission, semantic attempt and four aggregates', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+
+      await _completeActivity(
+        repository,
+        attemptId: 'secure_pipeline',
+        correctQuestionIds: _ids(1, 3),
+      );
+
+      final activity = await _activityData(firestore);
+      final attempt = await _activityAttemptData(firestore, 'secure_pipeline');
+      final submission = (await _activityDocument(
+        firestore,
+      ).collection('answerSubmissions').doc('secure_pipeline').get()).data()!;
+      final user = await _userData(firestore);
+      final leaderboard = await _leaderboardData(firestore);
+      expect(submission['attemptNumber'], 1);
+      expect((submission['answers'] as Map).length, 10);
+      expect(attempt['correct'], hasLength(10));
+      expect(attempt['correctAnswers'], 3);
+      expect(attempt.containsKey('earnedPoints'), isFalse);
+      expect(attempt.containsKey('answers'), isFalse);
+      expect(activity['scoredAt10QuestionIds'], ['q01', 'q02', 'q03']);
+      expect(activity.containsKey('questionScores'), isFalse);
+      expect(activity['activityPoints'], 30);
+      expect(user['totalPoints'], 30);
+      expect(user['lastActivityAward']['attemptId'], 'secure_pipeline');
+      expect(leaderboard['totalPoints'], 30);
+    });
+
+    for (final cut in ActivitySyncStage.values) {
+      test(
+        'resumes after interruption at $cut with the same attempt',
+        () async {
+          final firestore = FakeFirebaseFirestore();
+          await _seedUser(firestore);
+          var interrupted = false;
+          final failing = CategoryProgressRepository(
+            firestore: firestore,
+            onActivitySyncStage: (stage) async {
+              if (!interrupted && stage == cut) {
+                interrupted = true;
+                throw StateError('Simulated app termination.');
+              }
+            },
+          );
+          await failing.reserveActivityAttempt(
+            uid: _uid,
+            categoryId: _categoryId,
+            activityId: _activityId,
+            attemptId: 'resume_same_id',
+          );
+          await expectLater(
+            _completeActivity(
+              failing,
+              attemptId: 'resume_same_id',
+              correctQuestionIds: _ids(1, 2),
+              reserve: false,
+            ),
+            throwsA(isA<CategoryProgressException>()),
+          );
+          final resumed = CategoryProgressRepository(firestore: firestore);
+          final result = await _completeActivity(
+            resumed,
+            attemptId: 'resume_same_id',
+            correctQuestionIds: _ids(1, 2),
+            reserve: false,
+          );
+          expect(result.attemptNumber, 1);
+          expect((await _activityData(firestore))['activityPoints'], 20);
+          expect((await _userData(firestore))['totalPoints'], 20);
+          final attempts = await _activityDocument(
+            firestore,
+          ).collection('attempts').get();
+          final submissions = await _activityDocument(
+            firestore,
+          ).collection('answerSubmissions').get();
+          expect(attempts.docs.map((doc) => doc.id), ['resume_same_id']);
+          expect(submissions.docs.map((doc) => doc.id), ['resume_same_id']);
+        },
+      );
+    }
+
+    test(
+      'reconciles an older completed attempt while a later one is active',
+      () async {
+        final firestore = FakeFirebaseFirestore();
+        final repository = CategoryProgressRepository(firestore: firestore);
+        await _seedUser(firestore);
+        final first = await _completeActivity(
+          repository,
+          attemptId: 'older_attempt',
+          correctQuestionIds: _ids(1, 2),
+        );
+        expect(first.earnedPoints, 20);
+        await repository.reserveActivityAttempt(
+          uid: _uid,
+          categoryId: _categoryId,
+          activityId: _activityId,
+          attemptId: 'later_attempt',
+        );
+
+        final recovered = await _completeActivity(
+          repository,
+          attemptId: 'older_attempt',
+          correctQuestionIds: _ids(1, 2),
+          reserve: false,
+          reservedAttemptNumber: 1,
+        );
+
+        expect(recovered.attemptNumber, 1);
+        expect((await _activityData(firestore))['activityPoints'], 20);
+        expect((await _userData(firestore))['totalPoints'], 20);
+        expect(
+          (await _activityData(firestore))['activeAttempt']['attemptId'],
+          'later_attempt',
+        );
+      },
+    );
+
+    test('rejects mismatched pending pointValue before submission', () async {
+      final firestore = FakeFirebaseFirestore();
+      final repository = CategoryProgressRepository(firestore: firestore);
+      await _seedUser(firestore);
+      await repository.reserveActivityAttempt(
+        uid: _uid,
+        categoryId: _categoryId,
+        activityId: _activityId,
+        attemptId: 'wrong_value',
+      );
+      await expectLater(
+        repository.completeActivityAttempt(
+          uid: _uid,
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          attemptId: 'wrong_value',
+          pointValue: 5,
+          startedAt: DateTime.utc(2026, 9, 10),
+          questionIds: _ids(1, 10).toList(),
+          answers: _answers(_ids(1, 2)),
+          totalLessonPages: 4,
+          totalActivities: 6,
+        ),
+        throwsA(isA<CategoryProgressException>()),
+      );
+      final submissions = await _activityDocument(
+        firestore,
+      ).collection('answerSubmissions').get();
+      expect(submissions.docs, isEmpty);
+    });
+
     test('finalizing an exam does not change totalPoints', () async {
       final firestore = FakeFirebaseFirestore();
       final repository = CategoryProgressRepository(firestore: firestore);
       await _seedUser(firestore, totalPoints: 300);
+      final examIds = _prefixedIds('exam', end: 15).toList();
+      await repository.reserveExamAttempt(
+        uid: _uid,
+        categoryId: _categoryId,
+        examId: _examId,
+        attemptId: 'exam_attempt',
+        selectedQuestionIds: examIds,
+      );
 
       final result = await repository.completeExamAttempt(
         uid: _uid,
@@ -521,11 +678,11 @@ void main() {
         examId: _examId,
         attemptId: 'exam_attempt',
         startedAt: DateTime.utc(2026, 9, 10),
-        questionIds: _ids(1, 10).toList(),
-        answers: _answers(_ids(1, 10)),
+        questionIds: examIds,
+        answers: _answers(examIds.take(10).toSet(), questionIds: examIds),
         correctAnswers: 10,
-        totalQuestions: 10,
-        percentage: 100,
+        totalQuestions: 15,
+        percentage: 67,
         totalLessonPages: 4,
         totalActivities: 6,
       );
@@ -538,6 +695,58 @@ void main() {
       expect(userData['totalPoints'], 300);
       expect(examAttempt['earnedPoints'], 0);
     });
+
+    for (final cut in ExamSyncStage.values) {
+      test('exam resumes after interruption at $cut', () async {
+        final firestore = FakeFirebaseFirestore();
+        await _seedUser(firestore, totalPoints: 30);
+        final ids = _prefixedIds('exam', end: 15).toList();
+        final failing = CategoryProgressRepository(
+          firestore: firestore,
+          onExamSyncStage: (stage) async {
+            if (stage == cut) throw StateError('Simulated app termination.');
+          },
+        );
+        await failing.reserveExamAttempt(
+          uid: _uid,
+          categoryId: _categoryId,
+          examId: _examId,
+          attemptId: 'resume_exam',
+          selectedQuestionIds: ids,
+        );
+        await expectLater(
+          _completeExam(
+            failing,
+            attemptId: 'resume_exam',
+            correctAnswers: 12,
+            reserve: false,
+            reservedAttemptNumber: 1,
+          ),
+          throwsA(isA<CategoryProgressException>()),
+        );
+        final resumed = CategoryProgressRepository(firestore: firestore);
+        final result = await _completeExam(
+          resumed,
+          attemptId: 'resume_exam',
+          correctAnswers: 12,
+          reserve: false,
+          reservedAttemptNumber: 1,
+        );
+        expect(result.attemptNumber, 1);
+        expect(result.earnedPoints, 0);
+        expect((await _userData(firestore))['totalPoints'], 30);
+        expect(
+          (await _examDocument(
+            firestore,
+          ).collection('answerSubmissions').get()).docs,
+          hasLength(1),
+        );
+        expect(
+          (await _examDocument(firestore).collection('attempts').get()).docs,
+          hasLength(1),
+        );
+      });
+    }
 
     test(
       'marks category completed only after theory activities and exam pass',
@@ -608,6 +817,12 @@ void main() {
           CategoryProgressStatus.completed.firestoreValue,
         );
         expect(progressData['completedAt'], isA<Timestamp>());
+        final refreshed = await repository.fetchCategoryProgress(
+          uid: _uid,
+          categoryId: _categoryId,
+        );
+        expect(refreshed?.status, CategoryProgressStatus.completed);
+        expect(refreshed?.exams[_examId]?.bestPercentage, 80);
       },
     );
 
@@ -702,7 +917,17 @@ Future<CompletedQuizAttemptPersistenceResult> _completeActivity(
   List<String>? questionIds,
   required String attemptId,
   required Set<String> correctQuestionIds,
-}) {
+  bool reserve = true,
+  int? reservedAttemptNumber,
+}) async {
+  if (reserve) {
+    await repository.reserveActivityAttempt(
+      uid: _uid,
+      categoryId: _categoryId,
+      activityId: activityId,
+      attemptId: attemptId,
+    );
+  }
   final resolvedQuestionIds = questionIds ?? _ids(1, 10).toList();
   return repository.completeActivityAttempt(
     uid: _uid,
@@ -710,6 +935,7 @@ Future<CompletedQuizAttemptPersistenceResult> _completeActivity(
     lessonId: _lessonId,
     activityId: activityId,
     attemptId: attemptId,
+    reservedAttemptNumber: reservedAttemptNumber,
     startedAt: DateTime.utc(2026, 9, 10),
     questionIds: resolvedQuestionIds,
     answers: _answers(correctQuestionIds, questionIds: resolvedQuestionIds),
@@ -722,14 +948,26 @@ Future<CompletedQuizAttemptPersistenceResult> _completeExam(
   CategoryProgressRepository repository, {
   required String attemptId,
   required int correctAnswers,
-}) {
+  bool reserve = true,
+  int? reservedAttemptNumber,
+}) async {
   final questionIds = _prefixedIds('exam', end: 15).toList();
+  if (reserve) {
+    await repository.reserveExamAttempt(
+      uid: _uid,
+      categoryId: _categoryId,
+      examId: _examId,
+      attemptId: attemptId,
+      selectedQuestionIds: questionIds,
+    );
+  }
   return repository.completeExamAttempt(
     uid: _uid,
     categoryId: _categoryId,
     lessonId: _lessonId,
     examId: _examId,
     attemptId: attemptId,
+    reservedAttemptNumber: reservedAttemptNumber,
     startedAt: DateTime.utc(2026, 9, 10),
     questionIds: questionIds,
     answers: _answers(
@@ -867,6 +1105,12 @@ Future<Map<String, dynamic>> _examData(FakeFirebaseFirestore firestore) async {
     firestore,
   ).collection('exams').doc(_examId).get();
   return snapshot.data()!;
+}
+
+DocumentReference<Map<String, dynamic>> _examDocument(
+  FakeFirebaseFirestore firestore,
+) {
+  return _progressDocument(firestore).collection('exams').doc(_examId);
 }
 
 Future<Map<String, dynamic>> _progressData(

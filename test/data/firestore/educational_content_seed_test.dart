@@ -26,7 +26,9 @@ void main() {
       expect(plan.examConfigCount, enabledCategories);
       expect(
         plan.documents,
-        hasLength(expectedCategories + (enabledCategories * 73)),
+        hasLength(
+          expectedCategories + (enabledCategories * 73) + plan.answerKeyCount,
+        ),
       );
       expect(
         bundle.categories.map((category) => category.id),
@@ -77,6 +79,53 @@ void main() {
 
       expect(secondPlan.paths, firstPlan.paths);
       expect(firstPlan.paths.toSet(), hasLength(firstPlan.paths.length));
+    });
+
+    test(
+      'derives one canonical protected answer key per online activity',
+      () async {
+        final plan = EducationalContentSeedBuilder.build(
+          await _loadCurrentBundle(),
+        );
+        final key = plan.documents.singleWhere(
+          (document) =>
+              document.path ==
+              'categories/relations_violence_digital/answerKeys/'
+                  'relations_violence_activity_01',
+        );
+        final questionIds = key.data['questionIds']! as List<String>;
+        final correctAnswers =
+            key.data['correctAnswersByQuestionId']! as Map<String, String>;
+
+        expect(questionIds, hasLength(10));
+        expect(questionIds, orderedEquals([...questionIds]..sort()));
+        expect(correctAnswers.keys.toSet(), questionIds.toSet());
+        expect(key.data['categoryId'], 'relations_violence_digital');
+        expect(key.data['activityId'], 'relations_violence_activity_01');
+        expect(plan.answerKeyCount, greaterThanOrEqualTo(6));
+      },
+    );
+
+    test('derives the protected exam key from the same 60 questions', () async {
+      final plan = EducationalContentSeedBuilder.build(
+        await _loadCurrentBundle(),
+      );
+      final key = plan.documents.singleWhere(
+        (document) =>
+            document.path ==
+            'categories/relations_violence_digital/answerKeys/'
+                'relations_violence_final_exam',
+      );
+      final ids = List<String>.from(key.data['questionIds']! as List);
+      final answers =
+          key.data['correctAnswersByQuestionId']! as Map<String, String>;
+      final activityIds = List<String>.from(key.data['activityIds']! as List);
+
+      expect(ids, hasLength(60));
+      expect(ids.toSet(), hasLength(60));
+      expect(answers.keys.toSet(), ids.toSet());
+      expect(activityIds, hasLength(6));
+      expect(key.data['examId'], 'relations_violence_final_exam');
     });
 
     test('preserves option ids and answer fields in question documents', () {

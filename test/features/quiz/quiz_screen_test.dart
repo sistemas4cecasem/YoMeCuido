@@ -621,6 +621,9 @@ void main() {
       var snapshots = await pendingRepository.loadAll();
       expect(snapshots.single.status, PendingQuizAttemptSyncStatus.inProgress);
       expect(snapshots.single.answers, isEmpty);
+      final reservedAttemptId = snapshots.single.attemptId;
+      final reservedAttemptNumber = snapshots.single.attemptNumber;
+      expect(reservedAttemptNumber, 1);
 
       await answerCurrentCorrectly(tester, 1);
       snapshots = await pendingRepository.loadAll();
@@ -628,7 +631,7 @@ void main() {
       expect(snapshots.single.correctAnswers, 1);
 
       connectivityProbe.reachable = false;
-      await connectivity.checkConnection();
+      await connectivity.checkConnection(force: true);
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
       await tester.tap(find.text(AppStrings.exit));
@@ -638,8 +641,129 @@ void main() {
       expect(snapshots.single.status, PendingQuizAttemptSyncStatus.pendingSync);
       expect(snapshots.single.answers, hasLength(1));
       expect(snapshots.single.completedAt, isNotNull);
+      expect(snapshots.single.attemptId, reservedAttemptId);
+      expect(snapshots.single.attemptNumber, reservedAttemptNumber);
     },
   );
+
+  testWidgets('resultado offline es provisional y se confirma al sincronizar', (
+    tester,
+  ) async {
+    progressController = CategoryProgressController(
+      attemptIdGenerator: _sequentialAttemptIds(),
+      currentUserIdProvider: () => 'uid-123',
+    );
+    repository.quizQuestions = _buildQuizQuestions(3);
+    final auth = _FakeAuthRepository();
+    final pendingRepository = _MemoryPendingQuizAttemptRepository();
+    final probe = _FakeBackendConnectivityProbe(reachable: true);
+    final connectivity = await _connectivityService(backendProbe: probe);
+    addTearDown(connectivity.dispose);
+    final syncService = PendingQuizAttemptSyncService(
+      authRepository: auth,
+      connectivityService: connectivity,
+      progressController: progressController,
+      repository: pendingRepository,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.data(),
+        home: QuizScreen.activity(
+          category: _category,
+          activity: _activity,
+          contentRepository: repository,
+          progressController: progressController,
+          shuffleQuestions: false,
+          shuffleOptions: false,
+          connectivityService: connectivity,
+          authRepository: auth,
+          pendingSyncService: syncService,
+          requireStartConfirmation: true,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startAttempt));
+    await tester.pumpAndSettle();
+    final attemptId = (await pendingRepository.loadAll()).single.attemptId;
+    probe.reachable = false;
+    await connectivity.checkConnection(force: true);
+
+    await completeVisibleQuiz(tester, totalQuestions: 3);
+    expect(find.text(AppStrings.pendingSyncTitle), findsOneWidget);
+    expect(find.text(AppStrings.earnedPoints.toLowerCase()), findsNothing);
+    expect((await pendingRepository.loadAll()).single.attemptId, attemptId);
+
+    probe.reachable = true;
+    await connectivity.checkConnection(force: true);
+    await syncService.syncCurrentUserPendingAttempts();
+    await tester.pumpAndSettle();
+    expect(await pendingRepository.loadAll(), isEmpty);
+    expect(find.text(AppStrings.pendingSyncTitle), findsNothing);
+    expect(find.text(AppStrings.earnedPoints.toLowerCase()), findsOneWidget);
+  });
+
+  testWidgets('examen conserva 15 preguntas y resultado provisional offline', (
+    tester,
+  ) async {
+    progressController = CategoryProgressController(
+      attemptIdGenerator: _sequentialAttemptIds(),
+      currentUserIdProvider: () => 'uid-123',
+    );
+    repository.quizQuestions = _buildMultipleChoiceQuestions(60);
+    final auth = _FakeAuthRepository();
+    final pendingRepository = _MemoryPendingQuizAttemptRepository();
+    final probe = _FakeBackendConnectivityProbe(reachable: true);
+    final connectivity = await _connectivityService(backendProbe: probe);
+    addTearDown(connectivity.dispose);
+    final syncService = PendingQuizAttemptSyncService(
+      authRepository: auth,
+      connectivityService: connectivity,
+      progressController: progressController,
+      repository: pendingRepository,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.data(),
+        home: QuizScreen.exam(
+          category: _category,
+          exam: FinalExamConfigs.relationsViolence,
+          contentRepository: repository,
+          progressController: progressController,
+          examQuestionSelector: ExamQuestionSelector(random: math.Random(7)),
+          shuffleQuestions: false,
+          shuffleOptions: false,
+          connectivityService: connectivity,
+          authRepository: auth,
+          pendingSyncService: syncService,
+          requireStartConfirmation: true,
+          totalActivities: 6,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(AppStrings.startAttempt));
+    await tester.pumpAndSettle();
+    final initial = (await pendingRepository.loadAll()).single;
+    expect(initial.questionIds, hasLength(15));
+    expect(initial.questionIds.toSet(), hasLength(15));
+    probe.reachable = false;
+    await connectivity.checkConnection(force: true);
+
+    await completeVisibleQuiz(tester, totalQuestions: 15);
+    final pending = (await pendingRepository.loadAll()).single;
+    expect(pending.attemptId, initial.attemptId);
+    expect(pending.questionIds, initial.questionIds);
+    expect(find.text(AppStrings.pendingSyncTitle), findsOneWidget);
+    expect(find.text(AppStrings.earnedPoints.toLowerCase()), findsNothing);
+
+    probe.reachable = true;
+    await connectivity.checkConnection(force: true);
+    await syncService.syncCurrentUserPendingAttempts();
+    await tester.pumpAndSettle();
+    expect(await pendingRepository.loadAll(), isEmpty);
+    expect(find.text(AppStrings.pendingSyncTitle), findsNothing);
+  });
 
   testWidgets('muestra puntos del intento separados del total personal', (
     tester,

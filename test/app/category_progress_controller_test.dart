@@ -108,6 +108,69 @@ void main() {
     );
 
     test(
+      'reserves the activity number before creating its local attempt',
+      () async {
+        final persistence = _FakeProgressPersistence();
+        final controller = CategoryProgressController(
+          persistence: persistence,
+          currentUserIdProvider: () => 'uid-123',
+          attemptIdGenerator: _sequentialAttemptIds(),
+        );
+
+        final reservation = await controller.reserveAndStartActivityAttempt(
+          categoryId: _categoryId,
+          lessonId: _lessonId,
+          activityId: _activityId,
+          questionIds: const <String>['question_01'],
+          totalActivities: 6,
+        );
+
+        expect(reservation?.attemptId, 'attempt_1');
+        expect(reservation?.attemptNumber, 1);
+        expect(controller.attemptFor('attempt_1')?.attemptNumber, 1);
+        expect(
+          controller
+              .activityProgressFor(
+                categoryId: _categoryId,
+                activityId: _activityId,
+              )
+              .attemptCount,
+          1,
+        );
+        expect(persistence.reservedActivityIds, <String>['attempt_1']);
+      },
+    );
+
+    test('failed reservation leaves no local activity attempt', () async {
+      final persistence = _FakeProgressPersistence()..failReservation = true;
+      final controller = CategoryProgressController(
+        persistence: persistence,
+        currentUserIdProvider: () => 'uid-123',
+        attemptIdGenerator: _sequentialAttemptIds(),
+      );
+
+      final reservation = await controller.reserveAndStartActivityAttempt(
+        categoryId: _categoryId,
+        lessonId: _lessonId,
+        activityId: _activityId,
+        questionIds: const <String>['question_01'],
+        totalActivities: 6,
+      );
+
+      expect(reservation, isNull);
+      expect(controller.attemptFor('attempt_1'), isNull);
+      expect(
+        controller
+            .activityProgressFor(
+              categoryId: _categoryId,
+              activityId: _activityId,
+            )
+            .attemptCount,
+        0,
+      );
+    });
+
+    test(
       'records answers by question id without completing the activity',
       () async {
         final persistence = _FakeProgressPersistence();
@@ -1360,11 +1423,13 @@ class _CompleteExamCall {
   final int earnedPoints;
 }
 
-class _FakeProgressPersistence implements CategoryProgressPersistence {
+class _FakeProgressPersistence
+    implements CategoryProgressPersistence, AttemptReservationPersistence {
   final theoryPageCalls = <_TheoryPageCall>[];
   final completeCalls = <_CompleteCall>[];
   final completeExamCalls = <_CompleteExamCall>[];
   final fetchCalls = <String>[];
+  final reservedActivityIds = <String>[];
   final recordsByUid = <String, List<CategoryProgressRecord>>{};
   final pendingFetchUids = <String>{};
   final _pendingFetches =
@@ -1372,6 +1437,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   bool failFetch = false;
   bool failTheoryPage = false;
   bool failCompleteActivityAttempt = false;
+  bool failReservation = false;
   int nextActivityEarnedPoints = 0;
   int? nextTotalPoints;
 
@@ -1384,6 +1450,42 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
       throw StateError('No pending fetch for $uid.');
     }
     pendingFetches.removeAt(0).complete(records);
+  }
+
+  @override
+  Future<AttemptReservation> reserveActivityAttempt({
+    required String uid,
+    required String categoryId,
+    required String activityId,
+    required String attemptId,
+  }) async {
+    if (failReservation) {
+      throw const CategoryProgressException(
+        CategoryProgressFailureReason.unavailable,
+        operation: CategoryProgressFailureOperation.reserveActivityAttempt,
+      );
+    }
+    reservedActivityIds.add(attemptId);
+    return AttemptReservation(
+      attemptId: attemptId,
+      attemptNumber: 1,
+      startedAt: DateTime.now(),
+    );
+  }
+
+  @override
+  Future<AttemptReservation> reserveExamAttempt({
+    required String uid,
+    required String categoryId,
+    required String examId,
+    required String attemptId,
+    List<String>? selectedQuestionIds,
+  }) async {
+    return AttemptReservation(
+      attemptId: attemptId,
+      attemptNumber: 1,
+      startedAt: DateTime.now(),
+    );
   }
 
   @override
@@ -1436,6 +1538,8 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    int? reservedAttemptNumber,
+    int? pointValue,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
@@ -1487,6 +1591,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    int? reservedAttemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,

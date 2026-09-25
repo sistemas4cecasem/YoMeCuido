@@ -79,14 +79,17 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
     NetworkInterfaceMonitor? networkMonitor,
     BackendConnectivityProbe? backendProbe,
     Duration backendTimeout = const Duration(seconds: 4),
+    Duration checkCooldown = const Duration(seconds: 3),
   }) : _networkMonitor =
            networkMonitor ?? ConnectivityPlusNetworkInterfaceMonitor(),
        _backendProbe = backendProbe ?? FirestoreBackendConnectivityProbe(),
-       _backendTimeout = backendTimeout;
+       _backendTimeout = backendTimeout,
+       _checkCooldown = checkCooldown;
 
   final NetworkInterfaceMonitor _networkMonitor;
   final BackendConnectivityProbe _backendProbe;
   final Duration _backendTimeout;
+  final Duration _checkCooldown;
 
   ConnectivityStatus _status = ConnectivityStatus.checking;
   StreamSubscription<bool>? _networkSubscription;
@@ -94,6 +97,8 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
   int _checkGeneration = 0;
   bool _isStarted = false;
   bool _shouldCheckAgain = false;
+  bool _queuedCheckMustForce = false;
+  DateTime? _lastCompletedCheckAt;
   bool _isDisposed = false;
 
   ConnectivityStatus get status => _status;
@@ -111,12 +116,12 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
     _networkSubscription = _networkMonitor.onNetworkInterfaceChanged.listen((
       _,
     ) {
-      _requestFreshCheck();
+      _requestFreshCheck(force: true);
     });
     unawaited(checkConnection());
   }
 
-  Future<bool> checkConnection() {
+  Future<bool> checkConnection({bool force = false}) {
     if (_isDisposed) {
       return Future<bool>.value(false);
     }
@@ -126,27 +131,36 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
       return activeCheck;
     }
 
+    final lastCheckAt = _lastCompletedCheckAt;
+    if (!force &&
+        lastCheckAt != null &&
+        DateTime.now().difference(lastCheckAt) < _checkCooldown) {
+      return Future<bool>.value(_status == ConnectivityStatus.online);
+    }
+
     final generation = ++_checkGeneration;
     final check = _checkConnection(generation);
     _currentCheck = check;
     check.whenComplete(() {
       if (identical(_currentCheck, check)) {
         _currentCheck = null;
+        _lastCompletedCheckAt = DateTime.now();
         _runQueuedCheckIfNeeded();
       }
     });
     return check;
   }
 
-  void _requestFreshCheck() {
+  void _requestFreshCheck({bool force = false}) {
     if (_isDisposed) {
       return;
     }
     if (_currentCheck != null) {
       _shouldCheckAgain = true;
+      _queuedCheckMustForce = _queuedCheckMustForce || force;
       return;
     }
-    unawaited(checkConnection());
+    unawaited(checkConnection(force: force));
   }
 
   Future<bool> _checkConnection(int generation) async {
@@ -171,7 +185,9 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
       return;
     }
     _shouldCheckAgain = false;
-    unawaited(checkConnection());
+    final force = _queuedCheckMustForce;
+    _queuedCheckMustForce = false;
+    unawaited(checkConnection(force: force));
   }
 
   Future<bool> _safeHasNetworkInterface() async {

@@ -507,6 +507,7 @@ void _printPlanSummary(
   stdout.writeln('Lesson pages: ${plan.lessonPageCount}');
   stdout.writeln('Actividades: ${plan.activityCount}');
   stdout.writeln('Preguntas: ${plan.questionCount}');
+  stdout.writeln('Answer keys: ${plan.answerKeyCount}');
   stdout.writeln('Exam configs: ${plan.examConfigCount}');
 }
 
@@ -524,6 +525,7 @@ void _printRemoteSummary(_FirestoreSeedSummary summary) {
   stdout.writeln('Lesson pages: ${summary.lessonPages}');
   stdout.writeln('Actividades: ${summary.activities}');
   stdout.writeln('Preguntas: ${summary.questions}');
+  stdout.writeln('Answer keys: ${summary.answerKeys}');
   stdout.writeln('Exam configs: ${summary.examConfigs}');
 }
 
@@ -541,6 +543,7 @@ void _assertRemoteSummary(
       summary.lessonPages != plan.lessonPageCount ||
       summary.activities != plan.activityCount ||
       summary.questions != plan.questionCount ||
+      summary.answerKeys != plan.answerKeyCount ||
       summary.examConfigs != plan.examConfigCount) {
     throw const FormatException(
       'Remote verification returned different document counts than expected.',
@@ -664,6 +667,7 @@ class _FirestoreRestClient {
         'categories/$categoryId/lessonPages',
         'categories/$categoryId/activities',
         'categories/$categoryId/questions',
+        'categories/$categoryId/answerKeys',
         'categories/$categoryId/examConfig',
       ],
     ];
@@ -694,6 +698,7 @@ class _FirestoreRestClient {
     var activities = 0;
     var questions = 0;
     var examConfigs = 0;
+    var answerKeys = 0;
 
     for (final categoryId in categoryIds) {
       lessonPages += await _readCollection(
@@ -701,6 +706,7 @@ class _FirestoreRestClient {
       );
       activities += await _readCollection('categories/$categoryId/activities');
       questions += await _readCollection('categories/$categoryId/questions');
+      answerKeys += await _readCollection('categories/$categoryId/answerKeys');
       examConfigs += await _readCollection('categories/$categoryId/examConfig');
     }
 
@@ -710,6 +716,7 @@ class _FirestoreRestClient {
       activities: activities,
       questions: questions,
       examConfigs: examConfigs,
+      answerKeys: answerKeys,
     );
   }
 
@@ -827,6 +834,7 @@ class _FirestoreSeedSummary {
     required this.activities,
     required this.questions,
     required this.examConfigs,
+    required this.answerKeys,
   });
 
   final int categories;
@@ -834,6 +842,7 @@ class _FirestoreSeedSummary {
   final int activities;
   final int questions;
   final int examConfigs;
+  final int answerKeys;
 }
 
 class _FirestoreCleanupSummary {

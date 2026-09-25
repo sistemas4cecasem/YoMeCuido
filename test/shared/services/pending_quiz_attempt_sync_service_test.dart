@@ -125,6 +125,33 @@ void main() {
     expect(persistence.completedAttemptIds, <String>['attempt-pending']);
   });
 
+  test(
+    'pending exam keeps its 15 IDs across account switch and sync',
+    () async {
+      final pending = _pendingExam(uid: 'uid-a');
+      final pendingRepository = _MemoryPendingQuizAttemptRepository([pending]);
+      final persistence = _FakeProgressPersistence();
+      final auth = _FakeAuthRepository(uid: 'uid-b');
+      final connectivity = await _onlineConnectivityService();
+      addTearDown(connectivity.dispose);
+      final service = _syncService(
+        auth: auth,
+        connectivity: connectivity,
+        pendingRepository: pendingRepository,
+        persistence: persistence,
+      );
+
+      await service.syncCurrentUserPendingAttempts();
+      expect(await pendingRepository.loadAll(), hasLength(1));
+      auth.emit('uid-a');
+      await service.syncCurrentUserPendingAttempts();
+
+      expect(await pendingRepository.loadAll(), isEmpty);
+      expect(persistence.completedExamQuestionIds, pending.questionIds);
+      expect(persistence.completedAttemptIds, ['exam-pending']);
+    },
+  );
+
   test('recovering interrupted attempt online syncs and removes it', () async {
     final interrupted = _pendingAttempt(
       uid: 'uid-a',
@@ -279,6 +306,41 @@ PendingQuizAttempt _pendingAttempt({
   );
 }
 
+PendingQuizAttempt _pendingExam({required String uid}) {
+  final now = DateTime.utc(2026, 9, 22, 12);
+  final ids = [
+    for (var index = 1; index <= 15; index += 1)
+      'exam-question-${index.toString().padLeft(2, '0')}',
+  ];
+  return PendingQuizAttempt(
+    uid: uid,
+    attemptId: 'exam-pending',
+    attemptNumber: 1,
+    type: QuizAttemptType.exam,
+    categoryId: 'category-a',
+    lessonId: 'lesson-a',
+    activityId: null,
+    examId: 'lesson-a_final_exam',
+    questionIds: ids,
+    answers: [
+      for (final id in ids)
+        CategoryProgressAnswer(
+          questionId: id,
+          answer: 'option-a',
+          isCorrect: ids.indexOf(id) < 12,
+          answeredAt: now,
+        ),
+    ],
+    correctAnswers: 12,
+    totalQuestions: 15,
+    percentage: 80,
+    totalActivities: 6,
+    startedAt: now,
+    completedAt: now.add(const Duration(minutes: 1)),
+    status: PendingQuizAttemptSyncStatus.pendingSync,
+  );
+}
+
 class _MemoryPendingQuizAttemptRepository
     implements PendingQuizAttemptRepository {
   _MemoryPendingQuizAttemptRepository([List<PendingQuizAttempt>? attempts])
@@ -307,6 +369,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
 
   final bool delayCompletion;
   final completedAttemptIds = <String>[];
+  List<String>? completedExamQuestionIds;
   bool failComplete = false;
   Completer<void>? _delay;
 
@@ -321,6 +384,8 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String activityId,
     required String attemptId,
+    int? reservedAttemptNumber,
+    int? pointValue,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
@@ -358,6 +423,7 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required String lessonId,
     required String examId,
     required String attemptId,
+    int? reservedAttemptNumber,
     required DateTime startedAt,
     required List<String> questionIds,
     required Iterable<CategoryProgressAnswer> answers,
@@ -366,8 +432,20 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
     required int percentage,
     required int totalLessonPages,
     required int totalActivities,
-  }) {
-    throw UnimplementedError();
+  }) async {
+    completedAttemptIds.add(attemptId);
+    completedExamQuestionIds = List<String>.of(questionIds);
+    return CompletedQuizAttemptPersistenceResult(
+      attemptNumber: reservedAttemptNumber ?? 1,
+      answers: List<CategoryProgressAnswer>.unmodifiable(answers),
+      correctAnswers: correctAnswers,
+      totalQuestions: totalQuestions,
+      percentage: percentage,
+      earnedPoints: 0,
+      activityPoints: null,
+      questionScores: const <String, QuestionScoreRecord>{},
+      totalPoints: 0,
+    );
   }
 
   @override

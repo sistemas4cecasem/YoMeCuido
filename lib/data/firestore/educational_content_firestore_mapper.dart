@@ -100,6 +100,8 @@ abstract final class EducationalContentFirestoreMapper {
       'type': _questionTypeToString(question.type),
       'statement': question.statement,
       'options': question.options.map(optionToMap).toList(growable: false),
+      // Public answers serve local feedback only; Security Rules use the
+      // protected answer key generated from the same source.
       'correctAnswer': question.correctAnswer,
       'acceptedAnswers': question.acceptedAnswers,
       'feedback': question.feedback,

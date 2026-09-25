@@ -202,7 +202,7 @@ class ActivityProgressRecord {
       status: ActivityProgressStatus.fromFirestore(_readString(data, 'status')),
       attemptCount: _readInt(data, 'attemptCount'),
       activityPoints: _readOptionalNonNegativeInt(data, 'activityPoints'),
-      questionScores: _readQuestionScores(data, 'questionScores'),
+      questionScores: _readActivityQuestionScores(data),
       bestCorrectAnswers: _readInt(data, 'bestCorrectAnswers'),
       bestTotalQuestions: _readInt(data, 'bestTotalQuestions'),
       bestPercentage: _readInt(data, 'bestPercentage'),
@@ -230,10 +230,18 @@ class ActivityProgressRecord {
       'status': status.firestoreValue,
       'attemptCount': attemptCount,
       'activityPoints': activityPoints,
-      'questionScores': {
+      'scoredAt10QuestionIds': [
         for (final score in questionScores.values)
-          score.questionId: score.toFirestore(),
-      },
+          if (score.pointsAwarded == 10) score.questionId,
+      ],
+      'scoredAt5QuestionIds': [
+        for (final score in questionScores.values)
+          if (score.pointsAwarded == 5) score.questionId,
+      ],
+      'scoredAt1QuestionIds': [
+        for (final score in questionScores.values)
+          if (score.pointsAwarded == 1) score.questionId,
+      ],
       'bestCorrectAnswers': bestCorrectAnswers,
       'bestTotalQuestions': bestTotalQuestions,
       'bestPercentage': bestPercentage,
@@ -612,7 +620,42 @@ Map<String, dynamic> _readMap(Map<String, dynamic> data, String key) {
   throw FormatException('Invalid category progress "$key".');
 }
 
-Map<String, QuestionScoreRecord> _readQuestionScores(
+Map<String, QuestionScoreRecord> _readActivityQuestionScores(
+  Map<String, dynamic> data,
+) {
+  if (!data.containsKey('scoredAt10QuestionIds')) {
+    return _readLegacyQuestionScores(data, 'questionScores');
+  }
+  final ten = _readStringList(data, 'scoredAt10QuestionIds');
+  final five = _readStringList(data, 'scoredAt5QuestionIds');
+  final one = _readStringList(data, 'scoredAt1QuestionIds');
+  final all = <String>{...ten, ...five, ...one};
+  if (all.length != ten.length + five.length + one.length) {
+    throw const FormatException('Invalid overlapping scored question ids.');
+  }
+  return Map<String, QuestionScoreRecord>.unmodifiable({
+    for (final id in ten)
+      id: QuestionScoreRecord(
+        questionId: id,
+        pointsAwarded: 10,
+        awardedAttempt: 1,
+      ),
+    for (final id in five)
+      id: QuestionScoreRecord(
+        questionId: id,
+        pointsAwarded: 5,
+        awardedAttempt: 2,
+      ),
+    for (final id in one)
+      id: QuestionScoreRecord(
+        questionId: id,
+        pointsAwarded: 1,
+        awardedAttempt: 3,
+      ),
+  });
+}
+
+Map<String, QuestionScoreRecord> _readLegacyQuestionScores(
   Map<String, dynamic> data,
   String key,
 ) {

@@ -17,7 +17,7 @@ void main() {
     );
     addTearDown(service.dispose);
 
-    final isOnline = await service.checkConnection();
+    final isOnline = await service.checkConnection(force: true);
 
     expect(isOnline, isFalse);
     expect(service.status, ConnectivityStatus.offline);
@@ -30,7 +30,7 @@ void main() {
     ]);
     addTearDown(service.dispose);
 
-    final isOnline = await service.checkConnection();
+    final isOnline = await service.checkConnection(force: true);
 
     expect(isOnline, isTrue);
     expect(service.status, ConnectivityStatus.online);
@@ -68,7 +68,7 @@ void main() {
     addTearDown(service.dispose);
 
     await service.checkConnection();
-    final isOnline = await service.checkConnection();
+    final isOnline = await service.checkConnection(force: true);
 
     expect(isOnline, isTrue);
     expect(service.status, ConnectivityStatus.online);
@@ -82,7 +82,7 @@ void main() {
     addTearDown(service.dispose);
 
     await service.checkConnection();
-    final isOnline = await service.checkConnection();
+    final isOnline = await service.checkConnection(force: true);
 
     expect(isOnline, isFalse);
     expect(service.status, ConnectivityStatus.offline);
@@ -118,6 +118,24 @@ void main() {
       expect(backend.callCount, 1);
     },
   );
+
+  test('immediate repeated check reuses recent connectivity result', () async {
+    final backend = _FakeBackendConnectivityProbe(<Future<bool> Function()>[
+      () async => true,
+      () async => false,
+    ]);
+    final service = ConnectivityService(
+      networkMonitor: _FakeNetworkInterfaceMonitor(),
+      backendProbe: backend,
+    );
+    addTearDown(service.dispose);
+
+    expect(await service.checkConnection(), isTrue);
+    expect(await service.checkConnection(), isTrue);
+    expect(backend.callCount, 1);
+    expect(await service.checkConnection(force: true), isFalse);
+    expect(backend.callCount, 2);
+  });
 
   test(
     'multiple network events during a check settle on the latest result',

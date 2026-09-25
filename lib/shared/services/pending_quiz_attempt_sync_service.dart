@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../../app/category_progress_controller.dart';
+import '../../data/models/category_progress.dart';
 import '../../data/models/pending_quiz_attempt.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/pending_quiz_attempt_repository.dart';
@@ -26,13 +27,31 @@ class PendingQuizAttemptSyncService {
   StreamSubscription<void>? _authSubscription;
   bool _started = false;
   bool _disposed = false;
+  Future<void> _storageTail = Future<void>.value();
 
   Future<void> savePending(PendingQuizAttempt attempt) {
-    return _repository.upsert(attempt);
+    return _serializeStorage(() => _repository.upsert(attempt));
   }
 
   Future<void> removeLocalAttempt(String attemptId) {
-    return _repository.remove(attemptId);
+    return _serializeStorage(() => _repository.remove(attemptId));
+  }
+
+  Future<void> _serializeStorage(Future<void> Function() action) {
+    final operation = _storageTail.then((_) => action());
+    _storageTail = operation.catchError((Object _) {});
+    return operation;
+  }
+
+  Future<bool> syncSavedAttempt(String attemptId) async {
+    await _storageTail;
+    final attempts = await _repository.loadAll();
+    for (final attempt in attempts) {
+      if (attempt.attemptId == attemptId && attempt.isPendingSync) {
+        return _syncAttempt(attempt);
+      }
+    }
+    return false;
   }
 
   Future<void> start() async {
@@ -68,7 +87,7 @@ class PendingQuizAttemptSyncService {
       if (_connectivityService.status == ConnectivityStatus.online) {
         await _syncAttempt(finalized);
       } else {
-        await _repository.upsert(finalized);
+        await savePending(finalized);
       }
     }
   }
@@ -92,34 +111,45 @@ class PendingQuizAttemptSyncService {
     }
   }
 
-  Future<void> _syncAttempt(PendingQuizAttempt attempt) async {
+  Future<bool> _syncAttempt(PendingQuizAttempt attempt) async {
     if (_disposed || _syncingAttemptIds.contains(attempt.attemptId)) {
-      return;
+      return false;
     }
     if (_authRepository.currentUser?.uid.trim() != attempt.uid) {
-      return;
+      return false;
     }
     if (!attempt.isPendingSync) {
-      return;
+      return false;
     }
 
     _syncingAttemptIds.add(attempt.attemptId);
     try {
-      await _repository.upsert(
+      await savePending(
         attempt.copyWith(status: PendingQuizAttemptSyncStatus.syncing),
       );
       final synced = await _progressController.syncPendingQuizAttempt(attempt);
       if (_authRepository.currentUser?.uid.trim() != attempt.uid) {
-        await _repository.upsert(attempt);
-        return;
+        await savePending(attempt);
+        return false;
+      }
+      if (synced && attempt.type == QuizAttemptType.exam) {
+        final refreshed = await _progressController.refreshCategoryProgress(
+          attempt.categoryId,
+        );
+        if (!refreshed) {
+          await savePending(attempt);
+          return false;
+        }
       }
       if (synced) {
-        await _repository.remove(attempt.attemptId);
+        await removeLocalAttempt(attempt.attemptId);
       } else {
-        await _repository.upsert(attempt);
+        await savePending(attempt);
       }
+      return synced;
     } catch (_) {
-      await _repository.upsert(attempt);
+      await savePending(attempt);
+      return false;
     } finally {
       _syncingAttemptIds.remove(attempt.attemptId);
     }

@@ -12,7 +12,10 @@ class ActivityQuestionSelector {
     required String categoryId,
     required LearningActivity activity,
   }) async {
-    final questions = await contentRepository.loadQuizQuestions(categoryId);
+    final questions = await contentRepository.loadQuizQuestions(
+      categoryId,
+      activityId: activity.id,
+    );
     return selectFromBank(
       questions: questions,
       categoryId: categoryId,

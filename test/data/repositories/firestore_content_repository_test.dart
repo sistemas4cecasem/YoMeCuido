@@ -6,6 +6,7 @@ import 'package:demo_yomecuido/data/models/lesson_page.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/firestore_content_repository.dart';
+import 'package:demo_yomecuido/features/quiz/activity_question_selector.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -56,13 +57,37 @@ void main() {
     });
 
     test('filters quiz questions by activityId', () async {
-      final repository = FirestoreContentRepository(source: _fakeSource());
+      final source = _fakeSource();
+      final repository = FirestoreContentRepository(source: source);
 
-      final questions = await repository.loadQuizQuestions(
-        _categoryId,
-        activityId: 'relations_violence_activity_02',
-      );
+      final firstActivityQuestions = await const ActivityQuestionSelector()
+          .selectQuestions(
+            contentRepository: repository,
+            categoryId: _categoryId,
+            activity: const LearningActivity(
+              id: 'relations_violence_activity_01',
+              categoryId: _categoryId,
+              title: 'Actividad 1',
+              order: 1,
+            ),
+          );
+      final questions =
+          await const ActivityQuestionSelector(
+            questionsPerActivity: 10,
+          ).selectQuestions(
+            contentRepository: repository,
+            categoryId: _categoryId,
+            activity: const LearningActivity(
+              id: 'relations_violence_activity_02',
+              categoryId: _categoryId,
+              title: 'Actividad 2',
+              order: 2,
+            ),
+          );
 
+      expect(firstActivityQuestions.map((question) => question.id), <String>[
+        'activity_1',
+      ]);
       expect(questions, hasLength(1));
       expect(questions.single.id, 'activity_2');
       expect(questions.single.activityId, 'relations_violence_activity_02');
@@ -73,6 +98,9 @@ void main() {
       expect(questions.single.correctAnswer, 'false');
       expect(questions.single.capacity, 'reconocer');
       expect(questions.single.difficulty, 'básica');
+      expect(source.lastQueryPath, 'categories/$_categoryId/questions');
+      expect(source.lastQueryField, 'activityId');
+      expect(source.lastQueryValue, 'relations_violence_activity_02');
     });
 
     test('loads the full question bank for a category', () async {
@@ -155,7 +183,7 @@ const _lockedCategory = Category(
   objectives: <String>[],
 );
 
-FirestoreContentSource _fakeSource() {
+_FakeFirestoreContentSource _fakeSource() {
   const pageOne = LessonPage(
     id: 'what_is_digital_violence',
     order: 1,
@@ -272,9 +300,12 @@ FirestoreContentSource _fakeSource() {
 }
 
 class _FakeFirestoreContentSource implements FirestoreContentSource {
-  const _FakeFirestoreContentSource(this.collections);
+  _FakeFirestoreContentSource(this.collections);
 
   final Map<String, List<_SeedDoc>> collections;
+  String? lastQueryPath;
+  String? lastQueryField;
+  Object? lastQueryValue;
 
   @override
   Future<List<FirestoreContentDocument>> listCollection(
@@ -299,6 +330,9 @@ class _FakeFirestoreContentSource implements FirestoreContentSource {
     required String field,
     required Object? isEqualTo,
   }) async {
+    lastQueryPath = path;
+    lastQueryField = field;
+    lastQueryValue = isEqualTo;
     return (collections[path] ?? const <_SeedDoc>[])
         .where((doc) => doc.data[field] == isEqualTo)
         .map((doc) => doc.toContentDocument())

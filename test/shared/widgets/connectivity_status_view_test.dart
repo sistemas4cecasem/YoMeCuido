@@ -69,7 +69,7 @@ void main() {
 
     network.hasInterface = true;
     backend.backendReachable = true;
-    await service.checkConnection();
+    await service.checkConnection(force: true);
     await tester.pumpAndSettle();
 
     expect(find.text(AppStrings.offlineBannerTitle), findsNothing);

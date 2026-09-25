@@ -14,6 +14,7 @@ typedef AttemptIdGenerator = String Function();
 enum ProgressHydrationStatus { notStarted, loading, loaded, error }
 
 class CategoryProgressController extends ChangeNotifier {
+  bool get hasRemotePersistence => _persistence != null;
   CategoryProgressController({
     CategoryProgressPersistence? persistence,
     String? Function()? currentUserIdProvider,
@@ -76,6 +77,32 @@ class CategoryProgressController extends ChangeNotifier {
   bool hasResolvedProgressFor(String uid) {
     return _hydratedUserId == uid &&
         _hydrationStatus == ProgressHydrationStatus.loaded;
+  }
+
+  Future<bool> refreshCategoryProgress(String categoryId) async {
+    final persistence = _persistence;
+    if (persistence is! CategoryProgressRefreshPersistence) return true;
+    final refreshPersistence =
+        persistence as CategoryProgressRefreshPersistence;
+    final uid = _currentUserIdProvider?.call()?.trim();
+    if (uid == null || uid.isEmpty) return false;
+    try {
+      final record = await refreshPersistence.fetchCategoryProgress(
+        uid: uid,
+        categoryId: categoryId,
+      );
+      if (record == null || _currentUserIdProvider?.call()?.trim() != uid) {
+        return false;
+      }
+      _progressByCategory[categoryId] = _MutableCategoryProgress.fromRecord(
+        record,
+      );
+      notifyListeners();
+      return true;
+    } catch (error) {
+      if (kDebugMode) debugPrint('[CategoryProgress] Refresh failed: $error');
+      return false;
+    }
   }
 
   Future<void> loadPersistedProgressForUser(String uid) {
@@ -249,6 +276,9 @@ class CategoryProgressController extends ChangeNotifier {
     required List<String> questionIds,
     required int totalActivities,
     String? attemptId,
+    int attemptNumber = 1,
+    int? pointValue,
+    bool isReserved = false,
     DateTime? startedAt,
   }) {
     final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
@@ -257,12 +287,14 @@ class CategoryProgressController extends ChangeNotifier {
     _attemptsById[resolvedAttemptId] = _MutableQuizAttempt(
       id: resolvedAttemptId,
       type: QuizAttemptType.activity,
-      attemptNumber: 1,
+      attemptNumber: attemptNumber,
+      pointValue: pointValue,
       categoryId: categoryId,
       activityId: activityId,
       examId: null,
       questionIds: questionIds,
       startedAt: now,
+      isReserved: isReserved,
     );
     notifyListeners();
     return resolvedAttemptId;
@@ -275,6 +307,8 @@ class CategoryProgressController extends ChangeNotifier {
     required List<String> questionIds,
     required int totalActivities,
     String? attemptId,
+    int attemptNumber = 1,
+    bool isReserved = false,
     DateTime? startedAt,
   }) {
     final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
@@ -283,15 +317,142 @@ class CategoryProgressController extends ChangeNotifier {
     _attemptsById[resolvedAttemptId] = _MutableQuizAttempt(
       id: resolvedAttemptId,
       type: QuizAttemptType.exam,
-      attemptNumber: 1,
+      attemptNumber: attemptNumber,
       categoryId: categoryId,
       activityId: null,
       examId: examId,
       questionIds: questionIds,
       startedAt: now,
+      isReserved: isReserved,
     );
     notifyListeners();
     return resolvedAttemptId;
+  }
+
+  Future<AttemptReservation?> reserveAndStartActivityAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String activityId,
+    required List<String> questionIds,
+    required int totalActivities,
+    String? attemptId,
+  }) async {
+    final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
+    final reservation = await _reserveAttempt(
+      attemptId: resolvedAttemptId,
+      activityId: activityId,
+      categoryId: categoryId,
+      isExam: false,
+    );
+    if (reservation == null) {
+      return null;
+    }
+    startActivityAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      activityId: activityId,
+      questionIds: questionIds,
+      totalActivities: totalActivities,
+      attemptId: reservation.attemptId,
+      attemptNumber: reservation.attemptNumber,
+      pointValue: reservation.pointValue,
+      isReserved: reservation.isAuthoritative,
+      startedAt: reservation.startedAt,
+    );
+    _entryFor(categoryId).activityProgressFor(activityId).attemptCount =
+        reservation.attemptNumber;
+    notifyListeners();
+    return reservation;
+  }
+
+  Future<AttemptReservation?> reserveAndStartExamAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required List<String> questionIds,
+    required int totalActivities,
+    String? attemptId,
+  }) async {
+    final resolvedAttemptId = attemptId ?? _attemptIdGenerator();
+    final reservation = await _reserveAttempt(
+      attemptId: resolvedAttemptId,
+      activityId: examId,
+      categoryId: categoryId,
+      isExam: true,
+      selectedQuestionIds: questionIds,
+    );
+    if (reservation == null) {
+      return null;
+    }
+    startExamAttempt(
+      categoryId: categoryId,
+      lessonId: lessonId,
+      examId: examId,
+      questionIds: questionIds,
+      totalActivities: totalActivities,
+      attemptId: reservation.attemptId,
+      attemptNumber: reservation.attemptNumber,
+      isReserved: reservation.isAuthoritative,
+      startedAt: reservation.startedAt,
+    );
+    _entryFor(categoryId).examProgressFor(examId).attemptCount =
+        reservation.attemptNumber;
+    notifyListeners();
+    return reservation;
+  }
+
+  Future<AttemptReservation?> _reserveAttempt({
+    required String attemptId,
+    required String activityId,
+    required String categoryId,
+    required bool isExam,
+    List<String>? selectedQuestionIds,
+  }) async {
+    final persistence = _persistence;
+    final reservationPersistence = persistence is AttemptReservationPersistence
+        ? persistence as AttemptReservationPersistence
+        : null;
+    if (reservationPersistence == null) {
+      final progress = _entryFor(categoryId);
+      final count = isExam
+          ? progress.examProgressFor(activityId).attemptCount
+          : progress.activityProgressFor(activityId).attemptCount;
+      return AttemptReservation(
+        attemptId: attemptId,
+        attemptNumber: count + 1,
+        startedAt: DateTime.now(),
+        isAuthoritative: false,
+      );
+    }
+    final uid = _currentUserIdProvider?.call()?.trim();
+    if (uid == null || uid.isEmpty) {
+      return null;
+    }
+    try {
+      return isExam
+          ? await reservationPersistence.reserveExamAttempt(
+              uid: uid,
+              categoryId: categoryId,
+              examId: activityId,
+              attemptId: attemptId,
+              selectedQuestionIds: selectedQuestionIds,
+            )
+          : await reservationPersistence.reserveActivityAttempt(
+              uid: uid,
+              categoryId: categoryId,
+              activityId: activityId,
+              attemptId: attemptId,
+            );
+    } on CategoryProgressException catch (exception) {
+      exception.logForDebug();
+      return null;
+    } catch (error, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('[CategoryProgress] Attempt reservation failed: $error');
+        debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+      }
+      return null;
+    }
   }
 
   void discardAttempt(String attemptId) {
@@ -356,8 +517,9 @@ class CategoryProgressController extends ChangeNotifier {
     final now = DateTime.now();
     final progress = _entryFor(categoryId)..activityTotal = totalActivities;
     final activity = progress.activityProgressFor(activityId);
-    final expectedAttemptNumber = activity.attemptCount + 1;
-    attempt.attemptNumber = expectedAttemptNumber;
+    if (!attempt.isReserved) {
+      attempt.attemptNumber = activity.attemptCount + 1;
+    }
     attempt
       ..correctAnswers = result.correctAnswers
       ..totalQuestions = result.totalQuestions
@@ -393,7 +555,7 @@ class CategoryProgressController extends ChangeNotifier {
     final shouldReplaceBest = persisted.percentage >= activity.bestPercentage;
     activity
       ..status = ActivityProgressStatus.completed
-      ..attemptCount = persisted.attemptNumber
+      ..attemptCount = math.max(activity.attemptCount, persisted.attemptNumber)
       ..activityPoints =
           persisted.activityPoints ??
           (activity.activityPoints + persisted.earnedPoints)
@@ -434,6 +596,8 @@ class CategoryProgressController extends ChangeNotifier {
         lessonId: lessonId,
         activityId: activityId,
         attemptId: attempt.id,
+        reservedAttemptNumber: attempt.attemptNumber,
+        pointValue: attempt.pointValue,
         startedAt: attempt.startedAt,
         questionIds: attempt.questionIds,
         answers: attempt.answers.values,
@@ -470,7 +634,9 @@ class CategoryProgressController extends ChangeNotifier {
     final now = DateTime.now();
     final progress = _entryFor(categoryId)..activityTotal = totalActivities;
     final exam = progress.examProgressFor(examId);
-    attempt.attemptNumber = exam.attemptCount + 1;
+    if (!attempt.isReserved) {
+      attempt.attemptNumber = exam.attemptCount + 1;
+    }
     attempt
       ..correctAnswers = result.correctAnswers
       ..totalQuestions = result.totalQuestions
@@ -492,22 +658,25 @@ class CategoryProgressController extends ChangeNotifier {
 
     attempt
       ..attemptNumber = persisted.attemptNumber
+      ..correctAnswers = persisted.correctAnswers
+      ..totalQuestions = persisted.totalQuestions
+      ..percentage = persisted.percentage
       ..earnedPoints = persisted.earnedPoints
       ..completedAt = now;
     _applyPersistedTotalPoints(persisted.totalPoints);
 
-    final shouldReplaceBest = result.percentage >= exam.bestPercentage;
+    final shouldReplaceBest = persisted.percentage >= exam.bestPercentage;
     exam
       ..status = ActivityProgressStatus.completed
-      ..attemptCount = persisted.attemptNumber
+      ..attemptCount = math.max(exam.attemptCount, persisted.attemptNumber)
       ..lastAttemptAt = now
       ..completedAt ??= now
       ..updatedAt = now;
     if (shouldReplaceBest) {
       exam
-        ..bestCorrectAnswers = result.correctAnswers
-        ..bestTotalQuestions = result.totalQuestions
-        ..bestPercentage = result.percentage;
+        ..bestCorrectAnswers = persisted.correctAnswers
+        ..bestTotalQuestions = persisted.totalQuestions
+        ..bestPercentage = persisted.percentage;
     }
 
     progress
@@ -535,6 +704,7 @@ class CategoryProgressController extends ChangeNotifier {
           lessonId: lessonId,
           examId: examId,
           attemptId: attempt.id,
+          reservedAttemptNumber: attempt.attemptNumber,
           startedAt: attempt.startedAt,
           questionIds: attempt.questionIds,
           answers: attempt.answers.values,
@@ -618,6 +788,8 @@ class CategoryProgressController extends ChangeNotifier {
         questionIds: pending.questionIds,
         totalActivities: pending.totalActivities,
         attemptId: pending.attemptId,
+        attemptNumber: pending.attemptNumber,
+        isReserved: true,
         startedAt: pending.startedAt,
       );
     } else {
@@ -628,6 +800,9 @@ class CategoryProgressController extends ChangeNotifier {
         questionIds: pending.questionIds,
         totalActivities: pending.totalActivities,
         attemptId: pending.attemptId,
+        attemptNumber: pending.attemptNumber,
+        pointValue: pending.pointValue,
+        isReserved: true,
         startedAt: pending.startedAt,
       );
     }
@@ -1328,22 +1503,26 @@ class _MutableQuizAttempt {
     required this.id,
     required this.type,
     required this.attemptNumber,
+    this.pointValue,
     required this.categoryId,
     required this.activityId,
     required this.examId,
     required List<String> questionIds,
     required this.startedAt,
+    required this.isReserved,
   }) : questionIds = List<String>.unmodifiable(questionIds),
        totalQuestions = questionIds.length;
 
   final String id;
   int attemptNumber;
+  final int? pointValue;
   final QuizAttemptType type;
   final String categoryId;
   final String? activityId;
   final String? examId;
   final List<String> questionIds;
   final DateTime startedAt;
+  final bool isReserved;
   final Map<String, CategoryProgressAnswer> answers =
       <String, CategoryProgressAnswer>{};
   int correctAnswers = 0;

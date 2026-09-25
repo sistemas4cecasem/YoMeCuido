@@ -52,7 +52,9 @@ service cloud.firestore {
     //   - status: string (required: notStarted, inProgress, completed)
     //   - attemptCount: int (required, 1..1000, increases by one on update)
     //   - activityPoints: int (required, 0..1000, cannot decrease)
-    //   - questionScores: map (required, max 100 dynamic question ids)
+    //   - scoredAt10QuestionIds, scoredAt5QuestionIds, scoredAt1QuestionIds:
+    //     disjoint lists of rewarded question ids (required, max 10 total)
+    //   - activeAttempt.pointValue: int (10/5/1/0 from attemptCount)
     //   - bestCorrectAnswers: int (required, 0..100)
     //   - bestTotalQuestions: int (required, 0..100)
     //   - bestPercentage: int (required, 0..100)
@@ -81,12 +83,11 @@ service cloud.firestore {
     //   - activityId: string (required)
     //   - examId: null (required)
     //   - attemptNumber: int (required, 1..1000)
-    //   - questionIds: list (required, max 100)
-    //   - answers: map (required, max 100 question keys)
+    //   - questionIds: list (required, exactly 10)
+    //   - correct: list of bools (required, exactly 10, verified against submission)
     //   - correctAnswers: int (required, 0..totalQuestions)
     //   - totalQuestions: int (required, 0..100)
     //   - percentage: int (required, 0..100)
-    //   - earnedPoints: int (required, 0..100; 0 for attempt 4+)
     //   - startedAt: timestamp (required, immutable after create)
     //   - completedAt: timestamp|null (required)
     //
@@ -193,15 +194,17 @@ service cloud.firestore {
         'totalPoints',
         'createdAt',
         'updatedAt',
+        'lastActivityAward',
       ];
     }
 
-    function profileFieldsWithoutTotalPoints() {
+    function requiredProfileFields() {
       return [
         'username',
         'usernameNormalized',
         'email',
         'role',
+        'totalPoints',
         'createdAt',
         'updatedAt',
       ];
@@ -216,7 +219,7 @@ service cloud.firestore {
     }
 
     function hasRequiredProfileFields() {
-      return request.resource.data.keys().hasAll(profileFields());
+      return request.resource.data.keys().hasAll(requiredProfileFields());
     }
 
     function hasValidUsernameValue(username) {
@@ -270,6 +273,7 @@ service cloud.firestore {
       return isValidUserProfile()
         && hasUsernameReservationForProfile(userId)
         && request.resource.data.totalPoints == 0
+        && request.resource.data.get('lastActivityAward', null) == null
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time;
     }
@@ -286,6 +290,8 @@ service cloud.firestore {
       return isValidUserProfile()
         && isLegacyUserProfile()
         && hasUsernameReservationForProfile(userId)
+        && request.resource.data.totalPoints == 0
+        && request.resource.data.get('lastActivityAward', null) == null
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.updatedAt == request.time;
     }
@@ -300,48 +306,72 @@ service cloud.firestore {
         )
         && request.resource.data.role == resource.data.role
         && request.resource.data.totalPoints == resource.data.totalPoints
+        && request.resource.data.get('lastActivityAward', null)
+          == resource.data.get('lastActivityAward', null)
         && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.updatedAt == request.time;
     }
 
-    function isValidTotalPointsUpdate() {
+    function isValidActivityAwardContext(award) {
+      return award is map
+        && award.keys().hasOnly([
+          'categoryId', 'activityId', 'attemptId', 'attemptNumber'
+        ])
+        && award.keys().hasAll([
+          'categoryId', 'activityId', 'attemptId', 'attemptNumber'
+        ])
+        && award.categoryId is string
+        && award.categoryId.size() > 0
+        && award.categoryId.size() <= 120
+        && award.activityId is string
+        && award.activityId.size() > 0
+        && award.activityId.size() <= 120
+        && award.attemptId is string
+        && award.attemptId.size() > 0
+        && award.attemptId.size() <= 120
+        && award.attemptNumber is int
+        && award.attemptNumber >= 1
+        && award.attemptNumber <= 1000;
+    }
+
+    function isValidActivityAwardUpdate(userId) {
+      let award = request.resource.data.get('lastActivityAward', {}) is map
+        ? request.resource.data.get('lastActivityAward', {})
+        : {};
+      let activityPath = /databases/$(database)/documents/users/$(userId)/categoryProgress/$(award.get('categoryId', 'invalid'))/activities/$(award.get('activityId', 'invalid'));
+      let activityBefore = get(activityPath);
+      let activityAfter = getAfter(activityPath);
+      let categoryAfter = getAfter(/databases/$(database)/documents/users/$(userId)/categoryProgress/$(award.get('categoryId', 'invalid')));
+      let leaderboardAfter = getAfter(/databases/$(database)/documents/leaderboard/$(userId));
       return request.resource.data.keys().hasOnly(profileFields())
-        && request.resource.data.keys().hasAll(profileFields())
+        && request.resource.data.keys().hasAll(requiredProfileFields())
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'totalPoints',
-          'updatedAt',
+          'totalPoints', 'updatedAt', 'lastActivityAward'
         ])
+        && isValidActivityAwardContext(award)
+        && award != resource.data.get('lastActivityAward', null)
         && request.resource.data.username == resource.data.username
         && request.resource.data.usernameNormalized == resource.data.usernameNormalized
         && request.resource.data.email == resource.data.email
         && request.resource.data.role == resource.data.role
         && request.resource.data.createdAt == resource.data.createdAt
-        && request.resource.data.totalPoints is int
         && resource.data.totalPoints is int
-        && request.resource.data.totalPoints >= resource.data.totalPoints
-        && request.resource.data.totalPoints <= resource.data.totalPoints + 100
-        && request.resource.data.totalPoints <= 100000
-        && request.resource.data.updatedAt == request.time;
-    }
-
-    function isCompletingMissingTotalPoints() {
-      return resource.data.keys().hasOnly(profileFieldsWithoutTotalPoints())
-        && resource.data.keys().hasAll(profileFieldsWithoutTotalPoints())
-        && request.resource.data.keys().hasOnly(profileFields())
-        && request.resource.data.keys().hasAll(profileFields())
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'totalPoints',
-          'updatedAt',
-        ])
-        && request.resource.data.username == resource.data.username
-        && request.resource.data.usernameNormalized == resource.data.usernameNormalized
-        && request.resource.data.email == resource.data.email
-        && request.resource.data.role == resource.data.role
-        && request.resource.data.role == 'user'
-        && request.resource.data.createdAt == resource.data.createdAt
         && request.resource.data.totalPoints is int
-        && request.resource.data.totalPoints >= 0
-        && request.resource.data.totalPoints <= 100
+        && request.resource.data.totalPoints - resource.data.totalPoints
+          == activityAfter.data.activityPoints - activityBefore.data.activityPoints
+        && request.resource.data.totalPoints <= 100000
+        && activityBefore.data.activeAttempt.attemptId == award.attemptId
+        && activityBefore.data.activeAttempt.attemptNumber == award.attemptNumber
+        && activityAfter.data.activeAttempt == null
+        && activityAfter.data.attemptCount == award.attemptNumber
+        && activityAfter.data.activityPoints >= activityBefore.data.activityPoints
+        && categoryAfter.data.updatedAt == request.time
+        && categoryAfter.data.lastActivityAt == request.time
+        && categoryAfter.data.completedActivityIds is list
+        && categoryAfter.data.completedActivityIds.hasAny([award.activityId])
+        && leaderboardAfter.data.totalPoints == request.resource.data.totalPoints
+        && leaderboardAfter.data.username == request.resource.data.username
+        && leaderboardAfter.data.updatedAt == request.time
         && request.resource.data.updatedAt == request.time;
     }
 
@@ -368,6 +398,35 @@ service cloud.firestore {
         && request.resource.data.totalPoints >= 0
         && request.resource.data.totalPoints <= 100000
         && request.resource.data.updatedAt == request.time;
+    }
+
+    function hasValidLeaderboardActivityAward(userId) {
+      let award = getAfter(/databases/$(database)/documents/users/$(userId)).data.get('lastActivityAward', {});
+      let activityPath = /databases/$(database)/documents/users/$(userId)/categoryProgress/$(award.get('categoryId', 'invalid'))/activities/$(award.get('activityId', 'invalid'));
+      let activityBefore = get(activityPath);
+      let activityAfter = getAfter(activityPath);
+      return isValidActivityAwardContext(award)
+        && award != get(/databases/$(database)/documents/users/$(userId)).data.get('lastActivityAward', null)
+        && activityBefore.data.activeAttempt.attemptId == award.attemptId
+        && activityBefore.data.activeAttempt.attemptNumber == award.attemptNumber
+        && activityAfter.data.activeAttempt == null
+        && activityAfter.data.attemptCount == award.attemptNumber
+        && getAfter(/databases/$(database)/documents/users/$(userId)).data.totalPoints
+          == get(/databases/$(database)/documents/users/$(userId)).data.totalPoints
+            + activityAfter.data.activityPoints - activityBefore.data.activityPoints;
+    }
+
+    function isValidLeaderboardUpdate(userId) {
+      let userPath = /databases/$(database)/documents/users/$(userId);
+      let userBefore = get(userPath);
+      let userAfter = getAfter(userPath);
+      return isValidLeaderboardEntry(userId)
+        && (
+          request.resource.data.totalPoints == resource.data.totalPoints
+          && userAfter.data.get('lastActivityAward', null)
+            == userBefore.data.get('lastActivityAward', null)
+          || hasValidLeaderboardActivityAward(userId)
+        );
     }
 
     function isValidUsernameReservation(usernameNormalized) {
@@ -499,19 +558,144 @@ service cloud.firestore {
         && hasValidProgressCompletionState();
     }
 
+    function hasLinkedActivityCompletion(categoryId) {
+      let award = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('lastActivityAward', {});
+      let previousAward = get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('lastActivityAward', null);
+      let activityPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(award.activityId);
+      let activity = get(activityPath);
+      let activityAfter = getAfter(activityPath);
+      let attemptAfter = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(award.activityId)/attempts/$(award.attemptId));
+      return isValidActivityAwardContext(award)
+        && award.categoryId == categoryId
+        && award != previousAward
+        && activity.data.activeAttempt.attemptId == award.attemptId
+        && activity.data.activeAttempt.attemptNumber == award.attemptNumber
+        && activityAfter.data.activeAttempt == null
+        && activityAfter.data.attemptCount == award.attemptNumber
+        && activityAfter.data.status == 'completed'
+        && attemptAfter.data.attemptNumber == award.attemptNumber
+        && attemptAfter.data.categoryId == categoryId
+        && attemptAfter.data.activityId == award.activityId;
+    }
+
+    function hasValidCompletedActivityIdsOnCreate(categoryId) {
+      let ids = request.resource.data.completedActivityIds;
+      let award = getAfter(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data.lastActivityAward;
+      return ids.size() == 0
+        || (
+          ids.size() == 1
+          && hasLinkedActivityCompletion(categoryId)
+          && ids.hasAny([award.activityId])
+          && request.resource.data.status != 'completed'
+        );
+    }
+
+    function hasValidCompletedActivityIdsOnUpdate(categoryId) {
+      let ids = request.resource.data.completedActivityIds;
+      let previousIds = resource.data.completedActivityIds;
+      let award = getAfter(
+        /databases/$(database)/documents/users/$(request.auth.uid)
+      ).data.lastActivityAward;
+      return (
+          ids == previousIds
+          && request.resource.data.lastActivityAt == resource.data.lastActivityAt
+        )
+        || (
+          ids == previousIds
+          && hasLinkedExamFinalization(categoryId)
+          && request.resource.data.lastActivityAt == request.time
+        )
+        || (
+          hasLinkedActivityCompletion(categoryId)
+          && (
+            previousIds.hasAny([award.activityId])
+            ? ids == previousIds
+            : ids.size() == previousIds.size() + 1
+              && ids.hasAll(previousIds)
+              && ids.hasAny([award.activityId])
+          )
+          && request.resource.data.lastActivityAt == request.time
+          && request.resource.data.status != 'completed'
+        );
+    }
+
+    function hasSafeCategoryStatusOnUpdate(categoryId) {
+      return request.resource.data.status == resource.data.status
+        || (
+          resource.data.status == 'notStarted'
+          && request.resource.data.status == 'inProgress'
+        )
+        || (
+          request.resource.data.status == 'completed'
+          && hasLinkedExamFinalization(categoryId)
+          && hasExamCompletionPrerequisites(categoryId)
+        );
+    }
+
+    function examProgressPath(userId, categoryId, examId) {
+      return /databases/$(database)/documents/users/$(userId)/categoryProgress/$(categoryId)/exams/$(examId);
+    }
+
+    function finalExamId() {
+      return request.resource.data.lessonId + '_final_exam';
+    }
+
+    function hasLinkedExamFinalization(categoryId) {
+      let path = examProgressPath(request.auth.uid, categoryId, finalExamId());
+      let before = get(path);
+      let after = getAfter(path);
+      return before.data.activeAttempt is map
+        && after.data.activeAttempt == null
+        && after.data.attemptCount == before.data.attemptCount
+        && after.data.status == 'completed'
+        && after.data.updatedAt == request.time
+        && after.data.lastAttemptAt == request.time
+        && request.resource.data.completedActivityIds == resource.data.completedActivityIds
+        && request.resource.data.viewedLessonPageIds == resource.data.viewedLessonPageIds;
+    }
+
+    function activityPassedAfter(categoryId, activityId) {
+      let activity = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId));
+      return activity.data.bestPercentage >= 80;
+    }
+
+    function hasExamCompletionPrerequisites(categoryId) {
+      let key = get(answerKeyPath(categoryId, finalExamId())).data;
+      let ids = key.activityIds;
+      let exam = getAfter(examProgressPath(request.auth.uid, categoryId, finalExamId()));
+      return request.resource.data.viewedLessonPageIds.size()
+          >= request.resource.data.totalLessonPages
+        && request.resource.data.completedActivityIds.size()
+          == request.resource.data.totalActivities
+        && request.resource.data.totalActivities == 6
+        && ids is list && ids.size() == 6
+        && exam.data.bestPercentage >= 80
+        && activityPassedAfter(categoryId, ids[0])
+        && activityPassedAfter(categoryId, ids[1])
+        && activityPassedAfter(categoryId, ids[2])
+        && activityPassedAfter(categoryId, ids[3])
+        && activityPassedAfter(categoryId, ids[4])
+        && activityPassedAfter(categoryId, ids[5]);
+    }
+
     function activityProgressFields() {
       return [
         'activityId',
         'status',
         'attemptCount',
         'activityPoints',
-        'questionScores',
+        'scoredAt10QuestionIds',
+        'scoredAt5QuestionIds',
+        'scoredAt1QuestionIds',
         'bestCorrectAnswers',
         'bestTotalQuestions',
         'bestPercentage',
         'lastAttemptAt',
         'completedAt',
         'updatedAt',
+        'activeAttempt',
       ];
     }
 
@@ -526,6 +710,7 @@ service cloud.firestore {
         'lastAttemptAt',
         'completedAt',
         'updatedAt',
+        'activeAttempt',
       ];
     }
 
@@ -572,35 +757,279 @@ service cloud.firestore {
       return request.resource.data.keys().hasOnly(activityProgressFields())
         && request.resource.data.keys().hasAll(activityProgressFields())
         && hasValidProgressSummary('activityId', activityId)
+        && hasValidActiveAttempt(request.resource.data.activeAttempt,
+          request.resource.data.attemptCount)
         && request.resource.data.activityPoints is int
         && request.resource.data.activityPoints >= 0
         && request.resource.data.activityPoints <= 1000
         && request.resource.data.activityPoints
           <= request.resource.data.attemptCount * 100
-        && request.resource.data.questionScores is map
-        && request.resource.data.questionScores.keys().size() <= 100;
+        && hasValidScoredSets(request.resource.data);
     }
 
-    function hasValidExamProgress(examId) {
+    function hasValidScoredSets(data) {
+      let ten = data.scoredAt10QuestionIds;
+      let five = data.scoredAt5QuestionIds;
+      let one = data.scoredAt1QuestionIds;
+      return ten is list && five is list && one is list
+        && ten.size() <= 10 && five.size() <= 10 && one.size() <= 10
+        && ten.toSet().size() == ten.size()
+        && five.toSet().size() == five.size()
+        && one.toSet().size() == one.size()
+        && ten.toSet().intersection(five.toSet()).size() == 0
+        && ten.toSet().intersection(one.toSet()).size() == 0
+        && five.toSet().intersection(one.toSet()).size() == 0
+        && ten.toSet().union(five.toSet()).union(one.toSet()).size() <= 10;
+    }
+
+    function hasValidExamProgress(categoryId, examId) {
       return request.resource.data.keys().hasOnly(examProgressFields())
         && request.resource.data.keys().hasAll(examProgressFields())
-        && hasValidProgressSummary('examId', examId);
+        && hasValidProgressSummary('examId', examId)
+        && hasValidActiveAttempt(request.resource.data.activeAttempt,
+          request.resource.data.attemptCount)
+        && (request.resource.data.activeAttempt == null
+          || (!request.resource.data.activeAttempt.keys().hasAny(['pointValue'])
+            && validExamSelection(categoryId, examId,
+              request.resource.data.activeAttempt.selectedQuestionIds)));
+    }
+
+    function hasValidActiveAttempt(activeAttempt, attemptCount) {
+      return activeAttempt == null
+        || (
+          activeAttempt is map
+          && activeAttempt.keys().hasOnly([
+            'attemptId', 'attemptNumber', 'reservedAt', 'pointValue',
+            'selectedQuestionIds'
+          ])
+          && activeAttempt.keys().hasAll([
+            'attemptId', 'attemptNumber', 'reservedAt'
+          ])
+          && activeAttempt.attemptId is string
+          && activeAttempt.attemptId.size() > 0
+          && activeAttempt.attemptId.size() <= 120
+          && activeAttempt.attemptNumber is int
+          && activeAttempt.attemptNumber == attemptCount
+          && activeAttempt.reservedAt is timestamp
+          && (!activeAttempt.keys().hasAny(['pointValue'])
+            || activeAttempt.pointValue == pointsForAttempt(attemptCount))
+        );
+    }
+
+    function hasNewAttemptReservation() {
+      return request.resource.data.activeAttempt is map
+        && request.resource.data.activeAttempt.attemptNumber
+          == request.resource.data.attemptCount
+        && request.resource.data.activeAttempt.reservedAt == request.time;
+    }
+
+    function hasValidReservationOnCreate() {
+      return request.resource.data.attemptCount == 1
+        && hasNewAttemptReservation();
+    }
+
+    function hasValidReservationOnUpdate() {
+      return (
+          !resource.data.keys().hasAny(['activeAttempt'])
+          || resource.data.activeAttempt == null
+        )
+        && request.resource.data.attemptCount == resource.data.attemptCount + 1
+        && hasNewAttemptReservation();
+    }
+
+    function hasResolvedActivityAttempt(categoryId, activityId) {
+      let reservation = resource.data.activeAttempt;
+      let attemptPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId)/attempts/$(reservation.attemptId);
+      let attempt = getAfter(attemptPath);
+      let userPath = /databases/$(database)/documents/users/$(request.auth.uid);
+      let userBefore = get(userPath);
+      let userAfter = getAfter(userPath);
+      let categoryAfter = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId));
+      let leaderboardAfter = getAfter(/databases/$(database)/documents/leaderboard/$(request.auth.uid));
+      return reservation is map
+        && request.resource.data.activeAttempt == null
+        && request.resource.data.attemptCount == resource.data.attemptCount
+        && attempt.data.attemptNumber == reservation.attemptNumber
+        && attempt.data.categoryId == categoryId
+        && attempt.data.activityId == activityId
+        && userAfter.data.lastActivityAward == {
+          'categoryId': categoryId,
+          'activityId': activityId,
+          'attemptId': reservation.attemptId,
+          'attemptNumber': reservation.attemptNumber,
+        }
+        && userAfter.data.lastActivityAward
+          != userBefore.data.get('lastActivityAward', null)
+        && userAfter.data.totalPoints - userBefore.data.totalPoints
+          == request.resource.data.activityPoints - resource.data.activityPoints
+        && categoryAfter.data.lastActivityAt == request.time
+        && categoryAfter.data.completedActivityIds.hasAny([activityId])
+        && leaderboardAfter.data.totalPoints == userAfter.data.totalPoints
+        && leaderboardAfter.data.updatedAt == request.time;
     }
 
     function hasValidActivityAttemptCountOnCreate() {
-      return request.resource.data.attemptCount >= 1;
+      return hasValidReservationOnCreate()
+        && request.resource.data.activeAttempt.pointValue
+          == pointsForAttempt(request.resource.data.attemptCount);
     }
 
-    function hasValidActivityAttemptCountOnUpdate() {
-      return request.resource.data.attemptCount == resource.data.attemptCount + 1;
+    function hasValidExamAttemptCountOnUpdate(categoryId, examId) {
+      return (hasValidReservationOnUpdate()
+          && hasValidExamReservationState())
+        || hasValidExamFinalizationState(categoryId, examId);
     }
 
-    function hasValidActivityScoringOnUpdate() {
-      return request.resource.data.activityPoints >= resource.data.activityPoints
-        && request.resource.data.activityPoints <= resource.data.activityPoints + 100
-        && request.resource.data.questionScores.keys().hasAll(
-          resource.data.questionScores.keys()
+    function hasValidExamAttemptCountOnCreate() {
+      return hasValidReservationOnCreate()
+        && request.resource.data.status == 'inProgress'
+        && request.resource.data.bestCorrectAnswers == 0
+        && request.resource.data.bestTotalQuestions == 0
+        && request.resource.data.bestPercentage == 0
+        && request.resource.data.lastAttemptAt == null
+        && request.resource.data.completedAt == null;
+    }
+
+    function hasValidExamReservationState() {
+      return request.resource.data.status == 'inProgress'
+        && request.resource.data.bestCorrectAnswers == resource.data.bestCorrectAnswers
+        && request.resource.data.bestTotalQuestions == resource.data.bestTotalQuestions
+        && request.resource.data.bestPercentage == resource.data.bestPercentage
+        && request.resource.data.lastAttemptAt == resource.data.lastAttemptAt
+        && request.resource.data.completedAt == resource.data.completedAt;
+    }
+
+    function hasValidExamFinalizationState(categoryId, examId) {
+      let reservation = resource.data.activeAttempt;
+      let attempt = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId)/attempts/$(reservation.attemptId));
+      let replaceBest = attempt.data.percentage >= resource.data.bestPercentage;
+      let category = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId));
+      return reservation is map
+        && request.resource.data.activeAttempt == null
+        && request.resource.data.attemptCount == resource.data.attemptCount
+        && request.resource.data.status == 'completed'
+        && attempt.data.type == 'exam'
+        && attempt.data.categoryId == categoryId
+        && attempt.data.examId == examId
+        && attempt.data.attemptNumber == reservation.attemptNumber
+        && attempt.data.questionIds == reservation.selectedQuestionIds
+        && attempt.data.earnedPoints == 0
+        && (replaceBest
+          ? request.resource.data.bestCorrectAnswers == attempt.data.correctAnswers
+            && request.resource.data.bestTotalQuestions == 15
+            && request.resource.data.bestPercentage == attempt.data.percentage
+          : request.resource.data.bestCorrectAnswers == resource.data.bestCorrectAnswers
+            && request.resource.data.bestTotalQuestions == resource.data.bestTotalQuestions
+            && request.resource.data.bestPercentage == resource.data.bestPercentage)
+        && request.resource.data.lastAttemptAt == request.time
+        && (request.resource.data.completedAt == resource.data.completedAt
+          || request.resource.data.completedAt == request.time)
+        && category.data.lastActivityAt == request.time
+        && category.data.updatedAt == request.time;
+    }
+
+    function validExamSelection(categoryId, examId, selected) {
+      let key = get(answerKeyPath(categoryId, examId));
+      return selected is list
+        && selected.size() == 15
+        && selected.toSet().size() == 15
+        && key.data.examId == examId
+        && key.data.questionIds is list
+        && key.data.questionIds.toSet().hasAll(selected);
+    }
+
+    function hasValidActivityScoringOnReservation() {
+      return request.resource.data.status == 'inProgress'
+        && request.resource.data.activityPoints == resource.data.activityPoints
+        && request.resource.data.scoredAt10QuestionIds == resource.data.scoredAt10QuestionIds
+        && request.resource.data.scoredAt5QuestionIds == resource.data.scoredAt5QuestionIds
+        && request.resource.data.scoredAt1QuestionIds == resource.data.scoredAt1QuestionIds
+        && request.resource.data.bestCorrectAnswers == resource.data.bestCorrectAnswers
+        && request.resource.data.bestTotalQuestions == resource.data.bestTotalQuestions
+        && request.resource.data.bestPercentage == resource.data.bestPercentage
+        && request.resource.data.completedAt == resource.data.completedAt;
+    }
+
+    function correctQuestionIds(attempt) {
+      let ids = attempt.questionIds;
+      let correct = attempt.correct;
+      return (correct[0] ? [ids[0]] : [])
+        .concat(correct[1] ? [ids[1]] : [])
+        .concat(correct[2] ? [ids[2]] : [])
+        .concat(correct[3] ? [ids[3]] : [])
+        .concat(correct[4] ? [ids[4]] : [])
+        .concat(correct[5] ? [ids[5]] : [])
+        .concat(correct[6] ? [ids[6]] : [])
+        .concat(correct[7] ? [ids[7]] : [])
+        .concat(correct[8] ? [ids[8]] : [])
+        .concat(correct[9] ? [ids[9]] : []).toSet();
+    }
+
+    function hasValidScoredSetTransition(attempt) {
+      let old10 = resource.data.scoredAt10QuestionIds.toSet();
+      let old5 = resource.data.scoredAt5QuestionIds.toSet();
+      let old1 = resource.data.scoredAt1QuestionIds.toSet();
+      let rewarded = correctQuestionIds(attempt)
+        .difference(old10.union(old5).union(old1));
+      let value = resource.data.activeAttempt.pointValue;
+      return request.resource.data.scoredAt10QuestionIds.toSet()
+          == (value == 10 ? old10.union(rewarded) : old10)
+        && request.resource.data.scoredAt5QuestionIds.toSet()
+          == (value == 5 ? old5.union(rewarded) : old5)
+        && request.resource.data.scoredAt1QuestionIds.toSet()
+          == (value == 1 ? old1.union(rewarded) : old1)
+        && request.resource.data.activityPoints
+          == resource.data.activityPoints + rewarded.size() * value;
+    }
+
+    function hasValidActivityScoringOnFinalization(categoryId, activityId) {
+      let reservation = resource.data.activeAttempt;
+      let attemptPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId)/attempts/$(reservation.attemptId);
+      let attempt = getAfter(attemptPath);
+      let bestReplaced = attempt.data.percentage >= resource.data.bestPercentage;
+      return request.resource.data.status == 'completed'
+        && hasValidScoredSetTransition(attempt.data)
+        && (
+          bestReplaced
+          ? request.resource.data.bestCorrectAnswers == attempt.data.correctAnswers
+            && request.resource.data.bestTotalQuestions == 10
+            && request.resource.data.bestPercentage == attempt.data.percentage
+          : request.resource.data.bestCorrectAnswers == resource.data.bestCorrectAnswers
+            && request.resource.data.bestTotalQuestions == resource.data.bestTotalQuestions
+            && request.resource.data.bestPercentage == resource.data.bestPercentage
+        )
+        && request.resource.data.lastAttemptAt == request.time
+        && (
+          resource.data.completedAt is timestamp
+          ? request.resource.data.completedAt == resource.data.completedAt
+          : request.resource.data.completedAt == request.time
         );
+    }
+
+    function hasValidActivityScoringOnUpdate(categoryId, activityId) {
+      return (
+          hasValidReservationOnUpdate()
+          && request.resource.data.activeAttempt.pointValue
+            == pointsForAttempt(request.resource.data.attemptCount)
+          && hasValidActivityScoringOnReservation()
+        )
+        || (
+          hasResolvedActivityAttempt(categoryId, activityId)
+          && hasValidActivityScoringOnFinalization(categoryId, activityId)
+        );
+    }
+
+    function hasValidInitialActivityProgress() {
+      return request.resource.data.status == 'inProgress'
+        && request.resource.data.activityPoints == 0
+        && request.resource.data.scoredAt10QuestionIds.size() == 0
+        && request.resource.data.scoredAt5QuestionIds.size() == 0
+        && request.resource.data.scoredAt1QuestionIds.size() == 0
+        && request.resource.data.bestCorrectAnswers == 0
+        && request.resource.data.bestTotalQuestions == 0
+        && request.resource.data.bestPercentage == 0
+        && request.resource.data.lastAttemptAt == null
+        && request.resource.data.completedAt == null;
     }
 
     function hasValidActivityTimestampsOnCreate() {
@@ -629,80 +1058,198 @@ service cloud.firestore {
         );
     }
 
-    function attemptFields() {
+    function activityAttemptFields() {
       return [
-        'type',
-        'categoryId',
-        'activityId',
-        'examId',
-        'attemptNumber',
-        'questionIds',
-        'answers',
-        'correctAnswers',
-        'totalQuestions',
-        'percentage',
-        'earnedPoints',
-        'startedAt',
-        'completedAt',
+        'type', 'categoryId', 'activityId', 'examId', 'attemptNumber',
+        'questionIds', 'correct', 'correctAnswers', 'totalQuestions',
+        'percentage', 'startedAt', 'completedAt'
       ];
     }
 
-    function hasValidBaseAttempt(categoryId) {
-      return request.resource.data.keys().hasOnly(attemptFields())
-        && request.resource.data.keys().hasAll(attemptFields())
-        && request.resource.data.categoryId is string
+    function answerKeyPath(categoryId, activityId) {
+      return /databases/$(database)/documents/categories/$(categoryId)/answerKeys/$(activityId);
+    }
+
+    function activityAnswerSubmissionPath(userId, categoryId, activityId, attemptId) {
+      return /databases/$(database)/documents/users/$(userId)/categoryProgress/$(categoryId)/activities/$(activityId)/answerSubmissions/$(attemptId);
+    }
+
+    function examAttemptFields() {
+      return [
+        'type', 'categoryId', 'activityId', 'examId', 'attemptNumber',
+        'questionIds', 'correct', 'correctAnswers', 'totalQuestions',
+        'percentage', 'earnedPoints', 'startedAt', 'completedAt'
+      ];
+    }
+
+    function examAnswerSubmissionPath(userId, categoryId, examId, attemptId) {
+      return /databases/$(database)/documents/users/$(userId)/categoryProgress/$(categoryId)/exams/$(examId)/answerSubmissions/$(attemptId);
+    }
+
+    function validExamAnswerSubmission(categoryId, examId, attemptId) {
+      let progress = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId));
+      let selected = progress.data.activeAttempt.selectedQuestionIds;
+      let answers = request.resource.data.answers;
+      return request.resource.data.keys().hasOnly([
+          'attemptId', 'attemptNumber', 'categoryId', 'examId', 'answers', 'committedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'attemptId', 'attemptNumber', 'categoryId', 'examId', 'answers', 'committedAt'
+        ])
+        && request.resource.data.attemptId == attemptId
+        && request.resource.data.attemptNumber == progress.data.attemptCount
         && request.resource.data.categoryId == categoryId
+        && request.resource.data.examId == examId
+        && request.resource.data.committedAt == request.time
+        && progress.data.activeAttempt.attemptId == attemptId
+        && selected is list && selected.size() == 15
+        && answers is map && answers.keys().size() == 15
+        && answers.keys().hasAll(selected)
+        && answers.keys().hasOnly(selected)
+        && answers[selected[0]] is string && answers[selected[0]].size() <= 500
+        && answers[selected[1]] is string && answers[selected[1]].size() <= 500
+        && answers[selected[2]] is string && answers[selected[2]].size() <= 500
+        && answers[selected[3]] is string && answers[selected[3]].size() <= 500
+        && answers[selected[4]] is string && answers[selected[4]].size() <= 500
+        && answers[selected[5]] is string && answers[selected[5]].size() <= 500
+        && answers[selected[6]] is string && answers[selected[6]].size() <= 500
+        && answers[selected[7]] is string && answers[selected[7]].size() <= 500
+        && answers[selected[8]] is string && answers[selected[8]].size() <= 500
+        && answers[selected[9]] is string && answers[selected[9]].size() <= 500
+        && answers[selected[10]] is string && answers[selected[10]].size() <= 500
+        && answers[selected[11]] is string && answers[selected[11]].size() <= 500
+        && answers[selected[12]] is string && answers[selected[12]].size() <= 500
+        && answers[selected[13]] is string && answers[selected[13]].size() <= 500
+        && answers[selected[14]] is string && answers[selected[14]].size() <= 500;
+    }
+
+    function validCanonicalSubmission(answers, keyData) {
+      let questionIds = keyData.questionIds;
+      return answers is map
+        && questionIds is list
+        && questionIds.size() == 10
+        && answers.keys().size() == 10
+        && answers.keys().hasAll(questionIds)
+        && answers.keys().hasOnly(questionIds)
+        && answers[questionIds[0]] is string && answers[questionIds[0]].size() <= 500
+        && answers[questionIds[1]] is string && answers[questionIds[1]].size() <= 500
+        && answers[questionIds[2]] is string && answers[questionIds[2]].size() <= 500
+        && answers[questionIds[3]] is string && answers[questionIds[3]].size() <= 500
+        && answers[questionIds[4]] is string && answers[questionIds[4]].size() <= 500
+        && answers[questionIds[5]] is string && answers[questionIds[5]].size() <= 500
+        && answers[questionIds[6]] is string && answers[questionIds[6]].size() <= 500
+        && answers[questionIds[7]] is string && answers[questionIds[7]].size() <= 500
+        && answers[questionIds[8]] is string && answers[questionIds[8]].size() <= 500
+        && answers[questionIds[9]] is string && answers[questionIds[9]].size() <= 500;
+    }
+
+    function hasSubmissionReservation(categoryId, activityId, attemptId, attemptNumber) {
+      let progress = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId));
+      return progress.data.activeAttempt is map
+        && progress.data.activeAttempt.attemptId == attemptId
+        && progress.data.activeAttempt.attemptNumber == attemptNumber
+        && progress.data.attemptCount == attemptNumber;
+    }
+
+    function validActivityAnswerSubmission(categoryId, activityId, attemptId) {
+      let key = get(answerKeyPath(categoryId, activityId));
+      let keyData = key.data;
+      let answers = request.resource.data.answers;
+      return request.resource.data.keys().hasOnly([
+          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt'
+        ])
+        && request.resource.data.attemptId == attemptId
         && request.resource.data.attemptNumber is int
-        && request.resource.data.attemptNumber >= 1
-        && request.resource.data.attemptNumber <= 1000
-        && request.resource.data.questionIds is list
-        && request.resource.data.questionIds.size() > 0
-        && request.resource.data.questionIds.size() <= 100
-        && request.resource.data.answers is map
-        && request.resource.data.answers.keys().size() <= 100
-        && request.resource.data.answers.keys().hasOnly(
-          request.resource.data.questionIds
-        )
-        && request.resource.data.totalQuestions is int
-        && request.resource.data.totalQuestions > 0
-        && request.resource.data.totalQuestions <= 100
-        && request.resource.data.totalQuestions == request.resource.data.questionIds.size()
-        && request.resource.data.correctAnswers is int
-        && request.resource.data.correctAnswers >= 0
+        && request.resource.data.categoryId == categoryId
+        && request.resource.data.activityId == activityId
+        && request.resource.data.committedAt == request.time
+        && keyData.categoryId == categoryId
+        && keyData.activityId == activityId
+        && validCanonicalSubmission(answers, keyData)
+        && hasSubmissionReservation(categoryId, activityId, attemptId,
+          request.resource.data.attemptNumber);
+    }
+
+    function actualAnswerCorrect(answer, questionId, keyData) {
+      return answer != ''
+        && (keyData.fillBlankQuestionIds.hasAny([questionId])
+          ? keyData.acceptedAnswersByQuestionId[questionId].hasAny([answer.trim().lower()])
+          : answer == keyData.correctAnswersByQuestionId[questionId]);
+    }
+
+    function pointsForAttempt(attemptNumber) {
+      return attemptNumber == 1
+        ? 10
+        : (attemptNumber == 2 ? 5 : (attemptNumber == 3 ? 1 : 0));
+    }
+
+    function hasValidCommittedActivityResult(categoryId, activityId, attemptId) {
+      let submission = get(activityAnswerSubmissionPath(
+        request.auth.uid, categoryId, activityId, attemptId
+      ));
+      let key = get(answerKeyPath(categoryId, activityId));
+      let keyData = key.data;
+      let attempt = request.resource.data;
+      let ids = keyData.questionIds;
+      let answers = submission.data.answers;
+      return keyData.categoryId == categoryId
+        && keyData.activityId == activityId
+        && submission.data.attemptId == attemptId
+        && submission.data.attemptNumber == request.resource.data.attemptNumber
+        && submission.data.categoryId == categoryId
+        && submission.data.activityId == activityId
+        && request.resource.data.questionIds == keyData.questionIds
+        && attempt.correct[0] == actualAnswerCorrect(answers[ids[0]], ids[0], keyData)
+        && attempt.correct[1] == actualAnswerCorrect(answers[ids[1]], ids[1], keyData)
+        && attempt.correct[2] == actualAnswerCorrect(answers[ids[2]], ids[2], keyData)
+        && attempt.correct[3] == actualAnswerCorrect(answers[ids[3]], ids[3], keyData)
+        && attempt.correct[4] == actualAnswerCorrect(answers[ids[4]], ids[4], keyData)
+        && attempt.correct[5] == actualAnswerCorrect(answers[ids[5]], ids[5], keyData)
+        && attempt.correct[6] == actualAnswerCorrect(answers[ids[6]], ids[6], keyData)
+        && attempt.correct[7] == actualAnswerCorrect(answers[ids[7]], ids[7], keyData)
+        && attempt.correct[8] == actualAnswerCorrect(answers[ids[8]], ids[8], keyData)
+        && attempt.correct[9] == actualAnswerCorrect(answers[ids[9]], ids[9], keyData)
         && request.resource.data.correctAnswers
-          <= request.resource.data.totalQuestions
-        && request.resource.data.percentage is int
-        && request.resource.data.percentage >= 0
-        && request.resource.data.percentage <= 100
-        && request.resource.data.earnedPoints is int
-        && request.resource.data.earnedPoints >= 0
-        && request.resource.data.earnedPoints <= 100
-        && request.resource.data.startedAt is timestamp
-        && request.resource.data.completedAt is timestamp;
+          == (attempt.correct[0] ? 1 : 0)
+            + (attempt.correct[1] ? 1 : 0)
+            + (attempt.correct[2] ? 1 : 0)
+            + (attempt.correct[3] ? 1 : 0)
+            + (attempt.correct[4] ? 1 : 0)
+            + (attempt.correct[5] ? 1 : 0)
+            + (attempt.correct[6] ? 1 : 0)
+            + (attempt.correct[7] ? 1 : 0)
+            + (attempt.correct[8] ? 1 : 0)
+            + (attempt.correct[9] ? 1 : 0)
+        && request.resource.data.percentage
+          == request.resource.data.correctAnswers * 10;
     }
 
-    function hasValidActivityAttemptPoints() {
-      return (
-          request.resource.data.attemptNumber == 1
-          && request.resource.data.earnedPoints <= 100
-        )
-        || (
-          request.resource.data.attemptNumber == 2
-          && request.resource.data.earnedPoints <= 50
-        )
-        || (
-          request.resource.data.attemptNumber == 3
-          && request.resource.data.earnedPoints <= 10
-        )
-        || (
-          request.resource.data.attemptNumber >= 4
-          && request.resource.data.earnedPoints == 0
-        );
+    function hasMatchingActivityReservation(categoryId, activityId, attemptId) {
+      let progressPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId);
+      let progress = get(progressPath);
+      return progress.data.activeAttempt is map
+        && progress.data.activeAttempt.attemptId == attemptId
+        && progress.data.activeAttempt.attemptNumber == request.resource.data.attemptNumber
+        && progress.data.attemptCount == request.resource.data.attemptNumber;
     }
 
-    function hasValidActivityAttempt(categoryId, activityId) {
-      return hasValidBaseAttempt(categoryId)
-        && hasValidActivityAttemptPoints()
+    function hasMatchingExamReservation(categoryId, examId, attemptId) {
+      let progressPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId);
+      let progress = get(progressPath);
+      return progress.data.activeAttempt is map
+        && progress.data.activeAttempt.attemptId == attemptId
+        && progress.data.activeAttempt.attemptNumber == request.resource.data.attemptNumber
+        && progress.data.attemptCount == request.resource.data.attemptNumber
+        && request.resource.data.questionIds == progress.data.activeAttempt.selectedQuestionIds;
+    }
+
+    function hasValidActivityAttempt(categoryId, activityId, attemptId) {
+      return hasValidActivityAttemptBase(categoryId)
+        && hasMatchingActivityReservation(categoryId, activityId, attemptId)
+        && hasValidCommittedActivityResult(categoryId, activityId, attemptId)
         && request.resource.data.type == 'activity'
         && request.resource.data.activityId is string
         && request.resource.data.activityId == activityId
@@ -711,8 +1258,50 @@ service cloud.firestore {
         && request.resource.data.examId == null;
     }
 
-    function hasValidExamAttempt(categoryId, examId) {
-      return hasValidBaseAttempt(categoryId)
+    function hasValidActivityAttemptBase(categoryId) {
+      return request.resource.data.keys().hasOnly(activityAttemptFields())
+        && request.resource.data.keys().hasAll(activityAttemptFields())
+        && request.resource.data.categoryId == categoryId
+        && request.resource.data.attemptNumber is int
+        && request.resource.data.attemptNumber >= 1
+        && request.resource.data.attemptNumber <= 1000
+        && request.resource.data.questionIds is list
+        && request.resource.data.questionIds.size() == 10
+        && request.resource.data.correct is list
+        && request.resource.data.correct.size() == 10
+        && request.resource.data.totalQuestions == 10
+        && request.resource.data.correctAnswers is int
+        && request.resource.data.correctAnswers >= 0
+        && request.resource.data.correctAnswers <= 10
+        && request.resource.data.percentage is int
+        && request.resource.data.percentage >= 0
+        && request.resource.data.percentage <= 100
+        && request.resource.data.startedAt is timestamp
+        && request.resource.data.completedAt is timestamp;
+    }
+
+    function hasValidExamAttempt(categoryId, examId, attemptId) {
+      return request.resource.data.keys().hasOnly(examAttemptFields())
+        && request.resource.data.keys().hasAll(examAttemptFields())
+        && request.resource.data.categoryId == categoryId
+        && request.resource.data.attemptNumber is int
+        && request.resource.data.attemptNumber >= 1
+        && request.resource.data.attemptNumber <= 1000
+        && request.resource.data.questionIds is list
+        && request.resource.data.questionIds.size() == 15
+        && request.resource.data.correct is list
+        && request.resource.data.correct.size() == 15
+        && request.resource.data.totalQuestions == 15
+        && request.resource.data.correctAnswers is int
+        && request.resource.data.correctAnswers >= 0
+        && request.resource.data.correctAnswers <= 15
+        && request.resource.data.percentage is int
+        && request.resource.data.percentage >= 0
+        && request.resource.data.percentage <= 100
+        && request.resource.data.startedAt is timestamp
+        && request.resource.data.completedAt is timestamp
+        && hasMatchingExamReservation(categoryId, examId, attemptId)
+        && hasValidExamProofs(categoryId, examId, attemptId)
         && request.resource.data.type == 'exam'
         && request.resource.data.earnedPoints == 0
         && request.resource.data.activityId == null
@@ -720,6 +1309,108 @@ service cloud.firestore {
         && request.resource.data.examId == examId
         && request.resource.data.examId.size() > 0
         && request.resource.data.examId.size() <= 120;
+    }
+
+    function examProofPath(userId, categoryId, examId, attemptId, part) {
+      return /databases/$(database)/documents/users/$(userId)/categoryProgress/$(categoryId)/exams/$(examId)/attempts/$(attemptId)/proofs/$(part);
+    }
+
+    function validExamProofBase(categoryId, examId, attemptId, part) {
+      let submission = get(examAnswerSubmissionPath(
+        request.auth.uid, categoryId, examId, attemptId));
+      let progress = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId));
+      let proof = request.resource.data;
+      return proof.keys().hasOnly([
+          'uid', 'attemptId', 'attemptNumber', 'categoryId', 'examId',
+          'part', 'questionIds', 'correct', 'correctAnswers', 'createdAt'
+        ])
+        && proof.keys().hasAll([
+          'uid', 'attemptId', 'attemptNumber', 'categoryId', 'examId',
+          'part', 'questionIds', 'correct', 'correctAnswers', 'createdAt'
+        ])
+        && proof.uid == request.auth.uid
+        && proof.attemptId == attemptId
+        && proof.attemptNumber == progress.data.attemptCount
+        && progress.data.activeAttempt.attemptId == attemptId
+        && proof.categoryId == categoryId
+        && proof.examId == examId
+        && proof.part == part
+        && proof.correct is list
+        && proof.correctAnswers is int
+        && proof.correctAnswers >= 0
+        && proof.correctAnswers <= 8
+        && proof.createdAt == request.time
+        && submission.data.attemptId == attemptId
+        && submission.data.attemptNumber == proof.attemptNumber
+        && submission.data.categoryId == categoryId
+        && submission.data.examId == examId;
+    }
+
+    function validExamProofA(categoryId, examId, attemptId) {
+      let proof = request.resource.data;
+      let selected = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId)).data.activeAttempt.selectedQuestionIds;
+      let answers = get(examAnswerSubmissionPath(request.auth.uid, categoryId, examId, attemptId)).data.answers;
+      let key = get(answerKeyPath(categoryId, examId)).data;
+      let ids = proof.questionIds;
+      let correct = proof.correct;
+      return validExamProofBase(categoryId, examId, attemptId, 'A')
+        && ids == [selected[0], selected[1], selected[2], selected[3],
+          selected[4], selected[5], selected[6], selected[7]]
+        && correct.size() == 8
+        && correct[0] == actualAnswerCorrect(answers[ids[0]], ids[0], key)
+        && correct[1] == actualAnswerCorrect(answers[ids[1]], ids[1], key)
+        && correct[2] == actualAnswerCorrect(answers[ids[2]], ids[2], key)
+        && correct[3] == actualAnswerCorrect(answers[ids[3]], ids[3], key)
+        && correct[4] == actualAnswerCorrect(answers[ids[4]], ids[4], key)
+        && correct[5] == actualAnswerCorrect(answers[ids[5]], ids[5], key)
+        && correct[6] == actualAnswerCorrect(answers[ids[6]], ids[6], key)
+        && correct[7] == actualAnswerCorrect(answers[ids[7]], ids[7], key)
+        && proof.correctAnswers == (correct[0] ? 1 : 0) + (correct[1] ? 1 : 0)
+          + (correct[2] ? 1 : 0) + (correct[3] ? 1 : 0)
+          + (correct[4] ? 1 : 0) + (correct[5] ? 1 : 0)
+          + (correct[6] ? 1 : 0) + (correct[7] ? 1 : 0);
+    }
+
+    function validExamProofB(categoryId, examId, attemptId) {
+      let proof = request.resource.data;
+      let selected = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/exams/$(examId)).data.activeAttempt.selectedQuestionIds;
+      let answers = get(examAnswerSubmissionPath(request.auth.uid, categoryId, examId, attemptId)).data.answers;
+      let key = get(answerKeyPath(categoryId, examId)).data;
+      let ids = proof.questionIds;
+      let correct = proof.correct;
+      return validExamProofBase(categoryId, examId, attemptId, 'B')
+        && ids == [selected[8], selected[9], selected[10], selected[11],
+          selected[12], selected[13], selected[14]]
+        && correct.size() == 7
+        && correct[0] == actualAnswerCorrect(answers[ids[0]], ids[0], key)
+        && correct[1] == actualAnswerCorrect(answers[ids[1]], ids[1], key)
+        && correct[2] == actualAnswerCorrect(answers[ids[2]], ids[2], key)
+        && correct[3] == actualAnswerCorrect(answers[ids[3]], ids[3], key)
+        && correct[4] == actualAnswerCorrect(answers[ids[4]], ids[4], key)
+        && correct[5] == actualAnswerCorrect(answers[ids[5]], ids[5], key)
+        && correct[6] == actualAnswerCorrect(answers[ids[6]], ids[6], key)
+        && proof.correctAnswers == (correct[0] ? 1 : 0) + (correct[1] ? 1 : 0)
+          + (correct[2] ? 1 : 0) + (correct[3] ? 1 : 0)
+          + (correct[4] ? 1 : 0) + (correct[5] ? 1 : 0)
+          + (correct[6] ? 1 : 0);
+    }
+
+    function hasValidExamProofs(categoryId, examId, attemptId) {
+      let a = get(examProofPath(request.auth.uid, categoryId, examId, attemptId, 'A')).data;
+      let b = get(examProofPath(request.auth.uid, categoryId, examId, attemptId, 'B')).data;
+      let attempt = request.resource.data;
+      return a.uid == request.auth.uid && b.uid == request.auth.uid
+        && a.attemptId == attemptId && b.attemptId == attemptId
+        && a.attemptNumber == attempt.attemptNumber
+        && b.attemptNumber == attempt.attemptNumber
+        && a.categoryId == categoryId && b.categoryId == categoryId
+        && a.examId == examId && b.examId == examId
+        && a.part == 'A' && b.part == 'B'
+        && attempt.questionIds == a.questionIds.concat(b.questionIds)
+        && attempt.correct == a.correct.concat(b.correct)
+        && attempt.correctAnswers == a.correctAnswers + b.correctAnswers
+        && attempt.percentage * 15 >= attempt.correctAnswers * 100 - 7
+        && attempt.percentage * 15 <= attempt.correctAnswers * 100 + 7;
     }
 
     function hasValidAttemptTimestampsOnCreate() {
@@ -732,10 +1423,15 @@ service cloud.firestore {
       allow create: if isOwner(userId) && isValidNewUserProfile(userId);
       allow update: if isOwner(userId)
         && (
-          isCompletingLegacyProfile(userId)
-          || isValidUpdatedUserProfile(userId)
-          || isValidTotalPointsUpdate()
-          || isCompletingMissingTotalPoints()
+          !resource.data.keys().hasAny(['totalPoints'])
+          ? isCompletingLegacyProfile(userId)
+          : (
+            request.resource.data.diff(resource.data).affectedKeys().hasAny([
+              'totalPoints', 'lastActivityAward'
+            ])
+            ? isValidActivityAwardUpdate(userId)
+            : isValidUpdatedUserProfile(userId)
+          )
         );
       allow delete: if false;
 
@@ -744,11 +1440,17 @@ service cloud.firestore {
         allow create: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
+          && request.resource.data.status != 'completed'
+          && hasValidCompletedActivityIdsOnCreate(categoryId)
           && hasValidProgressTimestampsOnCreate();
         allow update: if isOwner(userId)
           && userProfileExists(userId)
           && isValidCategoryProgress(categoryId)
           && hasMonotonicProgressListsOnUpdate()
+          && hasValidCompletedActivityIdsOnUpdate(categoryId)
+          && hasSafeCategoryStatusOnUpdate(categoryId)
+          && request.resource.data.totalLessonPages == resource.data.totalLessonPages
+          && request.resource.data.totalActivities == resource.data.totalActivities
           && hasValidProgressTimestampsOnUpdate();
         allow delete: if false;
 
@@ -757,21 +1459,29 @@ service cloud.firestore {
           allow create: if isOwner(userId)
             && userProfileExists(userId)
             && hasValidActivityProgress(activityId)
+            && hasValidInitialActivityProgress()
             && hasValidActivityAttemptCountOnCreate()
             && hasValidActivityTimestampsOnCreate();
           allow update: if isOwner(userId)
             && userProfileExists(userId)
             && hasValidActivityProgress(activityId)
-            && hasValidActivityAttemptCountOnUpdate()
-            && hasValidActivityScoringOnUpdate()
+            && hasValidActivityScoringOnUpdate(categoryId, activityId)
             && hasValidActivityTimestampsOnUpdate();
           allow delete: if false;
+
+          match /answerSubmissions/{attemptId} {
+            allow get, list: if isOwner(userId);
+            allow create: if isOwner(userId)
+              && userProfileExists(userId)
+              && validActivityAnswerSubmission(categoryId, activityId, attemptId);
+            allow update, delete: if false;
+          }
 
           match /attempts/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
               && userProfileExists(userId)
-              && hasValidActivityAttempt(categoryId, activityId)
+              && hasValidActivityAttempt(categoryId, activityId, attemptId)
               && hasValidAttemptTimestampsOnCreate();
             allow update: if false;
             allow delete: if false;
@@ -782,24 +1492,43 @@ service cloud.firestore {
           allow get, list: if isOwner(userId);
           allow create: if isOwner(userId)
             && userProfileExists(userId)
-            && hasValidExamProgress(examId)
-            && hasValidActivityAttemptCountOnCreate()
+            && hasValidExamProgress(categoryId, examId)
+            && hasValidExamAttemptCountOnCreate()
             && hasValidActivityTimestampsOnCreate();
           allow update: if isOwner(userId)
             && userProfileExists(userId)
-            && hasValidExamProgress(examId)
-            && hasValidActivityAttemptCountOnUpdate()
+            && hasValidExamProgress(categoryId, examId)
+            && hasValidExamAttemptCountOnUpdate(categoryId, examId)
             && hasValidActivityTimestampsOnUpdate();
           allow delete: if false;
+
+          match /answerSubmissions/{attemptId} {
+            allow get, list: if isOwner(userId);
+            allow create: if isOwner(userId)
+              && userProfileExists(userId)
+              && validExamAnswerSubmission(categoryId, examId, attemptId);
+            allow update, delete: if false;
+          }
 
           match /attempts/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
               && userProfileExists(userId)
-              && hasValidExamAttempt(categoryId, examId)
+              && hasValidExamAttempt(categoryId, examId, attemptId)
               && hasValidAttemptTimestampsOnCreate();
             allow update: if false;
             allow delete: if false;
+
+            match /proofs/{part} {
+              allow get, list: if isOwner(userId);
+              allow create: if isOwner(userId)
+                && userProfileExists(userId)
+                && ((part == 'A'
+                    && validExamProofA(categoryId, examId, attemptId))
+                  || (part == 'B'
+                    && validExamProofB(categoryId, examId, attemptId)));
+              allow update, delete: if false;
+            }
           }
         }
       }
@@ -820,8 +1549,10 @@ service cloud.firestore {
 
     match /leaderboard/{userId} {
       allow get, list: if isSignedIn();
-      allow create, update: if isOwner(userId)
+      allow create: if isOwner(userId)
         && isValidLeaderboardEntry(userId);
+      allow update: if isOwner(userId)
+        && isValidLeaderboardUpdate(userId);
       allow delete: if false;
     }
 
@@ -842,6 +1573,10 @@ service cloud.firestore {
       match /questions/{questionId} {
         allow read: if isSignedIn();
         allow write: if false;
+      }
+
+      match /answerKeys/{activityId} {
+        allow read, write: if false;
       }
 
       match /examConfig/{examConfigId} {

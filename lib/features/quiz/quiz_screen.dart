@@ -18,6 +18,7 @@ import '../../data/models/pending_quiz_attempt.dart';
 import '../../data/models/quiz_question.dart';
 import '../../data/models/quiz_result.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/category_progress_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/services/connectivity_service.dart';
@@ -235,6 +236,9 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
   QuizResult? _completedResult;
   String? _completedAttemptId;
   String? _activeAttemptId;
+  AttemptReservation? _activeReservation;
+  Future<void> _snapshotWriteTail = Future<void>.value();
+  bool _snapshotFailed = false;
 
   @override
   void initState() {
@@ -245,6 +249,7 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       shuffleOptions: widget.shuffleOptions,
     );
     WidgetsBinding.instance.addObserver(this);
+    widget.progressController.addListener(_handleConfirmedProgress);
     if (!widget.requireStartConfirmation) {
       _beginAttempt();
     }
@@ -253,9 +258,23 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    widget.progressController.removeListener(_handleConfirmedProgress);
     _controller.dispose();
     _answerTextController.dispose();
     super.dispose();
+  }
+
+  void _handleConfirmedProgress() {
+    if (!mounted ||
+        !_showResult ||
+        !_resultPendingSync ||
+        _completedAttemptId == null) {
+      return;
+    }
+    final attempt = widget.progressController.attemptFor(_completedAttemptId!);
+    if (attempt?.completedAt != null) {
+      setState(() => _resultPendingSync = false);
+    }
   }
 
   @override
@@ -311,9 +330,15 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
   }
 
   void _submitAnswer() {
+    if (_isCompletingAttempt || _showResult) return;
     FocusManager.instance.primaryFocus?.unfocus();
     if (_controller.submitAnswer()) {
-      unawaited(_persistSubmittedAnswers());
+      _snapshotWriteTail = _snapshotWriteTail
+          .then((_) => _persistSubmittedAnswers())
+          .catchError((Object error) {
+            _snapshotFailed = true;
+            if (kDebugMode) debugPrint('Quiz snapshot failed: $error');
+          });
     }
   }
 
@@ -342,34 +367,47 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
 
     final attemptId = _activeAttemptId;
     if (attemptId == null) {
+      setState(() => _isCompletingAttempt = false);
       return;
     }
-    await _persistSubmittedAnswers(
-      status: PendingQuizAttemptSyncStatus.abandonedPendingFinalization,
-    );
+    await _snapshotWriteTail;
+    try {
+      await _persistSubmittedAnswers(
+        status: PendingQuizAttemptSyncStatus.abandonedPendingFinalization,
+      );
+    } catch (_) {
+      if (mounted) {
+        setState(() => _isCompletingAttempt = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text(AppStrings.progressSaveError)),
+        );
+      }
+      return;
+    }
 
     final result = _controller.isFinished
         ? _controller.quizResult
         : _controller.partialResult;
 
-    final isOnline =
-        widget.connectivityService == null ||
-        await widget.connectivityService!.checkConnection();
-    if (!isOnline) {
-      final saved = await _saveAttemptSnapshot(
-        status: PendingQuizAttemptSyncStatus.pendingSync,
-        completedAt: DateTime.now(),
-      );
-      if (!mounted) {
-        return;
-      }
-      if (!saved) {
-        setState(() {
-          _isCompletingAttempt = false;
-        });
+    final saved = await _saveAttemptSnapshot(
+      status: PendingQuizAttemptSyncStatus.pendingSync,
+      completedAt: DateTime.now(),
+    );
+    if (widget.pendingSyncService != null && !saved) {
+      if (mounted) {
+        setState(() => _isCompletingAttempt = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text(AppStrings.progressSaveError)),
         );
+      }
+      return;
+    }
+
+    final isOnline =
+        widget.connectivityService == null ||
+        await widget.connectivityService!.checkConnection(force: true);
+    if (!isOnline) {
+      if (!mounted) {
         return;
       }
 
@@ -387,15 +425,15 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       return;
     }
 
-    final completed = await _completeStartedAttempt(attemptId, result);
+    final completed =
+        widget.pendingSyncService == null ||
+            !widget.progressController.hasRemotePersistence
+        ? await _completeStartedAttempt(attemptId, result)
+        : await widget.pendingSyncService!.syncSavedAttempt(attemptId);
     if (!mounted) {
       return;
     }
     if (!completed) {
-      await _saveAttemptSnapshot(
-        status: PendingQuizAttemptSyncStatus.pendingSync,
-        completedAt: DateTime.now(),
-      );
       setState(() {
         _isCompletingAttempt = false;
         _resultPendingSync = true;
@@ -409,7 +447,6 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       }
       return;
     }
-    await widget.pendingSyncService?.removeLocalAttempt(attemptId);
 
     setState(() {
       _isCompletingAttempt = false;
@@ -446,7 +483,23 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
     );
   }
 
-  void _goForward() {
+  Future<void> _goForward() async {
+    if (_isCompletingAttempt || _showResult) return;
+    await _snapshotWriteTail;
+    if (_snapshotFailed) {
+      try {
+        await _persistSubmittedAnswers();
+        _snapshotFailed = false;
+      } catch (_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text(AppStrings.progressSaveError)),
+          );
+        }
+        return;
+      }
+    }
+    if (!mounted) return;
     if (_controller.isLastQuestion) {
       unawaited(_completeAttemptAndShowResult());
       return;
@@ -468,6 +521,8 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
 
     _answerTextController.clear();
     _activityCharacters.clear();
+    _snapshotFailed = false;
+    _snapshotWriteTail = Future<void>.value();
     _controller.reset();
     setState(() {
       _allowPop = false;
@@ -477,9 +532,14 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       _resultPendingSync = false;
       _completedAttemptId = null;
       _activeAttemptId = null;
+      _activeReservation = null;
       _completedResult = null;
     });
-    _beginAttempt();
+    if (widget.requireStartConfirmation) {
+      unawaited(_confirmAndStartAttempt());
+    } else {
+      _beginAttempt();
+    }
     widget.onResultVisibilityChanged(false);
   }
 
@@ -526,7 +586,7 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
 
     final isOnline =
         widget.connectivityService == null ||
-        await widget.connectivityService!.checkConnection();
+        await widget.connectivityService!.checkConnection(force: true);
     if (!mounted) {
       return;
     }
@@ -540,10 +600,57 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       return;
     }
 
-    setState(() {
-      _beginAttempt();
-      _isCheckingStart = false;
-    });
+    final reservation = await _startReservedAttempt();
+    if (!mounted) {
+      return;
+    }
+    if (reservation == null) {
+      setState(() => _isCheckingStart = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.startAttemptConnectionError)),
+      );
+      return;
+    }
+    _activeAttemptId = reservation.attemptId;
+    _activeReservation = reservation;
+    final saved = await _saveAttemptSnapshot(
+      status: PendingQuizAttemptSyncStatus.inProgress,
+    );
+    if (!mounted) {
+      return;
+    }
+    if (widget.pendingSyncService != null && !saved) {
+      widget.progressController.discardAttempt(reservation.attemptId);
+      _activeAttemptId = null;
+      _activeReservation = null;
+      setState(() => _isCheckingStart = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(AppStrings.progressSaveError)),
+      );
+      return;
+    }
+    _attemptStarted = true;
+    setState(() => _isCheckingStart = false);
+  }
+
+  Future<AttemptReservation?> _startReservedAttempt() {
+    final exam = widget.exam;
+    if (exam != null) {
+      return widget.progressController.reserveAndStartExamAttempt(
+        categoryId: widget.category.id,
+        lessonId: widget.category.lessonId ?? widget.category.id,
+        examId: exam.id,
+        questionIds: _controller.questionIds,
+        totalActivities: widget.totalActivities,
+      );
+    }
+    return widget.progressController.reserveAndStartActivityAttempt(
+      categoryId: widget.category.id,
+      lessonId: widget.category.lessonId ?? widget.category.id,
+      activityId: widget.activity!.id,
+      questionIds: _canonicalActivityQuestionIds,
+      totalActivities: widget.totalActivities,
+    );
   }
 
   String _startAttempt() {
@@ -587,7 +694,10 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
         isCorrect: answer.isCorrect,
       );
     }
-    await _saveAttemptSnapshot(status: status);
+    final saved = await _saveAttemptSnapshot(status: status);
+    if (widget.pendingSyncService != null && !saved) {
+      throw StateError('Could not persist quiz snapshot.');
+    }
   }
 
   Future<bool> _saveAttemptSnapshot({
@@ -616,12 +726,15 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
     final pending = PendingQuizAttempt(
       uid: user.uid,
       attemptId: attemptId,
+      attemptNumber: attempt.attemptNumber,
       type: type,
       categoryId: widget.category.id,
       lessonId: widget.category.lessonId ?? widget.category.id,
       activityId: widget.activity?.id,
       examId: widget.exam?.id,
-      questionIds: _controller.questionIds,
+      questionIds: widget.exam == null
+          ? _canonicalActivityQuestionIds
+          : _controller.questionIds,
       answers: [
         for (final answer in _controller.submittedAnswers)
           CategoryProgressAnswer(
@@ -631,6 +744,11 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
             answeredAt: completedAt ?? answeredAt,
           ),
       ],
+      pointValue: widget.exam == null ? _activeReservation?.pointValue : null,
+      correctQuestionIds: [
+        for (final answer in _controller.submittedAnswers)
+          if (answer.isCorrect) answer.questionId,
+      ],
       correctAnswers: result.correctAnswers,
       totalQuestions: result.totalQuestions,
       percentage: result.percentage,
@@ -639,9 +757,17 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
       completedAt: completedAt,
       status: status,
     );
-    await syncService.savePending(pending);
-    return true;
+    try {
+      await syncService.savePending(pending);
+      return true;
+    } catch (error) {
+      if (kDebugMode) debugPrint('Quiz snapshot failed: $error');
+      return false;
+    }
   }
+
+  List<String> get _canonicalActivityQuestionIds =>
+      [for (final question in widget.questions) question.id]..sort();
 
   @override
   Widget build(BuildContext context) {
@@ -663,8 +789,12 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
               result: _completedResult ?? _controller.generateResult(),
               takeaways:
                   widget.activity?.completion.takeaways ?? const <String>[],
-              earnedPoints: completedAttempt?.earnedPoints,
-              totalPoints: widget.progressController.currentTotalPoints,
+              earnedPoints: _resultPendingSync
+                  ? null
+                  : completedAttempt?.earnedPoints,
+              totalPoints: _resultPendingSync
+                  ? null
+                  : widget.progressController.currentTotalPoints,
               pendingSync: _resultPendingSync,
               onBackToActivities: _backToActivities,
               onRepeatLesson: _repeatLesson,
