@@ -313,7 +313,7 @@ void main() {
       expect(scoredAt1, contains('q08'));
       expect(scoredAt10, isNot(contains('q09')));
       expect(activityData.containsKey('questionScores'), isFalse);
-      expect(fourthAttempt.containsKey('earnedPoints'), isFalse);
+      expect(fourthAttempt['earnedPoints'], 0);
       expect(fourthAttempt['correctAnswers'], 10);
       expect(fourthAttempt['percentage'], 100);
       expect(fourthAttempt['correct'][0], isTrue);
@@ -484,8 +484,13 @@ void main() {
           attemptId: 'attempt_once',
           correctQuestionIds: _ids(1, 10),
         );
+        final retryStages = <ActivitySyncStage>[];
+        final retryRepository = CategoryProgressRepository(
+          firestore: firestore,
+          onActivitySyncStage: (stage) async => retryStages.add(stage),
+        );
         final second = await _completeActivity(
-          repository,
+          retryRepository,
           attemptId: 'attempt_once',
           correctQuestionIds: _ids(1, 10),
           reserve: false,
@@ -501,6 +506,7 @@ void main() {
         expect(activityData['attemptCount'], 1);
         expect(activityData['activityPoints'], 100);
         expect(userData['totalPoints'], 100);
+        expect(retryStages, isEmpty);
       },
     );
 
@@ -526,7 +532,7 @@ void main() {
       expect((submission['answers'] as Map).length, 10);
       expect(attempt['correct'], hasLength(10));
       expect(attempt['correctAnswers'], 3);
-      expect(attempt.containsKey('earnedPoints'), isFalse);
+      expect(attempt['earnedPoints'], 30);
       expect(attempt.containsKey('answers'), isFalse);
       expect(activity['scoredAt10QuestionIds'], ['q01', 'q02', 'q03']);
       expect(activity.containsKey('questionScores'), isFalse);

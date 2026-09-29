@@ -496,16 +496,60 @@ class CategoryProgressRepository
         final userDocument = _userDocument(uid);
         final leaderboardDocument = _leaderboardDocument(uid);
 
+        final completedAttempt = await attemptDocument.get(
+          const GetOptions(source: Source.server),
+        );
+        if (completedAttempt.exists) {
+          final data = completedAttempt.data()!;
+          final completedSubmission = await submissionDocument.get(
+            const GetOptions(source: Source.server),
+          );
+          final receipt = completedSubmission.data();
+          if (data['finalizationVersion'] != 2 ||
+              data['categoryId'] != categoryId ||
+              data['activityId'] != activityId ||
+              (reservedAttemptNumber != null &&
+                  data['attemptNumber'] != reservedAttemptNumber) ||
+              !listEquals(data['questionIds'] as List?, questionIds) ||
+              !listEquals(data['correct'] as List?, correct) ||
+              data['correctAnswers'] != correctAnswers ||
+              data['percentage'] != percentage ||
+              receipt == null ||
+              receipt['finalizationVersion'] != 2 ||
+              receipt['attemptId'] != attemptId ||
+              receipt['attemptNumber'] != data['attemptNumber'] ||
+              !listEquals(receipt['questionIds'] as List?, questionIds) ||
+              !mapEquals(receipt['answers'] as Map?, committedAnswers) ||
+              receipt['earnedPoints'] != data['earnedPoints']) {
+            throw const FormatException(
+              'Finalized attempt does not match pending data.',
+            );
+          }
+          final snapshots = await Future.wait([
+            activityDocument.get(const GetOptions(source: Source.server)),
+            userDocument.get(const GetOptions(source: Source.server)),
+          ]);
+          final activity = snapshots[0];
+          final user = snapshots[1];
+          if (!activity.exists || !user.exists) {
+            throw const FormatException('Finalized aggregates are missing.');
+          }
+          final sets = _existingScoredSets(activity);
+          return CompletedQuizAttemptPersistenceResult(
+            attemptNumber: data['attemptNumber'] as int,
+            answers: List<CategoryProgressAnswer>.unmodifiable(answers),
+            correctAnswers: correctAnswers,
+            totalQuestions: 10,
+            percentage: percentage,
+            earnedPoints: data['earnedPoints'] as int,
+            activityPoints: _existingActivityPoints(activity),
+            questionScores: sets.toLocalQuestionScores(),
+            totalPoints: _existingUserTotalPoints(user),
+          );
+        }
+
         // Public answers support local feedback; the protected key in Rules
         // remains the authority for the semantic attempt.
-        final submission = <String, dynamic>{
-          'attemptId': attemptId,
-          'attemptNumber': 0,
-          'categoryId': categoryId,
-          'activityId': activityId,
-          'answers': committedAnswers,
-          'committedAt': FieldValue.serverTimestamp(),
-        };
         // The reservation is the only source of the attempt number and value.
         final reservedActivity = await activityDocument.get();
         final active = reservedActivity.data()?['activeAttempt'];
@@ -542,7 +586,39 @@ class CategoryProgressRepository
         if (attemptNumber < 1) {
           throw const FormatException('Missing reserved attempt number.');
         }
-        submission['attemptNumber'] = attemptNumber;
+        final existingScores = _existingScoredSets(
+          reservedActivity,
+        ).toLocalQuestionScores();
+        final submittedScoring = _scoreActivityAnswers(
+          categoryId: categoryId,
+          activityId: activityId,
+          attemptNumber: attemptNumber,
+          questionIds: questionIds,
+          answers: answers,
+          existingQuestionScores: existingScores,
+        );
+        final rewardedQuestionIds = [
+          for (final id in questionIds)
+            if (!(existingScores[id]?.hasAwardedPoints ?? false) &&
+                (submittedScoring.questionScores[id]?.hasAwardedPoints ??
+                    false))
+              id,
+        ];
+        final submission = <String, dynamic>{
+          'finalizationVersion': 2,
+          'attemptId': attemptId,
+          'attemptNumber': attemptNumber,
+          'categoryId': categoryId,
+          'activityId': activityId,
+          'questionIds': questionIds,
+          'answers': committedAnswers,
+          'correct': correct,
+          'correctAnswers': correctAnswers,
+          'percentage': percentage,
+          'rewardedQuestionIds': rewardedQuestionIds,
+          'earnedPoints': submittedScoring.earnedPoints,
+          'committedAt': FieldValue.serverTimestamp(),
+        };
         await _checkpoint(ActivitySyncStage.beforeSubmission);
         await _createOrVerifyDocument(
           submissionDocument,
@@ -552,11 +628,22 @@ class CategoryProgressRepository
               existing['attemptNumber'] == attemptNumber &&
               existing['categoryId'] == categoryId &&
               existing['activityId'] == activityId &&
-              mapEquals(existing['answers'] as Map?, committedAnswers),
+              existing['finalizationVersion'] == 2 &&
+              listEquals(existing['questionIds'] as List?, questionIds) &&
+              mapEquals(existing['answers'] as Map?, committedAnswers) &&
+              listEquals(existing['correct'] as List?, correct) &&
+              existing['correctAnswers'] == correctAnswers &&
+              existing['percentage'] == percentage &&
+              listEquals(
+                existing['rewardedQuestionIds'] as List?,
+                rewardedQuestionIds,
+              ) &&
+              existing['earnedPoints'] == submittedScoring.earnedPoints,
         );
         await _checkpoint(ActivitySyncStage.submissionCommitted);
 
         final semanticAttempt = <String, dynamic>{
+          'finalizationVersion': 2,
           'type': QuizAttemptType.activity.firestoreValue,
           'categoryId': categoryId,
           'activityId': activityId,
@@ -567,23 +654,11 @@ class CategoryProgressRepository
           'correctAnswers': correctAnswers,
           'totalQuestions': 10,
           'percentage': percentage,
+          'rewardedQuestionIds': rewardedQuestionIds,
+          'earnedPoints': submittedScoring.earnedPoints,
           'startedAt': Timestamp.fromDate(startedAt),
           'completedAt': FieldValue.serverTimestamp(),
         };
-        await _createOrVerifyDocument(
-          attemptDocument,
-          semanticAttempt,
-          (existing) =>
-              existing['type'] == 'activity' &&
-              existing['categoryId'] == categoryId &&
-              existing['activityId'] == activityId &&
-              existing['attemptNumber'] == attemptNumber &&
-              listEquals(existing['questionIds'] as List?, questionIds) &&
-              listEquals(existing['correct'] as List?, correct) &&
-              existing['correctAnswers'] == correctAnswers &&
-              existing['percentage'] == percentage,
-        );
-        await _checkpoint(ActivitySyncStage.attemptConfirmed);
 
         final snapshots = await Future.wait([
           activityDocument.get(),
@@ -598,63 +673,9 @@ class CategoryProgressRepository
         if (activityData == null || userData == null) {
           throw const FormatException('Missing activity or user progress.');
         }
-        final award = userData['lastActivityAward'];
         final currentActive = activityData['activeAttempt'];
-        final laterActive =
-            currentActive is Map &&
-            reservedAttemptNumber != null &&
-            currentActive['attemptNumber'] is int &&
-            (currentActive['attemptNumber'] as int) > reservedAttemptNumber;
-        if (currentActive == null || laterActive) {
-          final activityCount = activityData['attemptCount'];
-          final laterAttemptApplied =
-              activityCount is int && activityCount > attemptNumber;
-          final latestAwardMatches =
-              award is Map &&
-              award['categoryId'] == categoryId &&
-              award['activityId'] == activityId &&
-              award['attemptId'] == attemptId &&
-              award['attemptNumber'] == attemptNumber;
-          if ((!laterActive && activityData['status'] != 'completed') ||
-              !(laterAttemptApplied || latestAwardMatches)) {
-            throw const FormatException(
-              'Attempt was not applied to aggregates.',
-            );
-          }
-          final sets = _existingScoredSets(activitySnapshot);
-          final confirmedValue = const ActivityScoringPolicy()
-              .pointsForCorrectAnswer(attemptNumber: attemptNumber);
-          if (pointValue != null && pointValue != confirmedValue) {
-            throw const FormatException('Invalid pending point value.');
-          }
-          final group = confirmedValue == 10
-              ? sets.scoredAt10QuestionIds
-              : confirmedValue == 5
-              ? sets.scoredAt5QuestionIds
-              : confirmedValue == 1
-              ? sets.scoredAt1QuestionIds
-              : <String>{};
-          final confirmedReward =
-              correct
-                  .asMap()
-                  .entries
-                  .where(
-                    (entry) =>
-                        entry.value && group.contains(questionIds[entry.key]),
-                  )
-                  .length *
-              confirmedValue;
-          return CompletedQuizAttemptPersistenceResult(
-            attemptNumber: attemptNumber,
-            answers: List<CategoryProgressAnswer>.unmodifiable(answers),
-            correctAnswers: correctAnswers,
-            totalQuestions: 10,
-            percentage: percentage,
-            earnedPoints: confirmedReward,
-            activityPoints: _existingActivityPoints(activitySnapshot),
-            questionScores: sets.toLocalQuestionScores(),
-            totalPoints: _existingUserTotalPoints(userSnapshot),
-          );
+        if (currentActive == null) {
+          throw const FormatException('Attempt was not finalized.');
         }
         final validatedNumber = _validateActiveAttempt(
           snapshot: activitySnapshot,
@@ -696,6 +717,7 @@ class CategoryProgressRepository
         }
 
         final batch = _firestore.batch();
+        batch.set(attemptDocument, semanticAttempt);
         batch.set(activityDocument, {
           'activityId': activityId,
           'status': ActivityProgressStatus.completed.firestoreValue,
@@ -759,6 +781,7 @@ class CategoryProgressRepository
           'updatedAt': FieldValue.serverTimestamp(),
         });
         await batch.commit();
+        await _checkpoint(ActivitySyncStage.attemptConfirmed);
         await _checkpoint(ActivitySyncStage.aggregatesApplied);
         return scoring.toPersistenceResult(
           attemptNumber: attemptNumber,
@@ -774,11 +797,24 @@ class CategoryProgressRepository
     Map<String, dynamic> proposal,
     bool Function(Map<String, dynamic>) matches,
   ) async {
+    final existing = await document.get(
+      const GetOptions(source: Source.server),
+    );
+    if (existing.exists) {
+      if (!matches(existing.data()!)) {
+        throw const FormatException(
+          'Committed document differs from pending data.',
+        );
+      }
+      return;
+    }
     try {
       await document.set(proposal);
     } on FirebaseException catch (error) {
       if (error.code != 'permission-denied') rethrow;
-      final snapshot = await document.get();
+      final snapshot = await document.get(
+        const GetOptions(source: Source.server),
+      );
       final data = snapshot.data();
       if (data == null || !matches(data)) rethrow;
     }

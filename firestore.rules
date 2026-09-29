@@ -847,9 +847,11 @@ service cloud.firestore {
       let categoryAfter = getAfter(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId));
       let leaderboardAfter = getAfter(/databases/$(database)/documents/leaderboard/$(request.auth.uid));
       return reservation is map
+        && !exists(attemptPath)
         && request.resource.data.activeAttempt == null
         && request.resource.data.attemptCount == resource.data.attemptCount
         && attempt.data.attemptNumber == reservation.attemptNumber
+        && attempt.data.finalizationVersion == 2
         && attempt.data.categoryId == categoryId
         && attempt.data.activityId == activityId
         && userAfter.data.lastActivityAward == {
@@ -969,8 +971,7 @@ service cloud.firestore {
       let old10 = resource.data.scoredAt10QuestionIds.toSet();
       let old5 = resource.data.scoredAt5QuestionIds.toSet();
       let old1 = resource.data.scoredAt1QuestionIds.toSet();
-      let rewarded = correctQuestionIds(attempt)
-        .difference(old10.union(old5).union(old1));
+      let rewarded = attempt.rewardedQuestionIds.toSet();
       let value = resource.data.activeAttempt.pointValue;
       return request.resource.data.scoredAt10QuestionIds.toSet()
           == (value == 10 ? old10.union(rewarded) : old10)
@@ -979,7 +980,7 @@ service cloud.firestore {
         && request.resource.data.scoredAt1QuestionIds.toSet()
           == (value == 1 ? old1.union(rewarded) : old1)
         && request.resource.data.activityPoints
-          == resource.data.activityPoints + rewarded.size() * value;
+          == resource.data.activityPoints + attempt.earnedPoints;
     }
 
     function hasValidActivityScoringOnFinalization(categoryId, activityId) {
@@ -1062,7 +1063,8 @@ service cloud.firestore {
       return [
         'type', 'categoryId', 'activityId', 'examId', 'attemptNumber',
         'questionIds', 'correct', 'correctAnswers', 'totalQuestions',
-        'percentage', 'startedAt', 'completedAt'
+        'percentage', 'startedAt', 'completedAt', 'finalizationVersion',
+        'rewardedQuestionIds', 'earnedPoints'
       ];
     }
 
@@ -1155,12 +1157,26 @@ service cloud.firestore {
       let key = get(answerKeyPath(categoryId, activityId));
       let keyData = key.data;
       let answers = request.resource.data.answers;
+      let submission = request.resource.data;
+      let progress = get(/databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId)).data;
+      let ids = keyData.questionIds;
+      let correct = submission.correct;
+      let correctIds = correctQuestionIds(submission);
+      let alreadyScored = progress.scoredAt10QuestionIds.toSet()
+        .union(progress.scoredAt5QuestionIds.toSet())
+        .union(progress.scoredAt1QuestionIds.toSet());
+      let rewarded = correctIds.difference(alreadyScored);
       return request.resource.data.keys().hasOnly([
-          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt'
+          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt',
+          'finalizationVersion', 'questionIds', 'correct', 'correctAnswers',
+          'percentage', 'rewardedQuestionIds', 'earnedPoints'
         ])
         && request.resource.data.keys().hasAll([
-          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt'
+          'attemptId', 'attemptNumber', 'categoryId', 'activityId', 'answers', 'committedAt',
+          'finalizationVersion', 'questionIds', 'correct', 'correctAnswers',
+          'percentage', 'rewardedQuestionIds', 'earnedPoints'
         ])
+        && submission.finalizationVersion == 2
         && request.resource.data.attemptId == attemptId
         && request.resource.data.attemptNumber is int
         && request.resource.data.categoryId == categoryId
@@ -1170,7 +1186,27 @@ service cloud.firestore {
         && keyData.activityId == activityId
         && validCanonicalSubmission(answers, keyData)
         && hasSubmissionReservation(categoryId, activityId, attemptId,
-          request.resource.data.attemptNumber);
+          request.resource.data.attemptNumber)
+        && submission.questionIds == ids
+        && correct is list && correct.size() == 10
+        && correct == [
+          actualAnswerCorrect(answers[ids[0]], ids[0], keyData),
+          actualAnswerCorrect(answers[ids[1]], ids[1], keyData),
+          actualAnswerCorrect(answers[ids[2]], ids[2], keyData),
+          actualAnswerCorrect(answers[ids[3]], ids[3], keyData),
+          actualAnswerCorrect(answers[ids[4]], ids[4], keyData),
+          actualAnswerCorrect(answers[ids[5]], ids[5], keyData),
+          actualAnswerCorrect(answers[ids[6]], ids[6], keyData),
+          actualAnswerCorrect(answers[ids[7]], ids[7], keyData),
+          actualAnswerCorrect(answers[ids[8]], ids[8], keyData),
+          actualAnswerCorrect(answers[ids[9]], ids[9], keyData)
+        ]
+        && submission.correctAnswers == correctIds.size()
+        && submission.percentage == submission.correctAnswers * 10
+        && submission.rewardedQuestionIds is list
+        && submission.rewardedQuestionIds.size() == rewarded.size()
+        && submission.rewardedQuestionIds.toSet() == rewarded
+        && submission.earnedPoints == rewarded.size() * progress.activeAttempt.pointValue;
     }
 
     function actualAnswerCorrect(answer, questionId, keyData) {
@@ -1190,50 +1226,36 @@ service cloud.firestore {
       let submission = get(activityAnswerSubmissionPath(
         request.auth.uid, categoryId, activityId, attemptId
       ));
-      let key = get(answerKeyPath(categoryId, activityId));
-      let keyData = key.data;
       let attempt = request.resource.data;
-      let ids = keyData.questionIds;
-      let answers = submission.data.answers;
-      return keyData.categoryId == categoryId
-        && keyData.activityId == activityId
+      return submission.data.finalizationVersion == 2
         && submission.data.attemptId == attemptId
         && submission.data.attemptNumber == request.resource.data.attemptNumber
         && submission.data.categoryId == categoryId
         && submission.data.activityId == activityId
-        && request.resource.data.questionIds == keyData.questionIds
-        && attempt.correct[0] == actualAnswerCorrect(answers[ids[0]], ids[0], keyData)
-        && attempt.correct[1] == actualAnswerCorrect(answers[ids[1]], ids[1], keyData)
-        && attempt.correct[2] == actualAnswerCorrect(answers[ids[2]], ids[2], keyData)
-        && attempt.correct[3] == actualAnswerCorrect(answers[ids[3]], ids[3], keyData)
-        && attempt.correct[4] == actualAnswerCorrect(answers[ids[4]], ids[4], keyData)
-        && attempt.correct[5] == actualAnswerCorrect(answers[ids[5]], ids[5], keyData)
-        && attempt.correct[6] == actualAnswerCorrect(answers[ids[6]], ids[6], keyData)
-        && attempt.correct[7] == actualAnswerCorrect(answers[ids[7]], ids[7], keyData)
-        && attempt.correct[8] == actualAnswerCorrect(answers[ids[8]], ids[8], keyData)
-        && attempt.correct[9] == actualAnswerCorrect(answers[ids[9]], ids[9], keyData)
-        && request.resource.data.correctAnswers
-          == (attempt.correct[0] ? 1 : 0)
-            + (attempt.correct[1] ? 1 : 0)
-            + (attempt.correct[2] ? 1 : 0)
-            + (attempt.correct[3] ? 1 : 0)
-            + (attempt.correct[4] ? 1 : 0)
-            + (attempt.correct[5] ? 1 : 0)
-            + (attempt.correct[6] ? 1 : 0)
-            + (attempt.correct[7] ? 1 : 0)
-            + (attempt.correct[8] ? 1 : 0)
-            + (attempt.correct[9] ? 1 : 0)
-        && request.resource.data.percentage
-          == request.resource.data.correctAnswers * 10;
+        && attempt.finalizationVersion == 2
+        && attempt.questionIds == submission.data.questionIds
+        && attempt.correct == submission.data.correct
+        && attempt.correctAnswers == submission.data.correctAnswers
+        && attempt.percentage == submission.data.percentage
+        && attempt.rewardedQuestionIds == submission.data.rewardedQuestionIds
+        && attempt.earnedPoints == submission.data.earnedPoints;
     }
 
     function hasMatchingActivityReservation(categoryId, activityId, attemptId) {
       let progressPath = /databases/$(database)/documents/users/$(request.auth.uid)/categoryProgress/$(categoryId)/activities/$(activityId);
       let progress = get(progressPath);
+      let after = getAfter(progressPath);
       return progress.data.activeAttempt is map
         && progress.data.activeAttempt.attemptId == attemptId
         && progress.data.activeAttempt.attemptNumber == request.resource.data.attemptNumber
-        && progress.data.attemptCount == request.resource.data.attemptNumber;
+        && progress.data.attemptCount == request.resource.data.attemptNumber
+        && after.data.activeAttempt == null
+        && after.data.status == 'completed'
+        && after.data.attemptCount == request.resource.data.attemptNumber
+        && after.data.lastAttemptAt == request.time
+        && after.data.updatedAt == request.time
+        && after.data.activityPoints - progress.data.activityPoints
+          == request.resource.data.earnedPoints;
     }
 
     function hasMatchingExamReservation(categoryId, examId, attemptId) {
@@ -1261,6 +1283,7 @@ service cloud.firestore {
     function hasValidActivityAttemptBase(categoryId) {
       return request.resource.data.keys().hasOnly(activityAttemptFields())
         && request.resource.data.keys().hasAll(activityAttemptFields())
+        && request.resource.data.finalizationVersion == 2
         && request.resource.data.categoryId == categoryId
         && request.resource.data.attemptNumber is int
         && request.resource.data.attemptNumber >= 1
@@ -1276,6 +1299,10 @@ service cloud.firestore {
         && request.resource.data.percentage is int
         && request.resource.data.percentage >= 0
         && request.resource.data.percentage <= 100
+        && request.resource.data.rewardedQuestionIds is list
+        && request.resource.data.earnedPoints is int
+        && request.resource.data.earnedPoints >= 0
+        && request.resource.data.earnedPoints <= 100
         && request.resource.data.startedAt is timestamp
         && request.resource.data.completedAt is timestamp;
     }

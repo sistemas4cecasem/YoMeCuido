@@ -1,4 +1,5 @@
 const fs = require('node:fs');
+const assert = require('node:assert/strict');
 const {
   assertFails,
   assertSucceeds,
@@ -13,6 +14,7 @@ const {
   getDocs,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   Timestamp,
@@ -54,6 +56,9 @@ async function main() {
     ['campo inesperado en perfil denegado', unexpectedProfileFieldDenied],
     ['activityPoints negativo denegado', negativeActivityPointsDenied],
     ['campo legacy questionScores denegado', legacyQuestionScoresFieldDenied],
+    ['reserva sobre progreso legacy existente denegada', legacyExistingProgressReservationDenied],
+    ['progreso migrado reserva intento 3 sin duplicar puntos', migratedProgressReservesWithoutDoubleAward],
+    ['sin answer key, sincronización rechaza submission sin cambiar reserva', missingAnswerKeyBlocksPendingSubmission],
     ['attemptNumber inválido denegado', invalidAttemptNumberDenied],
     ['attempt no acepta earnedPoints del cliente', clientEarnedPointsDenied],
     ['porcentaje inválido denegado', invalidPercentageDenied],
@@ -76,6 +81,7 @@ async function main() {
     ['texto fillBlank respeta variantes normalizadas explícitas', fillBlankCommittedVariantAllowed],
     ['query de contenido educativo permitida', contentQueryAllowed],
     ['reserva inicial y siguiente intento válidos', validSequentialAttemptReservations],
+    ['reserva realista de primera actividad de trata permitida', realisticTraffickingFirstReservationAllowed],
     ['no repite ni salta números de intento', invalidAttemptReservationNumbersDenied],
     ['no reserva con contador igual ni incrementos mayores', invalidAttemptReservationDeltasDenied],
     ['no altera una reserva activa', activeAttemptReservationImmutable],
@@ -96,6 +102,11 @@ async function main() {
     ['lecturas propias previas a guardar progreso permitidas', ownProgressPreflightReadsAllowed],
     ['flujo legítimo de puntuación permitido', legitimateScoringFlowAllowed],
     ['10 respuestas correctas y batch de cuatro documentos permitidos', allTenCorrectAndFourWriteBatchAllowed],
+    ['frontera diagnóstica de presupuesto con historial premiado', historicalScoringBudgetBoundary],
+    ['extremos de historial mixto y puntuación cero', mixedHistoricalScoringExtremes],
+    ['recibo derivado falso no se puede crear', forgedActivitySubmissionDenied],
+    ['finalización atómica rechaza batches parciales', partialActivityFinalizationDenied],
+    ['attempt finalizado debe coincidir con recibo validado', forgedFinalizedAttemptDenied],
     ['pointValue de reserva corresponde al intento', reservationPointValueValidated],
     ['actividad no se finaliza sin los otros tres agregados', activityFinalizationRequiresFourWriteBatch],
     ['recompensa protegida por intento reservado: 10/5/1/0', scoringPolicyRewardsValidated],
@@ -255,18 +266,38 @@ function answerSubmissionData({
   correctCount = 5,
   answeredCount = 10,
   answers,
+  previousScores = {},
+  key = answerKeyData(),
 } = {}) {
+  const submittedAnswers = answers ?? Object.fromEntries(Array.from({ length: 10 }, (_, index) => [
+    `q${String(index + 1).padStart(2, '0')}`,
+    index < answeredCount
+      ? index < correctCount ? 'correct' : 'incorrect'
+      : '',
+  ]));
+  const ids = key.questionIds;
+  const correct = ids.map((id) => {
+    const answer = submittedAnswers[id];
+    return answer !== '' && (key.fillBlankQuestionIds.includes(id)
+      ? key.acceptedAnswersByQuestionId[id].includes(answer.trim().toLowerCase())
+      : answer === key.correctAnswersByQuestionId[id]);
+  });
+  const rewardedQuestionIds = ids.filter((id, index) => correct[index] && !previousScores[id]);
+  const value = attemptNumber === 1 ? 10 : attemptNumber === 2 ? 5
+    : attemptNumber === 3 ? 1 : 0;
   return {
+    finalizationVersion: 2,
     attemptId,
     attemptNumber,
     categoryId,
     activityId,
-    answers: answers ?? Object.fromEntries(Array.from({ length: 10 }, (_, index) => [
-      `q${String(index + 1).padStart(2, '0')}`,
-      index < answeredCount
-        ? index < correctCount ? 'correct' : 'incorrect'
-        : '',
-    ])),
+    questionIds: ids,
+    answers: submittedAnswers,
+    correct,
+    correctAnswers: correct.filter(Boolean).length,
+    percentage: correct.filter(Boolean).length * 10,
+    rewardedQuestionIds,
+    earnedPoints: rewardedQuestionIds.length * value,
     committedAt: serverTimestamp(),
   };
 }
@@ -382,6 +413,7 @@ function reservationProgressData(attemptId, attemptNumber) {
 function activityAttemptData(overrides = {}) {
   const correct = Array.from({ length: 10 }, (_, index) => index < 5);
   return {
+    finalizationVersion: 2,
     type: 'activity',
     attemptNumber: 1,
     categoryId,
@@ -392,6 +424,8 @@ function activityAttemptData(overrides = {}) {
     correctAnswers: 5,
     totalQuestions: 10,
     percentage: 50,
+    rewardedQuestionIds: questionIds().slice(0, 5),
+    earnedPoints: 50,
     startedAt: Timestamp.fromDate(new Date('2026-09-02T00:00:00Z')),
     completedAt: serverTimestamp(),
     ...overrides,
@@ -486,6 +520,8 @@ async function buildScoringFinalization({
     correct: correctByIndex,
     correctAnswers,
     percentage,
+    rewardedQuestionIds: newlyRewarded,
+    earnedPoints,
   });
   const activity = {
     ...previousActivity,
@@ -541,8 +577,8 @@ async function buildScoringFinalization({
 }
 
 async function commitScoringFinalization(firestore, plan) {
-  await setDoc(plan.refs.attemptRef, plan.attempt);
   const batch = writeBatch(firestore);
+  batch.set(plan.refs.attemptRef, plan.attempt);
   batch.set(plan.refs.activityRef, plan.activity);
   batch.set(plan.refs.categoryRef, plan.category);
   batch.set(plan.refs.userRef, plan.user, { merge: true });
@@ -558,6 +594,7 @@ async function prepareAttempt({
   answers,
   previousScores = {},
   totalPoints = 0,
+  historicalCompletion = false,
 } = {}) {
   const attemptId = `attempt_${attemptNumber}`;
   const previousActivityPoints = Object.values(previousScores).reduce(
@@ -581,6 +618,23 @@ async function prepareAttempt({
     });
   }
   await setActiveReservation(uid, attemptId, attemptNumber);
+  if (historicalCompletion) {
+    const completedAt = Timestamp.fromDate(new Date('2026-09-02T00:00:00Z'));
+    const scoredCount = Object.keys(previousScores).length;
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      const db = context.firestore();
+      await updateDoc(activityProgressRef(db, uid), {
+        bestCorrectAnswers: scoredCount,
+        bestTotalQuestions: 10,
+        bestPercentage: scoredCount * 10,
+        lastAttemptAt: completedAt,
+        completedAt,
+      });
+      await updateDoc(doc(db, 'users', uid, 'categoryProgress', categoryId), {
+        completedActivityIds: [activityId],
+      });
+    });
+  }
   const firestore = authDb(uid);
   const committed = answerSubmissionData({
     attemptId,
@@ -588,6 +642,7 @@ async function prepareAttempt({
     correctCount,
     answeredCount,
     answers,
+    previousScores,
   });
   await assertSucceeds(setDoc(
     answerSubmissionRef(firestore, uid, attemptId),
@@ -1050,6 +1105,142 @@ async function allTenCorrectAndFourWriteBatchAllowed() {
   await assertSucceeds(commitScoringFinalization(firestore, plan));
 }
 
+async function missingAnswerKeyBlocksPendingSubmission() {
+  await seedActivity('uid-a');
+  await setActiveReservation('uid-a', 'pending_attempt', 1);
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    await deleteDoc(answerKeyRef(context.firestore()));
+  });
+  const firestore = authDb('uid-a');
+  const ref = answerSubmissionRef(firestore, 'uid-a', 'pending_attempt');
+  const submission = answerSubmissionData({
+    attemptId: 'pending_attempt',
+    attemptNumber: 1,
+    answeredCount: 0,
+    correctCount: 0,
+  });
+  await assertFails(setDoc(ref, submission));
+  assert.equal((await getDoc(ref)).exists(), false);
+  const progress = (await getDoc(activityProgressRef(firestore))).data();
+  assert.equal(progress.activeAttempt.attemptId, 'pending_attempt');
+  assert.equal(progress.activeAttempt.attemptNumber, 1);
+  await seedAnswerKey();
+  await assertSucceeds(setDoc(ref, submission));
+}
+
+async function historicalScoringBudgetBoundary() {
+  // A prior completion leaves completedAt set. Every case must finalize.
+  const cases = [
+    [1, 7],
+    [1, 8],
+    [10, 3],
+    [10, 4],
+    [10, 10],
+    [10, 0],
+  ];
+  for (const [count, correctCount] of cases) {
+    await testEnv.clearFirestore();
+    const ids = Array.from({ length: count }, (_, index) =>
+      `q${String(index + 1).padStart(2, '0')}`);
+    const previousScores = Object.fromEntries(ids.map((id) => [id, {
+      pointsAwarded: 10,
+    }]));
+    const { firestore, plan } = await prepareAttempt({
+      attemptNumber: 3,
+      correctCount,
+      answeredCount: 10,
+      previousScores,
+      totalPoints: count * 10,
+      historicalCompletion: true,
+    });
+    await assertSucceeds(commitScoringFinalization(firestore, plan));
+  }
+}
+
+async function mixedHistoricalScoringExtremes() {
+  const previousScores = Object.fromEntries(questionIds().map((id, index) => [id, {
+    pointsAwarded: index < 4 ? 10 : index < 7 ? 5 : 1,
+  }]));
+  for (const correctCount of [0, 5, 10]) {
+    await testEnv.clearFirestore();
+    const { firestore, plan } = await prepareAttempt({
+      attemptNumber: 4,
+      correctCount,
+      answeredCount: 10,
+      previousScores,
+      totalPoints: 58,
+      historicalCompletion: true,
+    });
+    assert.equal(plan.attempt.earnedPoints, 0);
+    await assertSucceeds(commitScoringFinalization(firestore, plan));
+  }
+  await testEnv.clearFirestore();
+  const { firestore, plan } = await prepareAttempt({
+    attemptNumber: 3,
+    correctCount: 10,
+    answeredCount: 10,
+    previousScores: { q01: { pointsAwarded: 10 } },
+    totalPoints: 10,
+    historicalCompletion: true,
+  });
+  assert.equal(plan.attempt.earnedPoints, 9);
+  await assertSucceeds(commitScoringFinalization(firestore, plan));
+}
+
+async function forgedActivitySubmissionDenied() {
+  const variants = [
+    (s) => { s.earnedPoints = 100; },
+    (s) => { s.rewardedQuestionIds = ['q02']; },
+    (s) => { s.correct[0] = false; },
+    (s) => { s.correctAnswers = 10; },
+    (s) => { s.percentage = 100; },
+    (s) => { s.attemptId = 'other_attempt'; },
+    (s) => { s.attemptNumber = 2; },
+  ];
+  for (const mutate of variants) {
+    await testEnv.clearFirestore();
+    await seedActivity('uid-a');
+    await setActiveReservation('uid-a', 'attempt_1', 1);
+    const firestore = authDb('uid-a');
+    const submission = answerSubmissionData({ correctCount: 1 });
+    mutate(submission);
+    await assertFails(setDoc(answerSubmissionRef(firestore, 'uid-a'), submission));
+  }
+}
+
+async function partialActivityFinalizationDenied() {
+  const { firestore, plan } = await prepareAttempt({ correctCount: 3 });
+  const partial = writeBatch(firestore);
+  partial.set(plan.refs.attemptRef, plan.attempt);
+  partial.set(plan.refs.activityRef, plan.activity);
+  await assertFails(partial.commit());
+
+  const withoutAttempt = writeBatch(firestore);
+  withoutAttempt.set(plan.refs.activityRef, plan.activity);
+  withoutAttempt.set(plan.refs.categoryRef, plan.category);
+  withoutAttempt.set(plan.refs.userRef, plan.user, { merge: true });
+  withoutAttempt.set(plan.refs.leaderboardRef, plan.leaderboard);
+  await assertFails(withoutAttempt.commit());
+  assert.equal((await getDoc(plan.refs.attemptRef)).exists(), false);
+  await assertSucceeds(commitScoringFinalization(firestore, plan));
+}
+
+async function forgedFinalizedAttemptDenied() {
+  const variants = [
+    (p) => { p.attempt.earnedPoints += 10; },
+    (p) => { p.attempt.rewardedQuestionIds = ['q10']; },
+    (p) => { p.attempt.correct[0] = false; },
+    (p) => { p.attempt.attemptNumber = 2; },
+    (p) => { p.attempt.finalizationVersion = 1; },
+  ];
+  for (const mutate of variants) {
+    await testEnv.clearFirestore();
+    const { firestore, plan } = await prepareAttempt({ correctCount: 3 });
+    mutate(plan);
+    await assertFails(commitScoringFinalization(firestore, plan));
+  }
+}
+
 async function reservationPointValueValidated() {
   await seedActivity('uid-a');
   const firestore = authDb('uid-a');
@@ -1064,7 +1255,7 @@ async function reservationPointValueValidated() {
 
 async function activityFinalizationRequiresFourWriteBatch() {
   const { firestore, plan } = await prepareAttempt({ correctCount: 2, answeredCount: 10 });
-  await assertSucceeds(setDoc(plan.refs.attemptRef, plan.attempt));
+  await assertFails(setDoc(plan.refs.attemptRef, plan.attempt));
   await assertFails(setDoc(plan.refs.activityRef, plan.activity));
 }
 
@@ -1222,6 +1413,118 @@ async function legacyQuestionScoresFieldDenied() {
     doc(authDb('uid-a'), 'users', 'uid-a', 'categoryProgress', categoryId, 'activities', activityId),
     { ...reservationProgressData('attempt_1', 1), questionScores: {} },
   ));
+}
+
+async function legacyExistingProgressReservationDenied() {
+  await seedProgress('uid-a');
+  const completedAt = Timestamp.fromDate(new Date('2026-09-02T00:00:00Z'));
+  const questionScores = Object.fromEntries(Array.from({ length: 10 }, (_, index) => {
+    const questionId = `q${String(index + 1).padStart(2, '0')}`;
+    return [questionId, { questionId, awardedAttempt: 1, pointsAwarded: 10 }];
+  }));
+  const firestore = authDb('uid-a');
+  const progressRef = activityProgressRef(firestore);
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    await setDoc(activityProgressRef(context.firestore()), {
+      activityId,
+      status: 'completed',
+      attemptCount: 1,
+      activityPoints: 100,
+      questionScores,
+      bestCorrectAnswers: 10,
+      bestTotalQuestions: 10,
+      bestPercentage: 100,
+      lastAttemptAt: completedAt,
+      completedAt,
+      updatedAt: completedAt,
+    });
+  });
+  await assertSucceeds(getDoc(progressRef));
+
+  // The current client uses merge:true, so the legacy field remains present.
+  await assertFails(runTransaction(firestore, async (transaction) => {
+    const snapshot = await transaction.get(progressRef);
+    if (!snapshot.exists()) throw new Error('Expected legacy progress.');
+    transaction.set(progressRef, {
+      ...reservationProgressData('attempt_2', 2),
+      activityPoints: 100,
+      bestCorrectAnswers: 10,
+      bestTotalQuestions: 10,
+      bestPercentage: 100,
+      lastAttemptAt: completedAt,
+      completedAt,
+      scoredAt10QuestionIds: Object.keys(questionScores),
+    }, { merge: true });
+  }));
+
+  // Replacing the document cannot bypass the old resource's missing sets.
+  await assertFails(setDoc(progressRef, {
+    ...reservationProgressData('attempt_2', 2),
+    activityPoints: 100,
+    bestCorrectAnswers: 10,
+    bestTotalQuestions: 10,
+    bestPercentage: 100,
+    lastAttemptAt: completedAt,
+    completedAt,
+    scoredAt10QuestionIds: Object.keys(questionScores),
+  }));
+}
+
+async function migratedProgressReservesWithoutDoubleAward() {
+  const rewardedIds = ['q01'];
+  const completedAt = Timestamp.fromDate(new Date('2026-09-02T00:00:00Z'));
+  await seedActivity('uid-a', {
+    status: 'completed',
+    attemptCount: 2,
+    activityPoints: 10,
+    scoredAt10QuestionIds: rewardedIds,
+    bestCorrectAnswers: 1,
+    bestTotalQuestions: 10,
+    bestPercentage: 10,
+    lastAttemptAt: completedAt,
+    completedAt,
+  });
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    const db = context.firestore();
+    await updateDoc(doc(db, 'users', 'uid-a'), { totalPoints: 10 });
+    await updateDoc(doc(db, 'leaderboard', 'uid-a'), { totalPoints: 10 });
+    await updateDoc(doc(db, 'users', 'uid-a', 'categoryProgress', categoryId), {
+      completedActivityIds: [activityId],
+    });
+  });
+  const firestore = authDb('uid-a');
+  const reservationId = 'attempt_3_after_migration';
+  await assertSucceeds(updateDoc(activityProgressRef(firestore), {
+    attemptCount: 3,
+    status: 'inProgress',
+    activeAttempt: activeAttempt(reservationId, 3),
+    updatedAt: serverTimestamp(),
+  }));
+  const submission = answerSubmissionData({
+    attemptId: reservationId,
+    attemptNumber: 3,
+    correctCount: 1,
+    previousScores: { q01: { pointsAwarded: 10 } },
+  });
+  await assertSucceeds(setDoc(
+    answerSubmissionRef(firestore, 'uid-a', reservationId), submission));
+  const plan = await buildScoringFinalization({
+    firestore,
+    attemptId: reservationId,
+    attemptNumber: 3,
+    committedAnswers: submission.answers,
+  });
+  assert.equal(plan.activity.activityPoints, 10);
+  assert.equal(plan.user.totalPoints, 10);
+  await assertSucceeds(commitScoringFinalization(firestore, plan));
+  const [activityAfter, userAfter, leaderboardAfter] = await Promise.all([
+    getDoc(activityProgressRef(firestore)),
+    getDoc(doc(firestore, 'users', 'uid-a')),
+    getDoc(doc(firestore, 'leaderboard', 'uid-a')),
+  ]);
+  assert.equal(activityAfter.data().activityPoints, 10);
+  assert.equal(userAfter.data().totalPoints, 10);
+  assert.equal(leaderboardAfter.data().totalPoints, 10);
 }
 
 async function invalidAttemptNumberDenied() {
@@ -1651,7 +1954,7 @@ async function fillBlankCommittedVariantAllowed() {
   const firestore = authDb('uid-a');
   const committedAnswers = answerSubmissionData({ correctCount: 5 }).answers;
   committedAnswers.q10 = ' Sextorsion ';
-  const committed = answerSubmissionData({ answers: committedAnswers });
+  const committed = answerSubmissionData({ answers: committedAnswers, key: textAnswerKey });
   await assertSucceeds(setDoc(
     answerSubmissionRef(firestore, 'uid-a'),
     committed,
@@ -1718,6 +2021,54 @@ async function validSequentialAttemptReservations() {
     status: 'inProgress',
     activeAttempt: activeAttempt('attempt_2', 2),
     updatedAt: serverTimestamp(),
+  }));
+}
+
+async function realisticTraffickingFirstReservationAllowed() {
+  const uid = 'uid-a';
+  const realCategoryId = 'trafficking_fundamentals';
+  const realActivityId = 'trafficking_fundamentals_activity_01';
+  await seedUser(uid, 560);
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    await setDoc(
+      doc(context.firestore(), 'users', uid, 'categoryProgress', realCategoryId),
+      {
+        ...progressData(),
+        categoryId: realCategoryId,
+        lessonId: realCategoryId,
+        totalLessonPages: 6,
+        viewedLessonPageIds: Array.from({ length: 6 }, (_, index) =>
+          `trafficking_fundamentals_lesson_0${index + 1}`),
+      },
+    );
+  });
+  const firestore = authDb(uid);
+  const progressRef = doc(firestore, 'users', uid, 'categoryProgress', realCategoryId,
+    'activities', realActivityId);
+  await assertSucceeds(runTransaction(firestore, async (transaction) => {
+    const snapshot = await transaction.get(progressRef);
+    if (snapshot.exists()) throw new Error('Expected a new activity progress document.');
+    transaction.set(progressRef, {
+      activityId: realActivityId,
+      status: 'inProgress',
+      attemptCount: 1,
+      bestCorrectAnswers: 0,
+      bestTotalQuestions: 0,
+      bestPercentage: 0,
+      lastAttemptAt: null,
+      completedAt: null,
+      updatedAt: serverTimestamp(),
+      activeAttempt: {
+        attemptId: 'first_attempt',
+        attemptNumber: 1,
+        reservedAt: serverTimestamp(),
+        pointValue: 10,
+      },
+      activityPoints: 0,
+      scoredAt10QuestionIds: [],
+      scoredAt5QuestionIds: [],
+      scoredAt1QuestionIds: [],
+    }, { merge: true });
   }));
 }
 
