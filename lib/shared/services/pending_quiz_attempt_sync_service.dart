@@ -13,17 +13,22 @@ class PendingQuizAttemptSyncService {
     required ConnectivityService connectivityService,
     required CategoryProgressController progressController,
     required PendingQuizAttemptRepository repository,
+    Future<bool> Function(String uid)? canSyncUid,
   }) : _authRepository = authRepository,
        _connectivityService = connectivityService,
        _progressController = progressController,
-       _repository = repository;
+       _repository = repository,
+       _canSyncUid = canSyncUid;
 
   final AuthRepository _authRepository;
   final ConnectivityService _connectivityService;
   final CategoryProgressController _progressController;
   final PendingQuizAttemptRepository _repository;
+  final Future<bool> Function(String uid)? _canSyncUid;
 
   final Set<String> _syncingAttemptIds = <String>{};
+  final Set<String> _suspendedUids = <String>{};
+  final Map<String, Completer<void>> _inFlight = <String, Completer<void>>{};
   StreamSubscription<void>? _authSubscription;
   bool _started = false;
   bool _disposed = false;
@@ -31,6 +36,15 @@ class PendingQuizAttemptSyncService {
 
   Future<void> savePending(PendingQuizAttempt attempt) {
     return _serializeStorage(() => _repository.upsert(attempt));
+  }
+
+  Future<void> suspendForUser(String uid) async {
+    _suspendedUids.add(uid);
+    await Future.wait<void>([
+      for (final entry in _inFlight.entries)
+        if (entry.key.startsWith('$uid:')) entry.value.future,
+    ]);
+    await _storageTail;
   }
 
   Future<void> removeLocalAttempt(String attemptId) {
@@ -77,12 +91,14 @@ class PendingQuizAttemptSyncService {
     if (uid == null || uid.isEmpty) {
       return;
     }
+    if (!await _canSync(uid)) return;
 
     final now = DateTime.now();
     final attempts = await _repository.loadAll();
     for (final attempt in attempts.where(
       (attempt) => attempt.uid == uid && attempt.isInterrupted,
     )) {
+      if (_suspendedUids.contains(uid)) return;
       final finalized = attempt.finalized(completedAt: now);
       if (_connectivityService.status == ConnectivityStatus.online) {
         await _syncAttempt(finalized);
@@ -102,17 +118,21 @@ class PendingQuizAttemptSyncService {
     if (uid == null || uid.isEmpty) {
       return;
     }
+    if (!await _canSync(uid)) return;
 
     final attempts = await _repository.loadAll();
     for (final attempt in attempts.where(
       (attempt) => attempt.uid == uid && attempt.isPendingSync,
     )) {
+      if (_suspendedUids.contains(uid)) return;
       await _syncAttempt(attempt);
     }
   }
 
   Future<bool> _syncAttempt(PendingQuizAttempt attempt) async {
-    if (_disposed || _syncingAttemptIds.contains(attempt.attemptId)) {
+    if (_disposed ||
+        _suspendedUids.contains(attempt.uid) ||
+        _syncingAttemptIds.contains(attempt.attemptId)) {
       return false;
     }
     if (_authRepository.currentUser?.uid.trim() != attempt.uid) {
@@ -121,8 +141,16 @@ class PendingQuizAttemptSyncService {
     if (!attempt.isPendingSync) {
       return false;
     }
+    if (!await _canSync(attempt.uid)) return false;
+    if (_suspendedUids.contains(attempt.uid) ||
+        _syncingAttemptIds.contains(attempt.attemptId)) {
+      return false;
+    }
 
     _syncingAttemptIds.add(attempt.attemptId);
+    final inFlightKey = '${attempt.uid}:${attempt.attemptId}';
+    final completion = Completer<void>();
+    _inFlight[inFlightKey] = completion;
     try {
       await savePending(
         attempt.copyWith(status: PendingQuizAttemptSyncStatus.syncing),
@@ -152,6 +180,20 @@ class PendingQuizAttemptSyncService {
       return false;
     } finally {
       _syncingAttemptIds.remove(attempt.attemptId);
+      _inFlight.remove(inFlightKey);
+      completion.complete();
+    }
+  }
+
+  Future<bool> _canSync(String uid) async {
+    if (_suspendedUids.contains(uid)) return false;
+    final predicate = _canSyncUid;
+    if (predicate == null) return true;
+    try {
+      final allowed = await predicate(uid);
+      return allowed && !_suspendedUids.contains(uid);
+    } catch (_) {
+      return false;
     }
   }
 

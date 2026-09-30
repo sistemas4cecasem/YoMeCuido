@@ -7,6 +7,7 @@ class UserProfile {
     required this.email,
     required this.role,
     this.totalPoints = 0,
+    this.accountState = AccountState.active,
     required this.createdAt,
     required this.updatedAt,
   }) : assert(totalPoints >= 0, 'totalPoints cannot be negative.');
@@ -29,6 +30,7 @@ class UserProfile {
       email: _readString(data, 'email'),
       role: _readNullableString(data, 'role') ?? UserProfileRole.user,
       totalPoints: _readOptionalNonNegativeInt(data, 'totalPoints'),
+      accountState: _readAccountState(data),
       createdAt: _readTimestamp(data, 'createdAt'),
       updatedAt: _readTimestamp(data, 'updatedAt'),
     );
@@ -39,6 +41,7 @@ class UserProfile {
   final String email;
   final String role;
   final int totalPoints;
+  final String accountState;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -49,6 +52,8 @@ class UserProfile {
         usernameNormalized!.trim().isNotEmpty;
   }
 
+  bool get isDeleting => accountState == AccountState.deleting;
+
   Map<String, dynamic> toFirestore() {
     return {
       'username': username,
@@ -56,6 +61,7 @@ class UserProfile {
       'email': email,
       'role': role,
       'totalPoints': totalPoints,
+      'accountState': accountState,
       'createdAt': createdAt == null ? null : Timestamp.fromDate(createdAt!),
       'updatedAt': updatedAt == null ? null : Timestamp.fromDate(updatedAt!),
     };
@@ -108,6 +114,19 @@ class UserProfile {
 
     throw FormatException('Invalid user profile "$key".');
   }
+
+  static String _readAccountState(Map<String, dynamic> data) {
+    final value = data['accountState'] ?? AccountState.active;
+    if (value == AccountState.active || value == AccountState.deleting) {
+      return value as String;
+    }
+    throw const FormatException('Invalid user profile account state.');
+  }
+}
+
+abstract final class AccountState {
+  static const active = 'active';
+  static const deleting = 'deleting';
 }
 
 abstract final class UserProfileRole {

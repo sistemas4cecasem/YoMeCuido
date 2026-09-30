@@ -1,0 +1,26 @@
+{
+  "title": "Privacidad en YoMeCuido",
+  "intro": "YoMeCuido es un proyecto asociado a CECASEM. Responsable institucional y canal de contacto para consultas de privacidad: [PENDIENTE DE DEFINIR]. Este aviso describe lo que hace la versión actual de la aplicación.",
+  "sections": [
+    {
+      "title": "Datos que utilizamos",
+      "body": "Para crear y usar la cuenta se emplean el correo electrónico, un identificador interno de Firebase y el estado de verificación del correo. En el perfil se guardan el nombre de usuario y su versión normalizada, el correo, el rol, el puntaje total, fechas de creación y actualización, y el estado de la cuenta. Guardamos progreso educativo por categoría, páginas vistas, actividades, intentos, respuestas enviadas, resultados de exámenes y puntajes. Algunas respuestas pendientes pueden guardarse en este dispositivo hasta sincronizarse. La contraseña la gestiona Firebase Authentication; YoMeCuido no la guarda en su perfil ni en Firestore."
+    },
+    {
+      "title": "Para qué se usan",
+      "body": "Estos datos permiten crear y autenticar la cuenta, verificar o recuperar el acceso por correo, guardar el progreso, gestionar intentos, calcular puntajes, desbloquear contenido y mostrar el Ranking. Firebase App Check emplea mecanismos técnicos para proteger el acceso a los servicios Firebase. La aplicación consulta localmente el estado de conectividad para gestionar funciones que necesitan conexión."
+    },
+    {
+      "title": "Qué se ve en el Ranking",
+      "body": "Tu nombre de usuario y puntaje pueden mostrarse a otras personas autenticadas en el Ranking de YoMeCuido. El correo, las respuestas, los intentos, el progreso detallado y el estado de la cuenta no se muestran en esa pantalla. El registro técnico del Ranking usa el identificador interno de la cuenta como clave. Para evitar nombres duplicados, personas autenticadas pueden consultar una reserva de nombre que contiene la versión normalizada y un identificador técnico."
+    },
+    {
+      "title": "Servicios y usos no incluidos",
+      "body": "La versión actual utiliza Firebase Authentication, Cloud Firestore y Firebase App Check. No integra publicidad, analítica comercial ni Crashlytics, y el código actual no usa los datos para venta o publicidad. La app no solicita acceso a ubicación, contactos, cámara, micrófono, galería, archivos personales, SMS, llamadas ni biometría."
+    },
+    {
+      "title": "Eliminación y conservación",
+      "body": "Puedes iniciar la eliminación en Perfil > Eliminar cuenta. Se solicita confirmar tu contraseña. El flujo elimina el perfil, progreso, intentos, respuestas, puntaje y registro del Ranking, reserva del nombre de usuario, datos pendientes de esta cuenta en el dispositivo y la cuenta de autenticación. Si el proceso se interrumpe, la aplicación permite continuarlo. Los datos asociados permanecen mientras exista la cuenta; no se establece aquí un plazo fijo adicional. La eliminación no borra contenido educativo común ni garantiza que la caché técnica del SDK se vacíe de inmediato."
+    }
+  ]
+}

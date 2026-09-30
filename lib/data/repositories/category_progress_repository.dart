@@ -349,12 +349,9 @@ class CategoryProgressRepository
                 exams: exams,
               ),
             );
-          } on FormatException catch (exception) {
+          } on FormatException {
             if (kDebugMode) {
-              debugPrint(
-                '[CategoryProgress] Ignoring invalid progress document '
-                '${document.id}: ${exception.message}',
-              );
+              debugPrint('[CategoryProgress] Invalid progress document.');
             }
           }
         }
@@ -1232,12 +1229,9 @@ class CategoryProgressRepository
       try {
         final record = ActivityProgressRecord.fromFirestore(document);
         activities[record.activityId] = record;
-      } on FormatException catch (exception) {
+      } on FormatException {
         if (kDebugMode) {
-          debugPrint(
-            '[CategoryProgress] Ignoring invalid activity progress '
-            '${document.id}: ${exception.message}',
-          );
+          debugPrint('[CategoryProgress] Invalid activity progress.');
         }
       }
     }
@@ -1259,12 +1253,9 @@ class CategoryProgressRepository
       try {
         final record = ExamProgressRecord.fromFirestore(document);
         exams[record.examId] = record;
-      } on FormatException catch (exception) {
+      } on FormatException {
         if (kDebugMode) {
-          debugPrint(
-            '[CategoryProgress] Ignoring invalid exam progress '
-            '${document.id}: ${exception.message}',
-          );
+          debugPrint('[CategoryProgress] Invalid exam progress.');
         }
       }
     }
@@ -1751,20 +1742,11 @@ class CategoryProgressException implements Exception {
       return;
     }
 
-    debugPrint(
-      '[CategoryProgress] $operation failed: $reason'
-      '${firebaseCode == null ? '' : ' ($firebaseCode)'}'
-      '${technicalMessage == null ? '' : ' - $technicalMessage'}',
-    );
-    final stackTrace = this.stackTrace;
-    if (stackTrace != null) {
-      debugPrint('[CategoryProgress] StackTrace: $stackTrace');
-    }
+    debugPrint('[CategoryProgress] $operation failed: $reason');
   }
 
   @override
   String toString() {
-    return 'CategoryProgressException($operation, $reason, $firebaseCode, '
-        '$technicalMessage)';
+    return 'CategoryProgressException($operation, $reason)';
   }
 }

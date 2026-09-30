@@ -99,8 +99,8 @@ class CategoryProgressController extends ChangeNotifier {
       );
       notifyListeners();
       return true;
-    } catch (error) {
-      if (kDebugMode) debugPrint('[CategoryProgress] Refresh failed: $error');
+    } catch (_) {
+      if (kDebugMode) debugPrint('[CategoryProgress] Refresh failed.');
       return false;
     }
   }
@@ -446,10 +446,9 @@ class CategoryProgressController extends ChangeNotifier {
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
       return null;
-    } catch (error, stackTrace) {
+    } catch (_) {
       if (kDebugMode) {
-        debugPrint('[CategoryProgress] Attempt reservation failed: $error');
-        debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+        debugPrint('[CategoryProgress] Attempt reservation failed.');
       }
       return null;
     }
@@ -947,12 +946,11 @@ class CategoryProgressController extends ChangeNotifier {
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
       return false;
-    } catch (error, stackTrace) {
+    } catch (_) {
       if (!kDebugMode) {
         return false;
       }
-      debugPrint('[CategoryProgress] Unexpected persistence error: $error');
-      debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+      debugPrint('[CategoryProgress] Theory persistence failed.');
       return false;
     }
   }
@@ -980,10 +978,9 @@ class CategoryProgressController extends ChangeNotifier {
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
       return null;
-    } catch (error, stackTrace) {
+    } catch (_) {
       if (kDebugMode) {
-        debugPrint('[CategoryProgress] Unexpected persistence error: $error');
-        debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+        debugPrint('[CategoryProgress] Attempt persistence failed.');
       }
       return null;
     }
@@ -1007,10 +1004,9 @@ class CategoryProgressController extends ChangeNotifier {
     } on CategoryProgressException catch (exception) {
       exception.logForDebug();
       _handleHydrationError(uid: uid, generation: generation, error: exception);
-    } catch (error, stackTrace) {
+    } catch (error) {
       if (kDebugMode) {
-        debugPrint('[CategoryProgress] Unexpected hydration error: $error');
-        debugPrint('[CategoryProgress] StackTrace: $stackTrace');
+        debugPrint('[CategoryProgress] Hydration failed.');
       }
       _handleHydrationError(uid: uid, generation: generation, error: error);
     }

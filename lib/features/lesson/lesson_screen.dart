@@ -134,7 +134,7 @@ class _LessonScreenState extends State<LessonScreen> {
               !snapshot.hasData ||
               snapshot.data!.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
-              debugPrint('Lesson load error: ${snapshot.error}');
+              debugPrint('[Lesson] Content load failed.');
             }
             return _LessonLoadError(onRetry: _retry);
           }

@@ -37,6 +37,7 @@ enum AuthFailureReason {
   tooManyRequests,
   networkRequestFailed,
   userProfileUnavailable,
+  registrationNeedsSignIn,
   usernameAlreadyInUse,
   usernameInvalid,
   unknown,
@@ -83,6 +84,8 @@ class AuthException implements Exception {
         'No pudimos conectar con el servicio. Revisa tu conexión.',
       AuthFailureReason.userProfileUnavailable =>
         'No pudimos preparar tu perfil. Intenta nuevamente.',
+      AuthFailureReason.registrationNeedsSignIn =>
+        'No pudimos confirmar el registro. Inicia sesión con tu correo para continuar.',
       AuthFailureReason.usernameAlreadyInUse =>
         'Este nombre de usuario ya está en uso.',
       AuthFailureReason.usernameInvalid => 'El nombre de usuario no es válido.',

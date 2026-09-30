@@ -86,7 +86,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
           if (snapshot.hasError || !snapshot.hasData) {
             if (kDebugMode && snapshot.error != null) {
-              debugPrint('Content load error: ${snapshot.error}');
+              debugPrint('[Categories] Content load failed.');
             }
             return _CategoriesLoadError(onRetry: _retry);
           }

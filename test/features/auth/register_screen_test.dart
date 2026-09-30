@@ -5,11 +5,34 @@ import 'package:demo_yomecuido/core/theme/app_theme.dart';
 import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
 import 'package:demo_yomecuido/features/auth/register_screen.dart';
+import 'package:demo_yomecuido/features/privacy/privacy_notice_screen.dart';
 import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('registration opens the reusable privacy notice', (tester) async {
+    final connectivity = _onlineConnectivityService();
+    addTearDown(connectivity.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.data(),
+        home: RegisterScreen(
+          authRepository: _FakeAuthRepository(),
+          connectivityService: connectivity,
+        ),
+      ),
+    );
+    await tester.ensureVisible(find.text(AppStrings.privacyTitle));
+    await tester.tap(find.text(AppStrings.privacyTitle));
+    await tester.pumpAndSettle();
+    expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
+    expect(find.textContaining('CECASEM'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Qué se ve en el Ranking'), 180);
+    expect(find.text('Qué se ve en el Ranking'), findsOneWidget);
+    expect(find.textContaining('El correo, las respuestas'), findsOneWidget);
+  });
+
   testWidgets('creates an account through AuthRepository and shows success', (
     tester,
   ) async {

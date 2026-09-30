@@ -14,6 +14,25 @@ abstract final class AppStrings {
       'Tendrás que iniciar sesión nuevamente para volver a YoMeCuido.';
   static const signOutError =
       'No pudimos cerrar la sesión. Intenta nuevamente.';
+  static const deleteAccount = 'Eliminar cuenta';
+  static const privacyTitle = 'Privacidad';
+  static const privacyRegistrationNote =
+      'Conoce cómo YoMeCuido utiliza tus datos antes de crear una cuenta.';
+  static const deleteAccountConfirmTitle = '¿Eliminar cuenta?';
+  static const deleteAccountConfirmBody =
+      'Se eliminarán tu cuenta, progreso, intentos, respuestas, puntaje y ranking, nombre de usuario reservado y datos pendientes de este dispositivo. Esta acción no se puede deshacer.';
+  static const deleteAccountContinue = 'Continuar';
+  static const deletionFinishTitle = 'Finalizar eliminación';
+  static const deletionInProgress =
+      'La eliminación de tu cuenta está en curso.';
+  static const deletionPasswordPrompt =
+      'Confirma tu contraseña para iniciar la eliminación.';
+  static const deletionAuthOnlyBody =
+      'La cuenta de acceso aún existe, pero el perfil ya no está disponible. Puedes finalizar la eliminación de la cuenta de acceso.';
+  static const deletionPasswordLabel = 'Contraseña actual';
+  static const deletionContinue = 'Continuar eliminación';
+  static const deletionBusy = 'Eliminando datos. Mantén la aplicación abierta.';
+  static const deletionSignOut = 'Cerrar sesión por ahora';
   static const loginTitle = 'Iniciar sesión';
   static const addAccount = 'Crear cuenta';
   static const loginIntroTitle = 'Acceso con correo';

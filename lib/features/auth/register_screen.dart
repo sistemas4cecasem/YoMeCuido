@@ -6,6 +6,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/app_scaffold.dart';
+import '../privacy/privacy_notice_screen.dart';
 import 'auth_form_layout.dart';
 import 'register_controller.dart';
 
@@ -89,6 +90,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 });
               },
               onSubmit: _submit,
+              onOpenPrivacy: () => Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => const PrivacyNoticeScreen(),
+                ),
+              ),
             ),
           );
         },
@@ -109,6 +115,7 @@ class _RegisterFormCard extends StatelessWidget {
     required this.onTogglePasswordVisibility,
     required this.onToggleConfirmPasswordVisibility,
     required this.onSubmit,
+    required this.onOpenPrivacy,
   });
 
   final RegisterController controller;
@@ -121,6 +128,7 @@ class _RegisterFormCard extends StatelessWidget {
   final VoidCallback onTogglePasswordVisibility;
   final VoidCallback onToggleConfirmPasswordVisibility;
   final VoidCallback onSubmit;
+  final VoidCallback onOpenPrivacy;
 
   @override
   Widget build(BuildContext context) {
@@ -247,6 +255,13 @@ class _RegisterFormCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: AppSpacing.lg),
+            const Text(AppStrings.privacyRegistrationNote),
+            TextButton.icon(
+              onPressed: onOpenPrivacy,
+              icon: const Icon(Icons.privacy_tip_outlined),
+              label: const Text(AppStrings.privacyTitle),
+            ),
+            const SizedBox(height: AppSpacing.sm),
             _RegisterButton(controller: controller, onSubmit: onSubmit),
           ],
         ),

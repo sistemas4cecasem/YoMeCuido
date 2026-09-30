@@ -901,6 +901,11 @@ class _MemoryPendingQuizAttemptRepository
   final List<PendingQuizAttempt> _attempts = <PendingQuizAttempt>[];
 
   @override
+  Future<void> removeForUid(String uid) async {
+    _attempts.removeWhere((attempt) => attempt.uid == uid);
+  }
+
+  @override
   Future<List<PendingQuizAttempt>> loadAll() async =>
       List<PendingQuizAttempt>.unmodifiable(_attempts);
 

@@ -8,6 +8,8 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/account_deletion_repository.dart';
+import '../../data/repositories/pending_quiz_attempt_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
@@ -15,6 +17,7 @@ import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../main/main_authenticated_shell.dart';
 import 'complete_profile_screen.dart';
+import 'account_deletion_screen.dart';
 import 'email_verification_screen.dart';
 import '../splash/welcome_screen.dart';
 
@@ -26,6 +29,7 @@ class AuthGate extends StatefulWidget {
     required this.progressController,
     required this.contentRepository,
     required this.connectivityService,
+    this.accountDeletionService,
     super.key,
   });
 
@@ -35,12 +39,22 @@ class AuthGate extends StatefulWidget {
   final CategoryProgressController progressController;
   final ContentRepository contentRepository;
   final ConnectivityService connectivityService;
+  final AccountDeletionService? accountDeletionService;
 
   @override
   State<AuthGate> createState() => _AuthGateState();
 }
 
 class _AuthGateState extends State<AuthGate> {
+  late final AccountDeletionService _defaultDeletionService =
+      AccountDeletionService(
+        identity: FirebaseAccountDeletionIdentity(),
+        store: FirestoreAccountDeletionStore(),
+        pending: SharedPreferencesPendingQuizAttemptRepository(),
+      );
+
+  AccountDeletionService get _deletionService =>
+      widget.accountDeletionService ?? _defaultDeletionService;
   late Stream<AuthUser?> _authChanges;
   String? _lastUserUid;
   AuthUser? _checkedUser;
@@ -123,6 +137,7 @@ class _AuthGateState extends State<AuthGate> {
           authRepository: widget.authRepository,
           contentRepository: widget.contentRepository,
           connectivityService: widget.connectivityService,
+          accountDeletionService: _deletionService,
         );
       },
     );
@@ -212,6 +227,7 @@ class _HydratedHome extends StatelessWidget {
     required this.authRepository,
     required this.contentRepository,
     required this.connectivityService,
+    required this.accountDeletionService,
   });
 
   final AuthUser user;
@@ -225,6 +241,7 @@ class _HydratedHome extends StatelessWidget {
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
   final ConnectivityService connectivityService;
+  final AccountDeletionService accountDeletionService;
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +253,22 @@ class _HydratedHome extends StatelessWidget {
         }
 
         final profile = profileSnapshot.data;
-        if (profile == null || !profile.hasUsername) {
+        if (profileSnapshot.hasError) {
+          return _ProgressLoadErrorView(
+            onRetry: onProfileCompleted,
+            message:
+                'No pudimos comprobar el estado de tu cuenta. Intenta nuevamente.',
+          );
+        }
+        if (profile == null || profile.isDeleting) {
+          return AccountDeletionScreen(
+            service: accountDeletionService,
+            authRepository: authRepository,
+            recovery: true,
+            profileMissing: profile == null,
+          );
+        }
+        if (!profile.hasUsername) {
           return CompleteProfileScreen(
             user: user,
             userProfileRepository: userProfileRepository,
@@ -256,6 +288,7 @@ class _HydratedHome extends StatelessWidget {
           authRepository: authRepository,
           contentRepository: contentRepository,
           connectivityService: connectivityService,
+          accountDeletionService: accountDeletionService,
         );
       },
     );
@@ -275,6 +308,7 @@ class _ProgressHydratedHome extends StatefulWidget {
     required this.authRepository,
     required this.contentRepository,
     required this.connectivityService,
+    required this.accountDeletionService,
   });
 
   final AuthUser user;
@@ -288,6 +322,7 @@ class _ProgressHydratedHome extends StatefulWidget {
   final AuthRepository authRepository;
   final ContentRepository contentRepository;
   final ConnectivityService connectivityService;
+  final AccountDeletionService accountDeletionService;
 
   @override
   State<_ProgressHydratedHome> createState() => _ProgressHydratedHomeState();
@@ -361,6 +396,7 @@ class _ProgressHydratedHomeState extends State<_ProgressHydratedHome> {
             progressController: widget.progressController,
             user: widget.user,
             connectivityService: widget.connectivityService,
+            accountDeletionService: widget.accountDeletionService,
           );
         },
       );
@@ -397,9 +433,13 @@ class _ProgressHydratedHomeState extends State<_ProgressHydratedHome> {
 }
 
 class _ProgressLoadErrorView extends StatelessWidget {
-  const _ProgressLoadErrorView({required this.onRetry});
+  const _ProgressLoadErrorView({
+    required this.onRetry,
+    this.message = AppStrings.progressLoadError,
+  });
 
   final VoidCallback onRetry;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -420,11 +460,11 @@ class _ProgressLoadErrorView extends StatelessWidget {
                   Icons.cloud_off_outlined,
                   color: colors.orangeDark,
                   size: 40,
-                  semanticLabel: AppStrings.progressLoadError,
+                  semanticLabel: message,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  AppStrings.progressLoadError,
+                  message,
                   textAlign: TextAlign.center,
                   style: textTheme.bodyLarge?.copyWith(
                     color: colors.textPrimary,

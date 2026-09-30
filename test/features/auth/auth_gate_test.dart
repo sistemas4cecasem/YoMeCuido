@@ -15,18 +15,124 @@ import 'package:demo_yomecuido/data/models/pending_quiz_attempt.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/models/user_profile.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
+import 'package:demo_yomecuido/data/repositories/account_deletion_repository.dart';
 import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/pending_quiz_attempt_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
+import 'package:demo_yomecuido/features/auth/account_deletion_screen.dart';
+import 'package:demo_yomecuido/features/privacy/privacy_notice_screen.dart';
 import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
 import 'package:demo_yomecuido/shared/services/pending_quiz_attempt_sync_service.dart';
+import 'package:demo_yomecuido/shared/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('profile privacy notice reaches existing deletion flow', (
+    tester,
+  ) async {
+    final auth = _ControllableAuthRepository();
+    final deletion = _TrackingDeletionService();
+    await _pumpGate(tester, auth, accountDeletionService: deletion);
+    auth.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openProfileTab(tester);
+    await tester.ensureVisible(find.text(AppStrings.privacyTitle));
+    await tester.tap(find.text(AppStrings.privacyTitle));
+    await tester.pumpAndSettle();
+    expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Eliminación y conservación'),
+      180,
+    );
+    expect(find.text('Eliminación y conservación'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text(AppStrings.deleteAccount), 180);
+    await tester.tap(find.text(AppStrings.deleteAccount));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.deleteAccountConfirmTitle), findsOneWidget);
+    expect(deletion.startCalls, 0);
+  });
+
+  testWidgets(
+    'Auth with missing profile enters recovery without recreating data',
+    (tester) async {
+      final auth = _ControllableAuthRepository();
+      final profiles = _FakeUserProfileRepository()..missingProfile = true;
+      await _pumpGate(tester, auth, userProfileRepository: profiles);
+      auth.emit(
+        const AuthUser(
+          uid: 'uid-123',
+          email: 'persona@example.com',
+          isEmailVerified: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(AccountDeletionScreen), findsOneWidget);
+      expect(find.text('Finalizar eliminación'), findsOneWidget);
+      expect(find.text(AppStrings.completeProfileTitle), findsNothing);
+      expect(profiles.completedUsername, isNull);
+    },
+  );
+
+  testWidgets('account deletion cancellation and wrong password keep profile', (
+    tester,
+  ) async {
+    final auth = _ControllableAuthRepository();
+    final profiles = _FakeUserProfileRepository();
+    final deletion = _TrackingDeletionService();
+    await _pumpGate(
+      tester,
+      auth,
+      userProfileRepository: profiles,
+      accountDeletionService: deletion,
+    );
+    auth.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _openProfileTab(tester);
+    await tester.ensureVisible(find.text('Eliminar cuenta'));
+    await tester.tap(find.text('Eliminar cuenta'));
+    await tester.pumpAndSettle();
+    expect(find.text('¿Eliminar cuenta?'), findsOneWidget);
+    expect(
+      find.textContaining('progreso, intentos, respuestas'),
+      findsOneWidget,
+    );
+    await tester.tap(find.text(AppStrings.cancel));
+    await tester.pumpAndSettle();
+    expect(deletion.startCalls, 0);
+    await tester.tap(find.text('Eliminar cuenta'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Continuar'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AccountDeletionScreen), findsOneWidget);
+    await tester.enterText(find.byType(TextField), 'wrong');
+    await tester.pump();
+    expect(
+      tester.widget<PrimaryButton>(find.byType(PrimaryButton)).onPressed,
+      isNotNull,
+    );
+    await tester.tap(find.byType(PrimaryButton));
+    await tester.pumpAndSettle();
+    expect(deletion.startCalls, 1);
+    expect(find.text('La contraseña no es correcta.'), findsOneWidget);
+    expect(profiles.completedUsername, isNull);
+  });
+
   testWidgets('renames own profile and preserves it when reopened', (
     tester,
   ) async {
@@ -973,6 +1079,7 @@ Future<void> _pumpGate(
   NavigatorObserver? navigatorObserver,
   ContentRepository? contentRepository,
   LeaderboardRepository? leaderboardRepository,
+  AccountDeletionService? accountDeletionService,
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
@@ -1007,6 +1114,7 @@ Future<void> _pumpGate(
         leaderboardRepository:
             leaderboardRepository ?? _FakeLeaderboardRepository(),
         connectivityService: connectivityService,
+        accountDeletionService: accountDeletionService,
       ),
       onGenerateRoute: router.onGenerateRoute,
       navigatorObservers: [?navigatorObserver],
@@ -1017,6 +1125,9 @@ Future<void> _pumpGate(
 class _InMemoryPendingQuizAttemptRepository
     implements PendingQuizAttemptRepository {
   @override
+  Future<void> removeForUid(String uid) async {}
+
+  @override
   Future<List<PendingQuizAttempt>> loadAll() async =>
       const <PendingQuizAttempt>[];
 
@@ -1025,6 +1136,30 @@ class _InMemoryPendingQuizAttemptRepository
 
   @override
   Future<void> upsert(PendingQuizAttempt attempt) async {}
+}
+
+class _TrackingDeletionService extends AccountDeletionService {
+  _TrackingDeletionService()
+    : super(
+        identity: FirebaseAccountDeletionIdentity(),
+        store: FirestoreAccountDeletionStore(),
+        pending: SharedPreferencesPendingQuizAttemptRepository(),
+      );
+
+  int startCalls = 0;
+
+  @override
+  Future<DeletionProfile?> inspectCurrentProfile() async =>
+      const DeletionProfile(
+        state: AccountState.active,
+        usernameNormalized: 'diegonais',
+      );
+
+  @override
+  Future<void> start(String password) async {
+    startCalls += 1;
+    throw const AccountDeletionException(AccountDeletionFailure.password);
+  }
 }
 
 class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
@@ -1173,6 +1308,7 @@ class _FakeUserProfileRepository extends UserProfileRepository {
   String? completedUsername;
   String? changedUid;
   bool failRename = false;
+  bool missingProfile = false;
 
   @override
   Future<UserProfile> changeUsername({
@@ -1192,6 +1328,7 @@ class _FakeUserProfileRepository extends UserProfileRepository {
 
   @override
   Future<UserProfile?> fetchProfile(String uid) async {
+    if (missingProfile) return null;
     final uidProfile = profilesByUid[uid];
     if (uidProfile != null) {
       return uidProfile;

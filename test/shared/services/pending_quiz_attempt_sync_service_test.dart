@@ -74,7 +74,10 @@ void main() {
 
     final first = service.syncCurrentUserPendingAttempts();
     final second = service.syncCurrentUserPendingAttempts();
-    await Future<void>.delayed(Duration.zero);
+    for (var tick = 0; tick < 20 && !persistence.hasPendingDelay; tick++) {
+      await Future<void>.delayed(Duration.zero);
+    }
+    expect(persistence.hasPendingDelay, isTrue);
     persistence.completeDelay();
     await Future.wait(<Future<void>>[first, second]);
 
@@ -349,6 +352,11 @@ class _MemoryPendingQuizAttemptRepository
   final List<PendingQuizAttempt> _attempts;
 
   @override
+  Future<void> removeForUid(String uid) async {
+    _attempts.removeWhere((attempt) => attempt.uid == uid);
+  }
+
+  @override
   Future<List<PendingQuizAttempt>> loadAll() async =>
       List<PendingQuizAttempt>.unmodifiable(_attempts);
 
@@ -372,6 +380,8 @@ class _FakeProgressPersistence implements CategoryProgressPersistence {
   List<String>? completedExamQuestionIds;
   bool failComplete = false;
   Completer<void>? _delay;
+
+  bool get hasPendingDelay => _delay != null;
 
   void completeDelay() {
     _delay?.complete();

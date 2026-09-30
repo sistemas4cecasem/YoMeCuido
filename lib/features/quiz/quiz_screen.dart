@@ -145,7 +145,7 @@ class _QuizScreenState extends State<QuizScreen> {
               !snapshot.hasData ||
               snapshot.data!.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
-              debugPrint('Quiz load error: ${snapshot.error}');
+              debugPrint('[Quiz] Content load failed.');
             }
             return _QuizLoadError(
               message: _loadErrorMessage(snapshot.error),
@@ -335,9 +335,9 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
     if (_controller.submitAnswer()) {
       _snapshotWriteTail = _snapshotWriteTail
           .then((_) => _persistSubmittedAnswers())
-          .catchError((Object error) {
+          .catchError((Object _) {
             _snapshotFailed = true;
-            if (kDebugMode) debugPrint('Quiz snapshot failed: $error');
+            if (kDebugMode) debugPrint('[Quiz] Pending answer save failed.');
           });
     }
   }
@@ -760,8 +760,8 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
     try {
       await syncService.savePending(pending);
       return true;
-    } catch (error) {
-      if (kDebugMode) debugPrint('Quiz snapshot failed: $error');
+    } catch (_) {
+      if (kDebugMode) debugPrint('[Quiz] Pending answer save failed.');
       return false;
     }
   }

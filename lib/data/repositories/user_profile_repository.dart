@@ -36,7 +36,12 @@ class UserProfileRepository {
 
   Future<UserProfile?> fetchProfile(String uid) async {
     try {
-      final snapshot = await _users.doc(uid).get();
+      final snapshot = await _users
+          .doc(uid)
+          .get(const GetOptions(source: Source.server));
+      if (snapshot.metadata.isFromCache || snapshot.metadata.hasPendingWrites) {
+        throw StateError('A server-confirmed profile is required.');
+      }
       if (!snapshot.exists) {
         return null;
       }
@@ -128,6 +133,16 @@ class UserProfileRepository {
       );
     }
     final usernameNormalized = Username.normalize(trimmedUsername);
+    final registrationProfile = operation == UserProfileFailureOperation.create
+        ? UserProfile(
+            username: trimmedUsername,
+            usernameNormalized: usernameNormalized,
+            email: normalizedEmail,
+            role: UserProfileRole.user,
+            createdAt: null,
+            updatedAt: null,
+          )
+        : null;
     final profileDocument = _users.doc(uid);
     final usernameDocument = _usernames.doc(usernameNormalized);
     final leaderboardDocument = _leaderboard.doc(uid);
@@ -136,6 +151,13 @@ class UserProfileRepository {
       await _requireFirestore.runTransaction<void>((transaction) async {
         final profileSnapshot = await transaction.get(profileDocument);
         final usernameSnapshot = await transaction.get(usernameDocument);
+
+        if (profileSnapshot.exists && requireMissingCompleteProfile) {
+          throw const UserProfileException(
+            UserProfileFailureReason.profileAlreadyComplete,
+            operation: UserProfileFailureOperation.create,
+          );
+        }
 
         if (usernameSnapshot.exists) {
           final claimedUid = usernameSnapshot.data()?['uid'];
@@ -149,6 +171,12 @@ class UserProfileRepository {
 
         if (profileSnapshot.exists) {
           final profile = UserProfile.fromFirestore(profileSnapshot);
+          if (profile.isDeleting) {
+            throw const UserProfileException(
+              UserProfileFailureReason.accountDeleting,
+              operation: UserProfileFailureOperation.complete,
+            );
+          }
           if (profile.hasUsername) {
             if (allowUsernameChange) {
               if (profile.username == trimmedUsername) return;
@@ -229,6 +257,9 @@ class UserProfileRepository {
         operation,
         exception,
         stackTrace,
+        writeMayHaveCommitted:
+            operation == UserProfileFailureOperation.create &&
+            exception.code != 'permission-denied',
       );
     } on FormatException catch (exception, stackTrace) {
       throw UserProfileException(
@@ -245,7 +276,12 @@ class UserProfileRepository {
         operation: operation,
         technicalMessage: error.toString(),
         stackTrace: stackTrace,
+        writeMayHaveCommitted: operation == UserProfileFailureOperation.create,
       );
+    }
+
+    if (registrationProfile != null) {
+      return registrationProfile;
     }
 
     final createdProfile = await fetchProfile(uid);
@@ -286,6 +322,7 @@ enum UserProfileFailureReason {
   invalidUsername,
   usernameAlreadyInUse,
   profileAlreadyComplete,
+  accountDeleting,
   permissionDenied,
   notFound,
   invalidDocument,
@@ -309,13 +346,15 @@ class UserProfileException implements Exception {
     this.firebaseCode,
     this.technicalMessage,
     this.stackTrace,
+    this.writeMayHaveCommitted = false,
   });
 
   factory UserProfileException.fromFirebaseException(
     UserProfileFailureOperation operation,
     FirebaseException exception,
-    StackTrace stackTrace,
-  ) {
+    StackTrace stackTrace, {
+    bool writeMayHaveCommitted = false,
+  }) {
     final reason = switch (exception.code) {
       'permission-denied' => UserProfileFailureReason.permissionDenied,
       'not-found' => UserProfileFailureReason.notFound,
@@ -328,6 +367,7 @@ class UserProfileException implements Exception {
       firebaseCode: exception.code,
       technicalMessage: exception.message,
       stackTrace: stackTrace,
+      writeMayHaveCommitted: writeMayHaveCommitted,
     );
   }
 
@@ -336,11 +376,13 @@ class UserProfileException implements Exception {
   final String? firebaseCode;
   final String? technicalMessage;
   final StackTrace? stackTrace;
+  // Unknown transaction outcome: deleting Auth could orphan committed data.
+  final bool writeMayHaveCommitted;
 
   String get userMessage {
     return switch (reason) {
       UserProfileFailureReason.invalidUsername =>
-        technicalMessage ?? 'El nombre de usuario no es válido.',
+        'El nombre de usuario no es válido.',
       UserProfileFailureReason.usernameAlreadyInUse =>
         'Este nombre de usuario ya está en uso.',
       UserProfileFailureReason.missingEmail =>
@@ -349,6 +391,8 @@ class UserProfileException implements Exception {
         'No pudimos guardar tu perfil. Revisa tu sesión e intenta nuevamente.',
       UserProfileFailureReason.unauthenticated =>
         'Debes iniciar sesión para completar tu perfil.',
+      UserProfileFailureReason.accountDeleting =>
+        'La eliminación de tu cuenta está en curso.',
       _ => 'No pudimos preparar tu perfil. Intenta nuevamente.',
     };
   }
@@ -358,20 +402,11 @@ class UserProfileException implements Exception {
       return;
     }
 
-    debugPrint(
-      '[UserProfile] $operation failed: $reason'
-      '${firebaseCode == null ? '' : ' ($firebaseCode)'}'
-      '${technicalMessage == null ? '' : ' - $technicalMessage'}',
-    );
-    final stackTrace = this.stackTrace;
-    if (stackTrace != null) {
-      debugPrint('[UserProfile] StackTrace: $stackTrace');
-    }
+    debugPrint('[UserProfile] $operation failed: $reason');
   }
 
   @override
   String toString() {
-    return 'UserProfileException($operation, $reason, $firebaseCode, '
-        '$technicalMessage)';
+    return 'UserProfileException($operation, $reason)';
   }
 }

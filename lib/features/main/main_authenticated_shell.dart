@@ -7,6 +7,7 @@ import '../../core/theme/app_spacing.dart';
 import '../../data/models/auth_user.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/account_deletion_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/leaderboard_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
@@ -30,6 +31,7 @@ class MainAuthenticatedShell extends StatefulWidget {
     required this.progressController,
     required this.user,
     required this.connectivityService,
+    this.accountDeletionService,
     super.key,
   });
 
@@ -43,6 +45,7 @@ class MainAuthenticatedShell extends StatefulWidget {
   final ContentRepository contentRepository;
   final CategoryProgressController progressController;
   final ConnectivityService connectivityService;
+  final AccountDeletionService? accountDeletionService;
 
   @override
   State<MainAuthenticatedShell> createState() => _MainAuthenticatedShellState();
@@ -115,6 +118,7 @@ class _MainAuthenticatedShellState extends State<MainAuthenticatedShell> {
                 });
               },
               connectivityService: widget.connectivityService,
+              accountDeletionService: widget.accountDeletionService,
             ),
           },
         ],

@@ -122,6 +122,9 @@ async function main() {
     ['examen semántico valida 15 respuestas con proofs 8+7', examFifteenSemanticAttemptAllowed],
     ['examen aprueba y completa categoría solo con 12 de 15',
       () => examFifteenSemanticAttemptAllowed({ correctCount: 12 })],
+    ['estado de eliminación es irreversible y bloquea escrituras', deletingStateBlocksWrites],
+    ['titular puede borrar cada ruta personal; ajenos no', deletionRoutesAreOwnerOnly],
+    ['contenido global no se borra durante eliminación', deletionNeverTouchesGlobalContent],
   ];
 
   for (const [name, fn] of tests) {
@@ -2139,6 +2142,105 @@ async function unauthenticatedAttemptReservationDenied() {
     activeAttempt: activeAttempt('attempt_2', 2),
     updatedAt: serverTimestamp(),
   }));
+}
+
+async function markUserDeleting(uid = 'uid-a') {
+  await assertSucceeds(updateDoc(doc(authDb(uid), 'users', uid), {
+    accountState: 'deleting',
+    updatedAt: serverTimestamp(),
+  }));
+}
+
+async function deletingStateBlocksWrites() {
+  await seedActivity('uid-a');
+  const db = authDb('uid-a');
+  await markUserDeleting();
+  const profile = doc(db, 'users', 'uid-a');
+  await assertFails(updateDoc(profile, {
+    accountState: 'active', updatedAt: serverTimestamp(),
+  }));
+  await assertFails(updateDoc(profile, {
+    username: 'other_name', updatedAt: serverTimestamp(),
+  }));
+  await assertFails(updateDoc(profile, {
+    totalPoints: 10, updatedAt: serverTimestamp(),
+  }));
+  await assertFails(updateDoc(activityProgressRef(db), {
+    attemptCount: 2,
+    activeAttempt: activeAttempt('attempt_2', 2),
+    updatedAt: serverTimestamp(),
+  }));
+  await assertFails(updateDoc(doc(db, 'users', 'uid-a', 'categoryProgress', categoryId), {
+    updatedAt: serverTimestamp(),
+  }));
+  await assertFails(setDoc(activityAttemptRef(db, 'uid-a', 'new_attempt'),
+    activityAttemptData({ attemptNumber: 1 })));
+  await assertFails(setDoc(doc(db, 'users', 'uid-a', 'categoryProgress', categoryId,
+    'activities', activityId, 'answerSubmissions', 'new_attempt'), { answer: 'x' }));
+  await assertFails(updateDoc(doc(db, 'leaderboard', 'uid-a'), {
+    updatedAt: serverTimestamp(),
+  }));
+  await assertFails(setDoc(doc(db, 'usernames', 'another_name'), { uid: 'uid-a' }));
+}
+
+async function deletionRoutesAreOwnerOnly() {
+  await seedActivity('uid-a');
+  await seedUser('uid-b');
+  const paths = [
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'activities', activityId,
+      'answerSubmissions', 'submission_1'],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'activities', activityId,
+      'attempts', 'attempt_1'],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'activities', activityId],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'exams', examId,
+      'attempts', 'exam_attempt_1', 'proofs', 'A'],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'exams', examId,
+      'answerSubmissions', 'exam_attempt_1'],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'exams', examId,
+      'attempts', 'exam_attempt_1'],
+    ['users', 'uid-a', 'categoryProgress', categoryId, 'exams', examId],
+    ['users', 'uid-a', 'categoryProgress', categoryId],
+    ['leaderboard', 'uid-a'],
+    ['usernames', 'uid-a'],
+    ['users', 'uid-a'],
+  ];
+  await testEnv.withSecurityRulesDisabled(async (context) => {
+    const db = context.firestore();
+    for (const path of paths) {
+      if (path.join('/') === `usernames/uid-a`) continue;
+      if (path.join('/') === `users/uid-a` ||
+          path.join('/') === `leaderboard/uid-a`) continue;
+      await setDoc(doc(db, ...path), { fixture: true });
+    }
+  });
+  const profile = userProfile('uid-a');
+  paths[9] = ['usernames', profile.usernameNormalized];
+  await markUserDeleting();
+  for (const path of paths) {
+    await assertFails(deleteDoc(doc(authDb('uid-b'), ...path)));
+    await assertFails(deleteDoc(doc(unauthDb(), ...path)));
+    await assertSucceeds(deleteDoc(doc(authDb('uid-a'), ...path)));
+  }
+  await markUserDeleting('uid-b');
+  await assertFails(deleteDoc(doc(authDb('uid-a'), 'users', 'uid-b')));
+  await assertFails(deleteDoc(doc(authDb('uid-a'), 'leaderboard', 'uid-b')));
+  await assertFails(deleteDoc(doc(authDb('uid-a'), 'usernames',
+    userProfile('uid-b').usernameNormalized)));
+}
+
+async function deletionNeverTouchesGlobalContent() {
+  await seedUser('uid-a');
+  await markUserDeleting();
+  for (const path of [
+    ['categories', categoryId],
+    ['categories', categoryId, 'lessonPages', 'page_1'],
+    ['categories', categoryId, 'activities', activityId],
+    ['categories', categoryId, 'questions', 'question_1'],
+    ['categories', categoryId, 'examConfig', 'final'],
+    ['categories', categoryId, 'answerKeys', activityId],
+  ]) {
+    await assertFails(deleteDoc(doc(authDb('uid-a'), ...path)));
+  }
 }
 
 main()

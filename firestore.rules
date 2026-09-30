@@ -185,6 +185,16 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/users/$(userId));
     }
 
+    function isActiveProfile(userId) {
+      return userProfileExists(userId)
+        && get(/databases/$(database)/documents/users/$(userId)).data.get('accountState', 'active') == 'active';
+    }
+
+    function isDeletingProfile(userId) {
+      return userProfileExists(userId)
+        && get(/databases/$(database)/documents/users/$(userId)).data.get('accountState', 'active') == 'deleting';
+    }
+
     function profileFields() {
       return [
         'username',
@@ -195,6 +205,7 @@ service cloud.firestore {
         'createdAt',
         'updatedAt',
         'lastActivityAward',
+        'accountState',
       ];
     }
 
@@ -259,6 +270,7 @@ service cloud.firestore {
     function isValidUserProfile() {
       return hasOnlyProfileFields()
         && hasRequiredProfileFields()
+        && request.resource.data.get('accountState', 'active') in ['active', 'deleting']
         && hasValidProfileUsername()
         && isValidProfileEmail()
         && request.resource.data.role == 'user'
@@ -271,6 +283,7 @@ service cloud.firestore {
 
     function isValidNewUserProfile(userId) {
       return isValidUserProfile()
+        && request.resource.data.get('accountState', 'active') == 'active'
         && hasUsernameReservationForProfile(userId)
         && request.resource.data.totalPoints == 0
         && request.resource.data.get('lastActivityAward', null) == null
@@ -288,6 +301,7 @@ service cloud.firestore {
 
     function isCompletingLegacyProfile(userId) {
       return isValidUserProfile()
+        && request.resource.data.get('accountState', 'active') == 'active'
         && isLegacyUserProfile()
         && hasUsernameReservationForProfile(userId)
         && request.resource.data.totalPoints == 0
@@ -298,6 +312,7 @@ service cloud.firestore {
 
     function isValidUpdatedUserProfile(userId) {
       return isValidUserProfile()
+        && request.resource.data.get('accountState', 'active') == 'active'
         && !isLegacyUserProfile()
         && hasUsernameReservationForProfile(userId)
         && (
@@ -309,6 +324,16 @@ service cloud.firestore {
         && request.resource.data.get('lastActivityAward', null)
           == resource.data.get('lastActivityAward', null)
         && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function isStartingAccountDeletion(userId) {
+      return isOwner(userId)
+        && isActiveProfile(userId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'accountState', 'updatedAt'
+        ])
+        && request.resource.data.accountState == 'deleting'
         && request.resource.data.updatedAt == request.time;
     }
 
@@ -391,6 +416,7 @@ service cloud.firestore {
       let userAfter = matchingUserAfter(userId);
       return request.resource.data.keys().hasOnly(leaderboardFields())
         && request.resource.data.keys().hasAll(leaderboardFields())
+        && userAfter.data.get('accountState', 'active') == 'active'
         && userAfter.data.username is string
         && request.resource.data.username == userAfter.data.username
         && userAfter.data.totalPoints is int
@@ -440,7 +466,10 @@ service cloud.firestore {
     function reservationMatchesProfile(usernameNormalized) {
       return getAfter(
         /databases/$(database)/documents/users/$(request.auth.uid)
-      ).data.usernameNormalized == usernameNormalized;
+      ).data.usernameNormalized == usernameNormalized
+        && getAfter(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.get('accountState', 'active') == 'active';
     }
 
     function progressFields() {
@@ -1450,28 +1479,28 @@ service cloud.firestore {
       allow create: if isOwner(userId) && isValidNewUserProfile(userId);
       allow update: if isOwner(userId)
         && (
-          !resource.data.keys().hasAny(['totalPoints'])
-          ? isCompletingLegacyProfile(userId)
-          : (
-            request.resource.data.diff(resource.data).affectedKeys().hasAny([
-              'totalPoints', 'lastActivityAward'
-            ])
-            ? isValidActivityAwardUpdate(userId)
-            : isValidUpdatedUserProfile(userId)
-          )
+          isStartingAccountDeletion(userId)
+          || (isActiveProfile(userId)
+            && (!resource.data.keys().hasAny(['totalPoints'])
+              ? isCompletingLegacyProfile(userId)
+              : (request.resource.data.diff(resource.data).affectedKeys().hasAny([
+                  'totalPoints', 'lastActivityAward'
+                ])
+                ? isValidActivityAwardUpdate(userId)
+                : isValidUpdatedUserProfile(userId))))
         );
-      allow delete: if false;
+      allow delete: if isOwner(userId) && isDeletingProfile(userId);
 
       match /categoryProgress/{categoryId} {
         allow get, list: if isOwner(userId);
         allow create: if isOwner(userId)
-          && userProfileExists(userId)
+          && isActiveProfile(userId)
           && isValidCategoryProgress(categoryId)
           && request.resource.data.status != 'completed'
           && hasValidCompletedActivityIdsOnCreate(categoryId)
           && hasValidProgressTimestampsOnCreate();
         allow update: if isOwner(userId)
-          && userProfileExists(userId)
+          && isActiveProfile(userId)
           && isValidCategoryProgress(categoryId)
           && hasMonotonicProgressListsOnUpdate()
           && hasValidCompletedActivityIdsOnUpdate(categoryId)
@@ -1479,82 +1508,85 @@ service cloud.firestore {
           && request.resource.data.totalLessonPages == resource.data.totalLessonPages
           && request.resource.data.totalActivities == resource.data.totalActivities
           && hasValidProgressTimestampsOnUpdate();
-        allow delete: if false;
+        allow delete: if isOwner(userId) && isDeletingProfile(userId);
 
         match /activities/{activityId} {
           allow get, list: if isOwner(userId);
           allow create: if isOwner(userId)
-            && userProfileExists(userId)
+            && isActiveProfile(userId)
             && hasValidActivityProgress(activityId)
             && hasValidInitialActivityProgress()
             && hasValidActivityAttemptCountOnCreate()
             && hasValidActivityTimestampsOnCreate();
           allow update: if isOwner(userId)
-            && userProfileExists(userId)
+            && isActiveProfile(userId)
             && hasValidActivityProgress(activityId)
             && hasValidActivityScoringOnUpdate(categoryId, activityId)
             && hasValidActivityTimestampsOnUpdate();
-          allow delete: if false;
+          allow delete: if isOwner(userId) && isDeletingProfile(userId);
 
           match /answerSubmissions/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
-              && userProfileExists(userId)
+              && isActiveProfile(userId)
               && validActivityAnswerSubmission(categoryId, activityId, attemptId);
-            allow update, delete: if false;
+            allow update: if false;
+            allow delete: if isOwner(userId) && isDeletingProfile(userId);
           }
 
           match /attempts/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
-              && userProfileExists(userId)
+              && isActiveProfile(userId)
               && hasValidActivityAttempt(categoryId, activityId, attemptId)
               && hasValidAttemptTimestampsOnCreate();
             allow update: if false;
-            allow delete: if false;
+            allow delete: if isOwner(userId) && isDeletingProfile(userId);
           }
         }
 
         match /exams/{examId} {
           allow get, list: if isOwner(userId);
           allow create: if isOwner(userId)
-            && userProfileExists(userId)
+            && isActiveProfile(userId)
             && hasValidExamProgress(categoryId, examId)
             && hasValidExamAttemptCountOnCreate()
             && hasValidActivityTimestampsOnCreate();
           allow update: if isOwner(userId)
-            && userProfileExists(userId)
+            && isActiveProfile(userId)
             && hasValidExamProgress(categoryId, examId)
             && hasValidExamAttemptCountOnUpdate(categoryId, examId)
             && hasValidActivityTimestampsOnUpdate();
-          allow delete: if false;
+          allow delete: if isOwner(userId) && isDeletingProfile(userId);
 
           match /answerSubmissions/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
-              && userProfileExists(userId)
+              && isActiveProfile(userId)
               && validExamAnswerSubmission(categoryId, examId, attemptId);
-            allow update, delete: if false;
+            allow update: if false;
+            allow delete: if isOwner(userId) && isDeletingProfile(userId);
           }
 
           match /attempts/{attemptId} {
             allow get, list: if isOwner(userId);
             allow create: if isOwner(userId)
-              && userProfileExists(userId)
+              && isActiveProfile(userId)
               && hasValidExamAttempt(categoryId, examId, attemptId)
               && hasValidAttemptTimestampsOnCreate();
             allow update: if false;
-            allow delete: if false;
+            allow delete: if isOwner(userId) && isDeletingProfile(userId);
 
             match /proofs/{part} {
               allow get, list: if isOwner(userId);
               allow create: if isOwner(userId)
-                && userProfileExists(userId)
+                && isActiveProfile(userId)
                 && ((part == 'A'
                     && validExamProofA(categoryId, examId, attemptId))
                   || (part == 'B'
                     && validExamProofB(categoryId, examId, attemptId)));
-              allow update, delete: if false;
+              allow update: if false;
+              allow delete: if isOwner(userId) && isDeletingProfile(userId);
             }
           }
         }
@@ -1571,7 +1603,9 @@ service cloud.firestore {
       allow delete: if isSignedIn()
         && resource.data.uid == request.auth.uid
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized == usernameNormalized
-        && getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized != usernameNormalized;
+        && (isDeletingProfile(request.auth.uid)
+          || (isActiveProfile(request.auth.uid)
+            && getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.usernameNormalized != usernameNormalized));
     }
 
     match /leaderboard/{userId} {
@@ -1579,8 +1613,9 @@ service cloud.firestore {
       allow create: if isOwner(userId)
         && isValidLeaderboardEntry(userId);
       allow update: if isOwner(userId)
+        && isActiveProfile(userId)
         && isValidLeaderboardUpdate(userId);
-      allow delete: if false;
+      allow delete: if isOwner(userId) && isDeletingProfile(userId);
     }
 
     match /categories/{categoryId} {

@@ -49,7 +49,12 @@ class FirebaseAuthRepository implements AuthRepository {
           email: user.email,
           username: username,
         );
-      } on UserProfileException {
+      } on UserProfileException catch (exception) {
+        // A failed commit response cannot prove that Firestore stayed empty.
+        if (exception.writeMayHaveCommitted) {
+          exception.logForDebug();
+          throw const AuthException(AuthFailureReason.registrationNeedsSignIn);
+        }
         await _deleteNewlyCreatedUser(user);
         rethrow;
       }
@@ -141,12 +146,9 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<void> _deleteNewlyCreatedUser(User user) async {
     try {
       await user.delete();
-    } on FirebaseAuthException catch (exception) {
+    } on FirebaseAuthException {
       if (kDebugMode) {
-        debugPrint(
-          '[Auth] Could not delete partially initialized user '
-          '${user.uid}: ${exception.code}',
-        );
+        debugPrint('[Auth] Partial registration rollback failed.');
       }
       await _firebaseAuth.signOut();
     }

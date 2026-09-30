@@ -10,12 +10,15 @@ import '../../data/models/auth_user.dart';
 import '../../data/models/category.dart';
 import '../../data/models/user_profile.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/account_deletion_repository.dart';
 import '../../data/repositories/content_repository.dart';
 import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/feedback/app_dialog.dart';
 import '../../shared/feedback/app_toast.dart';
 import '../../shared/services/connectivity_service.dart';
 import '../auth/profile_username_editor.dart';
+import '../auth/account_deletion_screen.dart';
+import '../privacy/privacy_notice_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -28,6 +31,7 @@ class ProfileScreen extends StatefulWidget {
     required this.progressController,
     required this.onProfileChanged,
     required this.connectivityService,
+    this.accountDeletionService,
     super.key,
   });
 
@@ -40,6 +44,7 @@ class ProfileScreen extends StatefulWidget {
   final CategoryProgressController progressController;
   final ValueChanged<UserProfile> onProfileChanged;
   final ConnectivityService connectivityService;
+  final AccountDeletionService? accountDeletionService;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -202,6 +207,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  Future<void> _confirmAndDelete() async {
+    final service = widget.accountDeletionService;
+    if (service == null) return;
+    final confirmed = await AppDialog.showConfirmation(
+      context,
+      title: AppStrings.deleteAccountConfirmTitle,
+      message: AppStrings.deleteAccountConfirmBody,
+      cancelLabel: AppStrings.cancel,
+      confirmLabel: AppStrings.deleteAccountContinue,
+      icon: Icons.delete_forever_outlined,
+      isDestructiveConfirm: true,
+    );
+    if (!mounted || !confirmed) return;
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => AccountDeletionScreen(
+          service: service,
+          authRepository: widget.authRepository,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final email = _profile.email.isNotEmpty
@@ -272,9 +300,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ] else
                       const _ProfileConnectionStateCard(),
                     const SizedBox(height: AppSpacing.md),
+                    Card(
+                      child: Padding(
+                        padding: AppInsets.card,
+                        child: OutlinedButton.icon(
+                          onPressed: () => Navigator.of(context).push<void>(
+                            MaterialPageRoute<void>(
+                              builder: (_) => PrivacyNoticeScreen(
+                                onDeleteAccount:
+                                    widget.accountDeletionService == null
+                                    ? null
+                                    : () {
+                                        Navigator.of(context).pop();
+                                        _confirmAndDelete();
+                                      },
+                              ),
+                            ),
+                          ),
+                          icon: const Icon(Icons.privacy_tip_outlined),
+                          label: const Text(AppStrings.privacyTitle),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
                     _SignOutCard(
                       isSigningOut: _isSigningOut,
                       onSignOut: _confirmAndSignOut,
+                      onDelete: widget.accountDeletionService == null
+                          ? null
+                          : _confirmAndDelete,
                     ),
                   ],
                 ),
@@ -1069,10 +1123,15 @@ class _CategoryProgressCard extends StatelessWidget {
 }
 
 class _SignOutCard extends StatelessWidget {
-  const _SignOutCard({required this.isSigningOut, required this.onSignOut});
+  const _SignOutCard({
+    required this.isSigningOut,
+    required this.onSignOut,
+    required this.onDelete,
+  });
 
   final bool isSigningOut;
   final VoidCallback onSignOut;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -1081,20 +1140,42 @@ class _SignOutCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: AppInsets.card,
-        child: OutlinedButton.icon(
-          onPressed: isSigningOut ? null : onSignOut,
-          icon: isSigningOut
-              ? const SizedBox.square(
-                  dimension: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Icon(Icons.logout_outlined),
-          label: const Text(AppStrings.signOut),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: colors.error,
-            side: BorderSide(color: colors.error),
-            minimumSize: const Size.fromHeight(AppSizing.primaryButtonHeight),
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            OutlinedButton.icon(
+              onPressed: isSigningOut ? null : onSignOut,
+              icon: isSigningOut
+                  ? const SizedBox.square(
+                      dimension: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.logout_outlined),
+              label: const Text(AppStrings.signOut),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: colors.error,
+                side: BorderSide(color: colors.error),
+                minimumSize: const Size.fromHeight(
+                  AppSizing.primaryButtonHeight,
+                ),
+              ),
+            ),
+            if (onDelete != null) ...[
+              const SizedBox(height: AppSpacing.md),
+              OutlinedButton.icon(
+                onPressed: onDelete,
+                icon: const Icon(Icons.delete_forever_outlined),
+                label: const Text(AppStrings.deleteAccount),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: colors.error,
+                  side: BorderSide(color: colors.error),
+                  minimumSize: const Size.fromHeight(
+                    AppSizing.primaryButtonHeight,
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );

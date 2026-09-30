@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../core/theme/app_theme.dart';
+import '../data/models/user_profile.dart';
 import '../data/repositories/auth_repository.dart';
+import '../data/repositories/account_deletion_repository.dart';
 import '../data/repositories/category_progress_repository.dart';
 import '../data/repositories/content_repository.dart';
 import '../data/repositories/firebase_auth_repository.dart';
@@ -27,6 +29,7 @@ class YoMeCuidoApp extends StatefulWidget {
     LeaderboardRepository? leaderboardRepository,
     CategoryProgressController? progressController,
     ConnectivityService? connectivityService,
+    AccountDeletionService? accountDeletionService,
     Key? key,
   }) {
     final resolvedUserProfileRepository =
@@ -44,12 +47,26 @@ class YoMeCuidoApp extends StatefulWidget {
         );
     final resolvedConnectivityService =
         connectivityService ?? ConnectivityService();
+    final pendingRepository = SharedPreferencesPendingQuizAttemptRepository();
     final pendingQuizAttemptSyncService = PendingQuizAttemptSyncService(
       authRepository: resolvedAuthRepository,
       connectivityService: resolvedConnectivityService,
       progressController: resolvedProgressController,
-      repository: SharedPreferencesPendingQuizAttemptRepository(),
+      repository: pendingRepository,
+      canSyncUid: (uid) async =>
+          (await resolvedUserProfileRepository.fetchProfile(
+            uid,
+          ))?.accountState ==
+          AccountState.active,
     );
+    final resolvedAccountDeletionService =
+        accountDeletionService ??
+        AccountDeletionService(
+          identity: FirebaseAccountDeletionIdentity(),
+          store: FirestoreAccountDeletionStore(),
+          pending: pendingRepository,
+          suspendPendingSync: pendingQuizAttemptSyncService.suspendForUser,
+        );
 
     return YoMeCuidoApp._(
       contentRepository: contentRepository ?? FirestoreContentRepository(),
@@ -60,6 +77,7 @@ class YoMeCuidoApp extends StatefulWidget {
       progressController: resolvedProgressController,
       connectivityService: resolvedConnectivityService,
       pendingQuizAttemptSyncService: pendingQuizAttemptSyncService,
+      accountDeletionService: resolvedAccountDeletionService,
       key: key,
     );
   }
@@ -72,6 +90,7 @@ class YoMeCuidoApp extends StatefulWidget {
     required CategoryProgressController progressController,
     required ConnectivityService connectivityService,
     required PendingQuizAttemptSyncService pendingQuizAttemptSyncService,
+    required AccountDeletionService accountDeletionService,
     super.key,
   }) : _router = AppRouter(
          contentRepository: contentRepository,
@@ -86,7 +105,8 @@ class YoMeCuidoApp extends StatefulWidget {
        _contentRepository = contentRepository,
        _progressController = progressController,
        _connectivityService = connectivityService,
-       _pendingQuizAttemptSyncService = pendingQuizAttemptSyncService;
+       _pendingQuizAttemptSyncService = pendingQuizAttemptSyncService,
+       _accountDeletionService = accountDeletionService;
 
   final AppRouter _router;
   final AuthRepository _authRepository;
@@ -96,6 +116,7 @@ class YoMeCuidoApp extends StatefulWidget {
   final CategoryProgressController _progressController;
   final ConnectivityService _connectivityService;
   final PendingQuizAttemptSyncService _pendingQuizAttemptSyncService;
+  final AccountDeletionService _accountDeletionService;
 
   @override
   State<YoMeCuidoApp> createState() => _YoMeCuidoAppState();
@@ -139,6 +160,7 @@ class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
         progressController: widget._progressController,
         contentRepository: widget._contentRepository,
         connectivityService: widget._connectivityService,
+        accountDeletionService: widget._accountDeletionService,
       ),
       onGenerateRoute: widget._router.onGenerateRoute,
     );

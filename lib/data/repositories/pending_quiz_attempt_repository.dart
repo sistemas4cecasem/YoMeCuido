@@ -10,6 +10,13 @@ abstract class PendingQuizAttemptRepository {
   Future<void> upsert(PendingQuizAttempt attempt);
 
   Future<void> remove(String attemptId);
+
+  Future<void> removeForUid(String uid) async {
+    final attempts = await loadAll();
+    for (final attempt in attempts.where((attempt) => attempt.uid == uid)) {
+      await remove(attempt.attemptId);
+    }
+  }
 }
 
 class SharedPreferencesPendingQuizAttemptRepository
@@ -74,6 +81,12 @@ class SharedPreferencesPendingQuizAttemptRepository
           .where((attempt) => attempt.attemptId != attemptId)
           .toList(growable: false),
     );
+  }
+
+  @override
+  Future<void> removeForUid(String uid) async {
+    final attempts = await loadAll();
+    await _save(attempts.where((attempt) => attempt.uid != uid).toList());
   }
 
   Future<void> _save(List<PendingQuizAttempt> attempts) {

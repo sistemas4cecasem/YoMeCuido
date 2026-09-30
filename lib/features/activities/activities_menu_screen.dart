@@ -92,7 +92,7 @@ class _ActivitiesMenuScreenState extends State<ActivitiesMenuScreen> {
               !snapshot.hasData ||
               snapshot.data!.activities.isEmpty) {
             if (kDebugMode && snapshot.error != null) {
-              debugPrint('Activities load error: ${snapshot.error}');
+              debugPrint('[Activities] Content load failed.');
             }
             return _ActivitiesLoadError(onRetry: _retry);
           }
