@@ -43,21 +43,17 @@ class SharedPreferencesPendingQuizAttemptRepository
 
     final decoded = jsonDecode(raw);
     if (decoded is! List) {
-      return const <PendingQuizAttempt>[];
+      throw const FormatException('Pending storage must contain a list.');
     }
 
     final attempts = <PendingQuizAttempt>[];
     for (final item in decoded) {
       if (item is! Map) {
-        continue;
+        throw const FormatException('Invalid pending storage entry.');
       }
-      try {
-        attempts.add(
-          PendingQuizAttempt.fromJson(Map<String, Object?>.from(item)),
-        );
-      } on FormatException {
-        continue;
-      }
+      attempts.add(
+        PendingQuizAttempt.fromJson(Map<String, Object?>.from(item)),
+      );
     }
     return List<PendingQuizAttempt>.unmodifiable(attempts);
   }

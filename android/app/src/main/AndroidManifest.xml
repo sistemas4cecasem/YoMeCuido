@@ -11,6 +11,10 @@
         android:label="YoMeCuido"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Keep native reporting off before Dart starts, in every build mode. -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

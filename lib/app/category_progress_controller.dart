@@ -8,6 +8,8 @@ import '../data/models/category_progress.dart';
 import '../data/models/pending_quiz_attempt.dart';
 import '../data/models/quiz_result.dart';
 import '../data/repositories/category_progress_repository.dart';
+import '../shared/services/error_observation.dart';
+import '../shared/services/observability_service.dart';
 
 typedef AttemptIdGenerator = String Function();
 
@@ -19,11 +21,15 @@ class CategoryProgressController extends ChangeNotifier {
     CategoryProgressPersistence? persistence,
     String? Function()? currentUserIdProvider,
     AttemptIdGenerator? attemptIdGenerator,
+    ObservabilityService observabilityService =
+        const NoOpObservabilityService(),
   }) : _persistence = persistence,
+       _observability = SessionObservabilityService(observabilityService),
        _currentUserIdProvider = currentUserIdProvider,
        _attemptIdGenerator = attemptIdGenerator ?? _defaultAttemptId;
 
   final CategoryProgressPersistence? _persistence;
+  final ObservabilityService _observability;
   final String? Function()? _currentUserIdProvider;
   final AttemptIdGenerator _attemptIdGenerator;
   final Map<String, _MutableCategoryProgress> _progressByCategory = {};
@@ -976,9 +982,39 @@ class CategoryProgressController extends ChangeNotifier {
     try {
       return await operation(uid);
     } on CategoryProgressException catch (exception) {
+      final code = switch (exception.reason) {
+        CategoryProgressFailureReason.unauthenticated ||
+        CategoryProgressFailureReason.unavailable => null,
+        CategoryProgressFailureReason.permissionDenied =>
+          ObservabilityErrorCode.permissionDenied,
+        CategoryProgressFailureReason.invalidAttemptReservation =>
+          ObservabilityErrorCode.invariantViolation,
+        CategoryProgressFailureReason.firebase => classifyFirebaseErrorCode(
+          exception.firebaseCode,
+        ),
+        CategoryProgressFailureReason.unexpected =>
+          ObservabilityErrorCode.unexpected,
+      };
+      if (code != null) {
+        unawaited(
+          _observability.record(
+            ObservabilityEvent(
+              operation: ObservabilityOperation.finalizeAttempt,
+              code: code,
+              category: ObservabilityCategory.persistence,
+            ),
+          ),
+        );
+      }
       exception.logForDebug();
       return null;
-    } catch (_) {
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.finalizeAttempt,
+        category: ObservabilityCategory.persistence,
+      );
       if (kDebugMode) {
         debugPrint('[CategoryProgress] Attempt persistence failed.');
       }

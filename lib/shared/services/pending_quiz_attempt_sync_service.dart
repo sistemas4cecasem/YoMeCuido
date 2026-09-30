@@ -5,7 +5,10 @@ import '../../data/models/category_progress.dart';
 import '../../data/models/pending_quiz_attempt.dart';
 import '../../data/repositories/auth_repository.dart';
 import '../../data/repositories/pending_quiz_attempt_repository.dart';
+import '../../data/repositories/user_profile_repository.dart';
 import 'connectivity_service.dart';
+import 'error_observation.dart';
+import 'observability_service.dart';
 
 class PendingQuizAttemptSyncService {
   PendingQuizAttemptSyncService({
@@ -14,17 +17,21 @@ class PendingQuizAttemptSyncService {
     required CategoryProgressController progressController,
     required PendingQuizAttemptRepository repository,
     Future<bool> Function(String uid)? canSyncUid,
+    ObservabilityService observabilityService =
+        const NoOpObservabilityService(),
   }) : _authRepository = authRepository,
        _connectivityService = connectivityService,
        _progressController = progressController,
        _repository = repository,
-       _canSyncUid = canSyncUid;
+       _canSyncUid = canSyncUid,
+       _observability = SessionObservabilityService(observabilityService);
 
   final AuthRepository _authRepository;
   final ConnectivityService _connectivityService;
   final CategoryProgressController _progressController;
   final PendingQuizAttemptRepository _repository;
   final Future<bool> Function(String uid)? _canSyncUid;
+  final ObservabilityService _observability;
 
   final Set<String> _syncingAttemptIds = <String>{};
   final Set<String> _suspendedUids = <String>{};
@@ -32,6 +39,12 @@ class PendingQuizAttemptSyncService {
   StreamSubscription<void>? _authSubscription;
   bool _started = false;
   bool _disposed = false;
+  bool _authStreamFailed = false;
+  int _authGeneration = 0;
+  bool _recovering = false;
+  bool _maintenanceRunning = false;
+  bool _maintenanceRequested = false;
+  bool _recoveryRequested = false;
   Future<void> _storageTail = Future<void>.value();
 
   Future<void> savePending(PendingQuizAttempt attempt) {
@@ -52,14 +65,27 @@ class PendingQuizAttemptSyncService {
   }
 
   Future<void> _serializeStorage(Future<void> Function() action) {
-    final operation = _storageTail.then((_) => action());
+    final operation = _storageTail.then((_) async {
+      try {
+        await action();
+      } catch (error) {
+        observeUnexpectedError(
+          _observability,
+          error,
+          operation: ObservabilityOperation.pendingStorage,
+          category: ObservabilityCategory.storage,
+          fallback: ObservabilityErrorCode.localWriteFailed,
+        );
+        rethrow;
+      }
+    });
     _storageTail = operation.catchError((Object _) {});
     return operation;
   }
 
   Future<bool> syncSavedAttempt(String attemptId) async {
-    await _storageTail;
-    final attempts = await _repository.loadAll();
+    final attempts = await _loadAttempts();
+    if (attempts == null) return false;
     for (final attempt in attempts) {
       if (attempt.attemptId == attemptId && attempt.isPendingSync) {
         return _syncAttempt(attempt);
@@ -74,16 +100,20 @@ class PendingQuizAttemptSyncService {
     }
     _started = true;
     _connectivityService.addListener(_handleConnectivityChanged);
-    _authSubscription = _authRepository.authStateChanges().listen((_) {
-      unawaited(recoverCurrentUserInterruptedAttempts());
-      unawaited(syncCurrentUserPendingAttempts());
-    });
-    unawaited(recoverCurrentUserInterruptedAttempts());
-    unawaited(syncCurrentUserPendingAttempts());
+    try {
+      _authSubscription = _authRepository.authStateChanges().listen((_) {
+        _authGeneration += 1;
+        _authStreamFailed = false;
+        _requestMaintenance(recover: true);
+      }, onError: (Object error, StackTrace stack) => _handleAuthError(error));
+    } catch (error) {
+      _handleAuthError(error);
+    }
+    _requestMaintenance(recover: true);
   }
 
   Future<void> recoverCurrentUserInterruptedAttempts() async {
-    if (_disposed) {
+    if (_disposed || _authStreamFailed || _recovering) {
       return;
     }
 
@@ -91,25 +121,33 @@ class PendingQuizAttemptSyncService {
     if (uid == null || uid.isEmpty) {
       return;
     }
-    if (!await _canSync(uid)) return;
-
-    final now = DateTime.now();
-    final attempts = await _repository.loadAll();
-    for (final attempt in attempts.where(
-      (attempt) => attempt.uid == uid && attempt.isInterrupted,
-    )) {
-      if (_suspendedUids.contains(uid)) return;
-      final finalized = attempt.finalized(completedAt: now);
-      if (_connectivityService.status == ConnectivityStatus.online) {
-        await _syncAttempt(finalized);
-      } else {
-        await savePending(finalized);
+    _recovering = true;
+    try {
+      final generation = _authGeneration;
+      if (!await _canSync(uid) || !_isCurrentUser(uid, generation)) return;
+      final now = DateTime.now();
+      final attempts = await _loadAttempts();
+      if (attempts == null) return;
+      for (final attempt in attempts.where(
+        (attempt) => attempt.uid == uid && attempt.isInterrupted,
+      )) {
+        if (!_isCurrentUser(uid, generation)) return;
+        final finalized = attempt.finalized(completedAt: now);
+        if (_connectivityService.status == ConnectivityStatus.online) {
+          await _syncAttempt(finalized);
+        } else if (!await _trySave(finalized)) {
+          return;
+        }
       }
+    } finally {
+      _recovering = false;
     }
   }
 
   Future<void> syncCurrentUserPendingAttempts() async {
-    if (_disposed || _connectivityService.status != ConnectivityStatus.online) {
+    if (_disposed ||
+        _authStreamFailed ||
+        _connectivityService.status != ConnectivityStatus.online) {
       return;
     }
 
@@ -120,17 +158,20 @@ class PendingQuizAttemptSyncService {
     }
     if (!await _canSync(uid)) return;
 
-    final attempts = await _repository.loadAll();
+    final generation = _authGeneration;
+    final attempts = await _loadAttempts();
+    if (attempts == null) return;
     for (final attempt in attempts.where(
       (attempt) => attempt.uid == uid && attempt.isPendingSync,
     )) {
-      if (_suspendedUids.contains(uid)) return;
+      if (!_isCurrentUser(uid, generation)) return;
       await _syncAttempt(attempt);
     }
   }
 
   Future<bool> _syncAttempt(PendingQuizAttempt attempt) async {
     if (_disposed ||
+        _authStreamFailed ||
         _suspendedUids.contains(attempt.uid) ||
         _syncingAttemptIds.contains(attempt.attemptId)) {
       return false;
@@ -141,8 +182,9 @@ class PendingQuizAttemptSyncService {
     if (!attempt.isPendingSync) {
       return false;
     }
+    final generation = _authGeneration;
     if (!await _canSync(attempt.uid)) return false;
-    if (_suspendedUids.contains(attempt.uid) ||
+    if (!_isCurrentUser(attempt.uid, generation) ||
         _syncingAttemptIds.contains(attempt.attemptId)) {
       return false;
     }
@@ -152,12 +194,18 @@ class PendingQuizAttemptSyncService {
     final completion = Completer<void>();
     _inFlight[inFlightKey] = completion;
     try {
-      await savePending(
+      if (!await _trySave(
         attempt.copyWith(status: PendingQuizAttemptSyncStatus.syncing),
-      );
+      )) {
+        return false;
+      }
+      if (!_isCurrentUser(attempt.uid, generation)) {
+        await _trySave(attempt);
+        return false;
+      }
       final synced = await _progressController.syncPendingQuizAttempt(attempt);
-      if (_authRepository.currentUser?.uid.trim() != attempt.uid) {
-        await savePending(attempt);
+      if (!_isCurrentUser(attempt.uid, generation)) {
+        await _trySave(attempt);
         return false;
       }
       if (synced && attempt.type == QuizAttemptType.exam) {
@@ -165,18 +213,27 @@ class PendingQuizAttemptSyncService {
           attempt.categoryId,
         );
         if (!refreshed) {
-          await savePending(attempt);
+          await _trySave(attempt);
           return false;
         }
       }
       if (synced) {
-        await removeLocalAttempt(attempt.attemptId);
-      } else {
-        await savePending(attempt);
+        if (!_isCurrentUser(attempt.uid, generation)) {
+          await _trySave(attempt);
+          return false;
+        }
+        return await _tryRemove(attempt.attemptId);
       }
-      return synced;
-    } catch (_) {
-      await savePending(attempt);
+      await _trySave(attempt);
+      return false;
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.pendingSync,
+        category: ObservabilityCategory.persistence,
+      );
+      await _trySave(attempt);
       return false;
     } finally {
       _syncingAttemptIds.remove(attempt.attemptId);
@@ -186,26 +243,148 @@ class PendingQuizAttemptSyncService {
   }
 
   Future<bool> _canSync(String uid) async {
-    if (_suspendedUids.contains(uid)) return false;
+    if (_disposed || _authStreamFailed || _suspendedUids.contains(uid)) {
+      return false;
+    }
     final predicate = _canSyncUid;
     if (predicate == null) return true;
     try {
       final allowed = await predicate(uid);
       return allowed && !_suspendedUids.contains(uid);
-    } catch (_) {
+    } on UserProfileException catch (error) {
+      if (error.reason == UserProfileFailureReason.unauthenticated ||
+          error.reason == UserProfileFailureReason.accountDeleting) {
+        return false;
+      }
+      final code = error.reason == UserProfileFailureReason.firebase
+          ? classifyFirebaseErrorCode(error.firebaseCode)
+          : ObservabilityErrorCode.unexpected;
+      if (code != null) {
+        unawaited(
+          _observability.record(
+            ObservabilityEvent(
+              operation: ObservabilityOperation.pendingSync,
+              code: code,
+              category: ObservabilityCategory.persistence,
+            ),
+          ),
+        );
+      }
+      return false;
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.pendingSync,
+        category: ObservabilityCategory.persistence,
+      );
       return false;
     }
   }
 
   void _handleConnectivityChanged() {
     if (_connectivityService.status == ConnectivityStatus.online) {
-      unawaited(syncCurrentUserPendingAttempts());
+      _requestMaintenance();
+    }
+  }
+
+  bool _isCurrentUser(String uid, int generation) =>
+      !_disposed &&
+      !_authStreamFailed &&
+      !_suspendedUids.contains(uid) &&
+      generation == _authGeneration &&
+      _authRepository.currentUser?.uid.trim() == uid;
+
+  Future<List<PendingQuizAttempt>?> _loadAttempts() async {
+    try {
+      await _storageTail;
+      return await _repository.loadAll();
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.pendingStorage,
+        category: ObservabilityCategory.storage,
+        fallback: ObservabilityErrorCode.localReadFailed,
+      );
+      return null;
+    }
+  }
+
+  Future<bool> _trySave(PendingQuizAttempt attempt) async {
+    try {
+      await savePending(attempt);
+      return true;
+    } catch (_) {
+      // The storage boundary already recorded this failure; preserve the pending.
+      return false;
+    }
+  }
+
+  Future<bool> _tryRemove(String attemptId) async {
+    try {
+      await removeLocalAttempt(attemptId);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  void _handleAuthError(Object error) {
+    _authGeneration += 1;
+    _authStreamFailed = true;
+    observeUnexpectedError(
+      _observability,
+      error,
+      operation: ObservabilityOperation.authentication,
+      category: ObservabilityCategory.authentication,
+    );
+  }
+
+  void _requestMaintenance({bool recover = false}) {
+    if (_disposed) return;
+    _maintenanceRequested = true;
+    _recoveryRequested = _recoveryRequested || recover;
+    if (_maintenanceRunning) return;
+    _maintenanceRunning = true;
+    unawaited(_runMaintenance());
+  }
+
+  Future<void> _runMaintenance() async {
+    try {
+      do {
+        _maintenanceRequested = false;
+        final recover = _recoveryRequested;
+        _recoveryRequested = false;
+        try {
+          if (recover) await recoverCurrentUserInterruptedAttempts();
+          await syncCurrentUserPendingAttempts();
+        } catch (error) {
+          observeUnexpectedError(
+            _observability,
+            error,
+            operation: ObservabilityOperation.recovery,
+            category: ObservabilityCategory.persistence,
+          );
+        }
+      } while (_maintenanceRequested && !_disposed);
+    } finally {
+      _maintenanceRunning = false;
     }
   }
 
   Future<void> dispose() async {
     _disposed = true;
     _connectivityService.removeListener(_handleConnectivityChanged);
-    await _authSubscription?.cancel();
+    try {
+      await _authSubscription?.cancel();
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.authentication,
+        category: ObservabilityCategory.authentication,
+      );
+    }
   }
 }

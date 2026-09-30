@@ -24,6 +24,36 @@ void main() {
     await repository.removeForUid('uid-a');
     expect((await repository.loadAll()).map((a) => a.uid), ['uid-b']);
   });
+
+  for (final raw in [
+    '{"uid":"private"}',
+    '[42]',
+    '[{"uid":"private","answers":[]}]',
+  ]) {
+    test('invalid pending shape preserves raw storage: $raw', () async {
+      final previous = SharedPreferencesAsyncPlatform.instance;
+      SharedPreferencesAsyncPlatform.instance =
+          InMemorySharedPreferencesAsync.empty();
+      addTearDown(() => SharedPreferencesAsyncPlatform.instance = previous);
+      final preferences = SharedPreferencesAsync();
+      const key = 'pending_quiz_attempts_v1';
+      await preferences.setString(key, raw);
+      final repository = SharedPreferencesPendingQuizAttemptRepository(
+        preferences: preferences,
+      );
+      await expectLater(repository.loadAll(), throwsFormatException);
+      await expectLater(
+        repository.upsert(_attempt('uid-a', 'attempt-a')),
+        throwsFormatException,
+      );
+      await expectLater(repository.remove('attempt-a'), throwsFormatException);
+      await expectLater(
+        repository.removeForUid('uid-a'),
+        throwsFormatException,
+      );
+      expect(await preferences.getString(key), raw);
+    });
+  }
 }
 
 PendingQuizAttempt _attempt(String uid, String id) {

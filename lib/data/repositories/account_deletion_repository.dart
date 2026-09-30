@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../shared/services/error_observation.dart';
+import '../../shared/services/observability_service.dart';
 import '../models/user_profile.dart';
 import 'pending_quiz_attempt_repository.dart';
 
@@ -258,9 +262,10 @@ enum AccountDeletionStage {
 enum AccountDeletionFailure { password, recentLogin, session, remote }
 
 class AccountDeletionException implements Exception {
-  const AccountDeletionException(this.reason);
+  const AccountDeletionException(this.reason, {this.firebaseCode});
 
   final AccountDeletionFailure reason;
+  final String? firebaseCode;
 
   String get userMessage => switch (reason) {
     AccountDeletionFailure.password => 'La contraseña no es correcta.',
@@ -279,15 +284,19 @@ class AccountDeletionService {
     required AccountDeletionStore store,
     required PendingQuizAttemptRepository pending,
     Future<void> Function(String uid)? suspendPendingSync,
+    ObservabilityService observabilityService =
+        const NoOpObservabilityService(),
   }) : _identity = identity,
        _store = store,
        _pending = pending,
-       _suspendPendingSync = suspendPendingSync;
+       _suspendPendingSync = suspendPendingSync,
+       _observability = SessionObservabilityService(observabilityService);
 
   final AccountDeletionIdentity _identity;
   final AccountDeletionStore _store;
   final PendingQuizAttemptRepository _pending;
   final Future<void> Function(String uid)? _suspendPendingSync;
+  final ObservabilityService _observability;
 
   String _uid() {
     final uid = _identity.currentUid;
@@ -300,7 +309,10 @@ class AccountDeletionService {
   Future<DeletionProfile?> inspectCurrentProfile() =>
       _store.fetchProfile(_uid());
 
-  Future<void> start(String password) async {
+  Future<void> start(String password) =>
+      _observeFailure(() => _start(password));
+
+  Future<void> _start(String password) async {
     final uid = _uid();
     final profile = await _store.fetchProfile(uid);
     if (profile == null || profile.state != AccountState.active) {
@@ -312,10 +324,12 @@ class AccountDeletionService {
     }
     await _suspendPendingSync?.call(uid);
     await _store.markDeleting(uid);
-    await resume();
+    await _resume();
   }
 
-  Future<void> resume() async {
+  Future<void> resume() => _observeFailure(_resume);
+
+  Future<void> _resume() async {
     final uid = _uid();
     final profile = await _store.fetchProfile(uid);
     if (profile != null) {
@@ -330,19 +344,13 @@ class AccountDeletionService {
     if (_uid() != uid) {
       throw const AccountDeletionException(AccountDeletionFailure.session);
     }
-    try {
-      await _identity.deleteCurrentUser();
-    } on FirebaseAuthException catch (error) {
-      if (error.code == 'requires-recent-login') {
-        throw const AccountDeletionException(
-          AccountDeletionFailure.recentLogin,
-        );
-      }
-      throw const AccountDeletionException(AccountDeletionFailure.remote);
-    }
+    await _deleteIdentity();
   }
 
-  Future<void> retryAuthOnly(String password) async {
+  Future<void> retryAuthOnly(String password) =>
+      _observeFailure(() => _retryAuthOnly(password));
+
+  Future<void> _retryAuthOnly(String password) async {
     final uid = _uid();
     if (await _store.fetchProfile(uid) != null) {
       throw const AccountDeletionException(AccountDeletionFailure.remote);
@@ -352,6 +360,10 @@ class AccountDeletionService {
       throw const AccountDeletionException(AccountDeletionFailure.session);
     }
     await _pending.removeForUid(uid);
+    await _deleteIdentity();
+  }
+
+  Future<void> _deleteIdentity() async {
     try {
       await _identity.deleteCurrentUser();
     } on FirebaseAuthException catch (error) {
@@ -360,7 +372,42 @@ class AccountDeletionService {
           AccountDeletionFailure.recentLogin,
         );
       }
-      throw const AccountDeletionException(AccountDeletionFailure.remote);
+      throw AccountDeletionException(
+        AccountDeletionFailure.remote,
+        firebaseCode: error.code,
+      );
+    }
+  }
+
+  Future<void> _observeFailure(Future<void> Function() action) async {
+    try {
+      await action();
+    } on AccountDeletionException catch (error) {
+      if (error.reason == AccountDeletionFailure.remote) {
+        final code = error.firebaseCode == null
+            ? ObservabilityErrorCode.unexpected
+            : classifyFirebaseErrorCode(error.firebaseCode);
+        if (code != null) {
+          unawaited(
+            _observability.record(
+              ObservabilityEvent(
+                operation: ObservabilityOperation.deleteAccount,
+                code: code,
+                category: ObservabilityCategory.persistence,
+              ),
+            ),
+          );
+        }
+      }
+      rethrow;
+    } catch (error) {
+      observeUnexpectedError(
+        _observability,
+        error,
+        operation: ObservabilityOperation.deleteAccount,
+        category: ObservabilityCategory.persistence,
+      );
+      rethrow;
     }
   }
 }

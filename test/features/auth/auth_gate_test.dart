@@ -50,6 +50,8 @@ void main() {
     await tester.tap(find.text(AppStrings.privacyTitle));
     await tester.pumpAndSettle();
     expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Diagnósticos de fallos'), 180);
+    expect(find.textContaining('envío esté desactivado'), findsOneWidget);
     await tester.scrollUntilVisible(
       find.text('Eliminación y conservación'),
       180,

@@ -31,6 +31,12 @@ void main() {
     await tester.scrollUntilVisible(find.text('Qué se ve en el Ranking'), 180);
     expect(find.text('Qué se ve en el Ranking'), findsOneWidget);
     expect(find.textContaining('El correo, las respuestas'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Diagnósticos de fallos'), 180);
+    expect(find.textContaining('envío esté desactivado'), findsOneWidget);
+    expect(
+      find.textContaining('códigos técnicos predefinidos'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('creates an account through AuthRepository and shows success', (

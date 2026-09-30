@@ -15,6 +15,7 @@ import '../data/repositories/pending_quiz_attempt_repository.dart';
 import '../data/repositories/user_profile_repository.dart';
 import '../features/auth/auth_gate.dart';
 import '../shared/services/connectivity_service.dart';
+import '../shared/services/observability_service.dart';
 import '../shared/services/pending_quiz_attempt_sync_service.dart';
 import '../shared/widgets/connectivity_status_view.dart';
 import 'app_router.dart';
@@ -30,8 +31,11 @@ class YoMeCuidoApp extends StatefulWidget {
     CategoryProgressController? progressController,
     ConnectivityService? connectivityService,
     AccountDeletionService? accountDeletionService,
+    ObservabilityService observabilityService =
+        const NoOpObservabilityService(),
     Key? key,
   }) {
+    final safeObservability = SessionObservabilityService(observabilityService);
     final resolvedUserProfileRepository =
         userProfileRepository ?? UserProfileRepository();
     final resolvedAuthRepository =
@@ -42,6 +46,7 @@ class YoMeCuidoApp extends StatefulWidget {
     final resolvedProgressController =
         progressController ??
         CategoryProgressController(
+          observabilityService: safeObservability,
           persistence: CategoryProgressRepository(),
           currentUserIdProvider: () => resolvedAuthRepository.currentUser?.uid,
         );
@@ -49,6 +54,7 @@ class YoMeCuidoApp extends StatefulWidget {
         connectivityService ?? ConnectivityService();
     final pendingRepository = SharedPreferencesPendingQuizAttemptRepository();
     final pendingQuizAttemptSyncService = PendingQuizAttemptSyncService(
+      observabilityService: safeObservability,
       authRepository: resolvedAuthRepository,
       connectivityService: resolvedConnectivityService,
       progressController: resolvedProgressController,
@@ -62,6 +68,7 @@ class YoMeCuidoApp extends StatefulWidget {
     final resolvedAccountDeletionService =
         accountDeletionService ??
         AccountDeletionService(
+          observabilityService: safeObservability,
           identity: FirebaseAccountDeletionIdentity(),
           store: FirestoreAccountDeletionStore(),
           pending: pendingRepository,
@@ -78,6 +85,7 @@ class YoMeCuidoApp extends StatefulWidget {
       connectivityService: resolvedConnectivityService,
       pendingQuizAttemptSyncService: pendingQuizAttemptSyncService,
       accountDeletionService: resolvedAccountDeletionService,
+      observabilityService: safeObservability,
       key: key,
     );
   }
@@ -91,6 +99,7 @@ class YoMeCuidoApp extends StatefulWidget {
     required ConnectivityService connectivityService,
     required PendingQuizAttemptSyncService pendingQuizAttemptSyncService,
     required AccountDeletionService accountDeletionService,
+    required this.observabilityService,
     super.key,
   }) : _router = AppRouter(
          contentRepository: contentRepository,
@@ -109,6 +118,7 @@ class YoMeCuidoApp extends StatefulWidget {
        _accountDeletionService = accountDeletionService;
 
   final AppRouter _router;
+  final ObservabilityService observabilityService;
   final AuthRepository _authRepository;
   final UserProfileRepository _userProfileRepository;
   final LeaderboardRepository _leaderboardRepository;
