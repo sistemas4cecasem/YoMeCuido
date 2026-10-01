@@ -50,13 +50,18 @@ void main() {
     await tester.tap(find.text(AppStrings.privacyTitle));
     await tester.pumpAndSettle();
     expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Diagnósticos de fallos'), 180);
-    expect(find.textContaining('envío esté desactivado'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Servicios de terceros'), 180);
+    expect(
+      find.textContaining('servicios tecnológicos de terceros'),
+      findsOneWidget,
+    );
     await tester.scrollUntilVisible(
       find.text('Eliminación y conservación'),
       180,
     );
     expect(find.text('Eliminación y conservación'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Responsable y contacto'), 180);
+    expect(find.textContaining('https://cecasem.com/'), findsOneWidget);
     await tester.scrollUntilVisible(find.text(AppStrings.deleteAccount), 180);
     await tester.tap(find.text(AppStrings.deleteAccount));
     await tester.pumpAndSettle();

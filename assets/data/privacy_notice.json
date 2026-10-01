@@ -1,34 +1,30 @@
 {
   "title": "Privacidad en YoMeCuido",
-  "intro": "YoMeCuido es un proyecto asociado a CECASEM. Responsable institucional y canal de contacto para consultas de privacidad: [PENDIENTE DE DEFINIR]. Este aviso describe lo que hace la versión actual de la aplicación.",
+  "intro": "YoMeCuido es un proyecto asociado a CECASEM. Esta sección explica qué información utilizamos, para qué la utilizamos y qué opciones tienes sobre tus datos.",
   "sections": [
     {
       "title": "Datos que utilizamos",
-      "body": "Para crear y usar la cuenta se emplean el correo electrónico, un identificador interno de Firebase y el estado de verificación del correo. En el perfil se guardan el nombre de usuario y su versión normalizada, el correo, el rol, el puntaje total, fechas de creación y actualización, y el estado de la cuenta. Guardamos progreso educativo por categoría, páginas vistas, actividades, intentos, respuestas enviadas, resultados de exámenes y puntajes. Algunas respuestas pendientes pueden guardarse en este dispositivo hasta sincronizarse. La contraseña la gestiona Firebase Authentication; YoMeCuido no la guarda en su perfil ni en Firestore."
+      "body": "Para crear y utilizar tu cuenta podemos almacenar tu correo electrónico, nombre de usuario y otra información básica asociada a tu perfil.\n\nTambién registramos información relacionada con tu uso de la aplicación, como tu progreso educativo, actividades realizadas, intentos, respuestas, resultados de evaluaciones y puntajes.\n\nTu contraseña no se almacena dentro de tu perfil de YoMeCuido. Su gestión se realiza mediante el servicio de autenticación utilizado por la aplicación."
     },
     {
-      "title": "Para qué se usan",
-      "body": "Estos datos permiten crear y autenticar la cuenta, verificar o recuperar el acceso por correo, guardar el progreso, gestionar intentos, calcular puntajes, desbloquear contenido y mostrar el Ranking. Firebase App Check emplea mecanismos técnicos para proteger el acceso a los servicios Firebase. La aplicación consulta localmente el estado de conectividad para gestionar funciones que necesitan conexión."
+      "title": "Para qué utilizamos tus datos",
+      "body": "Utilizamos esta información para permitir el acceso a tu cuenta, mantener tu progreso, registrar tus actividades, calcular puntajes, desbloquear contenido y ofrecer las funciones educativas de YoMeCuido.\n\nTambién podemos utilizar información técnica necesaria para proteger la aplicación, mantener su funcionamiento y prevenir accesos no autorizados."
     },
     {
-      "title": "Qué se ve en el Ranking",
-      "body": "Tu nombre de usuario y puntaje pueden mostrarse a otras personas autenticadas en el Ranking de YoMeCuido. El correo, las respuestas, los intentos, el progreso detallado y el estado de la cuenta no se muestran en esa pantalla. El registro técnico del Ranking usa el identificador interno de la cuenta como clave. Para evitar nombres duplicados, personas autenticadas pueden consultar una reserva de nombre que contiene la versión normalizada y un identificador técnico."
+      "title": "Información visible para otros usuarios",
+      "body": "En el Ranking pueden mostrarse tu nombre de usuario y puntaje.\n\nTu correo electrónico, respuestas, intentos, progreso detallado y estado de la cuenta no se muestran públicamente en el Ranking."
     },
     {
-      "title": "Servicios y usos no incluidos",
-      "body": "La versión actual utiliza Firebase Authentication, Cloud Firestore y Firebase App Check. El SDK Firebase Crashlytics está instalado, con el envío automático de informes desactivado. No integra Firebase Analytics, monitoreo de rendimiento ni publicidad, y el código actual no usa los datos para venta o publicidad. La app no solicita acceso a ubicación, contactos, cámara, micrófono, galería, archivos personales, SMS, llamadas ni biometría."
-    },
-    {
-      "title": "Diagnósticos de fallos",
-      "body": "Crashlytics puede guardar informes técnicos en el dispositivo aunque el envío esté desactivado. En el uso normal, la app solicita descartar los informes pendientes al iniciar. En pruebas técnicas aisladas y autorizadas puede enviarse un único diagnóstico sintético; no se descarta antes de intentar su envío y la recopilación vuelve a desactivarse. Firebase puede adjuntar versión de la app, datos técnicos del dispositivo y sistema e identificadores de instalación y sesión. El servicio propio de diagnósticos admite únicamente códigos técnicos predefinidos; no admite contraseñas, correo, identificador de cuenta, nombre de usuario, respuestas, tokens ni otros datos privados de actividades. Esto no significa que todos los diagnósticos automáticos del SDK nativo sean filtrados por ese servicio."
+      "title": "Servicios de terceros",
+      "body": "YoMeCuido utiliza servicios tecnológicos de terceros para funciones necesarias como la autenticación, almacenamiento de información y protección de la aplicación.\n\nEstos servicios pueden procesar únicamente la información necesaria para prestar dichas funciones.\n\nYoMeCuido no vende información personal ni utiliza los datos de sus usuarios con fines publicitarios o comerciales."
     },
     {
       "title": "Eliminación y conservación",
-      "body": "Puedes iniciar la eliminación en Perfil > Eliminar cuenta. Se solicita confirmar tu contraseña. El flujo elimina el perfil, progreso, intentos, respuestas, puntaje y registro del Ranking, reserva del nombre de usuario, datos pendientes de esta cuenta en el dispositivo y la cuenta de autenticación. Si el proceso se interrumpe, la aplicación permite continuarlo. Los datos asociados permanecen mientras exista la cuenta; no se establece aquí un plazo fijo adicional. La eliminación no borra contenido educativo común ni garantiza que la caché técnica del SDK se vacíe de inmediato."
+      "body": "Puedes solicitar la eliminación de tu cuenta desde Perfil > Eliminar cuenta.\n\nAl eliminarla, se eliminará la información personal asociada a tu cuenta, incluyendo tu perfil, progreso, intentos, respuestas, puntajes y participación en el Ranking.\n\nPuede conservarse temporalmente cierta información cuando sea necesario para completar procesos técnicos de eliminación o cuando corresponda por obligaciones aplicables."
     },
     {
-      "title": "Conservación de diagnósticos",
-      "body": "Si se habilita el envío a Crashlytics, Firebase conserva trazas de fallos e identificadores asociados durante 90 días antes de iniciar su eliminación de sistemas activos y copias de seguridad. Eliminar la cuenta de YoMeCuido no elimina esos informes del proveedor ni garantiza un borrado inmediato. En el uso normal, el envío permanece desactivado."
+      "title": "Responsable y contacto",
+      "body": "YoMeCuido es un proyecto asociado a CECASEM.\n\nPara obtener información institucional o realizar consultas relacionadas con el proyecto y el tratamiento de datos, puedes visitar:\n\nhttps://cecasem.com/"
     }
   ]
 }

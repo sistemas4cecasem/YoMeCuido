@@ -28,15 +28,22 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
     expect(find.textContaining('CECASEM'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Qué se ve en el Ranking'), 180);
-    expect(find.text('Qué se ve en el Ranking'), findsOneWidget);
-    expect(find.textContaining('El correo, las respuestas'), findsOneWidget);
-    await tester.scrollUntilVisible(find.text('Diagnósticos de fallos'), 180);
-    expect(find.textContaining('envío esté desactivado'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('Información visible para otros usuarios'),
+      180,
+    );
     expect(
-      find.textContaining('códigos técnicos predefinidos'),
+      find.textContaining('Tu correo electrónico, respuestas'),
       findsOneWidget,
     );
+    await tester.scrollUntilVisible(find.text('Servicios de terceros'), 180);
+    expect(
+      find.textContaining('servicios tecnológicos de terceros'),
+      findsOneWidget,
+    );
+    await tester.scrollUntilVisible(find.text('Responsable y contacto'), 180);
+    expect(find.textContaining('https://cecasem.com/'), findsOneWidget);
+    expect(find.text(AppStrings.deleteAccount), findsNothing);
   });
 
   testWidgets('creates an account through AuthRepository and shows success', (
