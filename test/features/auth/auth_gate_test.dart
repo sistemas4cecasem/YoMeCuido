@@ -22,6 +22,7 @@ import 'package:demo_yomecuido/data/repositories/leaderboard_repository.dart';
 import 'package:demo_yomecuido/data/repositories/pending_quiz_attempt_repository.dart';
 import 'package:demo_yomecuido/data/repositories/user_profile_repository.dart';
 import 'package:demo_yomecuido/features/auth/auth_gate.dart';
+import 'package:demo_yomecuido/features/offline_activity/offline_activity_screen.dart';
 import 'package:demo_yomecuido/features/auth/account_deletion_screen.dart';
 import 'package:demo_yomecuido/features/privacy/privacy_notice_screen.dart';
 import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
@@ -31,6 +32,84 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  testWidgets('offline startup does not wait for the server profile', (
+    tester,
+  ) async {
+    final auth = _ControllableAuthRepository();
+    final pending = Completer<UserProfile?>();
+    final profile = _FakeUserProfileRepository()..pendingFetch = pending.future;
+    final connectivity = ConnectivityService(
+      networkMonitor: _FakeNetworkInterfaceMonitor()..available = false,
+      backendProbe: _FakeBackendConnectivityProbe(),
+    );
+    await connectivity.checkConnection();
+    await _pumpGate(
+      tester,
+      auth,
+      userProfileRepository: profile,
+      connectivityService: connectivity,
+    );
+    auth.emit(
+      const AuthUser(
+        uid: 'uid-123',
+        email: 'persona@example.com',
+        isEmailVerified: true,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.offlineActivityTitle), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    pending.completeError(StateError('Offline'));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.offlineActivityTitle), findsOneWidget);
+  });
+  testWidgets(
+    'offline startup opens local activity and retries profile online',
+    (tester) async {
+      final auth = _ControllableAuthRepository();
+      final profile = _FakeUserProfileRepository()..failFetch = true;
+      final monitor = _FakeNetworkInterfaceMonitor()..available = false;
+      final connectivity = ConnectivityService(
+        networkMonitor: monitor,
+        backendProbe: _FakeBackendConnectivityProbe(),
+      );
+      await connectivity.checkConnection();
+      await _pumpGate(
+        tester,
+        auth,
+        userProfileRepository: profile,
+        connectivityService: connectivity,
+      );
+      auth.emit(
+        const AuthUser(
+          uid: 'uid-123',
+          email: 'persona@example.com',
+          isEmailVerified: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text(AppStrings.digitalSecurityTitle), findsOneWidget);
+      expect(find.text('Reintentar'), findsNothing);
+      await tester.tap(find.text(AppStrings.digitalSecurityTitle));
+      await tester.pumpAndSettle();
+      expect(
+        find.text(AppStrings.categoryConnectionRequiredSnackBar),
+        findsOneWidget,
+      );
+      await tester.pump(const Duration(seconds: 5));
+      await tester.tap(find.text(AppStrings.offlineActivityTitle));
+      await tester.pumpAndSettle();
+      expect(find.byType(OfflineActivityScreen), findsOneWidget);
+      expect(find.text(AppStrings.digitalSecurityTitle), findsNothing);
+      Navigator.of(tester.element(find.byType(OfflineActivityScreen))).pop();
+      await tester.pumpAndSettle();
+      profile.failFetch = false;
+      monitor.available = true;
+      await connectivity.checkConnection(force: true);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('main_nav_profile')), findsOneWidget);
+    },
+  );
   testWidgets('profile privacy notice reaches existing deletion flow', (
     tester,
   ) async {
@@ -1087,10 +1166,11 @@ Future<void> _pumpGate(
   ContentRepository? contentRepository,
   LeaderboardRepository? leaderboardRepository,
   AccountDeletionService? accountDeletionService,
+  ConnectivityService? connectivityService,
 }) async {
   final resolvedProgressController =
       progressController ?? CategoryProgressController();
-  final connectivityService = ConnectivityService(
+  connectivityService ??= ConnectivityService(
     networkMonitor: _FakeNetworkInterfaceMonitor(),
     backendProbe: _FakeBackendConnectivityProbe(),
   );
@@ -1170,10 +1250,11 @@ class _TrackingDeletionService extends AccountDeletionService {
 }
 
 class _FakeNetworkInterfaceMonitor implements NetworkInterfaceMonitor {
+  bool available = true;
   final StreamController<bool> _controller = StreamController<bool>.broadcast();
 
   @override
-  Future<bool> hasNetworkInterface() async => true;
+  Future<bool> hasNetworkInterface() async => available;
 
   @override
   Stream<bool> get onNetworkInterfaceChanged => _controller.stream;
@@ -1316,6 +1397,8 @@ class _FakeUserProfileRepository extends UserProfileRepository {
   String? changedUid;
   bool failRename = false;
   bool missingProfile = false;
+  bool failFetch = false;
+  Future<UserProfile?>? pendingFetch;
 
   @override
   Future<UserProfile> changeUsername({
@@ -1335,6 +1418,8 @@ class _FakeUserProfileRepository extends UserProfileRepository {
 
   @override
   Future<UserProfile?> fetchProfile(String uid) async {
+    if (pendingFetch != null) return pendingFetch;
+    if (failFetch) throw StateError('Offline');
     if (missingProfile) return null;
     final uidProfile = profilesByUid[uid];
     if (uidProfile != null) {

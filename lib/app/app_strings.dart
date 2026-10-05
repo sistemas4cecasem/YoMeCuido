@@ -136,10 +136,6 @@ abstract final class AppStrings {
   static const offlineActivityBackHome = 'Volver al inicio';
   static const offlineActivityLoadError =
       'No pudimos cargar la actividad sin conexión.';
-  static const offlineActivityCorrectFeedback =
-      'Tu respuesta es correcta. Puedes continuar con la siguiente pregunta.';
-  static const offlineActivityIncorrectFeedback =
-      'Esta opción no es la recomendada. Revisa la respuesta correcta antes de continuar.';
   static const exitOfflineActivityTitle = '¿Salir de la actividad?';
   static const exitOfflineActivityBody =
       'Se perderán las respuestas de esta sesión.';

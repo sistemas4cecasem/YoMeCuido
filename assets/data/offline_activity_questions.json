@@ -210,12 +210,12 @@
   },
   {
     "id": "offline_activity_q20",
-    "statement": "¿Qué describe mejor esta actividad sin conexión?",
+    "statement": "Si alguien te pide un código de verificación recibido por SMS, ¿qué conviene hacer?",
     "options": [
-      {"id": "a", "text": "Una práctica local que no modifica puntos, ranking ni progreso."},
-      {"id": "b", "text": "Un examen final que desbloquea categorías."},
-      {"id": "c", "text": "Un intento que se sincroniza al volver Internet."},
-      {"id": "d", "text": "Una tarea que requiere Firestore para calcular resultados."}
+      {"id": "a", "text": "No compartirlo: puede permitir el acceso a tu cuenta."},
+      {"id": "b", "text": "Enviarlo si la persona dice trabajar para la plataforma."},
+      {"id": "c", "text": "Publicarlo para comprobar si otras personas lo recibieron."},
+      {"id": "d", "text": "Compartirlo si te prometen un premio."}
     ],
     "correctAnswer": "a"
   }

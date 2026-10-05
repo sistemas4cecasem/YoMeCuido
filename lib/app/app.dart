@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../core/theme/app_theme.dart';
 import '../data/models/user_profile.dart';
+import '../data/models/auth_user.dart';
 import '../data/repositories/auth_repository.dart';
 import '../data/repositories/account_deletion_repository.dart';
 import '../data/repositories/category_progress_repository.dart';
@@ -134,10 +135,16 @@ class YoMeCuidoApp extends StatefulWidget {
 
 class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final _currentRoute = ValueNotifier<String?>(AppRoutes.home);
+  late final _connectivityRouteObserver = _ConnectivityRouteObserver(
+    _currentRoute,
+  );
+  late final Stream<AuthUser?> _bannerAuthChanges;
 
   @override
   void initState() {
     super.initState();
+    _bannerAuthChanges = widget._authRepository.authStateChanges();
     unawaited(widget._connectivityService.start());
     unawaited(widget._pendingQuizAttemptSyncService.start());
   }
@@ -145,6 +152,7 @@ class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
   @override
   void dispose() {
     widget._connectivityService.dispose();
+    _currentRoute.dispose();
     unawaited(widget._pendingQuizAttemptSyncService.dispose());
     super.dispose();
   }
@@ -156,11 +164,23 @@ class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: _scaffoldMessengerKey,
       theme: AppTheme.data(),
+      navigatorObservers: [_connectivityRouteObserver],
       builder: (context, child) {
-        return ConnectivityStatusView(
-          connectivityService: widget._connectivityService,
-          scaffoldMessengerKey: _scaffoldMessengerKey,
-          child: child ?? const SizedBox.shrink(),
+        return StreamBuilder<AuthUser?>(
+          stream: _bannerAuthChanges,
+          initialData: widget._authRepository.currentUser,
+          builder: (context, snapshot) => ValueListenableBuilder<String?>(
+            valueListenable: _currentRoute,
+            builder: (context, route, _) => ConnectivityStatusView(
+              connectivityService: widget._connectivityService,
+              scaffoldMessengerKey: _scaffoldMessengerKey,
+              showOfflineBanner:
+                  route != AppRoutes.offlineActivity &&
+                  !((route == AppRoutes.home || route == null) &&
+                      snapshot.data == null),
+              child: child ?? const SizedBox.shrink(),
+            ),
+          ),
         );
       },
       home: AuthGate(
@@ -175,4 +195,29 @@ class _YoMeCuidoAppState extends State<YoMeCuidoApp> {
       onGenerateRoute: widget._router.onGenerateRoute,
     );
   }
+}
+
+class _ConnectivityRouteObserver extends NavigatorObserver {
+  _ConnectivityRouteObserver(this.currentRoute);
+
+  final ValueNotifier<String?> currentRoute;
+
+  void _update(Route<dynamic>? route) {
+    if (route is! PageRoute) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (navigator?.mounted ?? false) currentRoute.value = route.settings.name;
+    });
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      _update(route);
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      _update(previousRoute);
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
+      _update(newRoute);
 }

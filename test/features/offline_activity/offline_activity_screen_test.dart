@@ -9,6 +9,7 @@ import 'package:demo_yomecuido/data/repositories/offline_activity_repository.dar
 import 'package:demo_yomecuido/features/high_level_categories/high_level_categories_screen.dart';
 import 'package:demo_yomecuido/features/offline_activity/offline_activity_screen.dart';
 import 'package:demo_yomecuido/shared/services/connectivity_service.dart';
+import 'package:demo_yomecuido/shared/widgets/answer_option_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -42,6 +43,8 @@ void main() {
 
       expect(find.text(AppStrings.offlineActivityIntroTitle), findsOneWidget);
       expect(find.text(AppStrings.offlineActivityStart), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+      connectivity.dispose();
     },
   );
 
@@ -65,9 +68,18 @@ void main() {
     for (var index = 0; index < 20; index += 1) {
       await _answerCurrentQuestion(tester, questions, correctly: index < 12);
       await tester.pumpAndSettle();
+      expect(find.text(AppStrings.correct), findsNothing);
+      expect(find.text(AppStrings.reviewAnswer), findsNothing);
+      final states = tester
+          .widgetList<AnswerOptionTile>(find.byType(AnswerOptionTile))
+          .map((tile) => tile.state);
       expect(
-        find.text(index < 12 ? AppStrings.correct : AppStrings.reviewAnswer),
-        findsOneWidget,
+        states.where((state) => state == AnswerOptionTileState.correct),
+        hasLength(1),
+      );
+      expect(
+        states.where((state) => state == AnswerOptionTileState.incorrect),
+        hasLength(index < 12 ? 0 : 1),
       );
       await tester.tap(
         find.text(index == 19 ? AppStrings.seeResult : AppStrings.next),
@@ -87,7 +99,7 @@ void main() {
   });
 
   testWidgets(
-    'muestra retroalimentación inmediata y habilita resultado offline',
+    'marca las respuestas inmediatamente y habilita resultado offline',
     (tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -113,7 +125,7 @@ void main() {
       await _answerCurrentQuestion(tester, questions, correctly: false);
       await tester.pumpAndSettle();
 
-      expect(find.text(AppStrings.reviewAnswer), findsOneWidget);
+      expect(find.text(AppStrings.reviewAnswer), findsNothing);
       expect(find.text(AppStrings.seeResult), findsOneWidget);
       final resultButton = tester.widget<ElevatedButton>(
         find.widgetWithText(ElevatedButton, AppStrings.seeResult),

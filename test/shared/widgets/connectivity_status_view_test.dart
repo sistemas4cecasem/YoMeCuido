@@ -50,6 +50,40 @@ void main() {
     expect(find.text(AppStrings.offlineBannerTitle), findsOneWidget);
     expect(find.text(AppStrings.offlineBannerBody), findsOneWidget);
     expect(find.byIcon(Icons.wifi_off_outlined), findsOneWidget);
+    expect(
+      tester
+          .getBottomLeft(
+            find.byKey(const ValueKey<String>('offline_connectivity_banner')),
+          )
+          .dy,
+      lessThan(tester.getTopLeft(find.text('Contenido')).dy),
+    );
+  });
+
+  testWidgets('recovers automatically without a network event or user action', (
+    tester,
+  ) async {
+    final network = _FakeNetworkInterfaceMonitor(hasInterface: false);
+    final backend = _FakeBackendConnectivityProbe();
+    final service = ConnectivityService(
+      networkMonitor: network,
+      backendProbe: backend,
+    );
+    addTearDown(service.dispose);
+    await service.start();
+    await _pumpStatusView(tester, service);
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.offlineBannerTitle), findsOneWidget);
+    network.hasInterface = true;
+    backend.backendReachable = true;
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.offlineBannerTitle), findsNothing);
+    expect(find.text(AppStrings.connectionRestored), findsOneWidget);
+    await tester.pump(const Duration(seconds: 6));
+    await tester.pumpAndSettle();
+    expect(service.isOnline, isTrue);
+    expect(find.text(AppStrings.connectionRestored), findsNothing);
   });
 
   testWidgets('offline to online hides banner and shows recovery feedback', (
@@ -66,6 +100,7 @@ void main() {
     await service.checkConnection();
     await _pumpStatusView(tester, service);
     expect(find.text(AppStrings.offlineBannerTitle), findsOneWidget);
+    final offlineContentPosition = tester.getCenter(find.text('Contenido'));
 
     network.hasInterface = true;
     backend.backendReachable = true;
@@ -74,6 +109,18 @@ void main() {
 
     expect(find.text(AppStrings.offlineBannerTitle), findsNothing);
     expect(find.text(AppStrings.connectionRestored), findsOneWidget);
+    expect(tester.getCenter(find.text('Contenido')), offlineContentPosition);
+    expect(
+      tester
+          .getBottomLeft(
+            find.byKey(const ValueKey<String>('recovery_connectivity_banner')),
+          )
+          .dy,
+      lessThan(tester.getTopLeft(find.text('Contenido')).dy),
+    );
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
+    expect(find.text(AppStrings.connectionRestored), findsNothing);
   });
 
   testWidgets('rebuild does not show a false recovery notification', (

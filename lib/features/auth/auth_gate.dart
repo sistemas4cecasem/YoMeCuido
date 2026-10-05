@@ -16,6 +16,7 @@ import '../../data/repositories/user_profile_repository.dart';
 import '../../shared/services/connectivity_service.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../main/main_authenticated_shell.dart';
+import '../high_level_categories/high_level_categories_screen.dart';
 import 'complete_profile_screen.dart';
 import 'account_deletion_screen.dart';
 import 'email_verification_screen.dart';
@@ -67,11 +68,32 @@ class _AuthGateState extends State<AuthGate> {
   void initState() {
     super.initState();
     _authChanges = widget.authRepository.authStateChanges();
+    widget.connectivityService.addListener(_handleConnectivityChanged);
+  }
+
+  void _handleConnectivityChanged() {
+    if (!mounted) return;
+    setState(() {
+      if (widget.connectivityService.isOnline) {
+        _profileLoadUid = null;
+        _profileLoadFuture = null;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.connectivityService.removeListener(_handleConnectivityChanged);
+    super.dispose();
   }
 
   @override
   void didUpdateWidget(covariant AuthGate oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.connectivityService != widget.connectivityService) {
+      oldWidget.connectivityService.removeListener(_handleConnectivityChanged);
+      widget.connectivityService.addListener(_handleConnectivityChanged);
+    }
     if (oldWidget.authRepository != widget.authRepository) {
       _authChanges = widget.authRepository.authStateChanges();
     }
@@ -248,6 +270,16 @@ class _HydratedHome extends StatelessWidget {
     return FutureBuilder<UserProfile?>(
       future: profileLoadFuture,
       builder: (context, profileSnapshot) {
+        // Local activities do not require a server-confirmed account profile.
+        // Keep confirmed missing/deleting accounts in their recovery flow.
+        if (connectivityService.isOffline &&
+            (profileSnapshot.connectionState != ConnectionState.done ||
+                profileSnapshot.hasError)) {
+          return HighLevelCategoriesScreen(
+            showBackButton: false,
+            connectivityService: connectivityService,
+          );
+        }
         if (profileSnapshot.connectionState != ConnectionState.done) {
           return const _AuthLoadingView();
         }

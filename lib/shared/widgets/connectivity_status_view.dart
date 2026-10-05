@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../app/app_strings.dart';
@@ -10,12 +12,14 @@ class ConnectivityStatusView extends StatefulWidget {
     required this.connectivityService,
     required this.child,
     this.scaffoldMessengerKey,
+    this.showOfflineBanner = true,
     super.key,
   });
 
   final ConnectivityService connectivityService;
   final Widget child;
   final GlobalKey<ScaffoldMessengerState>? scaffoldMessengerKey;
+  final bool showOfflineBanner;
 
   @override
   State<ConnectivityStatusView> createState() => _ConnectivityStatusViewState();
@@ -24,6 +28,8 @@ class ConnectivityStatusView extends StatefulWidget {
 class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
   ConnectivityStatus? _lastDefinitiveStatus;
   bool _showOfflineBanner = false;
+  bool _showRecoveryBanner = false;
+  Timer? _recoveryTimer;
 
   @override
   void initState() {
@@ -41,12 +47,15 @@ class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
     oldWidget.connectivityService.removeListener(_handleConnectivityChanged);
     widget.connectivityService.addListener(_handleConnectivityChanged);
     _lastDefinitiveStatus = null;
+    _recoveryTimer?.cancel();
+    _showRecoveryBanner = false;
     _showOfflineBanner = false;
     _applyStatus(widget.connectivityService.status, notifyRecovery: false);
   }
 
   @override
   void dispose() {
+    _recoveryTimer?.cancel();
     widget.connectivityService.removeListener(_handleConnectivityChanged);
     super.dispose();
   }
@@ -61,6 +70,10 @@ class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
         break;
       case ConnectivityStatus.offline:
         _lastDefinitiveStatus = ConnectivityStatus.offline;
+        _recoveryTimer?.cancel();
+        if (_showRecoveryBanner) {
+          setState(() => _showRecoveryBanner = false);
+        }
         _showOfflineBanner = true;
       case ConnectivityStatus.online:
         _lastDefinitiveStatus = ConnectivityStatus.online;
@@ -96,51 +109,20 @@ class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
         if (shouldNotifyRecovery) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) {
-              _showRecoverySnackBar();
+              _showRecoveryNotice();
             }
           });
         }
     }
   }
 
-  void _showRecoverySnackBar() {
-    final colors = context.colors;
-    final messenger =
-        widget.scaffoldMessengerKey?.currentState ??
-        ScaffoldMessenger.maybeOf(context);
-    messenger
-      ?..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 3),
-          backgroundColor: colors.surfaceStrong,
-          margin: const EdgeInsets.all(AppSpacing.screen),
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadii.button),
-            side: BorderSide(color: colors.success),
-          ),
-          content: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(Icons.check_circle_outline, color: colors.success),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: Text(
-                  AppStrings.connectionRestored,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+  void _showRecoveryNotice() {
+    if (!widget.connectivityService.isOnline) return;
+    _recoveryTimer?.cancel();
+    setState(() => _showRecoveryBanner = true);
+    _recoveryTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted) setState(() => _showRecoveryBanner = false);
+    });
   }
 
   @override
@@ -150,27 +132,40 @@ class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
         ? Duration.zero
         : const Duration(milliseconds: 180);
 
-    return Column(
+    return Stack(
+      fit: StackFit.expand,
       children: [
-        Expanded(child: widget.child),
-        AnimatedSwitcher(
-          duration: duration,
-          switchInCurve: Curves.easeOut,
-          switchOutCurve: Curves.easeIn,
-          transitionBuilder: (child, animation) {
-            return SizeTransition(
-              sizeFactor: animation,
-              axisAlignment: -1,
-              child: child,
-            );
-          },
-          child: _showOfflineBanner
-              ? const _OfflineConnectivityBanner(
-                  key: ValueKey<String>('offline_connectivity_banner'),
-                )
-              : const SizedBox.shrink(
-                  key: ValueKey<String>('offline_connectivity_empty'),
-                ),
+        widget.child,
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: IgnorePointer(
+            child: AnimatedSwitcher(
+              duration: duration,
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              transitionBuilder: (child, animation) {
+                return SizeTransition(
+                  sizeFactor: animation,
+                  axisAlignment: -1,
+                  child: child,
+                );
+              },
+              child: _showOfflineBanner && widget.showOfflineBanner
+                  ? const _OfflineConnectivityBanner(
+                      key: ValueKey<String>('offline_connectivity_banner'),
+                    )
+                  : _showRecoveryBanner
+                  ? const _OfflineConnectivityBanner(
+                      key: ValueKey<String>('recovery_connectivity_banner'),
+                      recovered: true,
+                    )
+                  : const SizedBox.shrink(
+                      key: ValueKey<String>('offline_connectivity_empty'),
+                    ),
+            ),
+          ),
         ),
       ],
     );
@@ -178,7 +173,9 @@ class _ConnectivityStatusViewState extends State<ConnectivityStatusView> {
 }
 
 class _OfflineConnectivityBanner extends StatelessWidget {
-  const _OfflineConnectivityBanner({super.key});
+  const _OfflineConnectivityBanner({this.recovered = false, super.key});
+
+  final bool recovered;
 
   @override
   Widget build(BuildContext context) {
@@ -186,53 +183,73 @@ class _OfflineConnectivityBanner extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return SafeArea(
-      top: false,
-      child: Material(
-        color: colors.surfaceStrong,
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
+      bottom: false,
+      minimum: const EdgeInsets.all(AppSpacing.screen),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: AppSizing.maxContentWidth,
+          ),
+          child: Material(
             color: colors.surfaceStrong,
-            border: Border(top: BorderSide(color: colors.error)),
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.screen,
-            vertical: AppSpacing.sm,
-          ),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: AppSizing.maxContentWidth,
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadii.button),
+              side: BorderSide(
+                color: recovered ? colors.success : colors.error,
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.wifi_off_outlined, color: colors.error),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          AppStrings.offlineBannerTitle,
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: colors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xxs),
-                        Text(
-                          AppStrings.offlineBannerBody,
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colors.textSecondary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
+            ),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.screen,
+                vertical: AppSpacing.sm,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: AppSizing.maxContentWidth,
                   ),
-                ],
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        recovered
+                            ? Icons.check_circle_outline
+                            : Icons.wifi_off_outlined,
+                        color: recovered ? colors.success : colors.error,
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              recovered
+                                  ? AppStrings.connectionRestored
+                                  : AppStrings.offlineBannerTitle,
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: colors.textPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            if (!recovered) ...[
+                              const SizedBox(height: AppSpacing.xxs),
+                              Text(
+                                AppStrings.offlineBannerBody,
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: colors.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),

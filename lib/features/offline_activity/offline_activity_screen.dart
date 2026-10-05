@@ -9,7 +9,6 @@ import '../../data/models/offline_activity_question.dart';
 import '../../data/repositories/offline_activity_repository.dart';
 import '../../shared/widgets/answer_option_tile.dart';
 import '../../shared/widgets/app_scaffold.dart';
-import '../../shared/widgets/feedback_card.dart';
 import '../../shared/widgets/lesson_progress_bar.dart';
 import '../../shared/widgets/primary_button.dart';
 import '../../shared/widgets/secondary_button.dart';
@@ -309,19 +308,6 @@ class _OfflineQuestionView extends StatelessWidget {
                       ),
                       const SizedBox(height: AppSpacing.xs),
                     ],
-                    if (selectedOptionId != null) ...[
-                      const SizedBox(height: AppSpacing.sm),
-                      FeedbackCard(
-                        isCorrect: question.isCorrectAnswer(selectedOptionId!),
-                        feedback: question.isCorrectAnswer(selectedOptionId!)
-                            ? AppStrings.offlineActivityCorrectFeedback
-                            : AppStrings.offlineActivityIncorrectFeedback,
-                        expectedAnswer:
-                            question.isCorrectAnswer(selectedOptionId!)
-                            ? null
-                            : _correctAnswerText,
-                      ),
-                    ],
                   ],
                 ),
               ),
@@ -351,12 +337,6 @@ class _OfflineQuestionView extends StatelessWidget {
       return AnswerOptionTileState.incorrect;
     }
     return AnswerOptionTileState.idle;
-  }
-
-  String get _correctAnswerText {
-    return question.options
-        .firstWhere((option) => question.isCorrectAnswer(option.id))
-        .text;
   }
 }
 

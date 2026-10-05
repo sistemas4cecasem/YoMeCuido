@@ -100,6 +100,8 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
   bool _queuedCheckMustForce = false;
   DateTime? _lastCompletedCheckAt;
   bool _isDisposed = false;
+  Timer? _offlineRetryTimer;
+  bool _isForeground = true;
 
   ConnectivityStatus get status => _status;
 
@@ -146,6 +148,7 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
         _currentCheck = null;
         _lastCompletedCheckAt = DateTime.now();
         _runQueuedCheckIfNeeded();
+        _scheduleOfflineRetry();
       }
     });
     return check;
@@ -163,8 +166,17 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
     unawaited(checkConnection(force: force));
   }
 
+  void _scheduleOfflineRetry() {
+    _offlineRetryTimer?.cancel();
+    if (!_isStarted || _isDisposed || !_isForeground || !isOffline) return;
+    // Internet can return without a new Wi-Fi/mobile interface event.
+    _offlineRetryTimer = Timer(const Duration(seconds: 5), () {
+      _requestFreshCheck(force: true);
+    });
+  }
+
   Future<bool> _checkConnection(int generation) async {
-    _setStatus(ConnectivityStatus.checking);
+    if (!isOffline) _setStatus(ConnectivityStatus.checking);
 
     final hasInterface = await _safeHasNetworkInterface();
     if (!hasInterface) {
@@ -223,14 +235,17 @@ class ConnectivityService extends ChangeNotifier with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    _isForeground = state == AppLifecycleState.resumed;
+    if (!_isForeground) _offlineRetryTimer?.cancel();
     if (state == AppLifecycleState.resumed) {
-      _requestFreshCheck();
+      _requestFreshCheck(force: true);
     }
   }
 
   @override
   void dispose() {
     _isDisposed = true;
+    _offlineRetryTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     unawaited(_networkSubscription?.cancel());
     unawaited(_networkMonitor.dispose());
