@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'privacy_partner_links.dart';
 
 import '../../app/app_strings.dart';
 import '../../core/theme/app_spacing.dart';
@@ -89,6 +90,10 @@ class _PrivacyNoticeScreenState extends State<PrivacyNoticeScreen> {
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         Text(section.body),
+                        if (section.title == 'Responsable y contacto') ...[
+                          const SizedBox(height: AppSpacing.md),
+                          const PrivacyPartnerLinks(),
+                        ],
                       ],
                     ),
                   ),

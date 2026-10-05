@@ -310,10 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onDeleteAccount:
                                     widget.accountDeletionService == null
                                     ? null
-                                    : () {
-                                        Navigator.of(context).pop();
-                                        _confirmAndDelete();
-                                      },
+                                    : _confirmAndDelete,
                               ),
                             ),
                           ),
@@ -326,9 +323,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _SignOutCard(
                       isSigningOut: _isSigningOut,
                       onSignOut: _confirmAndSignOut,
-                      onDelete: widget.accountDeletionService == null
-                          ? null
-                          : _confirmAndDelete,
                     ),
                   ],
                 ),
@@ -1123,15 +1117,10 @@ class _CategoryProgressCard extends StatelessWidget {
 }
 
 class _SignOutCard extends StatelessWidget {
-  const _SignOutCard({
-    required this.isSigningOut,
-    required this.onSignOut,
-    required this.onDelete,
-  });
+  const _SignOutCard({required this.isSigningOut, required this.onSignOut});
 
   final bool isSigningOut;
   final VoidCallback onSignOut;
-  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -1160,21 +1149,6 @@ class _SignOutCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (onDelete != null) ...[
-              const SizedBox(height: AppSpacing.md),
-              OutlinedButton.icon(
-                onPressed: onDelete,
-                icon: const Icon(Icons.delete_forever_outlined),
-                label: const Text(AppStrings.deleteAccount),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: colors.error,
-                  side: BorderSide(color: colors.error),
-                  minimumSize: const Size.fromHeight(
-                    AppSizing.primaryButtonHeight,
-                  ),
-                ),
-              ),
-            ],
           ],
         ),
       ),

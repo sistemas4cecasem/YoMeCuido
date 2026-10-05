@@ -42,7 +42,7 @@ void main() {
       findsOneWidget,
     );
     await tester.scrollUntilVisible(find.text('Responsable y contacto'), 180);
-    expect(find.textContaining('https://cecasem.com/'), findsOneWidget);
+    expect(find.byTooltip('Visitar CECASEM'), findsOneWidget);
     expect(find.text(AppStrings.deleteAccount), findsNothing);
   });
 

@@ -20,6 +20,19 @@ void main() {
           addTearDown(tester.view.resetPhysicalSize);
           addTearDown(tester.view.resetDevicePixelRatio);
           var deleteCalls = 0;
+          final openedUrls = <String>[];
+          const channel = MethodChannel('plugins.flutter.io/url_launcher');
+          tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+            channel,
+            (call) async {
+              openedUrls.add((call.arguments as Map)['url'] as String);
+              return true;
+            },
+          );
+          addTearDown(
+            () => tester.binding.defaultBinaryMessenger
+                .setMockMethodCallHandler(channel, null),
+          );
 
           await tester.runAsync(() async {
             await tester.pumpWidget(
@@ -55,7 +68,19 @@ void main() {
             await tester.pumpAndSettle();
             expect(tester.takeException(), isNull);
           }
-          expect(find.textContaining('https://cecasem.com/'), findsOneWidget);
+          expect(find.byTooltip('Visitar CECASEM'), findsOneWidget);
+          for (final name in ['CECASEM', 'Observatorio de Trata de Personas']) {
+            final logo = find.byTooltip('Visitar $name');
+            await tester.scrollUntilVisible(logo, 100);
+            await tester.ensureVisible(logo);
+            await tester.pumpAndSettle();
+            await tester.tap(logo);
+            await tester.pumpAndSettle();
+          }
+          expect(openedUrls, [
+            'https://cecasem.com/',
+            'https://observatoriotratabolivia.org/',
+          ]);
           await tester.scrollUntilVisible(
             find.widgetWithText(OutlinedButton, AppStrings.deleteAccount),
             200,

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
+
 import 'package:demo_yomecuido/app/app_router.dart';
 import 'package:demo_yomecuido/app/app_strings.dart';
 import 'package:demo_yomecuido/app/category_progress_controller.dart';
@@ -126,7 +128,11 @@ void main() {
     await tester.pumpAndSettle();
     await _openProfileTab(tester);
     await tester.ensureVisible(find.text(AppStrings.privacyTitle));
-    await tester.tap(find.text(AppStrings.privacyTitle));
+    await tester.runAsync(() async {
+      await tester.tap(find.text(AppStrings.privacyTitle));
+      await tester.pump();
+      await rootBundle.loadString('assets/data/privacy_notice.json');
+    });
     await tester.pumpAndSettle();
     expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Servicios de terceros'), 180);
@@ -140,8 +146,10 @@ void main() {
     );
     expect(find.text('Eliminación y conservación'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('Responsable y contacto'), 180);
-    expect(find.textContaining('https://cecasem.com/'), findsOneWidget);
+    expect(find.byTooltip('Visitar CECASEM'), findsOneWidget);
     await tester.scrollUntilVisible(find.text(AppStrings.deleteAccount), 180);
+    await tester.ensureVisible(find.text(AppStrings.deleteAccount));
+    await tester.pumpAndSettle();
     await tester.tap(find.text(AppStrings.deleteAccount));
     await tester.pumpAndSettle();
     expect(find.text(AppStrings.deleteAccountConfirmTitle), findsOneWidget);
@@ -190,17 +198,35 @@ void main() {
     );
     await tester.pumpAndSettle();
     await _openProfileTab(tester);
-    await tester.ensureVisible(find.text('Eliminar cuenta'));
+    expect(find.text(AppStrings.deleteAccount), findsNothing);
+    await tester.scrollUntilVisible(find.text(AppStrings.privacyTitle), 180);
+    await tester.runAsync(() async {
+      await tester.tap(find.text(AppStrings.privacyTitle));
+      await tester.pump();
+      await rootBundle.loadString('assets/data/privacy_notice.json');
+    });
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text(AppStrings.deleteAccount), 180);
+    await tester.ensureVisible(find.text(AppStrings.deleteAccount));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Eliminar cuenta'));
     await tester.pumpAndSettle();
     expect(find.text('¿Eliminar cuenta?'), findsOneWidget);
+    expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
     expect(
-      find.textContaining('progreso, intentos, respuestas'),
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.textContaining('progreso, intentos, respuestas'),
+      ),
       findsOneWidget,
     );
     await tester.tap(find.text(AppStrings.cancel));
     await tester.pumpAndSettle();
     expect(deletion.startCalls, 0);
+    expect(find.byType(PrivacyNoticeScreen), findsOneWidget);
+    await tester.scrollUntilVisible(find.text(AppStrings.deleteAccount), 180);
+    await tester.ensureVisible(find.text(AppStrings.deleteAccount));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Eliminar cuenta'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Continuar'));

@@ -47,8 +47,8 @@ void main() {
       ],
     );
     expect(bodies, contains('servicios tecnológicos de terceros'));
-    expect(bodies, contains('Perfil > Eliminar cuenta'));
-    expect(bodies, contains('https://cecasem.com/'));
+    expect(bodies, contains('Perfil > Privacidad > Eliminar cuenta'));
+    expect(bodies, contains('CECASEM'));
     final visibleContent = '${notice['title']}\n${notice['intro']}\n$bodies';
     for (final internalDetail in [
       'Firebase',
