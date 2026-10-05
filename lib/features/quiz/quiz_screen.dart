@@ -607,7 +607,7 @@ class _QuizFlowState extends State<_QuizFlow> with WidgetsBindingObserver {
     if (reservation == null) {
       setState(() => _isCheckingStart = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.startAttemptConnectionError)),
+        const SnackBar(content: Text(AppStrings.startAttemptReservationError)),
       );
       return;
     }

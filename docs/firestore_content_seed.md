@@ -86,3 +86,19 @@ Después de una escritura real, el script lee Firestore y muestra el conteo de:
 
 El script no elimina documentos desconocidos y no toca `users/{uid}` ni datos de
 progreso, intentos o resultados.
+
+## Reparación de claves de examen
+
+Si las actividades funcionan pero el servidor rechaza iniciar un examen,
+verifica que también existan las claves protegidas de examen. `--verify`
+espera 112 claves para las 16 categorías (96 de actividades y 16 de exámenes).
+
+Para escribir únicamente las 16 claves de examen, derivadas del banco local:
+
+```bash
+dart run tool/seed_educational_content.dart --repair-exam-keys
+```
+
+Este modo no ejecuta la limpieza del seed ni escribe progreso de usuarios.
+Actualiza las claves de examen con IDs estables y verifica los conteos remotos.
+Utilízalo cuando el contenido publicado corresponda al banco local.

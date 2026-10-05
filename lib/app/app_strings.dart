@@ -146,6 +146,8 @@ abstract final class AppStrings {
   static const startAttempt = 'Iniciar';
   static const startAttemptConnectionError =
       'Necesitas conexión a Internet para iniciar esta actividad.';
+  static const startAttemptReservationError =
+      'No pudimos iniciar el intento. Intenta nuevamente. Si el problema persiste, consulta con el responsable de la app.';
   static const pendingSyncTitle = 'Pendiente de sincronización';
   static const pendingSyncBody =
       'Tus resultados se guardaron en el dispositivo y se sincronizarán cuando vuelva Internet.';

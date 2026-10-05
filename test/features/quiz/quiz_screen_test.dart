@@ -13,6 +13,7 @@ import 'package:demo_yomecuido/data/models/auth_user.dart';
 import 'package:demo_yomecuido/data/models/pending_quiz_attempt.dart';
 import 'package:demo_yomecuido/data/models/quiz_question.dart';
 import 'package:demo_yomecuido/data/repositories/auth_repository.dart';
+import 'package:demo_yomecuido/data/repositories/category_progress_repository.dart';
 import 'package:demo_yomecuido/data/repositories/content_repository.dart';
 import 'package:demo_yomecuido/data/repositories/pending_quiz_attempt_repository.dart';
 import 'package:demo_yomecuido/features/quiz/exam_question_selector.dart';
@@ -703,6 +704,41 @@ void main() {
     expect(find.text(AppStrings.earnedPoints.toLowerCase()), findsOneWidget);
   });
 
+  testWidgets(
+    'reserva de examen rechazada online no indica falta de internet',
+    (tester) async {
+      repository.quizQuestions = _buildMultipleChoiceQuestions(60);
+      final connectivity = await _connectivityService(
+        backendProbe: _FakeBackendConnectivityProbe(reachable: true),
+      );
+      addTearDown(connectivity.dispose);
+      final failingController = _RejectedExamReservationController();
+      addTearDown(failingController.dispose);
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.data(),
+          home: QuizScreen.exam(
+            category: _category,
+            exam: FinalExamConfigs.relationsViolence,
+            contentRepository: repository,
+            progressController: failingController,
+            connectivityService: connectivity,
+            requireStartConfirmation: true,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(AppStrings.startAttempt));
+      await tester.pumpAndSettle();
+      expect(connectivity.isOnline, isTrue);
+      expect(
+        find.text(AppStrings.startAttemptReservationError),
+        findsOneWidget,
+      );
+      expect(find.text(AppStrings.startAttemptConnectionError), findsNothing);
+    },
+  );
+
   testWidgets('examen conserva 15 preguntas y resultado provisional offline', (
     tester,
   ) async {
@@ -1091,4 +1127,16 @@ AttemptIdGenerator _sequentialAttemptIds() {
     count += 1;
     return 'attempt_$count';
   };
+}
+
+class _RejectedExamReservationController extends CategoryProgressController {
+  @override
+  Future<AttemptReservation?> reserveAndStartExamAttempt({
+    required String categoryId,
+    required String lessonId,
+    required String examId,
+    required List<String> questionIds,
+    required int totalActivities,
+    String? attemptId,
+  }) async => null;
 }

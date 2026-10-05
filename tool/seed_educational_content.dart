@@ -28,7 +28,9 @@ Future<void> main(List<String> arguments) async {
 
     _printPlanSummary(
       plan,
-      mode: options.verifyOnly
+      mode: options.repairExamKeys
+          ? 'repair-exam-keys'
+          : options.verifyOnly
           ? 'verify'
           : options.write
           ? 'write'
@@ -47,6 +49,32 @@ Future<void> main(List<String> arguments) async {
       );
       _printRemoteSummary(remoteSummary);
       _assertRemoteSummary(plan, remoteSummary);
+      stdout.writeln('Verificación remota completada.');
+      return;
+    }
+
+    if (options.repairExamKeys) {
+      final token = options.accessToken ?? await _readAccessToken();
+      final client = _FirestoreRestClient(
+        projectId: projectId,
+        databaseId: databaseId,
+        accessToken: token,
+      );
+      final examKeys = plan.documents
+          .where(
+            (document) =>
+                document.path.split('/').length == 4 &&
+                document.path.split('/')[2] == 'answerKeys' &&
+                document.data.containsKey('examId'),
+          )
+          .toList(growable: false);
+      await client.write(examKeys);
+      stdout.writeln('Claves de examen reparadas: ${examKeys.length}');
+      final summary = await client.readSummary(
+        categoryIds: bundle.categories.map((category) => category.id).toList(),
+      );
+      _printRemoteSummary(summary);
+      _assertRemoteSummary(plan, summary);
       stdout.writeln('Verificación remota completada.');
       return;
     }
@@ -564,6 +592,7 @@ void _printUsage() {
   stdout.writeln(
     '  --verify               Compara conteos esperados con Firestore.',
   );
+  stdout.writeln('  --repair-exam-keys     Escribe solo las claves de examen.');
   stdout.writeln('  --project-id=<id>      Sobrescribe el proyecto Firebase.');
   stdout.writeln('  --database-id=<id>     Sobrescribe la base de datos.');
   stdout.writeln('  --access-token=<token> Usa un token OAuth ya emitido.');
@@ -573,6 +602,7 @@ class _SeedOptions {
   const _SeedOptions({
     required this.write,
     required this.verifyOnly,
+    required this.repairExamKeys,
     required this.showHelp,
     this.projectId,
     this.databaseId,
@@ -581,6 +611,7 @@ class _SeedOptions {
 
   final bool write;
   final bool verifyOnly;
+  final bool repairExamKeys;
   final bool showHelp;
   final String? projectId;
   final String? databaseId;
@@ -591,20 +622,23 @@ class _SeedOptions {
     final write = arguments.contains('--write');
     final dryRun = arguments.contains('--dry-run');
     final verifyOnly = arguments.contains('--verify');
+    final repairExamKeys = arguments.contains('--repair-exam-keys');
     final modeCount = <bool>[
       write,
       dryRun,
       verifyOnly,
+      repairExamKeys,
     ].where((mode) => mode).length;
     if (modeCount > 1) {
       throw const FormatException(
-        'Use only one mode: --write, --verify or --dry-run.',
+        'Use only one mode: --write, --verify, --repair-exam-keys or --dry-run.',
       );
     }
 
     return _SeedOptions(
       write: write,
       verifyOnly: verifyOnly,
+      repairExamKeys: repairExamKeys,
       showHelp: showHelp,
       projectId: _readOption(arguments, '--project-id'),
       databaseId: _readOption(arguments, '--database-id'),
