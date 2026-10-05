@@ -159,6 +159,8 @@ class _LessonScreenState extends State<LessonScreen> {
               const SizedBox(height: AppSpacing.lg),
               Expanded(
                 child: SingleChildScrollView(
+                  key: ValueKey(page.id),
+                  primary: false,
                   child: _TheoryCard(
                     page: page,
                     illustrationAsset: _theoryImageForPage(page),

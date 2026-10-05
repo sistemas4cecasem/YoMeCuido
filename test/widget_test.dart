@@ -692,6 +692,46 @@ void main() {
     expect(find.text(AppStrings.objectivesTitle), findsNothing);
   });
 
+  testWidgets('cada cápsula comienza arriba al avanzar y retroceder', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await openDetail(tester);
+    await tester.ensureVisible(find.text(AppStrings.theoryTitle));
+    await tester.tap(find.text(AppStrings.theoryTitle));
+    await tester.pumpAndSettle();
+
+    final scrollable = find.descendant(
+      of: find.byType(SingleChildScrollView),
+      matching: find.byType(Scrollable),
+    );
+
+    Future<void> scrollContent() async {
+      await tester.drag(scrollable, const Offset(0, -200));
+      await tester.pumpAndSettle();
+      expect(
+        tester.state<ScrollableState>(scrollable).position.pixels,
+        greaterThan(0),
+      );
+    }
+
+    await scrollContent();
+    await tester.tap(find.text(AppStrings.next));
+    await tester.pumpAndSettle();
+    expect(find.text('2 de 6'), findsOneWidget);
+    expect(tester.state<ScrollableState>(scrollable).position.pixels, 0);
+
+    await scrollContent();
+    await tester.tap(find.text(AppStrings.previous));
+    await tester.pumpAndSettle();
+    expect(find.text('1 de 6'), findsOneWidget);
+    expect(tester.state<ScrollableState>(scrollable).position.pixels, 0);
+  });
+
   testWidgets('navega entre las seis cápsulas teóricas', (tester) async {
     await openDetail(tester);
 
